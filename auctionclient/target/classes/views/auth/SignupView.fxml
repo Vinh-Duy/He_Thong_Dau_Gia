@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="mainBorderPane" prefWidth="1200" stylesheets="@../../css/login-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.daugia.controllers.auth.SignUpController">
+    <top>
+        <fx:include source="../components/Header.fxml"/>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-border-color: transparent;" vbarPolicy="AS_NEEDED">
+            <content>
+                <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40;">
+                    <VBox alignment="CENTER" maxWidth="620" prefWidth="800.0" spacing="20.0" styleClass="card">
+                        <VBox alignment="CENTER" spacing="5">
+                            <Label styleClass="title" text="Đăng ký tài khoản">
+                                <VBox.margin><Insets bottom="10.0" /></VBox.margin>
+                            </Label>
+                            <HBox alignment="CENTER" spacing="5">
+                                <Label styleClass="subtitle" text="Bạn đã có tài khoản?" style="-fx-font-size: 15px; -fx-text-fill: #666;" />
+                                <Label text="Đăng nhập ngay" style="-fx-text-fill: #c8102e; -fx-font-size: 15px; -fx-underline: true; -fx-cursor: hand; -fx-font-weight: bold;" onMouseClicked="#goToSignin" />
+                                <VBox.margin><Insets bottom="15.0" /></VBox.margin>
+                            </HBox>
+                        </VBox>
+                        <HBox alignment="CENTER_LEFT" minHeight="38.0" prefHeight="38.0" spacing="20">
+                            <Label styleClass="label" text="Loại tài khoản"><font><Font size="15.0" /></font></Label>
+                            <RadioButton fx:id="personalRadio" text="Cá nhân"><font><Font size="15.0" /></font></RadioButton>
+                            <RadioButton fx:id="orgRadio" text="Tổ chức"><font><Font size="15.0" /></font></RadioButton>
+                            <VBox.margin><Insets bottom="10.0" /></VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="15">
+                            <TextField minWidth="180.0" promptText="Họ" styleClass="input" />
+                            <TextField minWidth="180.0" promptText="Tên đệm" styleClass="input" />
+                            <TextField minWidth="180.0" promptText="Tên" styleClass="input" />
+                        </HBox>
+                        <TextField prefWidth="620.0" promptText="Tên đăng nhập" styleClass="input" />
+                        <VBox spacing="5">
+                            <StackPane>
+                                <PasswordField fx:id="passwordField" promptText="Mật khẩu" styleClass="input" />
+                                <TextField fx:id="passwordTextField" managed="false" styleClass="input" visible="false" />
+                                <Button onAction="#togglePassword" styleClass="eye-btn" text="👁" StackPane.alignment="CENTER_RIGHT" />
+                            </StackPane>
+                            <HBox spacing="10" styleClass="rule">
+                                <Label fx:id="ruleLength" text="✖ Tối thiểu 8 ký tự" />
+                                <Label fx:id="ruleUpper" text="✖ Chứa ký tự viết hoa" />
+                                <Label fx:id="ruleLower" text="✖ Chứa ký tự viết thường" />
+                                <Label fx:id="ruleNumber" text="✖ Chứa chữ số" />
+                                <Label fx:id="ruleSpecial" text="✖ Chứa ký tự đặc biệt" />
+                            </HBox>
+                        </VBox>
+                        <PasswordField promptText="Nhập lại mật khẩu" styleClass="input" />
+                        <HBox spacing="15">
+                            <TextField prefWidth="200" promptText="Email" styleClass="input" />
+                            <TextField prefWidth="200" promptText="Số điện thoại" styleClass="input" />
+                            <ComboBox fx:id="genderBox" prefWidth="200" promptText="Chọn giới tính" styleClass="input" />
+                        </HBox>
+                        <HBox spacing="15">
+                            <ComboBox fx:id="dayBox" prefWidth="100" promptText="Ngày" />
+                            <ComboBox fx:id="monthBox" prefWidth="120" promptText="Tháng" />
+                            <ComboBox fx:id="yearBox" prefWidth="120" promptText="Năm" />
+                        </HBox>
+                        <HBox spacing="15">
+                            <TextField prefWidth="200" promptText="Tỉnh/Thành phố" styleClass="input" />
+                            <TextField prefWidth="200" promptText="Quận/Huyện" styleClass="input" />
+                            <TextField prefWidth="200" promptText="Phường/Xã" styleClass="input" />
+                        </HBox>
+                        <Button prefHeight="48.0" prefWidth="620.0" styleClass="btn-primary" text="ĐĂNG KÝ TÀI KHOẢN">
+                            <font><Font size="18.0" /></font>
+                        </Button>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

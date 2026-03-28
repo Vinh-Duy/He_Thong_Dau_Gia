@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox alignment="CENTER_LEFT" spacing="20" styleClass="header" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.daugia.controllers.components.HeaderController">
+    
+    <Label prefHeight="28.0" prefWidth="122.0" styleClass="logo" text="ĐẤU GIÁ" />
+
+    <HBox alignment="CENTER_LEFT" spacing="25" HBox.hgrow="ALWAYS">   
+       <Label fx:id="taiSanLabel" onMouseClicked="#showTaiSanMenu" prefHeight="38.0" prefWidth="158.0" styleClass="menu-item" text="Tài sản đấu giá" style="-fx-cursor: hand;"/>
+       <Label fx:id="phiendaugiaLabel" onMouseClicked="#showPhienDauGiaMenu" prefHeight="38.0" prefWidth="158.0" styleClass="menu-item" text="Phiên đấu giá" style="-fx-cursor: hand;"/>
+       <Label fx:id="gioithieuLabel" onMouseClicked="#showGioiThieu" prefHeight="38.0" prefWidth="158.0" styleClass="menu-item" text="Giới thiệu" style="-fx-cursor: hand;"/>
+       <Label fx:id="lienheLabel" onMouseClicked="#showLienHe" prefHeight="38.0" prefWidth="158.0" styleClass="menu-item" text="Liên Hệ" style="-fx-cursor: hand;"/>
+    </HBox>
+
+    <HBox alignment="CENTER_RIGHT" spacing="30">
+        
+        <VBox alignment="CENTER_RIGHT">
+            <Label fx:id="timeLabel" text="00:00:00" style="-fx-font-weight: bold;"/>
+            <Label fx:id="dateLabel" text="Ngày tháng năm" />
+        </VBox>
+        
+        <HBox alignment="CENTER" spacing="15">
+            <Label text="Đăng ký" 
+                   style="-fx-font-size: 14px; -fx-text-fill: #333; -fx-cursor: hand; -fx-font-weight: bold;" 
+                   onMouseClicked="#goToSignupClick"/>
+                   
+            <Label text="Đăng nhập" 
+                   style="-fx-font-size: 14px; -fx-text-fill: white; -fx-background-color: #c8102e; -fx-padding: 8 20; -fx-background-radius: 5; -fx-cursor: hand; -fx-font-weight: bold;" 
+                   onMouseClicked="#goToLoginClick"/>
+        </HBox>
+
+    </HBox>
+</HBox>

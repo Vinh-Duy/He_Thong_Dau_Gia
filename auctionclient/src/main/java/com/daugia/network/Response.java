@@ -1,9 +1,9 @@
 package com.daugia.network;
 
 public class Response {
-    private String status; // "SUCCESS" hoặc "ERROR"
-    private String message; // Thông báo lỗi hoặc thành công
-    private String data;    // Dữ liệu trả về (VD: thông tin User)
+    private String status; 
+    private String message; 
+    private String data; 
 
     public Response(String status, String message, String data) {
         this.status = status;

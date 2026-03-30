@@ -13,7 +13,6 @@ public class NetworkClient {
     private static BufferedReader in;
     private static final Gson gson = new Gson();
 
-    // Khởi tạo kết nối khi bật App
     public static void connect(String ip, int port) {
         try {
             socket = new Socket(ip, port);
@@ -26,14 +25,12 @@ public class NetworkClient {
         }
     }
 
-    // Hàm gửi Request và đợi nhận Response
     public static Response sendRequest(Request request) {
         try {
-            // Biến Request thành JSON rồi gửi đi
+
             String jsonRequest = gson.toJson(request);
             out.println(jsonRequest);
 
-            // Đọc phản hồi (JSON) từ Server và biến ngược lại thành Response
             String jsonResponse = in.readLine();
             if (jsonResponse != null) {
                 return gson.fromJson(jsonResponse, Response.class);

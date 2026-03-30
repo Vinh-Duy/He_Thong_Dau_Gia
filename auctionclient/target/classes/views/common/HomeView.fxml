@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" stylesheets="@../../css/HomeView.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.daugia.controllers.common.HomeViewController">
+    <content>
+        <StackPane alignment="TOP_CENTER">
+            <children>
+                
+                <VBox alignment="TOP_CENTER" style="-fx-background-color: #f4f6f8;">
+                    
+                        <HBox alignment="CENTER" prefHeight="686.0" prefWidth="1165.0" style="-fx-background-image: url('@../../images/welcom_bg.jpg'); -fx-background-size: cover; -fx-background-position: center center;">
+                        <padding>
+                            <Insets bottom="40.0" left="60.0" right="60.0" top="80.0" />
+                        </padding>
+                        
+                        <VBox alignment="CENTER_LEFT" spacing="15.0" HBox.hgrow="ALWAYS">
+                            <Label style="-fx-text-fill: white; -fx-font-size: 24px;" text="Chào mừng bạn đến với" />
+                            <Label prefHeight="146.0" prefWidth="376.0" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 44px;" text="HỆ THỐNG ĐẤU GIÁ TRỰC TUYẾN" wrapText="true" />
+                            <Label maxWidth="600.0" style="-fx-text-fill: #e1bee7; -fx-font-size: 18px;" text="Khám phá và tham gia đấu giá các tài sản quý giá một cách dễ dàng, an toàn và minh bạch.Với phương châm hoạt động: “Đem lại hiệu quả kinh tế vượt trội”, chúng tôi hy vọng sẽ làm hài lòng Quý Khách và mong muốn được đồng hành cùng Quý Khách hàng trong suốt quá trình hoạt động và phát triển." wrapText="true" />
+                        </VBox>
+                    </HBox>
+
+                    <VBox spacing="30.0">
+                        <padding>
+                            <Insets bottom="50" left="60" right="60" top="40" />
+                        </padding>
+                        <VBox alignment="CENTER">
+                            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #4a148c; -fx-padding: 0 0 20 0;" text="PHIÊN ĐẤU GIÁ NỔI BẬT" />
+                            <HBox fx:id="bannerContainer" alignment="CENTER" spacing="20.0" />
+                        </VBox>
+                        <VBox spacing="15.0">
+                            <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #9c27b0;" text="ĐANG DIỄN RA" />
+                            <FlowPane fx:id="dangDienRaContainer" hgap="25.0" vgap="25.0" />
+                        </VBox>
+                    </VBox>
+                </VBox>
+
+                <VBox maxHeight="-Infinity" pickOnBounds="false" StackPane.alignment="TOP_CENTER">
+                    <children>
+                        <fx:include source="../components/Header.fxml" />
+                    </children>
+                </VBox>
+                
+            </children>
+        </StackPane>
+    </content>
+</ScrollPane>

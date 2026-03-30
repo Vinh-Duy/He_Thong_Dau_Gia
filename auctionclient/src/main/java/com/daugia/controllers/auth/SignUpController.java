@@ -1,31 +1,21 @@
 package com.daugia.controllers.auth;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 import com.daugia.controllers.bidder.DanhSachSanPhamController;
 import com.daugia.network.NetworkClient;
 import com.daugia.network.Request;
 import com.daugia.network.Response;
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -33,7 +23,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class SignUpController {
 
@@ -174,8 +163,6 @@ public class SignUpController {
         if (yearBox != null) {
             for (int i = 1950; i <= 2025; i++) yearBox.getItems().add(i);
         }
-
-        startClock();
     }
     @FXML
 
@@ -201,97 +188,7 @@ public class SignUpController {
             label.setStyle("-fx-text-fill: red;");
         }
     }
-    
-    private void startClock() {
 
-        Platform.runLater(() -> {
-
-            if (timeLabel == null || dateLabel == null) {
-
-                new Timeline(new KeyFrame(Duration.millis(100), e -> startClock())).play();
-                return;
-            }
-
-            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy", new Locale("vi", "VN"));
-
-            Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(1), e -> {
-                    LocalDateTime now = LocalDateTime.now();
-                    timeLabel.setText(now.format(timeFormatter));
-                    dateLabel.setText(now.format(dateFormatter));
-                })
-            );
-
-            timeline.setCycleCount(Animation.INDEFINITE);
-            timeline.play();
-        });
-    }
-
-    @FXML
-    private void showPhienDauGiaMenu(MouseEvent event) {
-        ContextMenu menu = new ContextMenu();
-
-        MenuItem sapdaugia = new MenuItem("Phiên đấu giá sắp đấu giá");
-        sapdaugia.setOnAction(e -> loadCenterContent("/views/SapDauGiaView.fxml"));
-
-        MenuItem  dangdienra = new MenuItem("Phiên đấu giá đang diễn ra");
-        dangdienra.setOnAction(e -> loadCenterContent("/views/DangDienRaView.fxml"));
-
-        MenuItem daketthuc = new MenuItem("Phiên đấu giá đã kết thúc");
-        daketthuc.setOnAction(e -> loadCenterContent("/views/DaKetThucView.fxml"));
-
-        menu.getItems().addAll(sapdaugia, dangdienra, daketthuc /* thêm các mục khác sau */);
-
-        menu.show((Node) event.getSource(), Side.BOTTOM, 0, 5);
-    }
-
-
-    @FXML
-    private void goToGioiThieu(MouseEvent event) {
-        loadCenterContent("/views/common/GioiThieuView.fxml");
-    }
-
-    @FXML
-    private void goToLienHe(MouseEvent event) {
-        loadCenterContent("/views/common/LienHeView.fxml");
-    }
-
-    private void loadCenterContent(String fxmlPath) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent content = loader.load();
-
-            mainBorderPane.setCenter(content);
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setContentText("Không thể tải trang: " + fxmlPath);
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    private void showTaiSanMenu(MouseEvent event) {
-
-        ContextMenu menu = new ContextMenu();
-
-        MenuItem batDongSan = new MenuItem("Bất động sản");
-
-        MenuItem nhaNuoc = new MenuItem("Tài sản nhà nước");
-
-        MenuItem phuongTien = new MenuItem("Phương tiện - xe cộ");
-
-        MenuItem suuTam = new MenuItem("Sưu tầm - nghệ thuật");
-
-        MenuItem khac = new MenuItem("Tài sản khác");
-
-        menu.getItems().addAll(batDongSan, nhaNuoc, phuongTien, suuTam, khac);
-
-        menu.show((Node) event.getSource(), Side.BOTTOM, 0, 5);
-    }
 
 
     private void loadCategoryView(String categoryName) {

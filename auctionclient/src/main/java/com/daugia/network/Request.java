@@ -1,8 +1,8 @@
 package com.daugia.network;
 
 public class Request {
-    private String action; // Hành động (VD: "LOGIN", "BID", "GET_ITEMS")
-    private String payload; // Dữ liệu đi kèm (VD: chuỗi JSON của user/pass)
+    private String action;
+    private String payload; 
 
     public Request(String action, String payload) {
         this.action = action;

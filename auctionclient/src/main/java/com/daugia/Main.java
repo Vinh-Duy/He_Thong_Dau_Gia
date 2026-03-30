@@ -10,17 +10,24 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage stage) throws Exception {
-        NetworkClient.connect("localhost", 8888);
+    public void start(Stage stage) {
+        try {
+            // Kết nối mạng
+            NetworkClient.connect("localhost", 8888);
 
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/views/auth/SignupView.fxml"));
-
-        Scene scene = new Scene(loader.load(), 1280, 650);
-        stage.setTitle("Developed by Team 1");
-        stage.setScene(scene);
-        stage.setMaximized(false);
-        stage.show();
+            // NẠP TRANG CHỦ (HOMEVIEW) ĐẦU TIÊN
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/common/HomeView.fxml"));
+            Scene scene = new Scene(loader.load(), 1280, 720);
+            
+            stage.setTitle("Hệ thống Đấu Giá - Team 1");
+            stage.setScene(scene);
+            stage.setMaximized(false);
+            stage.show();
+            
+        } catch (Exception e) {
+            System.err.println("=== LỖI SẬP APP CHI TIẾT TẠI ĐÂY ===");
+            e.printStackTrace(); // Lệnh này giúp in ra tận gốc dòng code gây lỗi
+        }
     }
 
     @Override

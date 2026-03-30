@@ -9,6 +9,7 @@ com/daugia/controllers/DangDienRaController.class
 com/daugia/network/Response.class
 com/daugia/controllers/DaKetThucController.class
 com/daugia/models/Item.class
+com/daugia/controllers/common/HomeViewController.class
 com/daugia/controllers/components/AuctionCardController.class
 com/daugia/controllers/auth/LoginPopupController.class
 com/daugia/network/NetworkClient.class

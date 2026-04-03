@@ -3,7 +3,14 @@ package com.daugia.controllers.bidder;
 import java.io.IOException;
 
 import com.daugia.controllers.components.AuctionCardController;
+import com.daugia.network.NetworkClient;
+import com.daugia.network.Request;
+import com.daugia.network.Response;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -27,26 +34,45 @@ public class DanhSachSanPhamController {
     private void loadProducts() {
         productContainer.getChildren().clear();
 
-        
-        for (int i = 1; i <= 10; i++) {
+        new Thread(() -> {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/components/AuctionCard.fxml"));
-                Node cardView = loader.load();
+                Request request = new Request("GET_ITEMS_BY_CATEGORY", currentCategory);
+                Response response = NetworkClient.getInstance().sendRequest(request);
 
-                AuctionCardController cardController = loader.getController();
+                if (response != null && "SUCCESS".equals(response.getStatus())) {
+                    if (response.getPayload() == null) {
+                        System.out.println("Server trả về payload rỗng!");
+                        return;
+                    }
 
-                cardController.setData(
-                    currentCategory + " - SP " + i, 
-                    "5,000,000", 
-                    "02:00:00", 
-                    "/images/UET-logo.png" 
-                );
+                    com.google.gson.Gson gson = new com.google.gson.Gson();
+                    String payloadJson = gson.toJson(response.getPayload());
+                    
+                    JsonArray itemsArray = JsonParser.parseString(payloadJson).getAsJsonArray();
 
-                productContainer.getChildren().add(cardView);
+                    Platform.runLater(() -> {
+                        for (int i = 0; i < itemsArray.size(); i++) {
+                            JsonObject itemJson = itemsArray.get(i).getAsJsonObject();
+                            
+                            String tenSP = itemJson.has("name") ? itemJson.get("name").getAsString() : "Đang cập nhật";
+                            String gia = itemJson.has("startingPrice") ? itemJson.get("startingPrice").getAsString() : "0";
+                            
+                            try {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/components/AuctionCard.fxml"));
+                                Node cardView = loader.load();
+                                AuctionCardController cardController = loader.getController();
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                                cardController.setData(tenSP, gia + " VNĐ", "Đang mở", "/images/default_item.png");
+                                productContainer.getChildren().add(cardView);
+                            } catch (IOException e) {
+                                System.out.println("Lỗi load card: " + e.getMessage());
+                            }
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                System.out.println("Lỗi mạng: " + e.getMessage());
             }
-        }
+        }).start();
     }
 }

@@ -12,10 +12,8 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         try {
-            // Kết nối mạng
-            NetworkClient.connect("localhost", 8888);
+            NetworkClient.getInstance();
 
-            // NẠP TRANG CHỦ (HOMEVIEW) ĐẦU TIÊN
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/common/HomeView.fxml"));
             Scene scene = new Scene(loader.load(), 1280, 720);
             
@@ -26,14 +24,18 @@ public class Main extends Application {
             
         } catch (Exception e) {
             System.err.println("=== LỖI SẬP APP CHI TIẾT TẠI ĐÂY ===");
-            e.printStackTrace(); // Lệnh này giúp in ra tận gốc dòng code gây lỗi
+            e.printStackTrace(); 
         }
     }
 
     @Override
     public void stop() throws Exception {
         System.out.println("Đang đóng ứng dụng và ngắt kết nối mạng...");
-        System.exit(0);
+        
+        NetworkClient.getInstance().closeConnection();
+        
+        super.stop(); 
+        
     }
 
     public static void main(String[] args) {

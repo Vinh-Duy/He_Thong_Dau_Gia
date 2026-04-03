@@ -1,8 +1,8 @@
 package com.daugia.network;
 
 public class Response {
-    private String status;
-    private String message;
+    private String status; 
+    private String message; 
     private String data;
 
     public Response(String status, String message, String data) {
@@ -14,4 +14,8 @@ public class Response {
     public String getStatus() { return status; }
     public String getMessage() { return message; }
     public String getData() { return data; }
+    
+    public Object getPayload() {
+        return this.data; 
+    }
 }

@@ -79,7 +79,7 @@ public class SignUpController {
 
         Request req = new Request("REGISTER", payload);
 
-        Response res = NetworkClient.sendRequest(req);
+        Response res = NetworkClient.getInstance().sendRequest(req);
 
         if (res != null && "SUCCESS".equals(res.getStatus())) {
 

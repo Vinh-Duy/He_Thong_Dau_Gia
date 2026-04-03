@@ -6,9 +6,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import com.daugia.dao.UserDAO;
+import com.daugia.models.Auction;
 import com.daugia.models.User;
 import com.daugia.network.Request;
 import com.daugia.network.Response;
+import com.daugia.services.AuctionManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -71,9 +73,52 @@ public class ClientHandler implements Runnable {
                     }
                     break;
 
+                case "PLACE_BID":
+                    JsonObject bidData = JsonParser.parseString(request.getPayload()).getAsJsonObject();
+                    int auctionId = bidData.get("auctionId").getAsInt();
+                    double amount = bidData.get("amount").getAsDouble();
+                    String username = bidData.get("username").getAsString();
+
+                    AuctionManager manager = AuctionManager.getInstance();
+                    Auction auction = manager.getAuction(auctionId);
+
+                    if (auction != null) {
+
+                        boolean success = auction.placeBid(username, amount); 
+                        
+                        if (success) {
+                            response = new Response("SUCCESS", "Đặt giá thành công!", String.valueOf(auction.getCurrentHighestBid()));
+                        } else {
+
+                            response = new Response("ERROR", "Giá không hợp lệ hoặc phiên đấu giá đã kết thúc!", null);
+                        }
+                    } else {
+                        response = new Response("ERROR", "Không tìm thấy phiên đấu giá này!", null);
+                    }
+                    break;
+
+                case "GET_ALL_AUCTIONS":
+
+                    String dummyAuctions = "[" +
+                        "{\"name\": \"Đồng hồ Rolex Datejust\", \"currentHighestBid\": 320000000}," +
+                        "{\"name\": \"Tranh sơn dầu thế kỷ 19\", \"currentHighestBid\": 150000000}" +
+                    "]";
+                    response = new Response("SUCCESS", "Lấy danh sách thành công", dummyAuctions);
+                    break;
+
+                case "GET_ITEMS_BY_CATEGORY":
+
+                    String dummyJsonArray = "[" +
+                        "{\"name\": \"Sản phẩm test 1\", \"startingPrice\": 5000000}," +
+                        "{\"name\": \"Sản phẩm test 2\", \"startingPrice\": 12000000}" +
+                    "]";
+                    response = new Response("SUCCESS", "Lấy dữ liệu thành công", dummyJsonArray);
+                    break;
+
                 default:
                     response = new Response("ERROR", "Không tìm thấy Action", null);
             }
+            
 
                 String jsonResponse = gson.toJson(response);
                 out.println(jsonResponse);

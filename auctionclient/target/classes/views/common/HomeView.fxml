@@ -39,7 +39,12 @@
                             <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #9c27b0;" text="ĐANG DIỄN RA" />
                             <FlowPane fx:id="dangDienRaContainer" hgap="25.0" vgap="25.0" />
                         </VBox>
-                    </VBox>
+
+                        <VBox spacing="15.0">
+                            <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #9c27b0;" text="SẮP DIỄN RA" />
+                            <FlowPane fx:id="sapDienRaContainer" hgap="25.0" vgap="25.0" />
+                        </VBox>
+                        </VBox>
                 </VBox>
 
                 <VBox maxHeight="-Infinity" pickOnBounds="false" StackPane.alignment="TOP_CENTER">

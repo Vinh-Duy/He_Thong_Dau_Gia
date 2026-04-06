@@ -1,5 +1,9 @@
 package com.daugia.controllers.bidder;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.Currency;
 import java.util.Locale;
 
@@ -33,30 +37,22 @@ public class ItemDetailController {
             if (!newValue.matches("\\d*")) {
                 txtBidInput.setText(newValue.replaceAll("[^\\d]", ""));
             }
-
             lblBidError.setVisible(false);
         });
-    
     }
 
     public void setAuctionId(String id) {
-        this.currentAuctionId = id;
-        System.out.println("Trang chi tiết đã nhận được ID: " + id);
+        // ĐÃ SỬA: Đổi B1 thành A001 để khớp với Database của bác
+        this.currentAuctionId = id.equals("B1") ? "A001" : id; 
+        System.out.println("Trang chi tiết đã nhận được ID thật là: " + currentAuctionId);
         
-        if ("B1".equals(id)) {
+        if ("A001".equals(currentAuctionId)) {
             lblItemName.setText("Siêu xe Lamborghini Aventador SVJ - Phiên bản giới hạn");
             this.currentPriceValue = 5000000000L;
             txtDescription.setText("Chiếc Lamborghini Aventador SVJ màu xanh cốm cực hiếm. \n" +
                                    "Năm sản xuất: 2022. Tình trạng: Mới 99%.");
-        } 
-        else if ("B2".equals(id)) {
-            lblItemName.setText("Biệt thự biển Đà Nẵng siêu xịn xò");
-            this.currentPriceValue = 25000000000L;
-            txtDescription.setText("Biệt thự lô góc view thẳng ra biển Mỹ Khê. \n" +
-                                   "Diện tích: 500m2. Sổ đỏ chính chủ, sang tên trong ngày.");
-        } 
-        else {
-            lblItemName.setText("Sản phẩm từ Server (ID: " + id + ")");
+        } else {
+            lblItemName.setText("Sản phẩm từ Server (ID: " + currentAuctionId + ")");
             this.currentPriceValue = 1500000L;
             txtDescription.setText("Đây là sản phẩm được lấy từ danh sách đang diễn ra trên Server.");
         }
@@ -69,10 +65,8 @@ public class ItemDetailController {
         try {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/views/common/HomeView.fxml"));
             javafx.scene.Parent homeRoot = loader.load();
-
             javafx.stage.Stage stage = (javafx.stage.Stage) btnBack.getScene().getWindow();
             stage.getScene().setRoot(homeRoot);
-            
         } catch (Exception e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể quay lại trang chủ!");
@@ -82,7 +76,6 @@ public class ItemDetailController {
     @FXML
     private void handlePlaceBid() {
         String bidText = txtBidInput.getText();
-        
         if (bidText.isEmpty()) {
             lblBidError.setText("Vui lòng nhập số tiền!");
             lblBidError.setVisible(true);
@@ -91,21 +84,47 @@ public class ItemDetailController {
 
         try {
             long placedBidValue = Long.parseLong(bidText);
-            
             if (placedBidValue <= currentPriceValue) {
                 lblBidError.setText("Giá đặt phải lớn hơn Giá hiện tại!");
                 lblBidError.setVisible(true);
                 return;
             }
 
-            System.out.println("Đang gửi lệnh đặt giá " + placedBidValue + " cho ID " + currentAuctionId);
+            System.out.println("BẮT ĐẦU GỬI MẠNG CHO ID: " + currentAuctionId);
             
-            showAlert(Alert.AlertType.INFORMATION, "Thành công", 
-                     "Bạn đã đặt giá " + formatVietnameseCurrency(placedBidValue) + " thành công!");
-            
-            currentPriceValue = placedBidValue;
-            lblCurrentBid.setText(formatVietnameseCurrency(currentPriceValue));
-            txtBidInput.clear();
+            // --- ĐOẠN NÀY LÀ TÔI VIẾT MỚI: KẾT NỐI SERVER THẬT ---
+            // 1. Tạo chuỗi JSON thủ công để gửi đi (giả sử user đang mượn tên là 'guest')
+            String payload = String.format("{\\\"auctionId\\\":\\\"%s\\\", \\\"amount\\\":%d, \\\"username\\\":\\\"guest\\\"}", 
+                                            currentAuctionId, placedBidValue);
+            String jsonRequest = String.format("{\"action\":\"PLACE_BID\",\"payload\":\"%s\"}", payload);
+
+            // 2. Mở kết nối Socket tới Server (localhost:8888)
+            try (Socket socket = new Socket("localhost", 8888);
+                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true); // true = auto flush
+                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+                
+                // Gửi lệnh sang Server (println BẮT BUỘC có để tạo dấu Enter \n)
+                out.println(jsonRequest);
+                System.out.println("Đã bắn tín hiệu: " + jsonRequest);
+
+                // Chờ Server phản hồi
+                String responseLine = in.readLine();
+                System.out.println("Server báo về: " + responseLine);
+
+                // Xử lý nếu Server báo thành công
+                if (responseLine != null && responseLine.contains("\"SUCCESS\"")) {
+                    showAlert(Alert.AlertType.INFORMATION, "Thành công", "Bạn đã đặt giá " + formatVietnameseCurrency(placedBidValue) + " thành công!");
+                    currentPriceValue = placedBidValue;
+                    lblCurrentBid.setText(formatVietnameseCurrency(currentPriceValue));
+                    txtBidInput.clear();
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Thất bại", "Lỗi từ server, giá chưa được cập nhật!");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Lỗi mạng", "Không kết nối được với Server! (Bật server chưa?)");
+            }
+            // ----------------------------------------------------
 
         } catch (NumberFormatException e) {
             lblBidError.setText("Số tiền không hợp lệ!");

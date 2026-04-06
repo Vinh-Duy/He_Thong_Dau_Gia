@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" 
+           fx:controller="com.daugia.controllers.components.HeaderController"
+           stylesheets="@../../css/glass-header.css, @../../css/galaxy-theme.css">
+    
+    <padding>
+        <Insets top="20.0" right="20.0" bottom="0.0" left="20.0" />
+    </padding>
+    
+    <VBox styleClass="glassy-header-background" minHeight="80.0"/>
+
+    <HBox fx:id="header" alignment="CENTER" spacing="30.0" styleClass="header" minHeight="80.0">
+        <padding>
+            <Insets left="40.0" right="40.0"/>
+        </padding>
+        
+        <Label styleClass="logo" text="ĐẤU GIÁ">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        
+        <HBox alignment="CENTER" spacing="15.0" HBox.hgrow="ALWAYS">
+            <Label fx:id="trangChuLabel" onMouseClicked="#showTrangChu" styleClass="menu-item, menu-item-active" text="Trang chủ" />
+            <Label fx:id="taiSanLabel" onMouseClicked="#showTaiSanMenu" styleClass="menu-item" text="Danh mục đấu giá" />
+            <Label fx:id="phienDauGiaLabel" onMouseClicked="#showPhienDauGiaMenu" styleClass="menu-item" text="Phòng đấu giá" />
+            <Label fx:id="gioiThieuLabel" onMouseClicked="#showGioiThieu" styleClass="menu-item" text="Giới thiệu" />
+            <Label fx:id="lienHeLabel" onMouseClicked="#showLienHe" styleClass="menu-item" text="Liên hệ" />
+        </HBox>
+        
+        <VBox alignment="CENTER_RIGHT" spacing="2">
+            <Label fx:id="timeLabel" text="00:00:00" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+            <Label fx:id="dateLabel" text="Ngày tháng năm" style="-fx-text-fill: white; -fx-font-size: 11px;"/>
+        </VBox>
+        
+        <HBox alignment="CENTER" spacing="15.0">
+            <Label text="Đăng ký" styleClass="btn-galaxy-transparent" onMouseClicked="#goToSignupClick"/>
+            <Label text="Đăng nhập" styleClass="btn-galaxy-filled" onMouseClicked="#goToLoginClick"/>
+        </HBox>
+    </HBox>
+</StackPane>

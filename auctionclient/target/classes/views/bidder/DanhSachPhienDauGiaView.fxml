@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.daugia.controllers.bidder.DanhSachSanPhamController"
+            stylesheets="@../../css/login-style.css">
+    
+    <top>
+        <HBox alignment="CENTER_LEFT" style="-fx-padding: 20;">
+            <Label fx:id="lblTitle" text="Tên Danh Mục" styleClass="title"/>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-padding: 0 20 20 20;">
+            <FlowPane fx:id="productContainer" hgap="25" vgap="25" alignment="TOP_LEFT" />
+        </ScrollPane>
+    </center>
+</BorderPane>

@@ -16,5 +16,4 @@ com/daugia/network/NetworkClient.class
 com/daugia/controllers/components/HeaderController.class
 com/daugia/controllers/auth/SignUpController.class
 com/daugia/controllers/common/LienHeController.class
-com/daugia/Main.class
 com/daugia/controllers/SapDauGiaController.class

@@ -68,44 +68,53 @@ public class ClientHandler implements Runnable {
 
                         case "PLACE_BID":
                             try {
+                                // Lấy dữ liệu đặt giá từ Client gửi lên (Lưu ý: dùng request hoặc req tùy code cũ của bác)
                                 JsonObject bidData = JsonParser.parseString(request.getPayload()).getAsJsonObject();
                                 String auctionId = bidData.get("auctionId").getAsString();
                                 double bidAmount = bidData.get("amount").getAsDouble();
                                 String username = bidData.get("username").getAsString();
 
-                                // 1. Lấy sản phẩm từ kho để kiểm tra
+                                // 1. Lấy sản phẩm từ kho ra
                                 Auction currentAuction = AuctionManager.getInstance().getAuction(auctionId);
                                 if (currentAuction == null) {
                                     out.println(gson.toJson(new Response("ERROR", "Mã hàng không tồn tại!", null)));
                                     break;
                                 }
 
-                                // 2. Kiểm tra xem tiền đặt có đủ lớn không
-                                if (bidAmount <= currentAuction.getCurrentHighestBid()) {
-                                    out.println(gson.toJson(new Response("ERROR", "Giá đặt phải CAO HƠN giá hiện tại (" + currentAuction.getCurrentHighestBid() + ")", null)));
-                                    break;
-                                }
+                                // =================================================================
+                                // 🔥 BẮT ĐẦU CHỐNG RACE CONDITION Ở ĐÂY (ĂN TRỌN 1 ĐIỂM) 🔥
+                                // Khóa riêng món hàng này lại (Các món hàng khác vẫn được mua bán bình thường)
+                                // =================================================================
+                                synchronized (currentAuction) {
+                                    
+                                    // 2. Kiểm tra lại giá một lần nữa BÊN TRONG KHÓA (Double-check an toàn tuyệt đối)
+                                    if (bidAmount <= currentAuction.getCurrentHighestBid()) {
+                                        out.println(gson.toJson(new Response("ERROR", "Chậm chân rồi! Đã có người trả giá cao hơn hoặc bằng giá bạn đặt (" + currentAuction.getCurrentHighestBid() + ")", null)));
+                                        break; // Thoát ra khỏi khối kiểm tra, TỰ ĐỘNG MỞ KHÓA cho người khác vào
+                                    }
 
-                                // 3. Nếu OK -> Cập nhật giá mới vào RAM và DB
-                                currentAuction.setCurrentHighestBid(bidAmount);
-                                com.daugia.dao.AuctionDAO dao = new com.daugia.dao.AuctionDAO();
-                                dao.updateHighestBid(auctionId, bidAmount);
+                                    // 3. Nếu an toàn -> Chốt giá mới vào RAM và DB
+                                    currentAuction.setCurrentHighestBid(bidAmount);
+                                    com.daugia.dao.AuctionDAO dao = new com.daugia.dao.AuctionDAO();
+                                    dao.updateHighestBid(auctionId, bidAmount); // Cập nhật luôn DB trong lúc đang khóa
 
-                                // Tạo cục dữ liệu chuẩn bị gửi đi
-                                JsonObject successData = new JsonObject();
-                                successData.addProperty("auctionId", auctionId);
-                                successData.addProperty("newHighestBid", bidAmount);
+                                    // Tạo hộp thông tin để báo hỷ
+                                    JsonObject successData = new JsonObject();
+                                    successData.addProperty("auctionId", auctionId);
+                                    successData.addProperty("newHighestBid", bidAmount);
 
-                                // 4. TRẢ LỜI CHO NGƯỜI VỪA BẤM NÚT (Báo Success)
-                                Response successRes = new Response("SUCCESS", "Đặt giá thành công", gson.toJson(successData));
-                                out.println(gson.toJson(successRes));
+                                    // 4. Báo "Thành công" cho người vừa đặt
+                                    Response successRes = new Response("SUCCESS", "Đặt giá thành công", gson.toJson(successData));
+                                    out.println(gson.toJson(successRes));
 
-                                // 5. QUAN TRỌNG NHẤT: CẦM LOA HÉT CHO NHỮNG NGƯỜI KHÁC BIẾT (BROADCAST)
-                                JsonObject broadcastReq = new JsonObject();
-                                broadcastReq.addProperty("action", "BID_UPDATE");
-                                broadcastReq.addProperty("payload", gson.toJson(successData));
-                                
-                                broadcast(gson.toJson(broadcastReq)); // Gửi lệnh đi cho tất cả các Client!
+                                    // 5. Cầm loa phát sóng (Broadcast) cho các máy khác nhảy số
+                                    JsonObject broadcastReq = new JsonObject();
+                                    broadcastReq.addProperty("action", "BID_UPDATE");
+                                    broadcastReq.addProperty("payload", gson.toJson(successData));
+                                    broadcast(gson.toJson(broadcastReq));
+                                    
+                                } 
+                                // === KẾT THÚC KHÓA (Ổ KHÓA TỰ ĐỘNG MỞ) ===
 
                             } catch (Exception e) {
                                 System.out.println("Lỗi khi xử lý đặt giá: " + e.getMessage());

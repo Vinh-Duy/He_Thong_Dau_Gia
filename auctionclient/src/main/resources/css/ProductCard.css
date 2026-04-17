@@ -1,0 +1,62 @@
+.product-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 10, 0, 0, 5);
+}
+
+.product-info-container {
+    -fx-padding: 15 20 20 20;
+    -fx-spacing: 12;
+}
+
+.product-name {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212121; /*Màu xám đen*/
+    -fx-wrap-text: true;
+    -fx-pref-height: 50px;
+    -fx-alignment: TOP_LEFT;
+}
+
+.price-container {
+    -fx-spacing: 5
+}
+.price-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #757575;
+}
+.price-value {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2E7D32;
+}
+
+.status-container {
+    -fx-spacing: 5;
+}
+.status-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #757575; /*Màu xám nhạt*/
+}
+.status-value {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #B71C1C; /*Màu đỏ sẫm*/
+    -fx-background-color: #FFEBEE; /*Màu nền hồng nhạt*/
+    -fx-background-radius: 15;
+    -fx-padding: 3 10 3 10;
+}
+
+.details-button {
+    -fx-background-color: #B71C1C; /*Đỏ sẫm*/
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 25;
+    -fx-padding: 10 30 10 30;
+    -fx-cursor: hand;
+    -fx-pref-width: 150px;
+}
+.details-button:hover {
+    -fx-background-color: #D32F2F;
+}

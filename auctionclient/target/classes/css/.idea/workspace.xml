@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a2d4170e-0512-4a51-a075-f2cdf143340c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../java/com/daugia/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/daugia/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/daugia/controllers/bidder/DanhSachSanPhamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/daugia/controllers/bidder/DanhSachSanPhamController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/daugia/controllers/components/HeaderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/daugia/controllers/components/HeaderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/daugia/network/NetworkClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/daugia/network/NetworkClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/daugia/network/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/daugia/network/Request.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/daugia/network/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/daugia/network/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/login-style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../views/components/Header.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../views/components/Header.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/controllers/DaKetThucController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/controllers/DangDienRaController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/controllers/SapDauGiaController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/controllers/auth/LoginPopupController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/controllers/auth/SignUpController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/controllers/bidder/DanhSachSanPhamController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/controllers/bidder/ItemDetailController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/controllers/bidder/PhienDauGiaController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/controllers/common/GioiThieuController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/controllers/common/LienHeController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/controllers/components/AuctionCardController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/controllers/components/HeaderController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/models/Auction.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/models/Item.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/models/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/network/NetworkClient.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/network/Request.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/com/daugia/network/Response.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/css/login-style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/images/UET-logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/images/VNU-logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/views/DaKetThucView.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/views/DangDienRaView.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/views/SapDauGiaView.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/views/TaiSanNhaNuocView.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/views/auth/LoginPopup.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/views/auth/SignupView.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/views/bidder/DanhSachPhienDauGiaView.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/views/bidder/DanhSachSanPhamView.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/views/bidder/ItemDetailView.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/views/common/GioiThieuView.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/views/common/LienHeView.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/views/components/AuctionCard.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/classes/views/components/Header.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../../auctionserver/src/main/java/com/daugia/network/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../../auctionserver/src/main/java/com/daugia/network/Request.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="3CTotaHmsxi5xxMKQSs606CiUdd" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/HeThongDauGia/auctionclient/src/main/resources/css"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a2d4170e-0512-4a51-a075-f2cdf143340c" name="Changes" comment="" />
+      <created>1776419136082</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1776419136082</updated>
+    </task>
+    <servers />
+  </component>
+</project>

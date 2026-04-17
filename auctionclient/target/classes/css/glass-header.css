@@ -14,7 +14,7 @@
 
 .menu-item {
     -fx-background-color: transparent;
-    -fx-background-radius: 25px;
+    -fx-background-radius: 24px;
     -fx-border-color: transparent;
     -fx-text-fill: white;
     -fx-font-size:15px;
@@ -26,6 +26,26 @@
 .menu-item:hover {
     -fx-background-color: #FFFFFF;
     -fx-text-fill: #8A1515;
+}
+
+.search-field {
+    -fx-background-color: white;
+    -fx-background-radius: 20 0 0 20;
+    -fx-padding: 5 15 5 15;
+    -fx-pref-height: 35;
+    -fx-border-color: transparent;
+}
+
+.btn-search {
+    -fx-background-color: #B71C1C;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-background-radius: 0 20 20 0;
+    -fx-cursor: hand;
+}
+.btn-search:hover {
+    -fx-background-color: #D32F2F;
 }
 
 .menu-item-active {

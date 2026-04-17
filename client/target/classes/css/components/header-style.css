@@ -1,0 +1,167 @@
+@import url(../base-style.css);
+
+#header {
+    background-color: -fx-secondary-color;
+    -fx-background-color: -fx-secondary-color;
+}
+
+.logo {
+    -fx-text-fill: -fx-logo-color;
+
+    font-size: 30px;
+    -fx-font-size: 30;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+.menu {
+    -fx-background-radius: 100px;
+    border-radius: 100px;
+    -fx-border-radius: 100px;
+}
+
+.menu .text,
+.menu .menu-button {
+    -fx-alignment: center;
+    min-height: 33px;
+    -fx-min-height: 33px;
+
+    max-height: 36px;
+    -fx-max-height: 36px;
+
+    font-family: Montserrat;
+    -fx-font-family: Montserrat;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    padding: 0 10px;
+    -fx-padding: 0 10px;
+
+    -fx-background-radius: 10px;
+
+    border-radius: 10px;
+    -fx-border-radius: 10px;
+
+    background-color: -fx-third-color;
+    -fx-background-color: -fx-third-color;
+
+    -fx-text-fill: -fx-text-color;
+
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+.menu-button .context-menu {
+    background-color: -fx-third-color;
+    -fx-background-color: -fx-third-color;
+
+    -fx-background-radius: 10px;
+
+    border-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+.menu-button .context-menu .menu-item {
+    min-height: 50px;
+    -fx-min-height: 50px;
+
+    max-height: 50px;
+    -fx-max-height: 50px;
+
+    padding: 10px 10px;
+    -fx-padding: 10 10;
+}
+
+.menu-button .menu-item:hover,
+.menu-button .menu-item:focused {
+    background-color: -fx-primary-color;
+    -fx-background-color: -fx-primary-color;
+
+    -fx-text-fill: -fx-third-color;
+
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+#timeLabel,
+#dateLabel {
+    -fx-text-fill: -fx-third-color;
+    font-size: 20px;
+}
+
+.signup-btn {
+    -fx-alignment: center;
+    min-width: 120;
+    -fx-min-width: 120;
+
+    background-color: -fx-third-color;
+    -fx-background-color: -fx-third-color;
+
+    border-color: -fx-primary-color;
+    -fx-border-color: -fx-primary-color;
+
+    border-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-text-fill: -fx-primary-color;
+
+    font-family: Montserrat;
+    -fx-font-family: Montserrat;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    padding: 8px 20px;
+    -fx-padding: 8 20;
+
+    cursor: hand;
+    -fx-cursor: hand;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.signup-btn:hover {
+    background-color: -fx-primary-color;
+    -fx-background-color: -fx-primary-color;
+
+    -fx-text-fill: -fx-third-color;
+}
+
+.signin-btn {
+    -fx-alignment: center;
+    min-width: 100;
+    -fx-min-width: 100;
+
+    background-color: -fx-primary-color;
+    -fx-background-color: -fx-primary-color;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+
+    -fx-background-radius: 10px;
+    border-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-text-fill: white;
+
+    font-family: Montserrat;
+    -fx-font-family: Montserrat;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    padding: 8px 20px;
+    -fx-padding: 8 20;
+
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+.signin-btn:hover {
+    background-color: -fx-third-color;
+    -fx-background-color: -fx-third-color;
+
+    -fx-text-fill: -fx-primary-color;
+}

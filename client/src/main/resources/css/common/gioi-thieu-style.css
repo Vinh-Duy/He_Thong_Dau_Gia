@@ -1,0 +1,86 @@
+@import url(../base-style.css);
+
+ScrollPane {
+    background: transparent;
+    -fx-background: transparent;
+
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+ScrollPane > .viewport {
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+VBox {
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+BorderPane {
+    background-image: url(../../images/gauze-01.jpg);
+    -fx-background-image: url(../../images/gauze-01.jpg);
+
+    background-size: cover;
+    -fx-background-size: cover;
+
+    background-repeat: no-repeat;
+    -fx-background-repeat: no-repeat;
+
+    background-position: center;
+    -fx-background-position: center;
+}
+
+#content {
+    min-height: 546px;
+    -fx-min-height: 546;
+
+    padding: 50px 100px;
+    -fx-padding: 50 100;
+
+    -fx-spacing: 30;
+}
+
+#content .card {
+    min-height: 50px;
+    -fx-min-height: 50;
+
+    background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+
+    -fx-background-radius: 5;
+
+    border-radius: 5px;
+    -fx-border-radius: 5px;
+
+    padding: 30px 30px;
+    -fx-padding: 30 30;
+}
+
+#content .title-card {
+    max-width: 600px;
+    -fx-max-width: 600;
+}
+
+.card > * {
+    -fx-text-fill: -fx-third-color;
+
+    -fx-wrap-text: true;
+
+    font-size: 20px;
+    -fx-font-size: 20;
+}
+
+.card .title {
+    font-size: 40px;
+    -fx-font-size: 40;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+.content-card .label {
+    padding: 10px 30px;
+    -fx-padding: 10 30;
+}

@@ -1,0 +1,27 @@
+{
+    "java.project.sourcePaths": ["."],
+    "java.project.referencedLibraries": [],
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "terminal.integrated.profiles.windows": {
+        "Git Bash": {
+            "path": "C:\\Program Files\\Git\\bin\\bash.exe",
+            "args": [
+                "--login",
+                "-i",
+                "-c",
+                "chcp.com 65001 > /dev/null 2>&1 && exec bash"
+            ],
+            "env": {
+                "LANG": "C.UTF-8",
+                "LC_ALL": "C.UTF-8",
+                "PYTHONIOENCODING": "UTF-8",
+                "JAVA_TOOL_OPTIONS": "-Dfile.encoding=UTF-8"
+            }
+        }
+    },
+    // Buộc terminal chạy chcp 65001 khi mở (rất quan trọng với Git Bash)
+    "terminal.integrated.shellIntegration.enabled": false,
+
+    // Cấu hình Java dùng UTF-8 khi chạy / debug
+    "java.debug.settings.vmArgs": "-Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.err.encoding=UTF-8"
+}

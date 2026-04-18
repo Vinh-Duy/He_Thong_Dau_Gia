@@ -6,12 +6,9 @@ import java.time.format.DateTimeFormatter;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -58,10 +55,9 @@ public class HeaderController {
     }
 
     @FXML
-    private void goTo(Event event, String fxmlPath) {
+    private void goTo(String fxmlPath) {
         try {
-            Node source = (Node) event.getSource();
-            Stage stage = (Stage) source.getScene().getWindow();
+            Stage stage = (Stage) header.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             stage.getScene().setRoot(root);
@@ -73,12 +69,12 @@ public class HeaderController {
 
     @FXML
     private void showTrangChu(MouseEvent event) {
-        goTo(event, "/views/common/home-view.fxml");
+        goTo("/views/common/home-view.fxml");
     }
 
     @FXML
     private void showDanhMucBatDongSan(ActionEvent event) {
-        // todo: chuyển tới trang bất động sản
+        goTo("/views/bidder/bat-dong-san-view.fxml");
         System.out.println("Đang show danh mục Bất động sản");
     }
 
@@ -126,64 +122,21 @@ public class HeaderController {
 
     @FXML
     private void showGioiThieu(MouseEvent event) {
-        // try {
-        // Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        // FXMLLoader loader = new
-        // FXMLLoader(getClass().getResource("/views/common/gioi-thieu-view.fxml"));
-        // Scene scene = new Scene(loader.load(), 1280, 640);
-        // stage.setScene(scene);
-        // stage.setMaximized(true);
-        // } catch (Exception e) {
-        // System.out.println("Lỗi khi show giới thiệu");
-        // e.printStackTrace();
-        // }
-        goTo(event, "/views/common/gioi-thieu-view.fxml");
+        goTo("/views/common/gioi-thieu-view.fxml");
     }
 
     @FXML
     private void showLienHe(MouseEvent event) {
-        try {
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/common/lien-he-view.fxml"));
-            Scene scene = new Scene(loader.load(), 1280, 640);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-        } catch (Exception e) {
-            System.out.println("Lỗi khi show liên hệ");
-            e.printStackTrace();
-        }
-        goTo(event, "/views/common/lien-he-view.fxml");
+        goTo("/views/common/lien-he-view.fxml");
     }
 
     @FXML
     private void goToSignup(MouseEvent event) {
-        // try {
-        // Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        // FXMLLoader loader = new
-        // FXMLLoader(getClass().getResource("/views/auth/SignupView.fxml"));
-        // Parent root = loader.load();
-
-        // stage.getScene().setRoot(root);
-        // } catch (Exception e) {
-        // System.err.println("Lỗi khi mở Đăng ký:");
-        // e.printStackTrace();
-        // }
-        goTo(event, "/views/auth/signup-view.fxml");
+        goTo("/views/auth/signup-view.fxml");
     }
 
     @FXML
     private void goToSignin(MouseEvent event) {
-        // try {
-        // FXMLLoader loader = new
-        // FXMLLoader(getClass().getResource("/views/auth/LoginPopup.fxml"));
-        // Parent root = loader.load();
-        // Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-        // stage.getScene().setRoot(root);
-        // } catch (Exception e) {
-        // System.err.println("Lỗi khi mở Đăng nhập:");
-        // e.printStackTrace();
-        // }
-        goTo(event, "/views/auth/signin-view.fxml");
+        goTo("/views/auth/signin-view.fxml");
     }
 }

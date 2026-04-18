@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefWidth="1200" stylesheets="@../../css/common/gioi-thieu-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.common.GioiThieuController">
+    <top>
+        <fx:include source="../components/header.fxml" />
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true">
+            <content>
+                <VBox alignment="CENTER_LEFT" fx:id="content">
+
+                    <VBox alignment="CENTER_LEFT" styleClass="card, title-card">
+                        <Label styleClass="title" text="BidNova" />
+                        <Label styleClass="title" text="Nền tảng đấu giá trực tuyến uy tín tại Việt Nam" />
+                    </VBox>
+
+                    <VBox alignment="CENTER_LEFT" styleClass="card, content-card">
+                        <Label text="Thời đại công nghệ số đã mở ra xu thế phát triển tất yếu của dịch vụ &quot;Bán đấu giá&quot;, BidNova đã được hình thành. Với đội ngũ phát triển trẻ trung, năng động, dày dặn kinh nghiệm, BidNova được xây dựng dựa trên tinh thần &quot;Đem hiệu quả kinh tế làm mục tiêu!&quot;" />
+                    </VBox>
+                        
+                    <VBox alignment="CENTER_LEFT" styleClass="card, content-card">
+                        <Label text="Chúng tôi tin rằng mỗi món đồ đều có một câu chuyện riêng, một giá trị riêng chờ khám phá. BidNova hướng tới sứ mệnh xóa bỏ mọi rào cản giữa người bán và người mua, dựa trên vai trò là cầu nối tin cậy ấy, BidNova mang đến một sàn đấu giá trực tuyến minh bạch, công bằng và đầy kịch tính." />
+                    </VBox>
+                        
+                    <VBox alignment="CENTER_LEFT" styleClass="card, content-card">
+                        <Label text="Hệ thống quan lý thông minh cùng độ ngũ CSKH luôn hỗ trợ tận tâm giúp mọi giao dịch trở nên dễ dàng hơn bao giờ hết. Cùng với đó là hệ thống đấu gia theo thời gian thực và quy trình kiểm duyệt nghiêm ngặt, chúng tôi cam kết đảm bảo quyển lợi tối đa cho người dùng. Tai đây, bạn không chỉ mua sắm, mà bạn còn đang tham gia vào một cuộc săn tìm những giá trị độc bản" />
+                    </VBox>
+                        
+                    <VBox alignment="CENTER_LEFT" styleClass="card, content-card">
+                        <Label text="Với tầm nhìn &quot;Trở thành sàn đấu giá trực tuyến số 1 tại Việt Nam&quot;, BidNova tự hào là một trong những đơn vị tiên phong đi đầu về chuyển đổi số trong lĩnh vực đấu giá, tạo ra trải nghiệm đấu giá thuận tiện, đơn giản, thành công và đầy cảm hứng." />
+                    </VBox>
+                        
+                    <VBox alignment="CENTER_LEFT" styleClass="card, content-card">
+                        <Label text="Khám phá những sản phẩm hiếm có, tham gia vào những phiên đấu giá sôi động và sở hữu những món đồ yêu thích với mức giá do chính bạn quyết định. Sự hài lòng và niềm tin của cộng đồng là kim chỉ nam cho mọi hoạt động của chúng tôi." />
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

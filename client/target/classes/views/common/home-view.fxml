@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefWidth="1200" stylesheets="@../../css/common/home-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.common.HomeController">
+    <top>
+        <fx:include source="../components/header.fxml" />
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true">
+            <content>
+                <VBox alignment="CENTER">
+                    <VBox fx:id="content" alignment="CENTER_LEFT">
+                        <Label styleClass="text, text1" text="Chào mừng bạn đến với" />
+                        <Label styleClass="text, text2" text="HỆ THỐNG ĐẤU GIÁ TRỰC TUYẾN BIDNOVA" />
+                        <Label styleClass="text, text3" text="Khám phá và tham gia đấu giá các tài sản quý giá một cách dễ dàng, an toàn và minh bạch. Với phương châm hoạt động: “Đem lại hiệu quả kinh tế vượt trội”, chúng tôi hy vọng sẽ làm hài lòng Quý Khách và mong muốn được đồng hành cùng Quý Khách hàng trong suốt quá trình hoạt động và phát triển." wrapText="true" />
+                    </VBox>
+
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>
+
+<!-- 
+<ScrollPane fitToWidth="true" stylesheets="@../../css/common/home-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.common.HomeController">
+    <content>
+        <StackPane alignment="TOP_CENTER">
+            <children>
+                <VBox alignment="TOP_CENTER">
+                    <VBox fx:id="content" alignment="CENTER_LEFT">
+                        <Label styleClass="text, text1" text="Chào mừng bạn đến với" />
+                        <Label styleClass="text, text2" text="HỆ THỐNG ĐẤU GIÁ TRỰC TUYẾN BIDNOVA" />
+                        <Label styleClass="text, text3" text="Khám phá và tham gia đấu giá các tài sản quý giá một cách dễ dàng, an toàn và minh bạch. Với phương châm hoạt động: “Đem lại hiệu quả kinh tế vượt trội”, chúng tôi hy vọng sẽ làm hài lòng Quý Khách và mong muốn được đồng hành cùng Quý Khách hàng trong suốt quá trình hoạt động và phát triển." wrapText="true" />
+                    </VBox>
+
+                    <VBox spacing="30.0">
+                        <padding>
+                            <Insets bottom="50" left="60" right="60" top="40" />
+                        </padding>
+                        <VBox alignment="CENTER">
+                            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #4a148c; -fx-padding: 0 0 20 0;" text="PHIÊN ĐẤU GIÁ NỔI BẬT" />
+                            <HBox fx:id="bannerContainer" alignment="CENTER" spacing="20.0" />
+                        </VBox>
+                        <VBox spacing="15.0">
+                            <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #9c27b0;" text="ĐANG DIỄN RA" />
+                            <FlowPane fx:id="dangDienRaContainer" hgap="25.0" vgap="25.0" />
+                        </VBox>
+                    </VBox>
+                </VBox>
+
+                <VBox fx:id="header" pickOnBounds="false" StackPane.alignment="TOP_CENTER">
+                    <children>
+                        <fx:include source="../components/header.fxml" />
+                    </children>
+                </VBox>
+            </children>
+        </StackPane>
+    </content>
+</ScrollPane> -->

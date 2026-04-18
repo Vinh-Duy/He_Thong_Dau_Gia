@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "name": "Biệt thự sân vườn",
+        "category": "BAT_DONG_SAN",
+        "startingPrice": 50000000000,
+        "imagePath": "/images/house.png"
+    },
+    {
+        "id": 2,
+        "name": "Xe Mercedes-Benz G63",
+        "category": "PHUONG_TIEN",
+        "startingPrice": 12000000000,
+        "imagePath": "/images/car.png"
+    }
+]

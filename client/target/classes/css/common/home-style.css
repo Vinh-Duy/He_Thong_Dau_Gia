@@ -1,0 +1,168 @@
+@import url(../base-style.css);
+
+ScrollPane {
+    background: transparent;
+    -fx-background: transparent;
+
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+ScrollPane > .viewport {
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+VBox {
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+BorderPane {
+    background-image: url(../../images/gauze-01.jpg);
+    -fx-background-image: url(../../images/gauze-01.jpg);
+
+    background-size: cover;
+    -fx-background-size: cover;
+
+    background-repeat: no-repeat;
+    -fx-background-repeat: no-repeat;
+
+    background-position: center;
+    -fx-background-position: center;
+}
+
+#content {
+    height: 546px;
+    -fx-pref-height: 546px;
+
+    padding: 0 100px;
+    -fx-padding: 0 100px;
+}
+
+#content .text {
+    -fx-text-fill: -fx-third-color;
+
+    padding: 10px 0;
+    -fx-padding: 10 0;
+}
+
+#content .text1 {
+    font-size: 30px;
+    -fx-font-size: 30px;
+
+    font-weight: 400;
+    -fx-font-weight: 400;
+}
+
+#content .text2 {
+    width: 500px;
+    -fx-pref-width: 500px;
+
+    -fx-wrap-text: true;
+
+    font-size: 40px;
+    -fx-font-size: 40px;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+#content .text3 {
+    font-size: 20px;
+    -fx-font-size: 20px;
+
+    font-weight: 400;
+    -fx-font-weight: 400;
+}
+
+/* .main-container {
+    background-color: #f4f6f8;
+    -fx-background-color: #f4f6f8;
+}
+
+.section-title {
+    font-size: 24px;
+    -fx-font-size: 24px;
+    font-weight: bold;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4a148c;
+    padding: 10 0 20 0;
+    -fx-padding: 10 0 20 0;
+}
+
+.auction-card {
+    background-color: #fff;
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 4);
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+.auction-card:hover {
+    -fx-effect: dropshadow(
+        three-pass-box,
+        rgba(156, 39, 176, 0.4),
+        15,
+        0,
+        0,
+        6
+    );
+}
+
+.card-title {
+    font-size: 16px;
+    -fx-font-size: 16px;
+    font-weight: bold;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.card-price {
+    font-size: 15px;
+    -fx-font-size: 15px;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+    -fx-text-fill: #9c27b0;
+}
+
+.card-time {
+    font-size: 13px;
+    -fx-font-size: 13px;
+    -fx-text-fill: #757575;
+}
+
+.btn-action {
+    background-color: #fff;
+    -fx-background-color: white;
+
+    border-color: #9c27b0;
+    -fx-border-color: #9c27b0;
+
+    border-radius: 5px;
+    -fx-border-radius: 5px;
+
+    border-width: 1.5px;
+    -fx-border-width: 1.5px;
+    -fx-text-fill: #9c27b0;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    padding: 8px 15px;
+    -fx-padding: 8 15;
+
+    cursor: hand;
+    -fx-cursor: hand;
+
+    margin-top: 10px;
+    -fx-margin-top: 10px;
+}
+
+.btn-action:hover {
+    background-color: #9c27b0;
+    -fx-background-color: #9c27b0;
+    -fx-text-fill: white;
+} */

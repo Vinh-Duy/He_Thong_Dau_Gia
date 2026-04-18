@@ -1,0 +1,7 @@
+com\bidnova\Main.class
+com\bidnova\controllers\common\LienHeController.class
+com\bidnova\controllers\common\GioiThieuController.class
+com\bidnova\controllers\components\HeaderController.class
+com\bidnova\controllers\common\HomeController.class
+com\bidnova\controllers\auth\SigninController.class
+com\bidnova\controllers\auth\SignupController.class

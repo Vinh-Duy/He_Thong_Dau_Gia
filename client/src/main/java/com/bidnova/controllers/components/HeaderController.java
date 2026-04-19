@@ -3,6 +3,9 @@ package com.bidnova.controllers.components;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.bidnova.controllers.bidder.CategoryController;
+import com.bidnova.utils.ProductLoader;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -54,19 +57,25 @@ public class HeaderController {
         clock.play();
     }
 
+    // hàm này trả về một FXMLLoader để các hàm show danh mục có thể truy cập vào
+    // controller thông qua FXMLLoader này
     @FXML
-    private void goTo(String fxmlPath) {
+    private FXMLLoader goTo(String fxmlPath) {
         try {
             Stage stage = (Stage) header.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             stage.getScene().setRoot(root);
+            return loader;
         } catch (Exception e) {
             System.out.println("Lỗi khi tải trang");
             e.printStackTrace();
+            return null;
         }
     }
 
+    // Do các danh mục mới cần product-card nên mới cần controller để load các card,
+    // còn các trang tĩnh thì không cần, chỉ cần chuyển trang là xong
     @FXML
     private void showTrangChu(MouseEvent event) {
         goTo("/views/common/home-view.fxml");
@@ -74,31 +83,46 @@ public class HeaderController {
 
     @FXML
     private void showDanhMucBatDongSan(ActionEvent event) {
-        goTo("/views/bidder/bat-dong-san-view.fxml");
+        FXMLLoader loader = goTo("/views/bidder/category-view.fxml");
+
+        CategoryController categoryController = loader.getController();
+        categoryController.resetCategoryData("BẤT ĐỘNG SẢN", ProductLoader.loadProducts());
         System.out.println("Đang show danh mục Bất động sản");
     }
 
     @FXML
     private void showDanhMucTaiSanNhaNuoc(ActionEvent event) {
-        // todo: chuyển tới trang tài sản nhà nước
+        FXMLLoader loader = goTo("/views/bidder/category-view.fxml");
+
+        CategoryController categoryController = loader.getController();
+        categoryController.resetCategoryData("TÀI SẢN NHÀ NƯỚC", ProductLoader.loadProducts());
         System.out.println("Đang show danh mục Tài sản nhà nước");
     }
 
     @FXML
     private void showDanhMucPhuongTienXeCo(ActionEvent event) {
-        // todo: chuyển tới trang phương tiện xe cộ
+        FXMLLoader loader = goTo("/views/bidder/category-view.fxml");
+
+        CategoryController categoryController = loader.getController();
+        categoryController.resetCategoryData("PHƯƠNG TIỆN - XE CỘ", ProductLoader.loadProducts());
         System.out.println("Đang show danh mục Phương tiện xe cộ");
     }
 
     @FXML
     private void showDanhMucSuuTamNgheThuat(ActionEvent event) {
-        // todo: chuyển tới trang sưu tầm nghệ thuật
+        FXMLLoader loader = goTo("/views/bidder/category-view.fxml");
+
+        CategoryController categoryController = loader.getController();
+        categoryController.resetCategoryData("SƯU TẦM - NGHỆ THUẬT", ProductLoader.loadProducts());
         System.out.println("Đang show danh mục Sưu tầm nghệ thuật");
     }
 
     @FXML
     private void showDanhMucTaiSanKhac(ActionEvent event) {
-        // todo: chuyển tới trang tài sản khác
+        FXMLLoader loader = goTo("/views/bidder/category-view.fxml");
+
+        CategoryController categoryController = loader.getController();
+        categoryController.resetCategoryData("TÀI SẢN KHÁC", ProductLoader.loadProducts());
         System.out.println("Đang show danh mục Tài sản khác");
     }
 

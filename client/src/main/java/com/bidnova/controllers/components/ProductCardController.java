@@ -4,13 +4,13 @@ import com.bidnova.models.Product;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+// import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 
 // nhận vào một đối tượng kiểu Product và lấy các thông số của nó để set cho this: ảnh, tên, giá tiền
 public class ProductCardController {
     @FXML
-    private ImageView imgProduct;
+    private Pane imgProduct;
 
     @FXML
     private Label lblName;
@@ -22,7 +22,8 @@ public class ProductCardController {
         lblName.setText(product.getName());
         lblPrice.setText("Giá khởi điểm: " + String.format("%,d VNĐ", product.getStartingPrice()));
 
-        Image image = new Image(getClass().getResourceAsStream(product.getImagePath()));
-        imgProduct.setImage(image);
+        // Image image = new
+        // Image(getClass().getResourceAsStream(product.getImagePath()));
+        imgProduct.setStyle("-fx-background-image: url('" + product.getImagePath() + "');");
     }
 }

@@ -1,0 +1,28 @@
+@import url(../base-style.css);
+
+FlowPane {
+    -fx-hgap: 20;
+
+    -fx-vgap: 20;
+}
+
+#content {
+    min-height: 546px;
+    -fx-min-height: 546;
+
+    padding: 50px 100px;
+    -fx-padding: 50 100;
+}
+
+#lblCategoryTitle {
+    font-size: 40px;
+    -fx-font-size: 40;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: -fx-text-color;
+
+    padding: 0 0 50px 0;
+    -fx-padding: 0 0 50 0;
+}

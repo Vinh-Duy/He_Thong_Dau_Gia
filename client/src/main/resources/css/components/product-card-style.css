@@ -44,8 +44,8 @@
     background-repeat: no-repeat;
     -fx-background-repeat: no-repeat;
 
-    background-position: center center;
-    -fx-background-position: center center;
+    background-position: center;
+    -fx-background-position: center;
 
     -fx-background-radius: 5;
 

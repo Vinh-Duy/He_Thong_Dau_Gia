@@ -11,7 +11,7 @@
             <children>
                 <Label fx:id="lblName" alignment="TOP_LEFT" styleClass="title" />
                 <Label fx:id="lblPrice" styleClass="startingPrice" />
-                <Label fx:id="btn" text="Chi tiết" />
+                <Label fx:id="btn" onMouseClicked="#goToAuctionDetail" text="Chi tiết" />
             </children>
         </VBox>
     </children>

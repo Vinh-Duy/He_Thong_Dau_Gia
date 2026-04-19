@@ -87,7 +87,6 @@ public class HeaderController {
 
         CategoryController categoryController = loader.getController();
         categoryController.resetCategoryData("BẤT ĐỘNG SẢN", ProductLoader.loadProducts());
-        System.out.println("Đang show danh mục Bất động sản");
     }
 
     @FXML
@@ -96,7 +95,6 @@ public class HeaderController {
 
         CategoryController categoryController = loader.getController();
         categoryController.resetCategoryData("TÀI SẢN NHÀ NƯỚC", ProductLoader.loadProducts());
-        System.out.println("Đang show danh mục Tài sản nhà nước");
     }
 
     @FXML
@@ -105,7 +103,6 @@ public class HeaderController {
 
         CategoryController categoryController = loader.getController();
         categoryController.resetCategoryData("PHƯƠNG TIỆN - XE CỘ", ProductLoader.loadProducts());
-        System.out.println("Đang show danh mục Phương tiện xe cộ");
     }
 
     @FXML
@@ -114,7 +111,6 @@ public class HeaderController {
 
         CategoryController categoryController = loader.getController();
         categoryController.resetCategoryData("SƯU TẦM - NGHỆ THUẬT", ProductLoader.loadProducts());
-        System.out.println("Đang show danh mục Sưu tầm nghệ thuật");
     }
 
     @FXML
@@ -123,7 +119,6 @@ public class HeaderController {
 
         CategoryController categoryController = loader.getController();
         categoryController.resetCategoryData("TÀI SẢN KHÁC", ProductLoader.loadProducts());
-        System.out.println("Đang show danh mục Tài sản khác");
     }
 
     @FXML

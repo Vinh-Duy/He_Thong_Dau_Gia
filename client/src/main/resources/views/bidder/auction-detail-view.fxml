@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.FlowPane?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<BorderPane stylesheets="@../../css/bidder/auction-detail-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.bidder.AuctionDetailController">
+    <top>
+        <fx:include source="../components/header.fxml" />
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true">
+            <content>
+                <VBox fx:id="content">
+                    <Label fx:id="lblProductName" text="Tên sản phẩm đấu giá" />
+
+                    <HBox>
+                        <Pane fx:id="imgProduct" />
+
+                        <VBox fx:id="info">
+                            <VBox fx:id="logs">
+                                <Label text="LOGS" />
+                                <ListView fx:id="listHistory" />
+                            </VBox>
+
+                            <VBox fx:id="timeContainer">
+                                <Label text="THỜI GIAN CÒN LẠI" textFill="WHITE" />
+                                <Label fx:id="lblTimer" text="02:00" />
+                                
+                                <Separator />
+                                
+                                <Label text="Giá hiện tại: " textFill="WHITE" />
+                                <Button fx:id="btn" mnemonicParsing="false" text="ĐẤU GIÁ NGAY" />
+                            </VBox>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

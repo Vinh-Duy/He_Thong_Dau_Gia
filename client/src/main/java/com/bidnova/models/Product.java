@@ -1,5 +1,7 @@
 package com.bidnova.models;
 
+import java.time.LocalDateTime;
+
 public class Product {
     // các thuộc tính phải đúng tên với thuộc tính trong products.json
     private int id;
@@ -7,6 +9,8 @@ public class Product {
     private String category;
     private long startingPrice; // Dùng long vì giá trị tài sản lớn
     private String imagePath;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     // default constructor
     public Product() {
@@ -54,4 +58,19 @@ public class Product {
         this.imagePath = imagePath;
     }
 
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
 }

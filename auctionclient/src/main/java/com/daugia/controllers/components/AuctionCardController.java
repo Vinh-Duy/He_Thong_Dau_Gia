@@ -12,12 +12,14 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;    
 import java.io.IOException;
 
+import org.w3c.dom.Node;
+
 public class AuctionCardController {
     @FXML private ImageView imgProduct;
     @FXML private Label titleLabel;
     @FXML private Label priceLabel;
     @FXML private Label timeLabel;
-    @FXML private Button actionBtn;
+    @FXML private Button btnDetail;
 
     private String currentItemId;
 
@@ -40,30 +42,38 @@ public class AuctionCardController {
     }
 
     @FXML
-    private void initialize() {
-        if (actionBtn != null) {
-            actionBtn.setOnAction(event -> handleBidClick());
-        }
-    }
-
-    private void handleBidClick() {
-        try {
+    private void handleDetail() {
+        System.out.println("\n--- BẮT ĐẦU CHUYỂN CẢNH ---");
+        System.out.println("1. Click vào thẻ có ID: " + this.currentItemId);
         
-            String fxmlPath = "/views/bidder/ItemDetailView.fxml";
+        try {
+            System.out.println("2. Đang nạp file FXML...");
+            java.net.URL url = getClass().getResource("/views/bidder/ItemDetailView.fxml");
             
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent detailRoot = loader.load();
+            // Chốt chặn 1: Kiểm tra xem có tìm thấy file không
+            if (url == null) {
+                System.out.println("❌ LỖI NGAY BƯỚC 2: Sai đường dẫn! Không tìm thấy file ItemDetailView.fxml");
+                return; 
+            }
+
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(url);
+            javafx.scene.Parent homeRoot = loader.load();
+            System.out.println("3. Nạp FXML thành công!");
 
             ItemDetailController detailController = loader.getController();
-            detailController.setAuctionId(currentItemId);
+            
+            System.out.println("4. Đang gọi hàm setAuctionId bên trang chi tiết...");
+            // Chốt chặn 2: Rất hay bị NullPointerException ở dòng này
+            detailController.setAuctionId(this.currentItemId); 
+            System.out.println("5. Truyền ID thành công!");
 
-            Stage stage = (Stage) actionBtn.getScene().getWindow();
+            javafx.stage.Stage stage = (javafx.stage.Stage) btnDetail.getScene().getWindow();
+            stage.getScene().setRoot(homeRoot);
+            System.out.println("✅ 6. CHUYỂN CẢNH THÀNH CÔNG!");
 
-            stage.getScene().setRoot(detailRoot);
-
-        } catch (IOException e) {
+        } catch (Exception e) { // BẮT BUỘC DÙNG Exception thay vì IOException
+            System.out.println("❌ CODE BỊ CHẾT NGANG Ở ĐÂY:");
             e.printStackTrace();
-            System.out.println("Lỗi: Không thể tìm thấy hoặc tải file ItemDetailView.fxml");
         }
     }
     

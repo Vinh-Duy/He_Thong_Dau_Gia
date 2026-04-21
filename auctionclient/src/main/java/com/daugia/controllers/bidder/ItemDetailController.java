@@ -1,7 +1,10 @@
 package com.daugia.controllers.bidder;
 
+import java.io.IOException;
 import java.util.Currency;
 import java.util.Locale;
+
+import org.w3c.dom.Node;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;

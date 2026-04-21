@@ -38,7 +38,7 @@
                   <Label fx:id="timeLabel" styleClass="status-value" text="Sắp diễn ra" />
                </children>
             </HBox>
-            <Button fx:id="actionBtn" mnemonicParsing="false" styleClass="details-button" text="Chi tiết" />
+            <Button fx:id="btnDetail" mnemonicParsing="false" onAction="#handleDetail" styleClass="details-button" text="Chi tiết" />
          </children>
          <padding>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

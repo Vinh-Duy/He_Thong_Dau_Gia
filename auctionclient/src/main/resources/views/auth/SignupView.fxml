@@ -39,14 +39,14 @@
                             <VBox.margin><Insets bottom="10.0" /></VBox.margin>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="15">
-                            <TextField minWidth="180.0" promptText="Họ" styleClass="input" />
-                            <TextField minWidth="180.0" promptText="Tên đệm" styleClass="input" />
-                            <TextField minWidth="180.0" promptText="Tên" styleClass="input" />
+                            <TextField fx:id="txtFirstName" promptText= "Họ" minWidth="180.0" styleClass="input" />
+                            <TextField fx:id="txtMiddleName" promptText="Tên đệm" minWidth="180.0" styleClass="input" />
+                            <TextField fx:id="txtLastName" promptText="Tên" minWidth="180.0" styleClass="input" />
                         </HBox>
-                        <TextField prefWidth="620.0" promptText="Tên đăng nhập" styleClass="input" />
+                        <TextField fx:id="txtUsername" prefWidth="620.0" promptText="Tên đăng nhập" styleClass="input" />
                         <VBox spacing="5">
                             <StackPane>
-                                <PasswordField fx:id="passwordField" promptText="Mật khẩu" styleClass="input" />
+                                <PasswordField fx:id="txtPassword" promptText="Mật khẩu" styleClass="input" />
                                 <TextField fx:id="passwordTextField" managed="false" styleClass="input" visible="false" />
                                 <Button onAction="#togglePassword" styleClass="eye-btn" text="👁" StackPane.alignment="CENTER_RIGHT" />
                             </StackPane>
@@ -58,23 +58,14 @@
                                 <Label fx:id="ruleSpecial" text="✖ Chứa ký tự đặc biệt" />
                             </HBox>
                         </VBox>
-                        <PasswordField promptText="Nhập lại mật khẩu" styleClass="input" />
+                        <PasswordField fx:id="txtConfirmPassword" promptText="Nhập lại mật khẩu" styleClass="input" />
                         <HBox spacing="15">
-                            <TextField prefWidth="200" promptText="Email" styleClass="input" />
-                            <TextField prefWidth="200" promptText="Số điện thoại" styleClass="input" />
+                            <TextField fx:id="txtEmail" prefWidth="200" promptText="Email" styleClass="input" />
+                            <TextField fx:id="txtPhone" prefWidth="200" promptText="Số điện thoại" styleClass="input" />
                             <ComboBox fx:id="genderBox" prefWidth="200" promptText="Chọn giới tính" styleClass="input" />
                         </HBox>
-                        <HBox spacing="15">
-                            <ComboBox fx:id="dayBox" prefWidth="100" promptText="Ngày" />
-                            <ComboBox fx:id="monthBox" prefWidth="120" promptText="Tháng" />
-                            <ComboBox fx:id="yearBox" prefWidth="120" promptText="Năm" />
-                        </HBox>
-                        <HBox spacing="15">
-                            <TextField prefWidth="200" promptText="Tỉnh/Thành phố" styleClass="input" />
-                            <TextField prefWidth="200" promptText="Quận/Huyện" styleClass="input" />
-                            <TextField prefWidth="200" promptText="Phường/Xã" styleClass="input" />
-                        </HBox>
-                        <Button prefHeight="48.0" prefWidth="620.0" styleClass="btn-primary" text="ĐĂNG KÝ TÀI KHOẢN">
+    
+                        <Button onAction="#xuLyDangKy" prefHeight="48.0" prefWidth="620.0" styleClass="btn-primary" text="ĐĂNG KÝ TÀI KHOẢN">
                             <font><Font size="18.0" /></font>
                         </Button>
                     </VBox>

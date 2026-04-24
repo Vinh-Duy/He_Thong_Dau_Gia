@@ -7,6 +7,36 @@ public class Auction {
     private double currentHighestBid;
     private String highestBidder;
     private String status;
+    // 1. CÁC BIẾN (Tương ứng với các cột trong Database)
+    private String productName; // Tên sản phẩm
+    private double startPrice;  // Giá khởi điểm
+    private String category;
+
+    public String getCategory() { 
+        return category; 
+    }
+    public void setCategory(String category) { 
+        this.category = category; 
+    }
+    // Hàm lấy tên sản phẩm ra
+    public String getProductName() {
+        return productName;
+    }
+
+    // Hàm nhét tên sản phẩm vào thùng
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    // Hàm lấy giá khởi điểm ra
+    public double getStartPrice() {
+        return startPrice;
+    }
+
+    // Hàm nhét giá vào thùng
+    public void setStartPrice(double startPrice) {
+        this.startPrice = startPrice;
+    }
 
     // 1. Hàm khởi tạo rỗng (Bắt buộc phải có để DAO khởi tạo)
     public Auction() {

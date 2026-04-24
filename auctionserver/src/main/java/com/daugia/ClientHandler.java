@@ -52,13 +52,22 @@ public class ClientHandler implements Runnable {
                     switch (request.getAction()) {
                         case "LOGIN":
                             JsonObject loginData = JsonParser.parseString(request.getPayload()).getAsJsonObject();
-                            User loggedInUser = userDAO.checkLogin(
-                                loginData.get("username").getAsString(), 
-                                loginData.get("password").getAsString()
-                            );
+                            String username = loginData.get("username").getAsString();
+                            String password = loginData.get("password").getAsString();
+                            
+                            // Check xem DB có tài khoản này không
+                            User loggedInUser = userDAO.checkLogin(username, password);
                             
                             if (loggedInUser != null) {
-                                response = new Response("SUCCESS", "Đăng nhập thành công", gson.toJson(loggedInUser));
+                                // 1. 🔥 ĐẺ RA TOKEN MỚI (CHÌA KHÓA) 🔥
+                                String newToken = java.util.UUID.randomUUID().toString();
+                                
+                                // 2. 🔥 GỌI HÀM LƯU TOKEN XUỐNG DATABASE 🔥
+                                userDAO.updateToken(username, newToken);
+                                
+                                // 3. Trả Token về cho Client
+                                // (Nếu Client bác cần object User thì đổi chữ newToken thành gson.toJson(loggedInUser) nhé)
+                                response = new Response("SUCCESS", "Đăng nhập thành công", newToken);
                             } else {
                                 response = new Response("ERROR", "Sai tài khoản hoặc mật khẩu", null);
                             }
@@ -72,7 +81,6 @@ public class ClientHandler implements Runnable {
                                 JsonObject bidData = JsonParser.parseString(request.getPayload()).getAsJsonObject();
                                 String auctionId = bidData.get("auctionId").getAsString();
                                 double bidAmount = bidData.get("amount").getAsDouble();
-                                String username = bidData.get("username").getAsString();
 
                                 // 1. Lấy sản phẩm từ kho ra
                                 Auction currentAuction = AuctionManager.getInstance().getAuction(auctionId);
@@ -148,6 +156,68 @@ public class ClientHandler implements Runnable {
                                 out.println(gson.toJson(response));
                             }
                             break;
+                        
+                        // 🔥 THÊM NGUYÊN KHỐI NÀY VÀO DƯỚI CASE GET_ALL_AUCTIONS 🔥
+                        case "GET_AUCTIONS_BY_CATEGORY":
+                            try {
+                                // 1. Lấy tên danh mục Client muốn xem từ payload (Ví dụ: "Bất động sản")
+                                String requestedCategory = request.getPayload();
+                                
+                                // 2. Kéo toàn bộ hàng trong kho ra
+                                java.util.List<Auction> allAuctions = new java.util.ArrayList<>(AuctionManager.getInstance().getAllAuctions());
+                                java.util.List<Auction> filteredAuctions = new java.util.ArrayList<>();
+                                
+                                // 3. Lọc: Chỉ nhặt những món có Category trùng khớp
+                                for (Auction auc : allAuctions) {
+                                    if (auc.getCategory() != null && auc.getCategory().equalsIgnoreCase(requestedCategory)) {
+                                        filteredAuctions.add(auc);
+                                    }
+                                }
+                                
+                                // 4. Đóng gói danh sách đã lọc và gửi về
+                                String payloadData = gson.toJson(filteredAuctions);
+                                response = new Response("SUCCESS", "Lọc danh mục thành công", payloadData);
+                                out.println(gson.toJson(response));
+                                
+                                System.out.println("=> [SERVER LỌC DANH MỤC] Đã gửi " + filteredAuctions.size() + " món thuộc loại: " + requestedCategory);
+                                
+                            } catch (Exception e) {
+                                System.out.println("!!! LỖI KHI LỌC DANH MỤC !!!");
+                                e.printStackTrace();
+                                response = new Response("ERROR", "Lỗi khi lọc danh mục", null);
+                                out.println(gson.toJson(response));
+                            }
+                            break;
+
+                        // ... các case cũ ...
+                        case "REGISTER":
+                            try {
+                                // 1. Bóc tách dữ liệu từ Client gửi lên
+                                JsonObject regData = JsonParser.parseString(request.getPayload()).getAsJsonObject();
+                                String newUsername = regData.get("username").getAsString();
+                                String newPassword = regData.get("password").getAsString();
+                                String email = regData.has("email") ? regData.get("email").getAsString() : "";
+                                String fullName = regData.has("fullName") ? regData.get("fullName").getAsString() : "";
+                                String phone = regData.has("phone") ? regData.get("phone").getAsString() : "";
+                                String gender = regData.has("gender") ? regData.get("gender").getAsString() : "";
+                                // Sửa lệnh gọi DAO để truyền thêm gender vào
+                                boolean isRegistered = userDAO.registerUser(newUsername, newPassword, email, fullName, phone, gender);
+
+                                // 3. Trả lời Client
+                                if (isRegistered) {
+                                    response = new Response("SUCCESS", "Đăng ký tài khoản thành công!", null);
+                                } else {
+                                    response = new Response("ERROR", "Tên đăng nhập đã tồn tại hoặc lỗi hệ thống!", null);
+                                }
+                                out.println(gson.toJson(response));
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                out.println(gson.toJson(new Response("ERROR", "Dữ liệu đăng ký không hợp lệ!", null)));
+                            }
+
+                            break;
+                            
                         default:
                             response = new Response("ERROR", "Hành động không hợp lệ", null);
                             out.println(gson.toJson(response));

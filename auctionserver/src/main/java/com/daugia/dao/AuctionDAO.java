@@ -36,7 +36,7 @@ public class AuctionDAO {
             }
         } catch (Exception e) {
             System.err.println("=> [DB DEBUG] LỖI RỒI! CHI TIẾT LỖI BÊN DƯỚI:");
-            e.printStackTrace(); // In ra dòng màu đỏ để biết lỗi gì
+            e.printStackTrace();
         }
         
         System.out.println("=> [DB DEBUG] Tổng số hàng lấy được: " + list.size());

@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import com.google.gson.Gson;
 
@@ -15,9 +19,14 @@ public class NetworkClient {
     private PrintWriter out;
     private BufferedReader in;
     private final Gson gson = new Gson();
+    
+    // 🔥 Cái giỏ để chứa câu trả lời cho hàm sendRequest cũ
+    private final BlockingQueue<String> responseQueue = new LinkedBlockingQueue<>();
+    
+    // 🔥 Cái tai để nghe tin nhắn Real-time
+    private Consumer<String> onMessageReceived;
 
     private NetworkClient() {
-
         connect("127.0.0.1", 8888); 
     }
 
@@ -28,18 +37,45 @@ public class NetworkClient {
         return instance;
     }
 
+    public void setOnMessageReceived(Consumer<String> callback) {
+        this.onMessageReceived = callback;
+    }
+
     private void connect(String ip, int port) {
         try {
             socket = new Socket(ip, port);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             System.out.println("Đã kết nối tới Server thành công!");
+
+            // 🔥 LUỒNG "BƯU TÁ" LÀM NHIỆM VỤ ĐỌC VÀ PHÂN LOẠI TIN NHẮN
+            new Thread(() -> {
+                try {
+                    String line;
+                    while ((line = in.readLine()) != null) {
+                        // Nếu là tin nhắn Broadcast từ Server (có chứa chữ BID_UPDATE)
+                        if (line.contains("\"action\":\"BID_UPDATE\"")) {
+                            if (onMessageReceived != null) {
+                                onMessageReceived.accept(line);
+                            }
+                        } else {
+                            // Nếu là câu trả lời cho các lệnh cũ (như LOGIN, GET_ALL_AUCTIONS)
+                            // Thì bỏ vào giỏ cho hàm sendRequest lấy ra
+                            responseQueue.offer(line);
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println("Mất kết nối lắng nghe từ Server.");
+                }
+            }).start();
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Không thể kết nối tới Server.");
         }
     }
 
+    // Hàm cũ được giữ nguyên cách dùng, chỉ thay đổi bên trong một chút
     public synchronized Response sendRequest(Request request) {
         if (socket == null || socket.isClosed()) {
             return new Response("ERROR", "Mất kết nối với Server", null);
@@ -47,16 +83,18 @@ public class NetworkClient {
 
         try {
             String jsonRequest = gson.toJson(request);
-            out.println(jsonRequest);
+            out.println(jsonRequest); // Gửi yêu cầu đi
 
-            String jsonResponse = in.readLine();
+            // Chờ lấy câu trả lời từ giỏ (Chờ tối đa 5 giây để app không bị đơ nếu mạng lag)
+            String jsonResponse = responseQueue.poll(5, TimeUnit.SECONDS); 
+            
             if (jsonResponse != null) {
                 return gson.fromJson(jsonResponse, Response.class);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new Response("ERROR", "Lỗi đường truyền mạng", null);
+        return new Response("ERROR", "Lỗi đường truyền hoặc Timeout", null);
     }
 
     public void closeConnection() {

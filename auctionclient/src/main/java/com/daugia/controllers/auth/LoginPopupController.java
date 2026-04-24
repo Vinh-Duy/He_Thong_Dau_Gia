@@ -3,6 +3,8 @@ package com.daugia.controllers.auth;
 import java.io.IOException;
 
 import com.daugia.controllers.bidder.DanhSachSanPhamController;
+import com.daugia.controllers.components.HeaderController;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -28,11 +30,70 @@ public class LoginPopupController {
         String user = usernameField.getText();
         String pass = passwordField.getText();
 
+        // 1. Kiểm tra không cho nhập rỗng
         if (user == null || user.isEmpty() || pass == null || pass.isEmpty()) {
-            System.out.println("Vui lòng nhập đầy đủ thông tin");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Cảnh báo");
+            alert.setHeaderText(null);
+            alert.setContentText("Bác chưa nhập đủ tài khoản hoặc mật khẩu kìa!");
+            alert.showAndWait();
             return;
         }
-        System.out.println("Đăng nhập thành công với: " + user);
+
+        System.out.println("Đang gửi yêu cầu đăng nhập lên Server...");
+
+        try {
+            // 2. GÓI DỮ LIỆU VÀ GỬI LÊN SERVER (MỞ KHÓA ĐOẠN NÀY)
+            String payload = "{\"username\":\"" + user + "\", \"password\":\"" + pass + "\"}";
+            
+            // Lưu ý: phải import mấy class Request, Response, NetworkClient nhé
+            com.daugia.network.Request req = new com.daugia.network.Request("LOGIN", payload);
+            com.daugia.network.Response res = com.daugia.network.NetworkClient.getInstance().sendRequest(req);
+
+            // 3. XỬ LÝ KHI SERVER TRẢ LỜI
+            // 3. XỬ LÝ KHI SERVER TRẢ LỜI
+            if (res != null && "SUCCESS".equals(res.getStatus())) {
+                
+                // 1. Lưu cả username và token vào Session
+                String token = res.getData().toString();
+                com.daugia.utils.SessionManager.setSession(user, token); 
+
+                // 2. GỌI HEADER CẬP NHẬT GIAO DIỆN
+                if (HeaderController.getInstance() != null) {
+                    HeaderController.getInstance().updateHeaderUI();
+                }
+                
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Thành công");
+                alert.setContentText("Đăng nhập thành công!");
+                alert.showAndWait();
+
+                // 🔥 2. ĐÓNG POPUP ĐĂNG NHẬP (Chỗ này bác kiểm tra xem tên nút của bác là gì nhé)
+                javafx.stage.Stage stage = (javafx.stage.Stage) loginButton.getScene().getWindow();
+                try {
+                    javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/views/common/HomeView.fxml"));
+                    javafx.scene.Parent root = loader.load();
+                    loginButton.getScene().setRoot(root);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
+                // 🔥 3. (Tùy chọn) Bác có thể gọi hàm cập nhật lại cái Header (ẩn nút Đăng nhập, hiện tên User) ở đây
+                
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Lỗi");
+                alert.setHeaderText(null);
+                alert.setContentText("Sai tài khoản hoặc mật khẩu!");
+                alert.showAndWait();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi kết nối");
+            alert.setContentText("Không kết nối được tới Server. Bác đã bật Server chưa?");
+            alert.showAndWait();
+        }
     }
 
     @FXML

@@ -21,6 +21,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -37,9 +38,62 @@ public class HeaderController {
     @FXML private Label gioiThieuLabel;
     @FXML private Label lienHeLabel;
 
+    @FXML private HBox authButtonsBox;
+    @FXML private HBox userInfoBox;
+    @FXML private Label userNameLabel;
+
+    // Mẹo để gọi Header từ bất cứ đâu
+    private static HeaderController instance;
+    public static HeaderController getInstance() { return instance; }
+
+    // Hàm "ảo thuật" chính
+    public void updateHeaderUI() {
+        boolean loggedIn = com.daugia.utils.SessionManager.isLoggedIn();
+        
+        // Hiện cái này thì ẩn cái kia
+        authButtonsBox.setVisible(!loggedIn);
+        authButtonsBox.setManaged(!loggedIn);
+        
+        userInfoBox.setVisible(loggedIn);
+        userInfoBox.setManaged(loggedIn);
+
+        if (loggedIn) {
+            // Lấy tên user đã lưu trong Session (Bác nhớ lưu cả username vào SessionManager nhé)
+            userNameLabel.setText("Xin chào, " + com.daugia.utils.SessionManager.getUsername());
+        }
+    }
+
+    @FXML
+    private void handleLogout(MouseEvent event) {
+        // 1. Xóa sạch Token và Username trong két sắt
+        com.daugia.utils.SessionManager.logout();
+
+        // 2. Cập nhật lại giao diện Header (ẩn tên User, hiện lại nút Đăng nhập)
+        updateHeaderUI();
+
+        // 3. Thông báo cho người dùng biết
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        alert.setTitle("Đăng xuất");
+        alert.setHeaderText(null);
+        alert.setContentText("Bác đã đăng xuất thành công!");
+        alert.showAndWait();
+
+        // 4. (Tùy chọn) Nếu bác muốn đá họ về Trang chủ khi đăng xuất thì dùng đoạn này:
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/views/Main.fxml"));
+            javafx.scene.Parent root = loader.load();
+            ((javafx.scene.Node) event.getSource()).getScene().setRoot(root);
+        } catch (Exception e) {
+            System.err.println("Lỗi khi chuyển về trang chủ:");
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     public void initialize() {
         startClock();
+        instance = this; // Lưu lại chính nó khi vừa khởi tạo
+        updateHeaderUI(); // Kiểm tra trạng thái đăng nhập ngay khi mở app
     }
 
     private void startClock() {

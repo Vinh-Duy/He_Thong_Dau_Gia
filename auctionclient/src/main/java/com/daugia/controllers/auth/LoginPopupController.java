@@ -4,7 +4,14 @@ import java.io.IOException;
 
 import com.daugia.controllers.bidder.DanhSachSanPhamController;
 import com.daugia.controllers.components.HeaderController;
+import com.daugia.models.User;
+import com.daugia.network.NetworkClient;
+import com.daugia.network.Request;
+import com.daugia.network.Response;
+import com.daugia.utils.SessionManager;
+import com.google.gson.Gson;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -24,76 +31,69 @@ public class LoginPopupController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
+    private Gson gson = new Gson();
 
     @FXML
     private void handleLogin() {
         String user = usernameField.getText();
         String pass = passwordField.getText();
 
-        // 1. Kiểm tra không cho nhập rỗng
         if (user == null || user.isEmpty() || pass == null || pass.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Cảnh báo");
-            alert.setHeaderText(null);
-            alert.setContentText("Bác chưa nhập đủ tài khoản hoặc mật khẩu kìa!");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Bác chưa nhập đủ tài khoản hoặc mật khẩu kìa!");
             return;
         }
 
         System.out.println("Đang gửi yêu cầu đăng nhập lên Server...");
 
-        try {
-            // 2. GÓI DỮ LIỆU VÀ GỬI LÊN SERVER (MỞ KHÓA ĐOẠN NÀY)
-            String payload = "{\"username\":\"" + user + "\", \"password\":\"" + pass + "\"}";
-            
-            // Lưu ý: phải import mấy class Request, Response, NetworkClient nhé
-            com.daugia.network.Request req = new com.daugia.network.Request("LOGIN", payload);
-            com.daugia.network.Response res = com.daugia.network.NetworkClient.getInstance().sendRequest(req);
+        new Thread(() -> {
+            try {
+                String payload = "{\"username\":\"" + user + "\", \"password\":\"" + pass + "\"}";
+                Request req = new Request("LOGIN", payload);
+                Response res = NetworkClient.getInstance().sendRequest(req);
 
-            // 3. XỬ LÝ KHI SERVER TRẢ LỜI
-            // 3. XỬ LÝ KHI SERVER TRẢ LỜI
-            if (res != null && "SUCCESS".equals(res.getStatus())) {
-                
-                // 1. Lưu cả username và token vào Session
-                String token = res.getData().toString();
-                com.daugia.utils.SessionManager.setSession(user, token); 
+                Platform.runLater(() -> {
+                    if (res != null && "SUCCESS".equals(res.getStatus())) {
+                        try {
+                            // 1. Chuyển JSON thành đối tượng User
+                            User loggedInUser = gson.fromJson(res.getData().toString(), User.class);
+                            
+                            // 2. Lưu Session
+                            SessionManager.setSession(loggedInUser.getUsername(), loggedInUser.getToken()); 
 
-                // 2. GỌI HEADER CẬP NHẬT GIAO DIỆN
-                if (HeaderController.getInstance() != null) {
-                    HeaderController.getInstance().updateHeaderUI();
-                }
-                
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Thành công");
-                alert.setContentText("Đăng nhập thành công!");
-                alert.showAndWait();
+                            // 3. Cập nhật Header
+                            if (HeaderController.getInstance() != null) {
+                                HeaderController.getInstance().updateHeaderUI();
+                            }
 
-                // 🔥 2. ĐÓNG POPUP ĐĂNG NHẬP (Chỗ này bác kiểm tra xem tên nút của bác là gì nhé)
-                javafx.stage.Stage stage = (javafx.stage.Stage) loginButton.getScene().getWindow();
-                try {
-                    javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/views/common/HomeView.fxml"));
-                    javafx.scene.Parent root = loader.load();
-                    loginButton.getScene().setRoot(root);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                
-                // 🔥 3. (Tùy chọn) Bác có thể gọi hàm cập nhật lại cái Header (ẩn nút Đăng nhập, hiện tên User) ở đây
-                
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Lỗi");
-                alert.setHeaderText(null);
-                alert.setContentText("Sai tài khoản hoặc mật khẩu!");
-                alert.showAndWait();
+                            // 4. Phân quyền rẽ nhánh giao diện
+                            String viewPath = "/views/common/HomeView.fxml";
+                            String welcomeMsg = "Đăng nhập thành công!";
+
+                            if ("ADMIN".equals(loggedInUser.getRole())) {
+                                viewPath = "/views/admin/AdminUserView.fxml";
+                                welcomeMsg = "Chào mừng sếp Admin đã quay lại!";
+                            }
+
+                            showAlert(Alert.AlertType.INFORMATION, "Thành công", welcomeMsg);
+
+                            // Chuyển trang
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource(viewPath));
+                            Parent root = loader.load();
+                            loginButton.getScene().setRoot(root);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            showAlert(Alert.AlertType.ERROR, "Lỗi", "Có lỗi khi xử lý dữ liệu người dùng!");
+                        }
+                    } else {
+                        showAlert(Alert.AlertType.ERROR, "Lỗi", "Sai tài khoản hoặc mật khẩu!");
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Lỗi kết nối", "Không kết nối được tới Server!"));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi kết nối");
-            alert.setContentText("Không kết nối được tới Server. Bác đã bật Server chưa?");
-            alert.showAndWait();
-        }
+        }).start();
     }
 
     @FXML
@@ -130,5 +130,13 @@ public class LoginPopupController {
             alert.setContentText("Không thể tải trang danh mục: " + categoryName);
             alert.showAndWait();
         }
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

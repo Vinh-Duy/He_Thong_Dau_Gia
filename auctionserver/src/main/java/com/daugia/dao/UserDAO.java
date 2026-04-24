@@ -3,6 +3,8 @@ package com.daugia.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.daugia.database.DatabaseConnection;
 import com.daugia.models.User;
@@ -23,7 +25,6 @@ public class UserDAO {
             
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-
                 return new User(
                     rs.getInt("id"),
                     rs.getString("username"),
@@ -46,8 +47,63 @@ public class UserDAO {
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (Exception e) {
-            return false; 
+            System.out.println("Lỗi khi lưu token vào DB!");
+            e.printStackTrace();
         }
+        return false;
+    }
+
+    public boolean registerUser(String username, String password, String email, String fullName, String phone, String gender) {
+        String sql = "INSERT INTO users (username, password, email, full_name, phone, gender, role) VALUES (?, ?, ?, ?, ?, ?, 'USER')";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            pstmt.setString(3, email);
+            pstmt.setString(4, fullName);
+            pstmt.setString(5, phone);
+            pstmt.setString(6, gender);
+            
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+            
+        } catch (java.sql.SQLException e) {
+            System.out.println("Lỗi khi đăng ký (Có thể do trùng Username): " + e.getMessage());
+            return false;
+        }
+    }
+
+    // 🔥 HÀM ĐÃ ĐƯỢC FIX ĐỂ LẤY DỮ LIỆU THẬT LÊN CHO BẢNG ADMIN 🔥
+    public List<User> getAllUsers() {
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM users"; 
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            while (rs.next()) {
+                // Tạo đối tượng User bằng Constructor đầy đủ
+                User user = new User(
+                    rs.getInt("id"),
+                    rs.getString("username"),
+                    rs.getString("password"),
+                    rs.getString("email"),
+                    rs.getString("full_name"), // Check lại tên cột trong DB của bác
+                    rs.getString("phone"),
+                    rs.getString("gender"),
+                    rs.getString("role")
+                );
+                list.add(user);
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi khi lấy danh sách User: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return list;
     }
 
     // Hàm mới: Dùng để lưu Token vào Database sau khi login thành công
@@ -68,30 +124,4 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
-
-    // Thêm hàm này vào UserDAO.java
-    public boolean registerUser(String username, String password, String email, String fullName, String phone, String gender) {
-        // Cụm SQL Insert cơ bản (Bác nhớ sửa tên cột cho khớp với Database của bác nhé)
-        String sql = "INSERT INTO users (username, password, email, full_name, phone,gender, role) VALUES (?, ?, ?, ?, ?, ?,'USER')";
-        
-        try (java.sql.Connection conn = DatabaseConnection.getConnection();
-             java.sql.PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
-            pstmt.setString(3, email);
-            pstmt.setString(4, fullName);
-            pstmt.setString(5, phone);
-            pstmt.setString(6, gender);
-            
-            int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0; // Nếu insert thành công sẽ trả về true
-            
-        } catch (java.sql.SQLException e) {
-            System.out.println("Lỗi khi đăng ký (Có thể do trùng Username): " + e.getMessage());
-            return false;
-        }
-    }
-
-    
 }

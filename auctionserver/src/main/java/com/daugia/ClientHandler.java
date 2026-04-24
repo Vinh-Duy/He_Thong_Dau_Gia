@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -58,21 +59,19 @@ public class ClientHandler implements Runnable {
                             // Check xem DB có tài khoản này không
                             User loggedInUser = userDAO.checkLogin(username, password);
                             
-                            if (loggedInUser != null) {
-                                // 1. 🔥 ĐẺ RA TOKEN MỚI (CHÌA KHÓA) 🔥
-                                String newToken = java.util.UUID.randomUUID().toString();
+                            User userDaLogin = userDAO.checkLogin(username, password);
+
+                            if (userDaLogin != null) {
+                                // 🔥 CHỖ NÀY QUAN TRỌNG NHẤT: 
+                                // Ép đối tượng User thành chuỗi JSON, rồi mới nhét vào Response
+                                String userJsonPayload = gson.toJson(userDaLogin);
                                 
-                                // 2. 🔥 GỌI HÀM LƯU TOKEN XUỐNG DATABASE 🔥
-                                userDAO.updateToken(username, newToken);
-                                
-                                // 3. Trả Token về cho Client
-                                // (Nếu Client bác cần object User thì đổi chữ newToken thành gson.toJson(loggedInUser) nhé)
-                                response = new Response("SUCCESS", "Đăng nhập thành công", newToken);
+                                response = new Response("SUCCESS", "Đăng nhập thành công", userJsonPayload);
                             } else {
                                 response = new Response("ERROR", "Sai tài khoản hoặc mật khẩu", null);
                             }
-                            // Trả lời riêng cho người đang login
-                            out.println(gson.toJson(response)); 
+                            out.println(gson.toJson(response));
+                            
                             break;
 
                         case "PLACE_BID":
@@ -217,6 +216,22 @@ public class ClientHandler implements Runnable {
                             }
 
                             break;
+
+                        case "GET_ALL_USERS":
+                            try {
+                                // 1. Kéo dữ liệu từ DAO
+                                List<User> danhSachUser = userDAO.getAllUsers();
+                                
+                                // 2. Chuyển thành JSON
+                                String payloadUsers = gson.toJson(danhSachUser);
+                                
+                                // 3. Đóng gói và gửi về
+                                response = new Response("SUCCESS", "Lấy danh sách người dùng thành công", payloadUsers);
+                                out.println(gson.toJson(response));
+                            } catch (Exception e) {
+                                out.println(gson.toJson(new Response("ERROR", "Lỗi khi lấy danh sách user", null)));
+                            }
+                            break; // QUAN TRỌNG!
                             
                         default:
                             response = new Response("ERROR", "Hành động không hợp lệ", null);

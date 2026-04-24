@@ -172,6 +172,19 @@ public class DanhSachSanPhamController {
             
             // 4. Bắt sự kiện khi bấm nút "Ra Giá"
             btnBid.setOnAction(event -> {
+                // 🔥 THÊM CHỐT KIỂM TRA ĐĂNG NHẬP Ở ĐÂY 🔥
+                String currentUser = com.daugia.utils.SessionManager.getUsername();
+                if (currentUser == null || currentUser.isEmpty()) {
+                    javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.WARNING);
+                    alert.setTitle("Cảnh báo");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Bác chưa đăng nhập! Vui lòng đăng nhập tài khoản để tham gia đấu giá nhé.");
+                    alert.showAndWait();
+                    
+                    return; // <--- Lệnh này sẽ đá văng người dùng ra, không cho chạy câu lệnh bên dưới
+                }
+
+                // Nếu đã qua được cửa bảo vệ (đã đăng nhập), thì mới cho phép gọi hàm xử lý đặt giá
                 xuLyDatGia(sp.getId(), txtBid.getText());
             });
             

@@ -13,6 +13,7 @@
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/common/LienHeController.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/components/AuctionCardController.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/components/HeaderController.java
+/Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/seller/AddProductController.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/models/Auction.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/models/Item.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/models/User.java

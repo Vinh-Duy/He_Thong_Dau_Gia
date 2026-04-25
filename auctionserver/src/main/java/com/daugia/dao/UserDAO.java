@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID; // Nhớ import thư viện này để tạo Token
 
 import com.daugia.database.DatabaseConnection;
 import com.daugia.models.User;
@@ -53,8 +54,9 @@ public class UserDAO {
         return false;
     }
 
-    public boolean registerUser(String username, String password, String email, String fullName, String phone, String gender) {
-        String sql = "INSERT INTO users (username, password, email, full_name, phone, gender, role) VALUES (?, ?, ?, ?, ?, ?, 'USER')";
+    public boolean registerUser(String username, String password, String email, String fullName, String phone, String gender, String role) {
+        String token = UUID.randomUUID().toString();
+        String sql = "INSERT INTO users (username, password, email, full_name, phone, gender, role, token) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -65,6 +67,9 @@ public class UserDAO {
             pstmt.setString(4, fullName);
             pstmt.setString(5, phone);
             pstmt.setString(6, gender);
+            pstmt.setString(7, role);
+            pstmt.setString(8, token);
+
             
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;

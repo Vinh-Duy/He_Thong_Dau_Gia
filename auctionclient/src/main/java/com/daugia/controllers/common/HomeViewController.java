@@ -50,9 +50,9 @@ public class HomeViewController {
                 if (response != null && "SUCCESS".equals(response.getStatus())) {
                     if (response.getPayload() == null) return;
 
-                    com.google.gson.Gson gson = new com.google.gson.Gson();
-                    String payloadJson = gson.toJson(response.getPayload());
-                    JsonArray auctionsArray = JsonParser.parseString(payloadJson).getAsJsonArray();
+                    // Ép trực tiếp Payload thành chuỗi String, không dùng gson.toJson nữa
+                    String payloadString = String.valueOf(response.getPayload());
+                    JsonArray auctionsArray = JsonParser.parseString(payloadString).getAsJsonArray();
 
                     Platform.runLater(() -> {
 

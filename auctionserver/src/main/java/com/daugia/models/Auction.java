@@ -11,6 +11,28 @@ public class Auction {
     private String productName; // Tên sản phẩm
     private double startPrice;  // Giá khởi điểm
     private String category;
+    private String description;
+    private String endTime;
+    private int sellerId; // ID của người bán (seller)
+
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public String getEndTime() {
+        return endTime;
+    }
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+    public int getSellerId() {
+        return sellerId;
+    }
+    public void setSellerId(int sellerId) {
+        this.sellerId = sellerId;
+    }
 
     public String getCategory() { 
         return category; 

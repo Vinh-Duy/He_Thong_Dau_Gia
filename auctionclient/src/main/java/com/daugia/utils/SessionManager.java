@@ -2,7 +2,9 @@ package com.daugia.utils;
 
 public class SessionManager {
     private static String currentToken = null;
-
+    private static String username = null; // Biến lưu tên người dùng
+    private static int userId;
+    
     // Cất token vào két
     public static void setToken(String token) {
         currentToken = token;
@@ -12,23 +14,32 @@ public class SessionManager {
     public static String getToken() {
         return currentToken;
     }
+
+    public static int getUserId() {
+        return userId;
+    }
     
-    // Check xem đã đăng nhập chưa
+    // SỬA LẠI CHỖ NÀY: Check xem đã đăng nhập chưa dựa vào username
     public static boolean isLoggedIn() {
-        return currentToken != null;
+        // Nếu username có dữ liệu (không null và không rỗng) nghĩa là đã đăng nhập
+        return username != null && !username.trim().isEmpty();
     }
 
-    private static String username; // Thêm biến này
-
-    public static void setSession(String u, String t) {
+    // Cất cả tên và token vào két
+    public static void setSession(int id,String u, String t) {
         username = u;
         currentToken = t;
+        userId=id;
     }
     
-    public static String getUsername() { return username; }
+    public static String getUsername() { 
+        return username; 
+    }
     
+    // Đăng xuất thì xóa trắng cả 2
     public static void logout() {
         currentToken = null;
         username = null;
+        userId = 0;
     }
 }

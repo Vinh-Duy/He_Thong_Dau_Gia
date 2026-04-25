@@ -1,19 +1,22 @@
 package com.daugia.controllers.admin;
 
+import java.util.List;
+
 import com.daugia.models.User;
 import com.daugia.network.NetworkClient;
 import com.daugia.network.Request;
 import com.daugia.network.Response;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import java.util.List;
 
 public class AdminUserController {
 
@@ -86,5 +89,52 @@ public class AdminUserController {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleLogout() {
+        try {
+            // 1. Xác định chính xác chuỗi đường dẫn (Bác kiểm tra lại hoa/thường của LoginPopup)
+            String fxmlPath = "/com/daugia/views/auth/LoginPopup.fxml"; 
+            
+            System.out.println("=> [DEBUG] Đang tìm file tại: " + fxmlPath);
+            
+            // 2. Lấy URL của file
+            java.net.URL location = getClass().getResource(fxmlPath);
+            
+            // 3. Nếu vẫn NULL, thử tìm theo đường dẫn ngắn (nếu bác để trong resources/views)
+            if (location == null) {
+                System.out.println("=> [THỬ LẠI] Không thấy ở đường dẫn cũ, thử tìm tại /views/auth/LoginPopup.fxml");
+                location = getClass().getResource("/views/auth/LoginPopup.fxml");
+            }
+
+            if (location == null) {
+                // Cú chốt: Báo lỗi cụ thể để bác biết đường dẫn nào đang bị sai
+                System.err.println("=> [LỖI CỰC NẶNG] Vẫn không thấy file LoginPopup.fxml ở bất cứ đâu!");
+                return;
+            }
+
+            // 4. Load khi đã có location chuẩn
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader();
+            loader.setLocation(location);
+            javafx.scene.Parent root = loader.load();
+            
+            javafx.scene.Scene currentScene = userTable.getScene();
+
+        // 3. THAY ĐỔI GỐC (ROOT) - Đây là chìa khóa để giữ nguyên cửa sổ
+            currentScene.setRoot(root);
+            javafx.stage.Stage stage = (javafx.stage.Stage) currentScene.getWindow();
+            stage.setTitle("Đăng nhập");
+            
+            // Nếu màn hình Login nhỏ hơn màn hình Admin, dùng dòng này để cửa sổ co lại cho đẹp:
+            stage.sizeToScene(); 
+            stage.centerOnScreen();
+            
+            System.out.println("=> [ADMIN] Chuyển cảnh thành công!");
+
+        } catch (Exception e) {
+            System.err.println("=> [EXCEPTION] Lỗi khi load FXML:");
+            e.printStackTrace();
+        }
     }
 }

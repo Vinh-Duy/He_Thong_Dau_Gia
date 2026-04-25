@@ -18,6 +18,8 @@
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Button text="Làm mới danh sách" onAction="#handleRefresh" style="-fx-background-color: #3498db; -fx-text-fill: white;" />
         <Button text="Xóa người dùng" onAction="#handleDelete" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+        
+        <Button text="Thoát" onAction="#handleLogout" style="-fx-background-color: #95a5a6; -fx-text-fill: white;" />
     </HBox>
 
     <TableView fx:id="userTable" VBox.vgrow="ALWAYS">

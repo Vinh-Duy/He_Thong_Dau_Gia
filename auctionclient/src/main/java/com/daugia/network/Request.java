@@ -5,7 +5,7 @@ public class Request {
     private String payload; 
     private String data;   // Dữ liệu (JSON chữ)
     
-    // THÊM CÁI NÀY: Chỗ để nhét chìa khóa vào mỗi lần gửi lệnh
+    // Chỗ để nhét chìa khóa vào mỗi lần gửi lệnh
     private String token; 
 
     public Request(String action, String payload) {

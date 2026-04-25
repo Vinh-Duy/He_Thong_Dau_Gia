@@ -62,6 +62,10 @@ public class SignUpController {
     @FXML private TextField txtLastName;
     @FXML private TextField txtPhone;
 
+    @FXML private ToggleGroup roleGroup; // Nó tự nhận từ FXML nhờ fx:id="roleGroup"
+    @FXML private RadioButton rbBidder;
+    @FXML private RadioButton rbSeller;
+
     @FXML
     private void handleSignup(ActionEvent event) {
         usernameError.setText("");
@@ -244,6 +248,14 @@ public class SignUpController {
             return;
         }
 
+        String role = "BIDDER"; // Mặc định
+        if (rbSeller.isSelected()) {
+            role = "SELLER";
+        }
+        
+        // Test thử xem nó lấy đúng chưa
+        System.out.println("Role đã chọn: " + role);
+
         // 2. Đóng gói dữ liệu vào JSON
         JsonObject payload = new JsonObject();
         payload.addProperty("username", username);
@@ -257,6 +269,7 @@ public class SignUpController {
             payload.addProperty("gender", genderBox.getValue());
         }
 
+        
         // 3. Gửi lên Server
         new Thread(() -> {
             Request req = new Request("REGISTER", payload.toString());

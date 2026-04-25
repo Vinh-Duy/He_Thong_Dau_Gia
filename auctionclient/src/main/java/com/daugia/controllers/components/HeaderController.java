@@ -27,6 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+
 public class HeaderController {
 
     @FXML private Label timeLabel;
@@ -80,7 +81,7 @@ public class HeaderController {
 
         // 4. (Tùy chọn) Nếu bác muốn đá họ về Trang chủ khi đăng xuất thì dùng đoạn này:
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/views/Main.fxml"));
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/views/common/HomeView.fxml"));
             javafx.scene.Parent root = loader.load();
             ((javafx.scene.Node) event.getSource()).getScene().setRoot(root);
         } catch (Exception e) {

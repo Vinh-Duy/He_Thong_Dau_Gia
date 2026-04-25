@@ -20,10 +20,10 @@ public class NetworkClient {
     private BufferedReader in;
     private final Gson gson = new Gson();
     
-    // 🔥 Cái giỏ để chứa câu trả lời cho hàm sendRequest cũ
+    // Cái chỗ để chứa câu trả lời cho hàm sendRequest cũ
     private final BlockingQueue<String> responseQueue = new LinkedBlockingQueue<>();
     
-    // 🔥 Cái tai để nghe tin nhắn Real-time
+    // Cái để nghe tin nhắn Real-time
     private Consumer<String> onMessageReceived;
 
     private NetworkClient() {
@@ -48,7 +48,7 @@ public class NetworkClient {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             System.out.println("Đã kết nối tới Server thành công!");
 
-            // 🔥 LUỒNG "BƯU TÁ" LÀM NHIỆM VỤ ĐỌC VÀ PHÂN LOẠI TIN NHẮN
+            // LUỒNG LÀM NHIỆM VỤ ĐỌC VÀ PHÂN LOẠI TIN NHẮN
             new Thread(() -> {
                 try {
                     String line;
@@ -60,7 +60,7 @@ public class NetworkClient {
                             }
                         } else {
                             // Nếu là câu trả lời cho các lệnh cũ (như LOGIN, GET_ALL_AUCTIONS)
-                            // Thì bỏ vào giỏ cho hàm sendRequest lấy ra
+                            // Thì bỏ vào cho hàm sendRequest lấy ra
                             responseQueue.offer(line);
                         }
                     }
@@ -85,7 +85,7 @@ public class NetworkClient {
             String jsonRequest = gson.toJson(request);
             out.println(jsonRequest); // Gửi yêu cầu đi
 
-            // Chờ lấy câu trả lời từ giỏ (Chờ tối đa 5 giây để app không bị đơ nếu mạng lag)
+            // Chờ lấy câu trả lời (Chờ tối đa 5 giây để app không bị đơ nếu mạng lag)
             String jsonResponse = responseQueue.poll(5, TimeUnit.SECONDS); 
             
             if (jsonResponse != null) {

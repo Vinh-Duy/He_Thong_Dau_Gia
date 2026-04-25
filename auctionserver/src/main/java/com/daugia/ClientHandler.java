@@ -71,7 +71,7 @@ public class ClientHandler implements Runnable {
                                 response = new Response("ERROR", "Sai tài khoản hoặc mật khẩu", null);
                             }
                             out.println(gson.toJson(response));
-                            
+
                             break;
 
                         case "PLACE_BID":
@@ -199,8 +199,11 @@ public class ClientHandler implements Runnable {
                                 String fullName = regData.has("fullName") ? regData.get("fullName").getAsString() : "";
                                 String phone = regData.has("phone") ? regData.get("phone").getAsString() : "";
                                 String gender = regData.has("gender") ? regData.get("gender").getAsString() : "";
-                                // Sửa lệnh gọi DAO để truyền thêm gender vào
-                                boolean isRegistered = userDAO.registerUser(newUsername, newPassword, email, fullName, phone, gender);
+                                // 🔥 THÊM DÒNG NÀY ĐỂ LẤY ROLE (Nếu Client không gửi thì mặc định là BIDDER)
+                                String role = regData.has("role") ? regData.get("role").getAsString() : "BIDDER";
+
+                                // 🔥 TRUYỀN THÊM biền role VÀO HÀM DAO
+                                boolean isRegistered = userDAO.registerUser(newUsername, newPassword, email, fullName, phone, gender, role);
 
                                 // 3. Trả lời Client
                                 if (isRegistered) {
@@ -232,6 +235,50 @@ public class ClientHandler implements Runnable {
                                 out.println(gson.toJson(new Response("ERROR", "Lỗi khi lấy danh sách user", null)));
                             }
                             break; // QUAN TRỌNG!
+                        
+                        case "ADD_PRODUCT":
+                            try {
+                                // 1. Giải mã món hàng từ Client gửi lên
+                                Auction newAuction = gson.fromJson(request.getPayload(), Auction.class);
+                                
+                                // 2. Tự tạo ID duy nhất (Ví dụ: A1714012345678)
+                                String newId = "A" + System.currentTimeMillis();
+                                newAuction.setId(newId);
+                                newAuction.setStatus("OPEN"); // Đảm bảo trạng thái luôn là mở khi mới đăng
+
+                                // 3. Gọi DAO để lưu xuống MySQL
+                                // Lưu ý: Dòng này sẽ trả về true nếu bác đã sửa "> 1" thành "> 0" ở AuctionDAO
+                                boolean success = auctionDAO.addAuction(
+                                    newAuction.getId(),
+                                    newAuction.getName(),
+                                    newAuction.getDescription(),
+                                    newAuction.getStartingPrice(),
+                                    newAuction.getEndTime(),
+                                    newAuction.getSellerId(),
+                                    newAuction.getStatus()
+                                );
+
+                                if (success) {
+                                    // 4. LƯU VÀO RAM - Cực kỳ quan trọng để Client lấy được danh sách mới
+                                    AuctionManager.getInstance().addAuction(newAuction);
+                                    
+                                    // 5. Trả lời thành công cho Client (Gửi kèm đối tượng newAuction để Client có ID mới)
+                                    response = new Response("SUCCESS", "Đăng sản phẩm thành công!", newAuction);
+                                    System.out.println("=> [SERVER SUCCESS] Đã lưu DB và RAM sản phẩm: " + newAuction.getName());
+                                } else {
+                                    // Nếu hàm addAuction trả về false
+                                    response = new Response("ERROR", "Lỗi DB: Database từ chối lưu dữ liệu!", null);
+                                    System.err.println("=> [SERVER ERROR] AuctionDAO trả về false. Kiểm tra lại SQL!");
+                                }
+                            } catch (Exception e) {
+                                // Bắt lỗi nếu dữ liệu JSON sai hoặc lỗi code
+                                e.printStackTrace();
+                                response = new Response("ERROR", "Lỗi hệ thống: " + e.getMessage(), null);
+                            }
+                            
+                            // GỬI KẾT QUẢ VỀ CLIENT VÀ THOÁT CASE
+                            out.println(gson.toJson(response));
+                            break;
                             
                         default:
                             response = new Response("ERROR", "Hành động không hợp lệ", null);

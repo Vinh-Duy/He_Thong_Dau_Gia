@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.ToggleGroup?>
 
 <BorderPane fx:id="mainBorderPane" prefWidth="1200" stylesheets="@../../css/login-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.daugia.controllers.auth.SignUpController">
     <top>
@@ -63,6 +64,17 @@
                             <TextField fx:id="txtEmail" prefWidth="200" promptText="Email" styleClass="input" />
                             <TextField fx:id="txtPhone" prefWidth="200" promptText="Số điện thoại" styleClass="input" />
                             <ComboBox fx:id="genderBox" prefWidth="200" promptText="Chọn giới tính" styleClass="input" />
+                        </HBox>
+                        <HBox spacing="20" alignment="CENTER" style="-fx-padding: 10 0;">
+                            <Label text="Bạn tham gia với vai trò:" style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #333333;" />
+                            
+                            <RadioButton fx:id="rbBidder" text="Người mua (Bidder)" selected="true" style="-fx-cursor: hand; -fx-font-size: 14px; -fx-text-fill: #333333;">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="roleGroup" />
+                                </toggleGroup>
+                            </RadioButton>
+
+                            <RadioButton fx:id="rbSeller" text="Người bán (Seller)" toggleGroup="$roleGroup" style="-fx-cursor: hand; -fx-font-size: 14px; -fx-text-fill: #333333;" />
                         </HBox>
     
                         <Button onAction="#xuLyDangKy" prefHeight="48.0" prefWidth="620.0" styleClass="btn-primary" text="ĐĂNG KÝ TÀI KHOẢN">

@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Response implements Serializable {
     private String status;
     private String message;
-    private Object data; // Chú ý: data phải là Object hoặc String nhé
+    private Object data; 
 
     public Response(String status, String message, Object data) {
         this.status = status;

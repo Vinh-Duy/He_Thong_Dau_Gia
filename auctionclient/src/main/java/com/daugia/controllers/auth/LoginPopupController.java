@@ -43,47 +43,47 @@ public class LoginPopupController {
             return;
         }
 
-        System.out.println("Đang gửi yêu cầu đăng nhập lên Server...");
-
         new Thread(() -> {
             try {
-                String payload = "{\"username\":\"" + user + "\", \"password\":\"" + pass + "\"}";
-                Request req = new Request("LOGIN", payload);
+                String requestPayload = "{\"username\":\"" + user + "\", \"password\":\"" + pass + "\"}";
+                Request req = new Request("LOGIN", requestPayload);
                 Response res = NetworkClient.getInstance().sendRequest(req);
 
                 Platform.runLater(() -> {
                     if (res != null && "SUCCESS".equals(res.getStatus())) {
                         try {
-                            // 1. Chuyển JSON thành đối tượng User
-                            User loggedInUser = gson.fromJson(res.getData().toString(), User.class);
-                            
-                            // 2. Lưu Session
-                            SessionManager.setSession(loggedInUser.getUsername(), loggedInUser.getToken()); 
+                            // CHỖ NÀY QUAN TRỌNG: Sửa lỗi BEGIN_OBJECT
+                            Object rawData = res.getData(); 
+                            String jsonString = (rawData instanceof String) ? (String) rawData : gson.toJson(rawData);
 
-                            // 3. Cập nhật Header
-                            if (HeaderController.getInstance() != null) {
-                                HeaderController.getInstance().updateHeaderUI();
+                            // Chuyển thành User
+                            User loggedInUser = gson.fromJson(jsonString, User.class);
+
+                            if (loggedInUser != null) {
+                                // 1. Lưu vào két sắt
+                                SessionManager.setSession(loggedInUser.getId(), loggedInUser.getUsername(), loggedInUser.getToken());
+
+                                // 2. ÉP HEADER CẬP NHẬT NGAY LẬP TỨC (Dành cho Bidder/Admin/Seller)
+                                if (HeaderController.getInstance() != null) {
+                                    HeaderController.getInstance().updateHeaderUI();
+                                }
+
+                                // 3. Phân quyền chuyển trang
+                                String viewPath = "/views/common/HomeView.fxml";
+                                if ("ADMIN".equals(loggedInUser.getRole())) {
+                                    viewPath = "/views/admin/AdminUserView.fxml";
+                                } else if ("SELLER".equals(loggedInUser.getRole())) {
+                                    viewPath = "/views/seller/AddProductView.fxml";
+                                }
+
+                                // Chuyển cảnh
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource(viewPath));
+                                Parent root = loader.load();
+                                loginButton.getScene().setRoot(root);
                             }
-
-                            // 4. Phân quyền rẽ nhánh giao diện
-                            String viewPath = "/views/common/HomeView.fxml";
-                            String welcomeMsg = "Đăng nhập thành công!";
-
-                            if ("ADMIN".equals(loggedInUser.getRole())) {
-                                viewPath = "/views/admin/AdminUserView.fxml";
-                                welcomeMsg = "Chào mừng sếp Admin đã quay lại!";
-                            }
-
-                            showAlert(Alert.AlertType.INFORMATION, "Thành công", welcomeMsg);
-
-                            // Chuyển trang
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource(viewPath));
-                            Parent root = loader.load();
-                            loginButton.getScene().setRoot(root);
-
                         } catch (Exception e) {
                             e.printStackTrace();
-                            showAlert(Alert.AlertType.ERROR, "Lỗi", "Có lỗi khi xử lý dữ liệu người dùng!");
+                            showAlert(Alert.AlertType.ERROR, "Lỗi", "Lỗi xử lý JSON, xem Console bác ơi!");
                         }
                     } else {
                         showAlert(Alert.AlertType.ERROR, "Lỗi", "Sai tài khoản hoặc mật khẩu!");
@@ -91,7 +91,6 @@ public class LoginPopupController {
                 });
             } catch (Exception e) {
                 e.printStackTrace();
-                Platform.runLater(() -> showAlert(Alert.AlertType.ERROR, "Lỗi kết nối", "Không kết nối được tới Server!"));
             }
         }).start();
     }

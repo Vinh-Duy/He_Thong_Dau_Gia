@@ -14,7 +14,7 @@ public class AuctionDAO {
     
     public List<Auction> getAllActiveAuctions() {
         List<Auction> list = new ArrayList<>();
-        String sql = "SELECT id, name, start_price, current_highest_bid FROM auctions WHERE status = 'OPEN'";
+        String sql = "SELECT id, name, start_price, current_highest_bid FROM auctions";
         
         System.out.println("=> [DB DEBUG] Đang kết nối Database để lấy danh sách...");
         
@@ -54,6 +54,27 @@ public class AuctionDAO {
         } catch (SQLException e) {
             System.err.println("=> [DB DEBUG] LỖI CẬP NHẬT GIÁ:");
             e.printStackTrace();
+        }
+    }
+
+    public boolean addAuction(String id,String name, String desc, double startPrice, String endTime, int sellerId,String status) {
+        String sql = "INSERT INTO auctions (id, name, description, start_price, end_time, seller_id, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, id);
+            pstmt.setString(2, name);
+            pstmt.setString(3, desc);
+            pstmt.setDouble(4, startPrice);
+            pstmt.setString(5, endTime);
+            pstmt.setInt(6, sellerId);
+            pstmt.setString(7, status);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.out.println("=== LỖI DATABASE TẠI ĐÂY BÁC ƠI ===");
+            System.out.println("Mã lỗi: " + e.getErrorCode());
+            System.out.println("Thông báo: " + e.getMessage()); // Dòng này sẽ nói rõ thiếu cột nào hoặc sai ở đâu
+            e.printStackTrace();
+            return false;
         }
     }
 }

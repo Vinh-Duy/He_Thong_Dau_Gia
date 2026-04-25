@@ -8,15 +8,15 @@ import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
+// import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+// import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class SignupController {
-    @FXML
-    private RadioButton personalRadio, orgRadio;
+    // @FXML
+    // private RadioButton personalRadio, orgRadio;
 
     @FXML
     private PasswordField passwordField;
@@ -30,9 +30,6 @@ public class SignupController {
     @FXML
     private ComboBox<String> sexBox;
 
-    @FXML
-    private ComboBox<Integer> dayBox, monthBox, yearBox;
-
     private void updateRule(Label label, boolean ok) {
         if (ok) {
             label.setText("✔ " + label.getText().substring(2));
@@ -45,9 +42,9 @@ public class SignupController {
 
     @FXML
     public void initialize() {
-        ToggleGroup group = new ToggleGroup();
-        personalRadio.setToggleGroup(group);
-        orgRadio.setToggleGroup(group);
+        // ToggleGroup group = new ToggleGroup();
+        // personalRadio.setToggleGroup(group);
+        // orgRadio.setToggleGroup(group);
 
         passwordField.textProperty().addListener((obs, oldVal, newVal) -> {
             updateRule(ruleLength, newVal.length() >= 8);
@@ -58,15 +55,6 @@ public class SignupController {
         });
 
         sexBox.getItems().addAll("Nam", "Nữ", "Chọn giới tính");
-
-        for (int i = 1; i <= 31; i++)
-            dayBox.getItems().add(i);
-
-        for (int i = 1; i <= 12; i++)
-            monthBox.getItems().add(i);
-
-        for (int i = 1950; i <= 2026; i++)
-            yearBox.getItems().add(i);
     }
 
     @FXML

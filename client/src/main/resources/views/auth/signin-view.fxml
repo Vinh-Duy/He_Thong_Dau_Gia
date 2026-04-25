@@ -29,7 +29,7 @@
                             </HBox>
                         </VBox>
 
-                        <TextField styleClass="username" promptText="Tên đăng nhập / Email" />
+                        <TextField styleClass="username" promptText="Tên đăng nhập" />
                         
                         <StackPane styleClass="password">
                             <PasswordField fx:id="passwordField" promptText="Mật khẩu" />

@@ -1,13 +1,5 @@
 @import url(../base-style.css);
 
-ScrollPane {
-    background: transparent;
-    -fx-background: transparent;
-
-    background-color: transparent;
-    -fx-background-color: transparent;
-}
-
 ScrollPane .viewport {
     background-color: -fx-bgc;
     -fx-background-color: -fx-bgc;
@@ -19,8 +11,21 @@ VBox {
 }
 
 .card {
-    min-width: 1000px;
-    -fx-min-width: 1000;
+    min-width: 700px;
+    -fx-min-width: 700;
+
+    max-width: 700px;
+    -fx-max-width: 700;
+
+    -fx-background-radius: 16;
+
+    padding: 40px 45px;
+    -fx-padding: 40 45;
+
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.13), 25, 0, 0, 12);
+
+    background-color: white;
+    -fx-background-color: white;
 }
 
 .title {
@@ -36,8 +41,12 @@ VBox {
     -fx-text-fill: -fx-text-color;
 }
 
+.rule .label {
+    font-size: 10px;
+    -fx-font-size: 10;
+}
+
 .subtitle,
-.account-type *,
 .rule .label {
     -fx-text-fill: -fx-text-color;
 }
@@ -62,34 +71,13 @@ VBox {
     -fx-text-fill: -fx-primary-color;
 }
 
-.radio-button:focused {
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
-}
-
-.radio-button:focused .radio {
-    border-color: -fx-primary-color;
-    -fx-border-color: -fx-primary-color;
-
-    border-width: 2px;
-    -fx-border-width: 2px;
-
-    border-radius: 50%;
-    -fx-border-radius: 50%;
-
-    -fx-border-insets: -2;
-}
-
 .name .text-field:focused,
 .username:focused,
 .password #passwordField:focused,
 .password #passwordTextField:focused,
-.password .eye-btn:focused,
-.re-password:focused,
+.confirm-password:focused,
 .email-phone_number-sex .text-field:focused,
 .email-phone_number-sex .combo-box:focused,
-.birthday .combo-box:focused,
-.address .text-field:focused,
 .btn-primary:focused {
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
@@ -97,10 +85,10 @@ VBox {
     border-color: -fx-primary-color;
     -fx-border-color: -fx-primary-color;
 
-    -fx-background-radius: 5;
+    -fx-background-radius: 8;
 
-    border-radius: 5px;
-    -fx-border-radius: 5;
+    border-radius: 8px;
+    -fx-border-radius: 8px;
 
     border-width: 2px;
     -fx-border-width: 2;
@@ -109,32 +97,43 @@ VBox {
 }
 
 .name,
-.email-phone_number-sex,
-.birthday,
-.address {
-    -fx-spacing: 125;
+.email-phone_number-sex {
+    -fx-spacing: 35;
 }
 
-.account-type,
 .name .text-field,
 .username,
 .password StackPane,
 .password #passwordField,
 .password #passwordTextField,
 .password .eye-btn,
-.re-password,
+.confirm-password,
 .email-phone_number-sex .text-field,
 .email-phone_number-sex .combo-box,
-.birthday #dayBox,
-.birthday #monthBox,
-.birthday #yearBox,
-.address .text-field,
 .btn-primary {
     min-height: 50px;
     -fx-min-height: 50;
 
     font-size: 16px;
     -fx-font-size: 16;
+
+    -fx-background-radius: 8;
+    border-radius: 8px;
+    -fx-border-radius: 8;
+}
+
+.name .text-field,
+.username,
+.password #passwordField,
+.password #passwordTextField,
+.confirm-password,
+.email-phone_number-sex .text-field,
+.email-phone_number-sex .combo-box {
+    background-color: white;
+    -fx-background-color: white;
+
+    border-color: #e0e0e0;
+    -fx-border-color: #e0e0e0;
 }
 
 .password .eye-btn {
@@ -143,19 +142,25 @@ VBox {
 
     font-size: 20px;
     -fx-font-size: 20;
+
+    cursor: hand;
+    -fx-cursor: hand;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+
+    background-color: transparent;
+    -fx-background-color: transparent;
 }
 
-.account-type .label,
-.account-type .radio-button,
 .name .text-field,
 .email-phone_number-sex .text-field,
-.email-phone_number-sex .combo-box,
-.birthday #dayBox,
-.birthday #monthBox,
-.birthday #yearBox,
-.address .text-field {
-    min-width: 250px;
-    -fx-min-width: 250;
+.email-phone_number-sex .combo-box {
+    min-width: 180px;
+    -fx-min-width: 180;
+
+    max-width: 180px;
+    -fx-max-width: 180;
 }
 
 .text-field:focused,
@@ -168,16 +173,10 @@ VBox {
     background-color: white;
     -fx-background-color: white;
 
-    border-color: #cecece;
-    -fx-border-color: #cecece;
+    -fx-background-radius: 8;
 
-    border-radius: 3px;
-    -fx-border-radius: 3px;
-
-    border-width: 1px;
-    -fx-border-width: 1;
-
-    -fx-border-insets: -1;
+    border-radius: 8px;
+    -fx-border-radius: 8px;
 }
 
 .combo-box .list-view,
@@ -206,6 +205,11 @@ VBox {
 
     font-weight: bold;
     -fx-font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: -fx-forth-color;
+    -fx-background-color: -fx-forth-color;
 }
 
 .password HBox {

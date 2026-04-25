@@ -113,7 +113,7 @@ public class HeaderController {
     private void showDanhMucPhuongTienXeCo(ActionEvent event) {
         goTo("/views/bidder/category-view.fxml", loader -> {
             CategoryController categoryController = loader.getController();
-            categoryController.resetCategoryData("PHƯƠNG TIỆN XE CỘ", ProductLoader.loadProducts());
+            categoryController.resetCategoryData("PHƯƠNG TIỆN - XE CỘ", ProductLoader.loadProducts());
         });
     }
 
@@ -121,7 +121,7 @@ public class HeaderController {
     private void showDanhMucSuuTamNgheThuat(ActionEvent event) {
         goTo("/views/bidder/category-view.fxml", loader -> {
             CategoryController categoryController = loader.getController();
-            categoryController.resetCategoryData("SƯU TẦM NGHỆ THUẬT", ProductLoader.loadProducts());
+            categoryController.resetCategoryData("SƯU TẦM - NGHỆ THUẬT", ProductLoader.loadProducts());
         });
     }
 

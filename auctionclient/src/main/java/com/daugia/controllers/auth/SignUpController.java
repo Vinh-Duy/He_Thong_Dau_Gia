@@ -264,6 +264,8 @@ public class SignUpController {
         payload.addProperty("fullName", fullName.trim());
         payload.addProperty("phone", phone);
 
+        payload.addProperty("role", role);
+
         // (Tuỳ chọn) Gửi thêm giới tính/ngày sinh nếu bác muốn thêm cột vào DB sau này
         if (genderBox != null && genderBox.getValue() != null) {
             payload.addProperty("gender", genderBox.getValue());

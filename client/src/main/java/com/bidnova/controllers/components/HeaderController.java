@@ -2,6 +2,7 @@ package com.bidnova.controllers.components;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.function.Consumer;
 
 import com.bidnova.controllers.bidder.CategoryController;
 import com.bidnova.utils.ProductLoader;
@@ -14,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -21,7 +23,8 @@ import javafx.util.Duration;
 public class HeaderController {
     @FXML
     private HBox header;
-
+    @FXML
+    private BorderPane category;
     @FXML
     private Label trangChuLabel;
     @FXML
@@ -57,25 +60,33 @@ public class HeaderController {
         clock.play();
     }
 
-    // hàm này trả về một FXMLLoader để các hàm show danh mục có thể truy cập vào
-    // controller thông qua FXMLLoader này
     @FXML
-    private FXMLLoader goTo(String fxmlPath) {
+    private void goTo(String fxmlPath) {
         try {
             Stage stage = (Stage) header.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             stage.getScene().setRoot(root);
-            return loader;
         } catch (Exception e) {
             System.out.println("Lỗi khi tải trang");
             e.printStackTrace();
-            return null;
         }
     }
 
-    // Do các danh mục mới cần product-card nên mới cần controller để load các card,
-    // còn các trang tĩnh thì không cần, chỉ cần chuyển trang là xong
+    @FXML
+    private void goTo(String fxmlPath, Consumer<FXMLLoader> onLoadComplete) {
+        try {
+            Stage stage = (Stage) header.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+            stage.getScene().setRoot(root);
+            onLoadComplete.accept(loader);
+        } catch (Exception e) {
+            System.out.println("Lỗi khi tải trang");
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private void showTrangChu(MouseEvent event) {
         goTo("/views/common/home-view.fxml");
@@ -83,42 +94,43 @@ public class HeaderController {
 
     @FXML
     private void showDanhMucBatDongSan(ActionEvent event) {
-        FXMLLoader loader = goTo("/views/bidder/category-view.fxml");
-
-        CategoryController categoryController = loader.getController();
-        categoryController.resetCategoryData("BẤT ĐỘNG SẢN", ProductLoader.loadProducts());
+        goTo("/views/bidder/category-view.fxml", loader -> {
+            CategoryController categoryController = loader.getController();
+            categoryController.resetCategoryData("BẤT ĐỘNG SẢN",
+                    ProductLoader.loadProducts());
+        });
     }
 
     @FXML
     private void showDanhMucTaiSanNhaNuoc(ActionEvent event) {
-        FXMLLoader loader = goTo("/views/bidder/category-view.fxml");
-
-        CategoryController categoryController = loader.getController();
-        categoryController.resetCategoryData("TÀI SẢN NHÀ NƯỚC", ProductLoader.loadProducts());
+        goTo("/views/bidder/category-view.fxml", loader -> {
+            CategoryController categoryController = loader.getController();
+            categoryController.resetCategoryData("TÀI SẢN NHÀ NƯỚC", ProductLoader.loadProducts());
+        });
     }
 
     @FXML
     private void showDanhMucPhuongTienXeCo(ActionEvent event) {
-        FXMLLoader loader = goTo("/views/bidder/category-view.fxml");
-
-        CategoryController categoryController = loader.getController();
-        categoryController.resetCategoryData("PHƯƠNG TIỆN - XE CỘ", ProductLoader.loadProducts());
+        goTo("/views/bidder/category-view.fxml", loader -> {
+            CategoryController categoryController = loader.getController();
+            categoryController.resetCategoryData("PHƯƠNG TIỆN XE CỘ", ProductLoader.loadProducts());
+        });
     }
 
     @FXML
     private void showDanhMucSuuTamNgheThuat(ActionEvent event) {
-        FXMLLoader loader = goTo("/views/bidder/category-view.fxml");
-
-        CategoryController categoryController = loader.getController();
-        categoryController.resetCategoryData("SƯU TẦM - NGHỆ THUẬT", ProductLoader.loadProducts());
+        goTo("/views/bidder/category-view.fxml", loader -> {
+            CategoryController categoryController = loader.getController();
+            categoryController.resetCategoryData("SƯU TẦM NGHỆ THUẬT", ProductLoader.loadProducts());
+        });
     }
 
     @FXML
     private void showDanhMucTaiSanKhac(ActionEvent event) {
-        FXMLLoader loader = goTo("/views/bidder/category-view.fxml");
-
-        CategoryController categoryController = loader.getController();
-        categoryController.resetCategoryData("TÀI SẢN KHÁC", ProductLoader.loadProducts());
+        goTo("/views/bidder/category-view.fxml", loader -> {
+            CategoryController categoryController = loader.getController();
+            categoryController.resetCategoryData("TÀI SẢN KHÁC", ProductLoader.loadProducts());
+        });
     }
 
     @FXML

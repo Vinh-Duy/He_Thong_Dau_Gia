@@ -95,7 +95,6 @@ BorderPane {
     -fx-border-color: #aaa;
 
     background-color: #333;
-    /* -fx-background-color: linear-gradient(to right, #f2e6ee, #977ddf); */
     -fx-background-color: #333;
 
     -fx-background-radius: 5;

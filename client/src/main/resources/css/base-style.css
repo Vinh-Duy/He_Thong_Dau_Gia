@@ -1,21 +1,33 @@
 @font-face {
     font-family: Montserrat;
     font-weight: normal;
-    src: url(../fonts/Montserrat-Regular.ttf) format(truetype);
+    src: url("../fonts/Montserrat-Regular.ttf");
 }
 
 @font-face {
-    font-family: Montserrat Medium;
-    src: url(../fonts/Montserrat-Medium.ttf) format(truetype);
+    font-family: "Montserrat Medium";
+    src: url("../fonts/Montserrat-Medium.ttf");
 }
 
 @font-face {
-    font-family: Montserrat Bold;
+    font-family: "Montserrat Bold";
     font-weight: bold;
-    src: url(../fonts/Montserrat-Bold.ttf) format(truetype);
+    src: url("../fonts/Montserrat-Bold.ttf");
 }
 
-* {
+@font-face {
+    font-family: "Inter 18pt";
+    font-weight: normal;
+    src: url("../fonts/Inter_18pt-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Inter 18pt Medium";
+    font-weight: bold;
+    src: url("../fonts/Inter_18pt-Medium.ttf");
+}
+
+.root {
     -fx-primary-color: #ce2626;
     -fx-secondary-color: #52525284;
     -fx-third-color: #fffdeb;
@@ -25,6 +37,8 @@
     -fx-bgc: #ececec;
     font-family: Montserrat;
     -fx-font-family: Montserrat;
+    /* font-family: "Inter 18pt Medium";
+    -fx-font-family: "Inter 18pt Medium"; */
 }
 
 ScrollPane:focused {

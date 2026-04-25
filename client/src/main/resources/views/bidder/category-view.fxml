@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.FlowPane?>
 
-<BorderPane stylesheets="@../../css/bidder/category-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.bidder.CategoryController">
+<BorderPane fx:id="category" stylesheets="@../../css/bidder/category-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.bidder.CategoryController">
     <top>
         <fx:include source="../components/header.fxml" />
     </top>

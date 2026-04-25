@@ -199,8 +199,7 @@ public class ClientHandler implements Runnable {
                                 String fullName = regData.has("fullName") ? regData.get("fullName").getAsString() : "";
                                 String phone = regData.has("phone") ? regData.get("phone").getAsString() : "";
                                 String gender = regData.has("gender") ? regData.get("gender").getAsString() : "";
-                                // 🔥 THÊM DÒNG NÀY ĐỂ LẤY ROLE (Nếu Client không gửi thì mặc định là BIDDER)
-                                String role = regData.has("role") ? regData.get("role").getAsString() : "BIDDER";
+                                String role = regData.get("role").getAsString();
 
                                 // 🔥 TRUYỀN THÊM biền role VÀO HÀM DAO
                                 boolean isRegistered = userDAO.registerUser(newUsername, newPassword, email, fullName, phone, gender, role);

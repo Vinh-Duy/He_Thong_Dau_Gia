@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.ToggleGroup?>
+
+<BorderPane fx:id="mainBorderPane" prefWidth="1200" stylesheets="@../../css/auth/signup-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.auth.SignupController">
+    <top>
+        <fx:include source="../components/header.fxml" />
+    </top>
+    
+    <center>
+        <ScrollPane fitToWidth="true">
+            <content>
+                <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40;">
+                    <VBox alignment="CENTER" spacing="20.0" styleClass="card">
+                        <VBox alignment="CENTER" spacing="5">
+                            <Label styleClass="title" text="Đăng ký" />
+                            <HBox alignment="CENTER" spacing="5" styleClass="to-signin">
+                                <Label styleClass="subtitle" text="Bạn đã có tài khoản?" />
+                                <Label onMouseClicked="#goToSignin" styleClass="signin-label" text="Đăng nhập ngay" />
+                            </HBox>
+                        </VBox>
+
+                        <HBox alignment="CENTER_LEFT" styleClass="name">
+                            <TextField minWidth="180.0" promptText="Họ" />
+                            <TextField minWidth="180.0" promptText="Tên đệm" />
+                            <TextField minWidth="180.0" promptText="Tên" />
+                        </HBox>
+
+                        <TextField promptText="Tên đăng nhập" styleClass="username" />
+
+                        <VBox spacing="5" styleClass="password">
+                            <StackPane>
+                                <PasswordField fx:id="passwordField" promptText="Mật khẩu" />
+                                <TextField fx:id="passwordTextField" managed="false" visible="false" />
+                                <Button onAction="#togglePassword" styleClass="eye-btn" text="👁" StackPane.alignment="CENTER_RIGHT" />
+                            </StackPane>
+                            <HBox styleClass="rule">
+                                <Label fx:id="ruleLength" text="✖ Tối thiểu 8 ký tự" />
+                                <Label fx:id="ruleUpper" text="✖ Chứa ký tự viết hoa" />
+                                <Label fx:id="ruleLower" text="✖ Chứa ký tự viết thường" />
+                                <Label fx:id="ruleNumber" text="✖ Chứa chữ số" />
+                                <Label fx:id="ruleSpecial" text="✖ Chứa ký tự đặc biệt" />
+                            </HBox>
+                        </VBox>
+
+                        <PasswordField promptText="Nhập lại mật khẩu" styleClass="confirm-password" />
+
+                        <HBox styleClass="email-phone_number-sex">
+                            <TextField promptText="Email" />
+                            <TextField promptText="Số điện thoại" />
+                            <ComboBox fx:id="sexBox" promptText="Chọn giới tính" />
+                        </HBox>
+                        
+                        <Button styleClass="btn-primary" text="ĐĂNG KÝ TÀI KHOẢN" />
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

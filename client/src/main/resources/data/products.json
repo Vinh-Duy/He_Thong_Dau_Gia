@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "name": "Biệt thự sân vườn",
+        "category": "BẤT ĐỘNG SẢN",
+        "startingPrice": 50000000000,
+        "imagePath": "/images/house.png",
+        "startTime": "2026-04-19T10:00:00",
+        "endTime": "2027-04-20T11:00:00"
+    },
+    {
+        "id": 2,
+        "name": "Xe Mercedes-Benz G63",
+        "category": "PHƯƠNG TIỆN - XE CỘ",
+        "startingPrice": 12000000000,
+        "imagePath": "/images/car.png",
+        "startTime": "2026-04-20T14:30:00",
+        "endTime": "2027-04-20T15:30:00"
+    }
+]

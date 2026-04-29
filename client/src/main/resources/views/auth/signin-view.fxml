@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="mainBorderPane" prefWidth="1200" stylesheets="@../../css/auth/signin-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.auth.SigninController">
+    <top>
+        <fx:include source="../components/header.fxml"/>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true">
+            <content>
+                <VBox alignment="CENTER" style="-fx-padding: 40 0;">
+                    <VBox alignment="CENTER" maxWidth="500" prefWidth="500.0" spacing="25.0" styleClass="card">
+                        <VBox alignment="CENTER" spacing="8">
+                            <Label styleClass="title" text="Đăng nhập" />
+                            <HBox alignment="CENTER" spacing="5" styleClass="to-signup">
+                                <Label styleClass="subtitle" text="Bạn chưa có tài khoản?" />
+                                <Label styleClass="signup-label" text="Đăng ký ngay" onMouseClicked="#goToSignup" />
+                            </HBox>
+                        </VBox>
+
+                        <TextField styleClass="username" promptText="Tên đăng nhập" />
+                        
+                        <StackPane styleClass="password">
+                            <PasswordField fx:id="passwordField" promptText="Mật khẩu" />
+                            <TextField fx:id="passwordTextField" managed="false" visible="false" />
+                            <Button onAction="#togglePassword" styleClass="eye-btn" text="👁" StackPane.alignment="CENTER_RIGHT" />
+                        </StackPane>
+
+                        <HBox alignment="CENTER_RIGHT">
+                            <Label text="Quên mật khẩu?" styleClass="forgot-link" />
+                        </HBox>
+
+                        <Button fx:id="loginButton" styleClass="btn-primary" text="ĐĂNG NHẬP" />
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

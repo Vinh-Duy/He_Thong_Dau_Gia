@@ -71,6 +71,42 @@ VBox {
     -fx-text-fill: -fx-primary-color;
 }
 
+.role .label {
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    font-size: 14px;
+    -fx-font-size: 14;
+
+    -fx-text-fill: -fx-text-color;
+}
+
+.role .radio-button {
+    cursor: hand;
+    -fx-cursor: hand;
+
+    font-size: 14px;
+    -fx-font-size: 14;
+
+    -fx-text-fill: -fx-text-color;
+}
+
+.role .radio-button:focused .radio {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+
+    border-color: -fx-primary-color;
+    -fx-border-color: -fx-primary-color;
+
+    border-radius: 50%;
+    -fx-border-radius: 50%;
+
+    border-width: 2px;
+    -fx-border-width: 2;
+
+    -fx-border-insets: -2;
+}
+
 .name .text-field:focused,
 .username:focused,
 .password #passwordField:focused,
@@ -179,12 +215,29 @@ VBox {
     -fx-border-radius: 8px;
 }
 
-.combo-box .list-view,
 .combo-box .list-view {
     background-color: -fx-third-color;
     -fx-background-color: -fx-third-color;
 
+    -fx-background-radius: 8;
+
+    border-radius: 8px;
+    -fx-border-radius: 8;
+
     -fx-text-fill: -fx-text-color;
+}
+
+.combo-box .list-view .list-cell {
+    min-height: 36px;
+    -fx-min-height: 36;
+
+    max-height: 36px;
+    -fx-max-height: 36;
+
+    -fx-background-radius: 8;
+
+    border-radius: 8px;
+    -fx-border-radius: 8;
 }
 
 .combo-box .list-view .list-cell:hover,

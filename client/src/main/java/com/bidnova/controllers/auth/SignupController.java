@@ -1,22 +1,48 @@
 package com.bidnova.controllers.auth;
 
+import com.bidnova.utils.SocketClient;
+import com.bidnova.network.Request;
+import com.bidnova.network.Response;
+
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
 // import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 // import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class SignupController {
-    // @FXML
-    // private RadioButton personalRadio, orgRadio;
+    @FXML
+    private RadioButton rbBidderButton;
+
+    @FXML
+    private RadioButton rbSellerButton;
+
+    @FXML
+    private TextField firstNameField;
+
+    @FXML
+    private TextField middleNameField;
+
+    @FXML
+    private TextField lastNameField;
+
+    @FXML
+    private TextField username;
+
+    @FXML
+    private TextField emailField;
+
+    @FXML
+    private TextField phoneField;
 
     @FXML
     private PasswordField passwordField;
@@ -28,7 +54,7 @@ public class SignupController {
     private Label ruleLength, ruleUpper, ruleLower, ruleNumber, ruleSpecial;
 
     @FXML
-    private ComboBox<String> sexBox;
+    private ComboBox<String> genderBox;
 
     private void updateRule(Label label, boolean ok) {
         if (ok) {
@@ -42,10 +68,6 @@ public class SignupController {
 
     @FXML
     public void initialize() {
-        // ToggleGroup group = new ToggleGroup();
-        // personalRadio.setToggleGroup(group);
-        // orgRadio.setToggleGroup(group);
-
         passwordField.textProperty().addListener((obs, oldVal, newVal) -> {
             updateRule(ruleLength, newVal.length() >= 8);
             updateRule(ruleUpper, newVal.matches(".*[A-Z].*"));
@@ -54,7 +76,7 @@ public class SignupController {
             updateRule(ruleSpecial, newVal.matches(".*[!@#$%^&*()].*"));
         });
 
-        sexBox.getItems().addAll("Nam", "Nữ", "Chọn giới tính");
+        genderBox.getItems().addAll("Nam", "Nữ", "Chọn giới tính");
     }
 
     @FXML
@@ -72,7 +94,7 @@ public class SignupController {
     }
 
     @FXML
-    private void goToSignin(MouseEvent event) {
+    private void goToSignin(Event event) {
         goTo(event, "/views/auth/signin-view.fxml");
     }
 
@@ -94,6 +116,44 @@ public class SignupController {
 
             passwordTextField.setVisible(false);
             passwordTextField.setManaged(false);
+        }
+    }
+
+    // định nghĩa hàm alert để hiển thị thông báo cho người dùng
+    private void alert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void handleSignup(Event event) {
+        // 1. Lấy dữ liệu từ giao diện
+        String user = username.getText();
+        String pass = passwordField.getText();
+        String email = emailField.getText();
+        String fullName = firstNameField.getText() + " " + middleNameField.getText() + " " + lastNameField.getText();
+        String phone = phoneField.getText();
+        String gender = genderBox.getValue();
+        String role = (rbBidderButton != null && rbBidderButton.isSelected()) ? "BIDDER" : "SELLER";
+
+        // 2. Kiểm tra sơ bộ (Validation)
+        if (user.isEmpty() || pass.isEmpty()) {
+            alert("Lỗi", "Không được để trống các trường bắt buộc!");
+            return;
+        }
+
+        // 3. Gửi yêu cầu REGISTER tới Server
+        Request request = new Request("REGISTER", user, pass, email, fullName, phone, gender, role);
+        Response response = SocketClient.sendRequest(request);
+        
+        if (response != null && response.getStatus().equals("SUCCESS")) {
+            alert("Thành công", response.getMessage());
+            goToSignin(event);
+        } else {
+            alert("Lỗi", response != null ? response.getMessage() : "Đăng ký thất bại!");
         }
     }
 }

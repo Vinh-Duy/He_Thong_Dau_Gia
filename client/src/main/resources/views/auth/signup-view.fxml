@@ -35,13 +35,25 @@
                             </HBox>
                         </VBox>
 
-                        <HBox alignment="CENTER_LEFT" styleClass="name">
-                            <TextField minWidth="180.0" promptText="Họ" />
-                            <TextField minWidth="180.0" promptText="Tên đệm" />
-                            <TextField minWidth="180.0" promptText="Tên" />
+                        <HBox styleClass="role" spacing="20" alignment="CENTER_LEFT">
+                            <Label text="Bạn tham gia với vai trò:" />
+                            
+                            <RadioButton fx:id="rbBidderButton" text="Người mua (Bidder)" selected="true">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="roleGroup" />
+                                </toggleGroup>
+                            </RadioButton>
+
+                            <RadioButton fx:id="rbSellerButton" text="Người bán (Seller)" toggleGroup="$roleGroup"/>
                         </HBox>
 
-                        <TextField promptText="Tên đăng nhập" styleClass="username" />
+                        <HBox alignment="CENTER_LEFT" styleClass="name">
+                            <TextField fx:id="firstNameField" minWidth="180.0" promptText="Họ" />
+                            <TextField fx:id="middleNameField" minWidth="180.0" promptText="Tên đệm" />
+                            <TextField fx:id="lastNameField" minWidth="180.0" promptText="Tên" />
+                        </HBox>
+
+                        <TextField promptText="Tên đăng nhập" styleClass="username" fx:id="username" />
 
                         <VBox spacing="5" styleClass="password">
                             <StackPane>
@@ -61,12 +73,12 @@
                         <PasswordField promptText="Nhập lại mật khẩu" styleClass="confirm-password" />
 
                         <HBox styleClass="email-phone_number-sex">
-                            <TextField promptText="Email" />
-                            <TextField promptText="Số điện thoại" />
-                            <ComboBox fx:id="sexBox" promptText="Chọn giới tính" />
+                            <TextField fx:id="emailField" promptText="Email" />
+                            <TextField fx:id="phoneField"  promptText="Số điện thoại" />
+                            <ComboBox fx:id="genderBox" promptText="Chọn giới tính" />
                         </HBox>
                         
-                        <Button styleClass="btn-primary" text="ĐĂNG KÝ TÀI KHOẢN" />
+                        <Button onAction="#handleSignup" styleClass="btn-primary" text="ĐĂNG KÝ TÀI KHOẢN" />
                     </VBox>
                 </VBox>
             </content>

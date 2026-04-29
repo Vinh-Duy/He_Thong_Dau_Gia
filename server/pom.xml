@@ -19,6 +19,7 @@
     </properties>
 
     <dependencies>
+        <!-- Unit Testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -26,10 +27,18 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- MySQL Connector -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>8.3.0</version>
+        </dependency>
+
+        <!-- Password Hashing -->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
         </dependency>
     </dependencies>
 
@@ -80,6 +89,21 @@
             <plugin>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>3.0.0</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <options>
+                        <option>-Dfile.encoding=UTF-8</option>
+                        <option>-Dsun.stdout.encoding=UTF-8</option>
+                        <option>-Dsun.err.encoding=UTF-8</option>
+                        <option>--enable-native-access=javafx.graphics</option>
+                    </options>
+                    <mainClass>com.bidnova.ServerMain</mainClass> 
+                </configuration>
             </plugin>
         </plugins>
         </pluginManagement>

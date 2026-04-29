@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import com.bidnova.controllers.bidder.CategoryController;
 import com.bidnova.utils.ProductLoader;
+import com.bidnova.utils.UserSession;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -42,9 +43,21 @@ public class HeaderController {
     private Label dateLabel;
 
     @FXML
+    private HBox authBox;
+    @FXML
+    private HBox userBox;
+    @FXML
+    private Label userLabel;
+
+    @FXML
     public void initialize() {
         startClock();
         header.toFront();
+            if (UserSession.getInstance().isSignedIn()) {
+            showUserBox(UserSession.getInstance().getUsername());
+        } else {
+            showAuthBox();
+        }
     }
 
     private void startClock() {
@@ -134,40 +147,49 @@ public class HeaderController {
     }
 
     @FXML
-    private void showDanhMucSapDauGia(ActionEvent event) {
-        // todo: chuyển tới trang sắp đấu giá
-        System.out.println("Đang show danh mục Sắp đấu giá");
-    }
-
-    @FXML
-    private void showDanhMucDangDauGia(ActionEvent event) {
-        // todo: chuyển tới trang đang đấu giá
-        System.out.println("Đang show danh mục Đang đấu giá");
-    }
-
-    @FXML
-    private void showDanhMucDaDauGia(ActionEvent event) {
-        // todo: chuyển tới trang đã đấu giá
-        System.out.println("Đang show danh mục Đã đấu giá");
-    }
-
-    @FXML
-    private void showGioiThieu(MouseEvent event) {
+    private void showGioiThieu() {
         goTo("/views/common/gioi-thieu-view.fxml");
     }
 
     @FXML
-    private void showLienHe(MouseEvent event) {
+    private void showLienHe() {
         goTo("/views/common/lien-he-view.fxml");
     }
 
     @FXML
-    private void goToSignup(MouseEvent event) {
+    private void goToSignup() {
         goTo("/views/auth/signup-view.fxml");
     }
 
     @FXML
-    private void goToSignin(MouseEvent event) {
+    private void goToSignin() {
         goTo("/views/auth/signin-view.fxml");
+    }
+
+    @FXML
+    private void goToHome() {
+        goTo("/views/common/home-view.fxml");
+    }
+
+    @FXML
+    private void handleLogout(MouseEvent event) {
+        UserSession.getInstance().signout();
+        showAuthBox();
+        goToHome();
+    }
+
+    public void showUserBox(String userName) {
+        authBox.setVisible(false);
+        authBox.setManaged(false);
+        userBox.setVisible(true);
+        userBox.setManaged(true);
+        userLabel.setText("Xin chào, " + userName);
+    }
+
+    public void showAuthBox() {
+        authBox.setVisible(true);
+        authBox.setManaged(true);
+        userBox.setVisible(false);
+        userBox.setManaged(false);
     }
 }

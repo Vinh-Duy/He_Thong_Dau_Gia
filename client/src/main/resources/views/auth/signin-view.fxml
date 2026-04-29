@@ -29,7 +29,7 @@
                             </HBox>
                         </VBox>
 
-                        <TextField styleClass="username" promptText="Tên đăng nhập" />
+                        <TextField fx:id="username" styleClass="username" promptText="Tên đăng nhập" />
                         
                         <StackPane styleClass="password">
                             <PasswordField fx:id="passwordField" promptText="Mật khẩu" />
@@ -41,7 +41,7 @@
                             <Label text="Quên mật khẩu?" styleClass="forgot-link" />
                         </HBox>
 
-                        <Button fx:id="loginButton" styleClass="btn-primary" text="ĐĂNG NHẬP" />
+                        <Button fx:id="loginButton" styleClass="btn-primary" onAction="#handleSignin" text="ĐĂNG NHẬP" />
                     </VBox>
                 </VBox>
             </content>

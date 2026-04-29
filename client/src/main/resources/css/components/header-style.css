@@ -88,10 +88,15 @@
     font-size: 20px;
 }
 
-.signup-btn {
+.signup-btn,
+#userLabel {
     -fx-alignment: center;
-    min-width: 120;
+
+    min-width: 120px;
     -fx-min-width: 120;
+
+    max-width: 120px;
+    -fx-max-width: 120;
 
     background-color: -fx-third-color;
     -fx-background-color: -fx-third-color;
@@ -117,17 +122,31 @@
     -fx-border-color: transparent;
 }
 
-.signup-btn:hover {
+#userLabel {
+    min-width: 150px;
+    -fx-min-width: 150;
+
+    max-width: 150px;
+    -fx-max-width: 150;
+}
+
+.signup-btn:hover,
+#userLabel:hover {
     background-color: -fx-primary-color;
     -fx-background-color: -fx-primary-color;
 
     -fx-text-fill: -fx-third-color;
 }
 
-.signin-btn {
+.signin-btn,
+.signout-btn {
     -fx-alignment: center;
-    min-width: 100;
-    -fx-min-width: 100;
+
+    min-width: 120px;
+    -fx-min-width: 120;
+
+    max-width: 120px;
+    -fx-max-width: 120;
 
     background-color: -fx-primary-color;
     -fx-background-color: -fx-primary-color;
@@ -150,7 +169,8 @@
     -fx-cursor: hand;
 }
 
-.signin-btn:hover {
+.signin-btn:hover,
+.signout-btn:hover {
     background-color: -fx-third-color;
     -fx-background-color: -fx-third-color;
 

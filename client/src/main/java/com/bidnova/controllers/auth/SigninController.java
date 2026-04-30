@@ -93,7 +93,6 @@ public class SigninController {
         if (response != null && response.getStatus().equals("SUCCESS")) {
             alert("Thành công", response.getMessage());
             System.out.println("Role: " + response.getData());
-            // TODO: Lưu role vào session/local storage, sau đó navigate đến trang chủ
             // update header để hiển thị tên người dùng và nút đăng xuất
             UserSession.getInstance().signin(user);
 

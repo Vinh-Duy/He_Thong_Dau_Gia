@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.Insets?>
+
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -7,13 +7,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="mainBorderPane" prefWidth="1200" stylesheets="@../../css/auth/signin-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.auth.SigninController">
     <top>
-        <fx:include source="../components/header.fxml"/>
+        <fx:include source="../components/header.fxml" />
     </top>
 
     <center>
@@ -25,23 +24,23 @@
                             <Label styleClass="title" text="Đăng nhập" />
                             <HBox alignment="CENTER" spacing="5" styleClass="to-signup">
                                 <Label styleClass="subtitle" text="Bạn chưa có tài khoản?" />
-                                <Label styleClass="signup-label" text="Đăng ký ngay" onMouseClicked="#goToSignup" />
+                                <Label onMouseClicked="#goToSignup" styleClass="signup-label" text="Đăng ký ngay" />
                             </HBox>
                         </VBox>
 
-                        <TextField fx:id="username" styleClass="username" promptText="Tên đăng nhập" />
+                        <TextField fx:id="username" promptText="Tên đăng nhập" styleClass="username" />
                         
                         <StackPane styleClass="password">
                             <PasswordField fx:id="passwordField" promptText="Mật khẩu" />
                             <TextField fx:id="passwordTextField" managed="false" visible="false" />
-                            <Button onAction="#togglePassword" styleClass="eye-btn" text="👁" StackPane.alignment="CENTER_RIGHT" />
+                            <Button focusTraversable="false" onAction="#togglePassword" styleClass="eye-btn" text="👁" StackPane.alignment="CENTER_RIGHT" />
                         </StackPane>
 
                         <HBox alignment="CENTER_RIGHT">
-                            <Label text="Quên mật khẩu?" styleClass="forgot-link" />
+                            <Label styleClass="forgot-link" text="Quên mật khẩu?" />
                         </HBox>
 
-                        <Button fx:id="loginButton" styleClass="btn-primary" onAction="#handleSignin" text="ĐĂNG NHẬP" />
+                        <Button fx:id="loginButton" onAction="#handleSignin" styleClass="btn-primary" text="ĐĂNG NHẬP" />
                     </VBox>
                 </VBox>
             </content>

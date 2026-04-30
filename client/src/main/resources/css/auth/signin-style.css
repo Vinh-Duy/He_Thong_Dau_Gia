@@ -55,6 +55,18 @@
 .password .eye-btn {
     min-width: 50px;
     -fx-min-width: 50;
+
+    font-size: 20px;
+    -fx-font-size: 20;
+
+    cursor: hand;
+    -fx-cursor: hand;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+
+    background-color: transparent;
+    -fx-background-color: transparent;
 }
 
 .username:focused,

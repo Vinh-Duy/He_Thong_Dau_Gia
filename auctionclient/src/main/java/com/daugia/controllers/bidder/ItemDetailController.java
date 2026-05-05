@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Currency;
 import java.util.Locale;
 
 import javafx.fxml.FXML;
@@ -41,6 +42,7 @@ public class ItemDetailController {
     }
 
     public void setAuctionId(String id) {
+        // ĐÃ SỬA: Đổi B1 thành A001 để khớp với Database của bác
         this.currentAuctionId = id.equals("B1") ? "A001" : id; 
         System.out.println("Trang chi tiết đã nhận được ID thật là: " + currentAuctionId);
         
@@ -90,7 +92,7 @@ public class ItemDetailController {
 
             System.out.println("BẮT ĐẦU GỬI MẠNG CHO ID: " + currentAuctionId);
             
-            // KẾT NỐI SERVER THẬT
+            // --- ĐOẠN NÀY LÀ TÔI VIẾT MỚI: KẾT NỐI SERVER THẬT ---
             // 1. Tạo chuỗi JSON thủ công để gửi đi (giả sử user đang mượn tên là 'guest')
             String payload = String.format("{\\\"auctionId\\\":\\\"%s\\\", \\\"amount\\\":%d, \\\"username\\\":\\\"guest\\\"}", 
                                             currentAuctionId, placedBidValue);
@@ -132,6 +134,7 @@ public class ItemDetailController {
 
     private String formatVietnameseCurrency(long amount) {
         Locale localeVN = new Locale("vi", "VN");
+        Currency currencyVN = Currency.getInstance(localeVN);
         java.text.NumberFormat vnCurrencyFormat = java.text.NumberFormat.getCurrencyInstance(localeVN);
         return vnCurrencyFormat.format(amount);
     }

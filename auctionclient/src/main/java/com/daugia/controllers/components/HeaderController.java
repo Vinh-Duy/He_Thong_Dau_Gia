@@ -43,6 +43,10 @@ public class HeaderController {
     @FXML private HBox userInfoBox;
     @FXML private Label userNameLabel;
 
+    // Mẹo để gọi Header từ bất cứ đâu
+    private static HeaderController instance;
+    public static HeaderController getInstance() { return instance; }
+
     // Hàm "ảo thuật" chính
     public void updateHeaderUI() {
         boolean loggedIn = com.daugia.utils.SessionManager.isLoggedIn();
@@ -89,6 +93,7 @@ public class HeaderController {
     @FXML
     public void initialize() {
         startClock();
+        instance = this; // Lưu lại chính nó khi vừa khởi tạo
         updateHeaderUI(); // Kiểm tra trạng thái đăng nhập ngay khi mở app
     }
 

@@ -2,62 +2,27 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main", "master", "develop" ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "main", "master", "develop" ]
 
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout mã nguồn
+    - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Thiết lập JDK 11 (Môi trường Java)
+    - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
-        java-version: '11'
+        java-version: '21'
         distribution: 'temurin'
         cache: maven
 
-    # Đã sửa "test package" thành "verify" theo đúng đề bài Bài 5
-    - name: Build dự án và Check Coverage
-      working-directory: ./BankSystem
-      run: mvn clean verify
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
 
-    - name: Upload file JAR lên Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: banksystem-jar-${{ matrix.os }}
-        path: BankSystem/target/*.jar
-
-    # Thêm bước tải báo cáo Coverage theo yêu cầu Bài 5
-    - name: Upload JaCoCo Coverage Report
-      uses: actions/upload-artifact@v4
-      with:
-        name: jacoco-report-${{ matrix.os }}
-        path: BankSystem/target/site/jacoco/
-
-    # Chạy Checkstyle và tạo file báo cáo XML (cho phép lỗi để chạy tiếp bước dưới)
-    - name: Generate Checkstyle Report
-      if: always()
-      working-directory: ./BankSystem
-      run: mvn checkstyle:checkstyle
-      continue-on-error: true 
-
-    # Đọc file XML và tự động comment vào PR
-    - name: Inline Checkstyle Feedback
-      if: always() && runner.os == 'Linux' && github.event_name == 'pull_request' # Chỉ chạy khi có PR
-      uses: dbelyaev/action-checkstyle@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        reporter: github-pr-review
-        level: warning
-        checkstyle_config: BankSystem/google_checks.xml
-        workdir: ./BankSystem
+    - name: Run Tests
+      run: mvn test

@@ -1,4 +1,4 @@
-package com.daugia.services; // Bác nhớ check lại tên package cho chuẩn nhé
+package com.daugia.services;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,14 +6,14 @@ import java.sql.ResultSet;
 import java.util.UUID;
 
 import com.daugia.database.DatabaseConnection;
-import com.daugia.network.Response; // Import cái file nối DB của bác vào
+import com.daugia.network.Response; // Import cái file nối DB 
 
 public class ServerManager {
 
     public Response handleLogin(String username, String password) {
         System.out.println("Client đang yêu cầu đăng nhập với tài khoản: " + username);
         
-        // Gọi ống nước nối xuống DB
+        // Gọi nối xuống DB
         try (Connection conn = DatabaseConnection.getConnection()) {
             
             if (conn == null) {

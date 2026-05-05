@@ -7,7 +7,6 @@ import com.daugia.models.Auction;
 public class AuctionManager {
     private static AuctionManager instance;
     
-    // 1. Đổi Integer thành String để nhận ID kiểu "A001"
     private ConcurrentHashMap<String, Auction> activeAuctions;
 
     private AuctionManager() {

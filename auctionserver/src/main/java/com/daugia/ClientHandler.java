@@ -23,7 +23,7 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private Gson gson = new Gson();
 
-    // 1. TẠO DANH SÁCH LƯU TẤT CẢ CLIENT ĐANG KẾT NỐI
+    //  TẠO DANH SÁCH LƯU TẤT CẢ CLIENT ĐANG KẾT NỐI
     // Dùng ConcurrentHashMap.newKeySet() để không bị lỗi đụng độ (crash) khi có người thoát ra giữa lúc đang gửi tin
     private static Set<PrintWriter> clientWriters = ConcurrentHashMap.newKeySet();
 
@@ -62,7 +62,6 @@ public class ClientHandler implements Runnable {
                             User userDaLogin = userDAO.checkLogin(username, password);
 
                             if (userDaLogin != null) {
-                                // 🔥 CHỖ NÀY QUAN TRỌNG NHẤT: 
                                 // Ép đối tượng User thành chuỗi JSON, rồi mới nhét vào Response
                                 String userJsonPayload = gson.toJson(userDaLogin);
                                 
@@ -88,10 +87,9 @@ public class ClientHandler implements Runnable {
                                     break;
                                 }
 
-                                // =================================================================
-                                // 🔥 BẮT ĐẦU CHỐNG RACE CONDITION Ở ĐÂY (ĂN TRỌN 1 ĐIỂM) 🔥
+                                //CHỐNG RACE CONDITION Ở ĐÂY 
                                 // Khóa riêng món hàng này lại (Các món hàng khác vẫn được mua bán bình thường)
-                                // =================================================================
+
                                 synchronized (currentAuction) {
                                     
                                     // 2. Kiểm tra lại giá một lần nữa BÊN TRONG KHÓA (Double-check an toàn tuyệt đối)
@@ -121,7 +119,7 @@ public class ClientHandler implements Runnable {
                                     broadcast(gson.toJson(broadcastReq));
                                     
                                 } 
-                                // === KẾT THÚC KHÓA (Ổ KHÓA TỰ ĐỘNG MỞ) ===
+                                // KẾT THÚC KHÓA (Ổ KHÓA TỰ ĐỘNG MỞ)
 
                             } catch (Exception e) {
                                 System.out.println("Lỗi khi xử lý đặt giá: " + e.getMessage());
@@ -148,15 +146,14 @@ public class ClientHandler implements Runnable {
                                 out.println(duLieuGuiDi);
                                 
                             } catch (Exception e) {
-                                // NẾU CÓ LỖI, NÓ SẼ BÁO ĐỎ CHÓT Ở SERVER VÀ GỬI LỖI VỀ CLIENT
-                                System.out.println("!!! LỖI KHI LẤY DANH SÁCH HÀNG CỦA CLIENT !!!");
+
+                                System.out.println("LỖI KHI LẤY DANH SÁCH HÀNG CỦA CLIENT ");
                                 e.printStackTrace();
                                 response = new Response("ERROR", "Lỗi nội bộ Server: " + e.getMessage(), null);
                                 out.println(gson.toJson(response));
                             }
                             break;
-                        
-                        // 🔥 THÊM NGUYÊN KHỐI NÀY VÀO DƯỚI CASE GET_ALL_AUCTIONS 🔥
+
                         case "GET_AUCTIONS_BY_CATEGORY":
                             try {
                                 // 1. Lấy tên danh mục Client muốn xem từ payload (Ví dụ: "Bất động sản")
@@ -188,7 +185,6 @@ public class ClientHandler implements Runnable {
                             }
                             break;
 
-                        // ... các case cũ ...
                         case "REGISTER":
                             try {
                                 // 1. Bóc tách dữ liệu từ Client gửi lên
@@ -201,7 +197,7 @@ public class ClientHandler implements Runnable {
                                 String gender = regData.has("gender") ? regData.get("gender").getAsString() : "";
                                 String role = regData.get("role").getAsString();
 
-                                // 🔥 TRUYỀN THÊM biền role VÀO HÀM DAO
+                                // TRUYỀN THÊM biền role VÀO HÀM DAO
                                 boolean isRegistered = userDAO.registerUser(newUsername, newPassword, email, fullName, phone, gender, role);
 
                                 // 3. Trả lời Client
@@ -233,20 +229,20 @@ public class ClientHandler implements Runnable {
                             } catch (Exception e) {
                                 out.println(gson.toJson(new Response("ERROR", "Lỗi khi lấy danh sách user", null)));
                             }
-                            break; // QUAN TRỌNG!
+                            break; 
                         
                         case "ADD_PRODUCT":
                             try {
                                 // 1. Giải mã món hàng từ Client gửi lên
                                 Auction newAuction = gson.fromJson(request.getPayload(), Auction.class);
                                 
-                                // 2. Tự tạo ID duy nhất (Ví dụ: A1714012345678)
+                                // 2. Tự tạo ID duy nhất
                                 String newId = "A" + System.currentTimeMillis();
                                 newAuction.setId(newId);
                                 newAuction.setStatus("OPEN"); // Đảm bảo trạng thái luôn là mở khi mới đăng
 
                                 // 3. Gọi DAO để lưu xuống MySQL
-                                // Lưu ý: Dòng này sẽ trả về true nếu bác đã sửa "> 1" thành "> 0" ở AuctionDAO
+                                
                                 boolean success = auctionDAO.addAuction(
                                     newAuction.getId(),
                                     newAuction.getName(),
@@ -285,7 +281,7 @@ public class ClientHandler implements Runnable {
                     }
                     
                 } catch (Exception reqEx) {
-                    reqEx.printStackTrace(); // THÊM DÒNG NÀY VÀO ĐỂ HIỆN LỖI ĐỎ NẾU CÓ
+                    reqEx.printStackTrace();
                     Response errorResponse = new Response("ERROR", "Dữ liệu yêu cầu không hợp lệ", null);
                     out.println(gson.toJson(errorResponse));
                 }
@@ -293,7 +289,7 @@ public class ClientHandler implements Runnable {
         } catch (Exception e) {
             System.out.println("Client ngắt kết nối: " + e.getMessage());
         } finally {
-            // 4. KHI CLIENT TẮT APP/MẤT MẠNG -> RÚT ỐNG THỞ CỦA HỌ KHỎI DANH SÁCH
+            //  KHI CLIENT TẮT APP/MẤT MẠNG -> RÚT KẾT NỐI CỦA HỌ KHỎI DANH SÁCH
             if (out != null) {
                 clientWriters.remove(out);
             }
@@ -301,7 +297,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    // 5. HÀM CẦM LOA HÉT CHO TẤT CẢ MỌI NGƯỜI
+    //  HÀM BROADCAST CHO TẤT CẢ MỌI NGƯỜI
     private void broadcast(String message) {
         for (PrintWriter writer : clientWriters) {
             try {

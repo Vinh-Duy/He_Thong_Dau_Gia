@@ -28,43 +28,78 @@ import javafx.stage.Stage;
 
 public class SignUpController {
 
-    @FXML private Label timeLabel;
-    @FXML private Label dateLabel;
+    @FXML
+    private Label timeLabel;
+    @FXML
+    private Label dateLabel;
 
-    @FXML private ComboBox<Integer> dayBox;
-    @FXML private ComboBox<Integer> monthBox;
-    @FXML private ComboBox<Integer> yearBox;
-    @FXML private ComboBox<String> genderBox;
+    @FXML
+    private ComboBox<Integer> dayBox;
+    @FXML
+    private ComboBox<Integer> monthBox;
+    @FXML
+    private ComboBox<Integer> yearBox;
+    @FXML
+    private ComboBox<String> genderBox;
 
-    @FXML private Label ruleLength;
-    @FXML private Label ruleUpper;
-    @FXML private Label ruleLower;
-    @FXML private Label ruleNumber;
-    @FXML private Label ruleSpecial;
-    @FXML private RadioButton personalRadio;
-    @FXML private RadioButton orgRadio;
-    @FXML private TextField passwordTextField;
+    @FXML
+    private Label ruleLength;
+    @FXML
+    private Label ruleUpper;
+    @FXML
+    private Label ruleLower;
+    @FXML
+    private Label ruleNumber;
+    @FXML
+    private Label ruleSpecial;
+    @FXML
+    private RadioButton personalRadio;
+    @FXML
+    private RadioButton orgRadio;
+    @FXML
+    private TextField passwordTextField;
 
-    @FXML private TextField usernameField;
+    @FXML
+    private TextField usernameField;
     // @FXML private PasswordField passwordField;
 
-    @FXML private Label usernameError;
-    @FXML private Label passwordError;
+    @FXML
+    private Label usernameError;
+    @FXML
+    private Label passwordError;
 
-    @FXML private BorderPane mainBorderPane;
+    @FXML
+    private BorderPane mainBorderPane;
 
-    @FXML private TextField txtUsername;
-    @FXML private PasswordField txtPassword;
-    @FXML private PasswordField txtConfirmPassword;
-    @FXML private TextField txtEmail;
-    @FXML private TextField txtFirstName;
-    @FXML private TextField txtMiddleName;
-    @FXML private TextField txtLastName;
-    @FXML private TextField txtPhone;
+    @FXML
+    private TextField txtUsername;
+    @FXML
+    private PasswordField txtPassword;
+    @FXML
+    private PasswordField txtConfirmPassword;
+    @FXML
+    private TextField txtEmail;
+    @FXML
+    private TextField txtFirstName;
+    @FXML
+    private TextField txtMiddleName;
+    @FXML
+    private TextField txtLastName;
+    @FXML
+    private TextField txtPhone;
 
+<<<<<<< HEAD
     @FXML private ToggleGroup roleGroup;
     @FXML private RadioButton rbBidder;
     @FXML private RadioButton rbSeller;
+=======
+    @FXML
+    private ToggleGroup roleGroup; // Nó tự nhận từ FXML nhờ fx:id="roleGroup"
+    @FXML
+    private RadioButton rbBidder;
+    @FXML
+    private RadioButton rbSeller;
+>>>>>>> be3c4bf099496faa6a7e7c360653de4743b2602f
 
     @FXML
     private void handleSignup(ActionEvent event) {
@@ -86,10 +121,11 @@ public class SignUpController {
             hasError = true;
         }
 
-        if (hasError) return;
+        if (hasError)
+            return;
 
         System.out.println("Đang gửi yêu cầu đăng ký lên Server...");
-        
+
         String payload = "{\"username\":\"" + username + "\", \"password\":\"" + password + "\"}";
 
         Request req = new Request("REGISTER", payload);
@@ -105,7 +141,7 @@ public class SignUpController {
             alert.showAndWait();
 
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/auth/LoginPopup.fxml")); 
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/auth/LoginPopup.fxml"));
                 Parent loginView = loader.load();
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.setScene(new Scene(loginView, 1280, 650));
@@ -154,11 +190,14 @@ public class SignUpController {
             passwordTextField.setManaged(false);
         }
     }
+
     @FXML
     public void initialize() {
         ToggleGroup group = new ToggleGroup();
-        if (personalRadio != null) personalRadio.setToggleGroup(group);
-        if (orgRadio != null) orgRadio.setToggleGroup(group);
+        if (personalRadio != null)
+            personalRadio.setToggleGroup(group);
+        if (orgRadio != null)
+            orgRadio.setToggleGroup(group);
 
         if (txtPassword != null) {
             txtPassword.textProperty().addListener((obs, oldVal, newVal) -> validatePassword(newVal));
@@ -169,15 +208,19 @@ public class SignUpController {
         }
 
         if (dayBox != null) {
-            for (int i = 1; i <= 31; i++) dayBox.getItems().add(i);
+            for (int i = 1; i <= 31; i++)
+                dayBox.getItems().add(i);
         }
         if (monthBox != null) {
-            for (int i = 1; i <= 12; i++) monthBox.getItems().add(i);
+            for (int i = 1; i <= 12; i++)
+                monthBox.getItems().add(i);
         }
         if (yearBox != null) {
-            for (int i = 1950; i <= 2025; i++) yearBox.getItems().add(i);
+            for (int i = 1950; i <= 2025; i++)
+                yearBox.getItems().add(i);
         }
     }
+
     @FXML
 
     private void validatePassword(String pass) {
@@ -203,8 +246,6 @@ public class SignUpController {
         }
     }
 
-
-
     private void loadCategoryView(String categoryName) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/bidder/DanhSachSanPhamView.fxml"));
@@ -215,7 +256,7 @@ public class SignUpController {
             controller.setCategory(categoryName);
 
             mainBorderPane.setCenter(content);
-            
+
         } catch (IOException e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -227,6 +268,7 @@ public class SignUpController {
 
     //HÀM XỬ LÝ NÚT BẤM ĐĂNG KÝ (Logic Server)
     @FXML
+<<<<<<< HEAD
     public void xuLyDangKy() { 
         String[] formData = extractFormData();
         String username = formData[0];
@@ -249,6 +291,9 @@ public class SignUpController {
     }
 
     private String[] extractFormData() {
+=======
+    public void xuLyDangKy() {
+>>>>>>> be3c4bf099496faa6a7e7c360653de4743b2602f
         String username = txtUsername != null ? txtUsername.getText().trim() : "";
         String password = txtPassword != null ? txtPassword.getText().trim() : "";
         String confirmPassword = txtConfirmPassword != null ? txtConfirmPassword.getText() : "";
@@ -274,9 +319,19 @@ public class SignUpController {
         return true;
     }
 
+<<<<<<< HEAD
     private String determineRole() {
         return rbSeller.isSelected() ? "SELLER" : "BIDDER";
     }
+=======
+        String role = "BIDDER"; // Mặc định
+        if (rbSeller.isSelected()) {
+            role = "SELLER";
+        }
+
+        // Test thử xem nó lấy đúng chưa
+        System.out.println("Role đã chọn: " + role);
+>>>>>>> be3c4bf099496faa6a7e7c360653de4743b2602f
 
     private JsonObject createPayload(String username, String password, String email, String fullName, String phone, String role) {
         JsonObject payload = new JsonObject();
@@ -291,13 +346,17 @@ public class SignUpController {
             payload.addProperty("gender", genderBox.getValue());
         }
 
+<<<<<<< HEAD
         return payload;
     }
 
     private void sendRegistrationRequest(JsonObject payload) {
+=======
+        // 3. Gửi lên Server
+>>>>>>> be3c4bf099496faa6a7e7c360653de4743b2602f
         new Thread(() -> {
             Request req = new Request("REGISTER", payload.toString());
-            Response res = NetworkClient.getInstance().sendRequest(req); 
+            Response res = NetworkClient.getInstance().sendRequest(req);
 
             Platform.runLater(() -> {
                 if (res != null && "SUCCESS".equals(res.getStatus())) {

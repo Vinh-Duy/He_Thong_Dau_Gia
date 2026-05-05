@@ -88,18 +88,12 @@ public class SignUpController {
     @FXML
     private TextField txtPhone;
 
-<<<<<<< HEAD
-    @FXML private ToggleGroup roleGroup;
-    @FXML private RadioButton rbBidder;
-    @FXML private RadioButton rbSeller;
-=======
     @FXML
     private ToggleGroup roleGroup; // Nó tự nhận từ FXML nhờ fx:id="roleGroup"
     @FXML
     private RadioButton rbBidder;
     @FXML
     private RadioButton rbSeller;
->>>>>>> be3c4bf099496faa6a7e7c360653de4743b2602f
 
     @FXML
     private void handleSignup(ActionEvent event) {
@@ -266,34 +260,9 @@ public class SignUpController {
         }
     }
 
-    //HÀM XỬ LÝ NÚT BẤM ĐĂNG KÝ (Logic Server)
+    // === HÀM XỬ LÝ NÚT BẤM ĐĂNG KÝ (Logic Server) ===
     @FXML
-<<<<<<< HEAD
-    public void xuLyDangKy() { 
-        String[] formData = extractFormData();
-        String username = formData[0];
-        String password = formData[1];
-        String confirmPassword = formData[2];
-        String email = formData[3];
-        String fullName = formData[4];
-        String phone = formData[5];
-
-        if (!validateForm(username, password, confirmPassword)) {
-            return;
-        }
-
-        String role = determineRole();
-        System.out.println("Role đã chọn: " + role);
-
-        JsonObject payload = createPayload(username, password, email, fullName, phone, role);
-        
-        sendRegistrationRequest(payload);
-    }
-
-    private String[] extractFormData() {
-=======
     public void xuLyDangKy() {
->>>>>>> be3c4bf099496faa6a7e7c360653de4743b2602f
         String username = txtUsername != null ? txtUsername.getText().trim() : "";
         String password = txtPassword != null ? txtPassword.getText().trim() : "";
         String confirmPassword = txtConfirmPassword != null ? txtConfirmPassword.getText() : "";
@@ -304,26 +273,16 @@ public class SignUpController {
         String fullName = (lastName + " " + middleName + " " + firstName).replaceAll("\\s+", " ").trim();
         String phone = txtPhone != null ? txtPhone.getText().trim() : "";
 
-        return new String[]{username, password, confirmPassword, email, fullName, phone};
-    }
-
-    private boolean validateForm(String username, String password, String confirmPassword) {
+        // 1. Kiểm tra Validate cơ bản
         if (username.isEmpty() || password.isEmpty()) {
             showAlert("Lỗi", "Vui lòng nhập đầy đủ Tài khoản và Mật khẩu!");
-            return false;
+            return;
         }
         if (!password.equals(confirmPassword)) {
             showAlert("Lỗi", "Mật khẩu nhập lại không khớp!");
-            return false;
+            return;
         }
-        return true;
-    }
 
-<<<<<<< HEAD
-    private String determineRole() {
-        return rbSeller.isSelected() ? "SELLER" : "BIDDER";
-    }
-=======
         String role = "BIDDER"; // Mặc định
         if (rbSeller.isSelected()) {
             role = "SELLER";
@@ -331,29 +290,23 @@ public class SignUpController {
 
         // Test thử xem nó lấy đúng chưa
         System.out.println("Role đã chọn: " + role);
->>>>>>> be3c4bf099496faa6a7e7c360653de4743b2602f
 
-    private JsonObject createPayload(String username, String password, String email, String fullName, String phone, String role) {
+        // 2. Đóng gói dữ liệu vào JSON
         JsonObject payload = new JsonObject();
         payload.addProperty("username", username);
         payload.addProperty("password", password);
         payload.addProperty("email", email);
         payload.addProperty("fullName", fullName.trim());
         payload.addProperty("phone", phone);
+
         payload.addProperty("role", role);
 
+        // (Tuỳ chọn) Gửi thêm giới tính/ngày sinh nếu bác muốn thêm cột vào DB sau này
         if (genderBox != null && genderBox.getValue() != null) {
             payload.addProperty("gender", genderBox.getValue());
         }
 
-<<<<<<< HEAD
-        return payload;
-    }
-
-    private void sendRegistrationRequest(JsonObject payload) {
-=======
         // 3. Gửi lên Server
->>>>>>> be3c4bf099496faa6a7e7c360653de4743b2602f
         new Thread(() -> {
             Request req = new Request("REGISTER", payload.toString());
             Response res = NetworkClient.getInstance().sendRequest(req);

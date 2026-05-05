@@ -37,7 +37,7 @@ public class AddProductController {
                 return;
             }
 
-            // 2. Khởi tạo đối tượng Auction 
+            // 2. Khởi tạo đối tượng Auction (Dùng constructor rỗng như trong file của bác)
             Auction auction = new Auction();
             auction.setName(txtName.getText());
             auction.setProductName(txtName.getText());
@@ -48,10 +48,12 @@ public class AddProductController {
             auction.setStartPrice(price);
             auction.setEndTime(dateEnd.getValue().toString() + " " + txtTimeEnd.getText() + ":00");
             
+            // Lấy đúng sellerId từ SessionManager bác vừa sửa ở Bước 1
             auction.setSellerId(SessionManager.getUserId()); 
 
             auction.setSellerId(SessionManager.getUserId()); 
 
+            // THÊM 2 DÒNG NÀY VÀO ĐỂ BẮT BỆNH:
             System.out.println("=== KIỂM TRA DỮ LIỆU TRƯỚC KHI GỬI ===");
             System.out.println("1. ID Người bán đang là: " + SessionManager.getUserId());
             System.out.println("2. Chuỗi JSON gửi lên Server: " + gson.toJson(auction));
@@ -63,7 +65,7 @@ public class AddProductController {
                     Request req = new Request("ADD_PRODUCT", jsonReq);
                     Response res = NetworkClient.getInstance().sendRequest(req);
 
-                    System.out.println("KẾT QUẢ TỪ SERVER TRẢ VỀ");
+                    System.out.println("=== KẾT QUẢ TỪ SERVER TRẢ VỀ ===");
                     if (res == null) {
                         System.out.println("Toang rồi: Biến res bị NULL! (Lỗi ở hàm sendRequest)");
                     } else {
@@ -76,18 +78,18 @@ public class AddProductController {
                             showAlert(Alert.AlertType.INFORMATION, "Ngon rồi", "Hàng đã lên sàn thành công!");
                             handleClear();
                         } else {
-                            showAlert(Alert.AlertType.ERROR, "Lỗi", "Server không nhận sản phẩm.");
+                            showAlert(Alert.AlertType.ERROR, "Lỗi", "Server không nhận sản phẩm bác ạ.");
                         }
                     });
                 } catch (Exception e) { e.printStackTrace(); }
             }).start();
 
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Check lại giá tiền (phải là số) ");
+            showAlert(Alert.AlertType.ERROR, "Lỗi", "Bác check lại giá tiền (phải là số) nhé!");
         }
     }
 
-    // HÀM THOÁT RA HOMEVIEW CHO SELLER
+    // --- HÀM THOÁT RA HOMEVIEW CHO SELLER ---
     @FXML
     private void goBackHome(MouseEvent event) {
         try {

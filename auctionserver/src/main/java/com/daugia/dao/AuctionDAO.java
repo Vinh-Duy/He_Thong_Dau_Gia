@@ -70,9 +70,9 @@ public class AuctionDAO {
             pstmt.setString(7, status);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
-            System.out.println("LỖI DATABASE TẠI ĐÂY");
+            System.out.println("=== LỖI DATABASE TẠI ĐÂY BÁC ƠI ===");
             System.out.println("Mã lỗi: " + e.getErrorCode());
-            System.out.println("Thông báo: " + e.getMessage()); 
+            System.out.println("Thông báo: " + e.getMessage()); // Dòng này sẽ nói rõ thiếu cột nào hoặc sai ở đâu
             e.printStackTrace();
             return false;
         }

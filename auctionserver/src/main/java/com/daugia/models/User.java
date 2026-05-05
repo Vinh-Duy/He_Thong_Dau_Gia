@@ -10,6 +10,7 @@ public class User {
     private String gender;
     private String role;
 
+    // Constructor cơ bản
     public User(int id, String username, String password, String role) {
         this.id = id;
         this.username = username;
@@ -17,6 +18,7 @@ public class User {
         this.role = role;
     }
 
+    // Constructor đầy đủ cho Admin View
     public User(int id, String username, String password, String email, String fullName, String phone, String gender, String role) {
         this.id = id;
         this.username = username;
@@ -28,6 +30,7 @@ public class User {
         this.role = role;
     }
 
+    // --- BẮT BUỘC PHẢI CÓ GETTER ĐỂ JAVAFX TABLEVIEW ĐỌC ĐƯỢC ---
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

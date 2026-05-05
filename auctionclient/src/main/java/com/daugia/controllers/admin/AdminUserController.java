@@ -20,18 +20,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class AdminUserController {
 
-    @FXML
-    private TableView<User> userTable;
-    @FXML
-    private TableColumn<User, Integer> colId;
-    @FXML
-    private TableColumn<User, String> colUsername;
-    @FXML
-    private TableColumn<User, String> colFullName;
-    @FXML
-    private TableColumn<User, String> colEmail;
-    @FXML
-    private TableColumn<User, String> colRole;
+    @FXML private TableView<User> userTable;
+    @FXML private TableColumn<User, Integer> colId;
+    @FXML private TableColumn<User, String> colUsername;
+    @FXML private TableColumn<User, String> colFullName;
+    @FXML private TableColumn<User, String> colEmail;
+    @FXML private TableColumn<User, String> colRole;
 
     private ObservableList<User> userList = FXCollections.observableArrayList();
     private Gson gson = new Gson();
@@ -63,10 +57,9 @@ public class AdminUserController {
 
                 if (res != null && "SUCCESS".equals(res.getStatus())) {
                     // Ép kiểu JSON data thành List<User>
-                    List<User> list = gson.fromJson(res.getData().toString(),
-                            new TypeToken<List<User>>() {
-                            }.getType());
-
+                    List<User> list = gson.fromJson(res.getData().toString(), 
+                                      new TypeToken<List<User>>(){}.getType());
+                    
                     Platform.runLater(() -> {
                         userList.setAll(list);
                         userTable.setItems(userList);
@@ -85,7 +78,7 @@ public class AdminUserController {
             showAlert("Thông báo", "Vui lòng chọn một người dùng để xóa!");
             return;
         }
-
+        
         System.out.println("Đang xóa user: " + selectedUser.getUsername());
         // Chỗ này bác làm tương tự gửi Request "DELETE_USER" lên server nhé
     }
@@ -101,17 +94,15 @@ public class AdminUserController {
     @FXML
     private void handleLogout() {
         try {
-            // 1. Xác định chính xác chuỗi đường dẫn (Bác kiểm tra lại hoa/thường của
-            // LoginPopup)
-            String fxmlPath = "/com/daugia/views/auth/LoginPopup.fxml";
-
+            // 1. Xác định chính xác chuỗi đường dẫn (Bác kiểm tra lại hoa/thường của LoginPopup)
+            String fxmlPath = "/com/daugia/views/auth/LoginPopup.fxml"; 
+            
             System.out.println("=> [DEBUG] Đang tìm file tại: " + fxmlPath);
-
+            
             // 2. Lấy URL của file
             java.net.URL location = getClass().getResource(fxmlPath);
-
-            // 3. Nếu vẫn NULL, thử tìm theo đường dẫn ngắn (nếu bác để trong
-            // resources/views)
+            
+            // 3. Nếu vẫn NULL, thử tìm theo đường dẫn ngắn (nếu bác để trong resources/views)
             if (location == null) {
                 System.out.println("=> [THỬ LẠI] Không thấy ở đường dẫn cũ, thử tìm tại /views/auth/LoginPopup.fxml");
                 location = getClass().getResource("/views/auth/LoginPopup.fxml");
@@ -127,27 +118,18 @@ public class AdminUserController {
             javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader();
             loader.setLocation(location);
             javafx.scene.Parent root = loader.load();
-
+            
             javafx.scene.Scene currentScene = userTable.getScene();
 
-<<<<<<< HEAD
+        // 3. THAY ĐỔI GỐC (ROOT) - Đây là chìa khóa để giữ nguyên cửa sổ
             currentScene.setRoot(root);
             javafx.stage.Stage stage = (javafx.stage.Stage) currentScene.getWindow();
             stage.setTitle("Đăng nhập");
             
+            // Nếu màn hình Login nhỏ hơn màn hình Admin, dùng dòng này để cửa sổ co lại cho đẹp:
             stage.sizeToScene(); 
-=======
-            // 3. THAY ĐỔI GỐC (ROOT) - Đây là chìa khóa để giữ nguyên cửa sổ
-            currentScene.setRoot(root);
-            javafx.stage.Stage stage = (javafx.stage.Stage) currentScene.getWindow();
-            stage.setTitle("Đăng nhập");
-
-            // Nếu màn hình Login nhỏ hơn màn hình Admin, dùng dòng này để cửa sổ co lại cho
-            // đẹp:
-            stage.sizeToScene();
->>>>>>> be3c4bf099496faa6a7e7c360653de4743b2602f
             stage.centerOnScreen();
-
+            
             System.out.println("=> [ADMIN] Chuyển cảnh thành công!");
 
         } catch (Exception e) {

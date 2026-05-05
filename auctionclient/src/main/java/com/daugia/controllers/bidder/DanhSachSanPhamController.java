@@ -94,10 +94,8 @@ public class DanhSachSanPhamController {
                     java.lang.reflect.Type listType = new TypeToken<List<Auction>>(){}.getType();
                     List<Auction> dsSanPham = gson.fromJson(res.getData().toString(), listType);
 
-                    // 3. VẼ LÊN GIAO DIỆN BẰNG HÀM CŨ ĐANG CHẠY RẤT NGON
                     Platform.runLater(() -> {
                         if (dsSanPham.isEmpty()) {
-                            // Nếu danh mục này chưa có hàng, báo 1 câu cho đẹp
                             Label lblEmpty = new Label("Hiện chưa có sản phẩm nào trong danh mục này.");
                             lblEmpty.setStyle("-fx-font-size: 16px; -fx-text-fill: gray; -fx-padding: 20px;");
                             productContainer.getChildren().add(lblEmpty);
@@ -172,7 +170,7 @@ public class DanhSachSanPhamController {
             
             // 4. Bắt sự kiện khi bấm nút "Ra Giá"
             btnBid.setOnAction(event -> {
-                // 🔥 THÊM CHỐT KIỂM TRA ĐĂNG NHẬP Ở ĐÂY 🔥
+                // CHỐT KIỂM TRA ĐĂNG NHẬP 
                 String currentUser = com.daugia.utils.SessionManager.getUsername();
                 if (currentUser == null || currentUser.isEmpty()) {
                     javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.WARNING);
@@ -229,7 +227,7 @@ public class DanhSachSanPhamController {
                             showAlert("Tuyệt vời", "Đặt giá thành công!");
                             // Đặt giá xong thì tự động load lại danh sách để cập nhật giá mới
                         } else {
-                            showAlert("Thất bại", res.getMessage()); // Hiển thị câu chửi của Server (ví dụ: Chậm chân rồi...)
+                            showAlert("Thất bại", res.getMessage());
                         }
                     } else {
                         showAlert("Lỗi mạng", "Không nhận được phản hồi từ Server.");

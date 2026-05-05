@@ -121,12 +121,10 @@ public class AdminUserController {
             
             javafx.scene.Scene currentScene = userTable.getScene();
 
-        // 3. THAY ĐỔI GỐC (ROOT) - Đây là chìa khóa để giữ nguyên cửa sổ
             currentScene.setRoot(root);
             javafx.stage.Stage stage = (javafx.stage.Stage) currentScene.getWindow();
             stage.setTitle("Đăng nhập");
             
-            // Nếu màn hình Login nhỏ hơn màn hình Admin, dùng dòng này để cửa sổ co lại cho đẹp:
             stage.sizeToScene(); 
             stage.centerOnScreen();
             

@@ -26,7 +26,6 @@ public class User {
         this.token = token;
     }
 
-    // --- FULL BỘ GETTER / SETTER KHÔNG BAO GIỜ SỢ BÁO LỖI ĐỎ NỮA ---
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -54,7 +53,6 @@ public class User {
     public String getToken() { return token; }
     public void setToken(String token) { this.token = token; }
     
-    // Hàm getName đặc biệt để hiển thị tên
     public String getName() { 
         return fullName != null && !fullName.isEmpty() ? fullName : username; 
     }

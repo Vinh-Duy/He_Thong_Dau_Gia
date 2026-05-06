@@ -45,7 +45,7 @@ public class LoginPopupController {
 
         new Thread(() -> {
             try {
-                String requestPayload = "{\"username\":\"" + user + "\", \"password\":\"" + pass + "\"}";
+                String requestPayload = "{\"username\":\"" + user + "\",\"password\":\"" + pass + "\"}";
                 Request req = new Request("LOGIN", requestPayload);
                 Response res = NetworkClient.getInstance().sendRequest(req);
 

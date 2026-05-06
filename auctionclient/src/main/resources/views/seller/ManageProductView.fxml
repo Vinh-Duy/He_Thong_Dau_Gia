@@ -22,10 +22,10 @@
                 <cellValueFactory><PropertyValueFactory property="id"/></cellValueFactory>
             </TableColumn>
             <TableColumn text="Tên sản phẩm" prefWidth="250">
-                <cellValueFactory><PropertyValueFactory property="name"/></cellValueFactory>
+                <cellValueFactory><PropertyValueFactory property="productName"/></cellValueFactory>
             </TableColumn>
             <TableColumn text="Giá khởi điểm" prefWidth="150" style="-fx-alignment: CENTER-RIGHT;">
-                <cellValueFactory><PropertyValueFactory property="startingPrice"/></cellValueFactory>
+                <cellValueFactory><PropertyValueFactory property="startPrice"/></cellValueFactory>
             </TableColumn>
             <TableColumn text="Trạng thái" prefWidth="150" style="-fx-alignment: CENTER;">
                 <cellValueFactory><PropertyValueFactory property="status"/></cellValueFactory>

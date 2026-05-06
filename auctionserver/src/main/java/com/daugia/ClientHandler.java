@@ -278,6 +278,76 @@ public class ClientHandler implements Runnable {
                             // GỬI KẾT QUẢ VỀ CLIENT VÀ THOÁT CASE
                             out.println(gson.toJson(response));
                             break;
+
+                        // ==========================================
+                        // 3 TÍNH NĂNG MỚI: LẤY CỦA TÔI, SỬA, XÓA
+                        // ==========================================
+                        case "GET_MY_AUCTIONS":
+                            try {
+                                JsonObject reqBody = JsonParser.parseString(request.getPayload()).getAsJsonObject();
+                                int sellerId = reqBody.get("sellerId").getAsInt();
+
+                                List<Auction> myAuctions = auctionDAO.getAuctionsBySellerId(sellerId);
+
+                                response = new Response("SUCCESS", "Lấy sản phẩm của seller thành công", gson.toJson(myAuctions));
+                                out.println(gson.toJson(response));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                response = new Response("ERROR", "Lỗi lấy sản phẩm của seller: " + e.getMessage(), null);
+                                out.println(gson.toJson(response));
+                            }
+                            break;
+
+                        case "UPDATE_PRODUCT":
+                            try {
+                                Auction updatedAuction = gson.fromJson(request.getPayload(), Auction.class);
+
+                                Auction existing = AuctionManager.getInstance().getAuction(updatedAuction.getId());
+                                if (existing == null) {
+                                    response = new Response("ERROR", "Không tìm thấy sản phẩm để sửa", null);
+                                    out.println(gson.toJson(response));
+                                    break;
+                                }
+
+                                // Update DB trước
+                                boolean dbOk = auctionDAO.updateAuction(updatedAuction);
+                                if (!dbOk) {
+                                    response = new Response("ERROR", "Cập nhật DB thất bại", null);
+                                    out.println(gson.toJson(response));
+                                    break;
+                                }
+
+                                // DB ok rồi mới sync RAM
+                                existing.setName(updatedAuction.getName());
+                                existing.setDescription(updatedAuction.getDescription());
+                                existing.setStartingPrice(updatedAuction.getStartingPrice());
+                                existing.setEndTime(updatedAuction.getEndTime());
+
+                                response = new Response("SUCCESS", "Cập nhật thành công!", null);
+                                out.println(gson.toJson(response));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                out.println(gson.toJson(new Response("ERROR", "Lỗi sửa sản phẩm: " + e.getMessage(), null)));
+                            }
+                            break;
+
+                        case "DELETE_PRODUCT":
+                            try {
+                                String productId = request.getPayload(); // payload là ID sản phẩm
+                                
+                                // 1. Xóa trong DB MySQL
+                                auctionDAO.deleteAuction(productId);
+                                
+                                // 2. Xóa trong RAM Server
+                                java.util.Collection<Auction> listRam = AuctionManager.getInstance().getAllAuctions();
+                                listRam.removeIf(a -> a.getId().equals(productId));
+                                
+                                response = new Response("SUCCESS", "Xóa thành công!", null);
+                                out.println(gson.toJson(response));
+                            } catch (Exception e) {
+                                out.println(gson.toJson(new Response("ERROR", "Lỗi xóa sản phẩm: " + e.getMessage(), null)));
+                            }
+                            break;
                             
                         default:
                             response = new Response("ERROR", "Hành động không hợp lệ", null);

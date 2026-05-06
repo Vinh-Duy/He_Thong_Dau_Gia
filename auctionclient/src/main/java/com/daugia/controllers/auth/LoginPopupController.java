@@ -73,7 +73,7 @@ public class LoginPopupController {
                                 if ("ADMIN".equals(loggedInUser.getRole())) {
                                     viewPath = "/views/admin/AdminUserView.fxml";
                                 } else if ("SELLER".equals(loggedInUser.getRole())) {
-                                    viewPath = "/views/seller/AddProductView.fxml";
+                                    viewPath = "/views/seller/ManageProductView.fxml";
                                 }
 
                                 // Chuyển cảnh

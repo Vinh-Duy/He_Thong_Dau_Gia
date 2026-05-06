@@ -77,4 +77,66 @@ public class AuctionDAO {
             return false;
         }
     }
+
+    // HÀM CẬP NHẬT SẢN PHẨM
+    public boolean updateAuction(Auction auc) {
+        String sql = "UPDATE auctions SET name = ?, description = ?, start_price = ?, end_time = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, auc.getName());
+            pstmt.setString(2, auc.getDescription());
+            pstmt.setDouble(3, auc.getStartingPrice());
+            pstmt.setString(4, auc.getEndTime());
+            pstmt.setString(5, auc.getId());
+            return pstmt.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // HÀM XÓA SẢN PHẨM
+    public boolean deleteAuction(String id) {
+        String sql = "DELETE FROM auctions WHERE id=?";
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, id);
+            return pstmt.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Auction> getAuctionsBySellerId(int sellerId) {
+        List<Auction> list = new ArrayList<>();
+        String sql = "SELECT id, name, description, start_price, current_highest_bid, end_time, seller_id, status, category " +
+                    "FROM auctions WHERE seller_id = ? ORDER BY id DESC";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, sellerId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Auction a = new Auction();
+                    a.setId(rs.getString("id"));
+                    a.setName(rs.getString("name"));
+                    a.setDescription(rs.getString("description"));
+                    a.setStartingPrice(rs.getDouble("start_price"));
+                    a.setCurrentHighestBid(rs.getDouble("current_highest_bid"));
+                    a.setEndTime(rs.getString("end_time"));
+                    a.setSellerId(rs.getInt("seller_id"));
+                    a.setStatus(rs.getString("status"));
+                    a.setCategory(rs.getString("category"));
+                    list.add(a);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 }

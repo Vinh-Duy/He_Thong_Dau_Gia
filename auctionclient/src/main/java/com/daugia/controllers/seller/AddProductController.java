@@ -4,7 +4,6 @@ import com.daugia.models.Auction;
 import com.daugia.network.NetworkClient;
 import com.daugia.network.Request;
 import com.daugia.network.Response;
-import com.daugia.utils.SessionManager;
 import com.google.gson.Gson;
 
 import javafx.application.Platform;
@@ -25,60 +24,51 @@ public class AddProductController {
     @FXML private TextField txtStartingPrice;
     @FXML private DatePicker dateEnd;
     @FXML private TextField txtTimeEnd;
+    private Auction editingAuction = null;
 
     private Gson gson = new Gson();
 
     @FXML
     private void handleAddProduct() {
         try {
-            // 1. Kiểm tra đầu vào
-            if (txtName.getText().isEmpty() || dateEnd.getValue() == null) {
-                showAlert(Alert.AlertType.WARNING, "Thiếu tin", "Bác nhập tên sản phẩm với ngày kết thúc đã nhé!");
+            if (txtName.getText().isEmpty()) {
+                showAlert(Alert.AlertType.WARNING, "Thiếu tin", "Bác nhập tên sản phẩm nhé!");
                 return;
             }
 
-            // 2. Khởi tạo đối tượng Auction (Dùng constructor rỗng như trong file của bác)
-            Auction auction = new Auction();
+            // Dùng Auction đang sửa (nếu có), không thì tạo mới
+            Auction auction = (editingAuction != null) ? editingAuction : new Auction();
             auction.setName(txtName.getText());
             auction.setProductName(txtName.getText());
-            auction.setCategory("Điện thoại");
             auction.setDescription(txtDescription.getText());
-            double price = Double.parseDouble(txtStartingPrice.getText());
-            auction.setStartingPrice(price);
-            auction.setStartPrice(price);
-            auction.setEndTime(dateEnd.getValue().toString() + " " + txtTimeEnd.getText() + ":00");
+            auction.setStartingPrice(Double.parseDouble(txtStartingPrice.getText()));
+            // Set thêm ngày giờ ở đây...
+
+            String payload = gson.toJson(auction);
             
-            // Lấy đúng sellerId từ SessionManager bác vừa sửa ở Bước 1
-            auction.setSellerId(SessionManager.getUserId()); 
+            // QUYẾT ĐỊNH LỆNH GỬI: UPDATE hay ADD
+            String command = (editingAuction != null) ? "UPDATE_PRODUCT" : "ADD_PRODUCT";
 
-            auction.setSellerId(SessionManager.getUserId()); 
-
-            // THÊM 2 DÒNG NÀY VÀO ĐỂ BẮT BỆNH:
-            System.out.println("=== KIỂM TRA DỮ LIỆU TRƯỚC KHI GỬI ===");
-            System.out.println("1. ID Người bán đang là: " + SessionManager.getUserId());
-            System.out.println("2. Chuỗi JSON gửi lên Server: " + gson.toJson(auction));
-
-            // 3. Gửi lên Server
             new Thread(() -> {
                 try {
-                    String jsonReq = gson.toJson(auction);
-                    Request req = new Request("ADD_PRODUCT", jsonReq);
+                    Request req = new Request(command, payload);
                     Response res = NetworkClient.getInstance().sendRequest(req);
-
-                    System.out.println("=== KẾT QUẢ TỪ SERVER TRẢ VỀ ===");
-                    if (res == null) {
-                        System.out.println("Toang rồi: Biến res bị NULL! (Lỗi ở hàm sendRequest)");
-                    } else {
-                        System.out.println("Status nhận được: " + res.getStatus());
-                        System.out.println("Message nhận được: " + res.getMessage());
-                    }
-
+                    
                     Platform.runLater(() -> {
                         if (res != null && "SUCCESS".equals(res.getStatus())) {
-                            showAlert(Alert.AlertType.INFORMATION, "Ngon rồi", "Hàng đã lên sàn thành công!");
-                            handleClear();
+                            String msg = (editingAuction != null) ? "Sửa thành công!" : "Hàng đã lên sàn thành công!";
+                            showAlert(Alert.AlertType.INFORMATION, "Ngon rồi", msg);
+                            
+                            // Lưu xong thì quay lại màn quản lý luôn cho tiện
+                            try {
+                                Parent root = FXMLLoader.load(getClass().getResource("/views/seller/ManageProductView.fxml"));
+                                Stage stage = (Stage) txtName.getScene().getWindow();
+                                stage.getScene().setRoot(root);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
                         } else {
-                            showAlert(Alert.AlertType.ERROR, "Lỗi", "Server không nhận sản phẩm bác ạ.");
+                            showAlert(Alert.AlertType.ERROR, "Lỗi", "Server từ chối: " + (res != null ? res.getMessage() : ""));
                         }
                     });
                 } catch (Exception e) { e.printStackTrace(); }
@@ -93,7 +83,7 @@ public class AddProductController {
     @FXML
     private void goBackHome(MouseEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/views/common/HomeView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/views/seller/ManageProductView.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.getScene().setRoot(root);
         } catch (Exception e) {
@@ -120,5 +110,16 @@ public class AddProductController {
     @FXML
     private void handleClear() {
         clearFields();
+    }
+
+    public void setAuctionToEdit(Auction auction) {
+        this.editingAuction = auction;
+        
+        // Đổ dữ liệu cũ vào các ô nhập liệu
+        txtName.setText(auction.getName());
+        txtDescription.setText(auction.getDescription());
+        txtStartingPrice.setText(String.valueOf((long) auction.getStartingPrice())); // Ép kiểu tùy thuộc thuộc tính của bác
+        
+        // Bác có thể parse thêm Date/Time ở đây nếu Server lưu chuẩn
     }
 }

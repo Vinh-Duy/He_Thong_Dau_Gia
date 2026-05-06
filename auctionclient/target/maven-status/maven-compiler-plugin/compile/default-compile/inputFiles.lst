@@ -1,7 +1,4 @@
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/Main.java
-/Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/DaKetThucController.java
-/Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/DangDienRaController.java
-/Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/SapDauGiaController.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/admin/AdminUserController.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/auth/LoginPopupController.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/auth/SignUpController.java
@@ -14,6 +11,7 @@
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/components/AuctionCardController.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/components/HeaderController.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/seller/AddProductController.java
+/Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/seller/ManageProductController.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/models/Auction.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/models/Item.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/models/User.java

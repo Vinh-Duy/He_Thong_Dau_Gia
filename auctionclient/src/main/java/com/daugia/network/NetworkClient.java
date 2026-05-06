@@ -4,11 +4,16 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
+import com.daugia.config.NetworkConfig;
+import com.daugia.utils.SessionManager;
 import com.google.gson.Gson;
 
 public class NetworkClient {
@@ -19,15 +24,15 @@ public class NetworkClient {
     private PrintWriter out;
     private BufferedReader in;
     private final Gson gson = new Gson();
-    
-    // Cái chỗ để chứa câu trả lời cho hàm sendRequest cũ
+
     private final BlockingQueue<String> responseQueue = new LinkedBlockingQueue<>();
-    
-    // Cái để nghe tin nhắn Real-time
     private Consumer<String> onMessageReceived;
 
+    private static final Set<String> PUBLIC_ACTIONS =
+            new HashSet<>(Arrays.asList("LOGIN", "REGISTER"));
+
     private NetworkClient() {
-        connect("127.0.0.1", 8888); 
+        connect(NetworkConfig.getHost(), NetworkConfig.getPort());
     }
 
     public static synchronized NetworkClient getInstance() {
@@ -48,19 +53,15 @@ public class NetworkClient {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             System.out.println("Đã kết nối tới Server thành công!");
 
-            // LUỒNG LÀM NHIỆM VỤ ĐỌC VÀ PHÂN LOẠI TIN NHẮN
             new Thread(() -> {
                 try {
                     String line;
                     while ((line = in.readLine()) != null) {
-                        // Nếu là tin nhắn Broadcast từ Server (có chứa chữ BID_UPDATE)
                         if (line.contains("\"action\":\"BID_UPDATE\"")) {
                             if (onMessageReceived != null) {
                                 onMessageReceived.accept(line);
                             }
                         } else {
-                            // Nếu là câu trả lời cho các lệnh cũ (như LOGIN, GET_ALL_AUCTIONS)
-                            // Thì bỏ vào cho hàm sendRequest lấy ra
                             responseQueue.offer(line);
                         }
                     }
@@ -75,19 +76,21 @@ public class NetworkClient {
         }
     }
 
-    // Hàm cũ được giữ nguyên cách dùng, chỉ thay đổi bên trong một chút
     public synchronized Response sendRequest(Request request) {
         if (socket == null || socket.isClosed()) {
             return new Response("ERROR", "Mất kết nối với Server", null);
         }
 
         try {
-            String jsonRequest = gson.toJson(request);
-            out.println(jsonRequest); // Gửi yêu cầu đi
+            if (request != null && request.getAction() != null
+                    && !PUBLIC_ACTIONS.contains(request.getAction())) {
+                request.setToken(SessionManager.getToken());
+            }
 
-            // Chờ lấy câu trả lời (Chờ tối đa 5 giây để app không bị đơ nếu mạng lag)
-            String jsonResponse = responseQueue.poll(5, TimeUnit.SECONDS); 
-            
+            String jsonRequest = gson.toJson(request);
+            out.println(jsonRequest);
+
+            String jsonResponse = responseQueue.poll(NetworkConfig.getTimeoutSeconds(), TimeUnit.SECONDS);
             if (jsonResponse != null) {
                 return gson.fromJson(jsonResponse, Response.class);
             }

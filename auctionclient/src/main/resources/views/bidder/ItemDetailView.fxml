@@ -127,6 +127,34 @@
                               <Label text="(Chức năng đang phát triển...)" textFill="#757575" />
                            </children>
                         </VBox>
+                        
+                        <VBox prefHeight="200.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 15; -fx-padding: 25;" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Đấu giá tự động (Auto-Bid)" textFill="#333333">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Separator prefWidth="200.0" />
+                              <Label text="Giá tối đa (VNĐ):" textFill="#555555">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtMaxBid" prefHeight="40.0" promptText="Nhập giá tối đa..." style="-fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-font-size: 14px;" />
+                              <Label text="Bước giá (VNĐ):" textFill="#555555">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtIncrement" prefHeight="40.0" promptText="Nhập bước giá..." style="-fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-font-size: 14px;" />
+                              <Button fx:id="btnToggleAutoBid" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;" text="Bật Auto-Bid">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </VBox>
                      </children>
                   </VBox>
                </children>

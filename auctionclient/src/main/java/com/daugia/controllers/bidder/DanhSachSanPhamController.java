@@ -154,11 +154,11 @@ public class DanhSachSanPhamController {
             
             // 2. Chữ hiển thị thông tin
             javafx.scene.layout.VBox infoBox = new javafx.scene.layout.VBox(5);
-            javafx.scene.control.Label lblName = new javafx.scene.control.Label(sp.getName());
+            javafx.scene.control.Label lblName = new javafx.scene.control.Label(sp.getProductName());
             lblName.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
             
             // Lấy giá cao nhất hiện tại (currentHighestBid), nếu nó bằng 0 thì lấy giá khởi điểm
-            double giaHienTai = sp.getCurrentHighestBid() > 0 ? sp.getCurrentHighestBid() : sp.getStartingPrice();
+            double giaHienTai = sp.getCurrentHighestBid() > 0 ? sp.getCurrentHighestBid() : sp.getStartPrice();
             javafx.scene.control.Label lblPrice = new javafx.scene.control.Label("Giá hiện tại: " + String.format("%.0f", giaHienTai) + " VNĐ");
             infoBox.getChildren().addAll(lblName, lblPrice);
             

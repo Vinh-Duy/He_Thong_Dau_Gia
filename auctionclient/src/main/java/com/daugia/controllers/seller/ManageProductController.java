@@ -39,13 +39,14 @@ public class ManageProductController {
     private void loadMyProducts() {
         new Thread(() -> {
             try {
-                int sellerId = SessionManager.getUserId();
-                if (sellerId <= 0) {
+                String username = SessionManager.getUsername();
+                if (username == null || username.isEmpty()) {
                     Platform.runLater(() ->
-                        showAlert(Alert.AlertType.ERROR, "Lỗi", "Không tìm thấy thông tin đăng nhập seller.")
+                        showAlert(Alert.AlertType.ERROR, "Lỗi", "Vui lòng đăng nhập để quản lý sản phẩm.")
                     );
                     return;
                 }
+                int sellerId = SessionManager.getUserId();
 
                 com.google.gson.JsonObject payload = new com.google.gson.JsonObject();
                 payload.addProperty("sellerId", sellerId);
@@ -97,7 +98,7 @@ public class ManageProductController {
         // Cảnh báo xác nhận trước khi xóa
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Xác nhận xóa");
-        confirm.setHeaderText("Bác có chắc muốn xóa [" + selected.getName() + "] không?");
+        confirm.setHeaderText("Bác có chắc muốn xóa [" + selected.getProductName() + "] không?");
         Optional<ButtonType> result = confirm.showAndWait();
         
         if (result.isPresent() && result.get() == ButtonType.OK) {

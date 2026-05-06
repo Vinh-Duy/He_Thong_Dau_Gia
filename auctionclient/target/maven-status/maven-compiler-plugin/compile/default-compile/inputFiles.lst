@@ -1,4 +1,5 @@
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/Main.java
+/Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/config/NetworkConfig.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/admin/AdminUserController.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/auth/LoginPopupController.java
 /Users/vinhduy/Desktop/HeThongDauGia/auctionclient/src/main/java/com/daugia/controllers/auth/SignUpController.java

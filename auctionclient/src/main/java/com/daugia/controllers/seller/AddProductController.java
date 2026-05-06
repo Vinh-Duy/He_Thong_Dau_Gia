@@ -38,10 +38,9 @@ public class AddProductController {
 
             // Dùng Auction đang sửa (nếu có), không thì tạo mới
             Auction auction = (editingAuction != null) ? editingAuction : new Auction();
-            auction.setName(txtName.getText());
             auction.setProductName(txtName.getText());
             auction.setDescription(txtDescription.getText());
-            auction.setStartingPrice(Double.parseDouble(txtStartingPrice.getText()));
+            auction.setStartPrice(Double.parseDouble(txtStartingPrice.getText()));
             // Set thêm ngày giờ ở đây...
 
             String payload = gson.toJson(auction);
@@ -116,9 +115,9 @@ public class AddProductController {
         this.editingAuction = auction;
         
         // Đổ dữ liệu cũ vào các ô nhập liệu
-        txtName.setText(auction.getName());
+        txtName.setText(auction.getProductName());
         txtDescription.setText(auction.getDescription());
-        txtStartingPrice.setText(String.valueOf((long) auction.getStartingPrice())); // Ép kiểu tùy thuộc thuộc tính của bác
+        txtStartingPrice.setText(String.valueOf(auction.getStartPrice())); // Ép kiểu tùy thuộc thuộc tính của bác
         
         // Bác có thể parse thêm Date/Time ở đây nếu Server lưu chuẩn
     }

@@ -61,11 +61,28 @@ public class HomeViewController {
                                 JsonObject auctionJson = auctionsArray.get(i).getAsJsonObject();
                                 
                                 String id = auctionJson.has("id") ? auctionJson.get("id").getAsString() : "ITEM_" + i;
-                                String itemName = auctionJson.has("name") ? auctionJson.get("name").getAsString() : "Chưa có tên";
-                                String highestBid = auctionJson.has("currentHighestBid") ? auctionJson.get("currentHighestBid").getAsString() : "0";
+                                String itemName = auctionJson.has("productName") ? auctionJson.get("productName").getAsString() : 
+                                                    (auctionJson.has("name") ? auctionJson.get("name").getAsString() : "Chưa có tên");
+                                
+                                double currentHighestBid = 0;
+                                if (auctionJson.has("currentHighestBid")) {
+                                    currentHighestBid = auctionJson.get("currentHighestBid").getAsDouble();
+                                }
+                                
+                                double startPrice = 0;
+                                if (auctionJson.has("startPrice")) {
+                                    startPrice = auctionJson.get("startPrice").getAsDouble();
+                                } else if (auctionJson.has("startingPrice")) {
+                                    startPrice = auctionJson.get("startingPrice").getAsDouble();
+                                }
+                                
+                                double displayPrice = currentHighestBid > 0 ? currentHighestBid : startPrice;
+                                String priceStr = String.format("%,.0f VNĐ", displayPrice);
+                                
+                                String status = auctionJson.has("status") ? auctionJson.get("status").getAsString() : "OPEN";
                                 
                                 dangDienRaContainer.getChildren().add(
-                                    createAuctionCard(id, itemName, highestBid + " VNĐ", "Đang mở", false)
+                                    createAuctionCard(id, itemName, priceStr, status, false)
                                 );
                             }
                         }

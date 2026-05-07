@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -22,11 +23,24 @@ public class AddProductController {
     @FXML private TextField txtName;
     @FXML private TextArea txtDescription;
     @FXML private TextField txtStartingPrice;
+    @FXML private ComboBox<String> cmbCategory;
     @FXML private DatePicker dateEnd;
     @FXML private TextField txtTimeEnd;
     private Auction editingAuction = null;
 
     private Gson gson = new Gson();
+
+    @FXML
+    public void initialize() {
+        // Khởi tạo danh mục sản phẩm
+        cmbCategory.getItems().addAll(
+            "Bất động sản",
+            "Tài sản nhà nước", 
+            "Phương tiện - xe cộ",
+            "Sưu tầm - nghệ thuật",
+            "Tài sản khác"
+        );
+    }
 
     @FXML
     private void handleAddProduct() {
@@ -35,10 +49,15 @@ public class AddProductController {
                 showAlert(Alert.AlertType.WARNING, "Thiếu tin", "Bác nhập tên sản phẩm nhé!");
                 return;
             }
+            if (cmbCategory.getValue() == null) {
+                showAlert(Alert.AlertType.WARNING, "Thiếu tin", "Bác chọn phân loại sản phẩm nhé!");
+                return;
+            }
 
             // Dùng Auction đang sửa (nếu có), không thì tạo mới
             Auction auction = (editingAuction != null) ? editingAuction : new Auction();
             auction.setProductName(txtName.getText());
+            auction.setCategory(cmbCategory.getValue());
             auction.setDescription(txtDescription.getText());
             auction.setStartPrice(Double.parseDouble(txtStartingPrice.getText()));
             // Set thêm ngày giờ ở đây...
@@ -82,9 +101,15 @@ public class AddProductController {
     @FXML
     private void goBackHome(MouseEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/views/seller/ManageProductView.fxml"));
+            // Đăng xuất và về màn hình đăng nhập
+            com.daugia.utils.SessionManager.logout();
+            
+            Parent root = FXMLLoader.load(getClass().getResource("/views/auth/LoginPopup.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.getScene().setRoot(root);
+            stage.setTitle("Đăng nhập");
+            stage.sizeToScene();
+            stage.centerOnScreen();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,6 +118,7 @@ public class AddProductController {
     private void clearFields() {
         txtName.clear();
         txtDescription.clear();
+        cmbCategory.getSelectionModel().clearSelection();
         txtStartingPrice.clear();
         txtTimeEnd.clear();
         dateEnd.setValue(null);
@@ -117,7 +143,10 @@ public class AddProductController {
         // Đổ dữ liệu cũ vào các ô nhập liệu
         txtName.setText(auction.getProductName());
         txtDescription.setText(auction.getDescription());
-        txtStartingPrice.setText(String.valueOf(auction.getStartPrice())); // Ép kiểu tùy thuộc thuộc tính của bác
+        if (auction.getCategory() != null) {
+            cmbCategory.setValue(auction.getCategory());
+        }
+        txtStartingPrice.setText(String.valueOf(auction.getStartPrice()));
         
         // Bác có thể parse thêm Date/Time ở đây nếu Server lưu chuẩn
     }

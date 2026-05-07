@@ -79,8 +79,36 @@ public class AdminUserController {
             return;
         }
         
-        System.out.println("Đang xóa user: " + selectedUser.getUsername());
-        // Chỗ này bác làm tương tự gửi Request "DELETE_USER" lên server nhé
+        // Xác nhận trước khi xóa
+        javafx.scene.control.Alert confirm = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Xác nhận xóa");
+        confirm.setHeaderText(null);
+        confirm.setContentText("Bạn có chắc muốn xóa người dùng '" + selectedUser.getUsername() + "'?");
+        
+        java.util.Optional<javafx.scene.control.ButtonType> result = confirm.showAndWait();
+        if (result.isPresent() && result.get() == javafx.scene.control.ButtonType.OK) {
+            new Thread(() -> {
+                try {
+                    com.google.gson.JsonObject payload = new com.google.gson.JsonObject();
+                    payload.addProperty("userId", selectedUser.getId());
+                    
+                    Request req = new Request("DELETE_USER", payload.toString());
+                    Response res = NetworkClient.getInstance().sendRequest(req);
+                    
+                    Platform.runLater(() -> {
+                        if (res != null && "SUCCESS".equals(res.getStatus())) {
+                            userList.remove(selectedUser);
+                            showAlert("Thành công", "Đã xóa người dùng '" + selectedUser.getUsername() + "'!");
+                        } else {
+                            showAlert("Lỗi", "Không thể xóa: " + (res != null ? res.getMessage() : "Mất kết nối"));
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Platform.runLater(() -> showAlert("Lỗi", "Lỗi khi xóa người dùng!"));
+                }
+            }).start();
+        }
     }
 
     private void showAlert(String title, String content) {
@@ -94,46 +122,31 @@ public class AdminUserController {
     @FXML
     private void handleLogout() {
         try {
-            // 1. Xác định chính xác chuỗi đường dẫn (Bác kiểm tra lại hoa/thường của LoginPopup)
-            String fxmlPath = "/com/daugia/views/auth/LoginPopup.fxml"; 
+            // 1. Đăng xuất
+            com.daugia.utils.SessionManager.logout();
             
-            System.out.println("=> [DEBUG] Đang tìm file tại: " + fxmlPath);
-            
-            // 2. Lấy URL của file
-            java.net.URL location = getClass().getResource(fxmlPath);
-            
-            // 3. Nếu vẫn NULL, thử tìm theo đường dẫn ngắn (nếu bác để trong resources/views)
+            // 2. Chuyển về màn hình đăng nhập
+            java.net.URL location = getClass().getResource("/views/auth/LoginPopup.fxml");
             if (location == null) {
-                System.out.println("=> [THỬ LẠI] Không thấy ở đường dẫn cũ, thử tìm tại /views/auth/LoginPopup.fxml");
-                location = getClass().getResource("/views/auth/LoginPopup.fxml");
-            }
-
-            if (location == null) {
-                // Cú chốt: Báo lỗi cụ thể để bác biết đường dẫn nào đang bị sai
-                System.err.println("=> [LỖI CỰC NẶNG] Vẫn không thấy file LoginPopup.fxml ở bất cứ đâu!");
+                System.err.println("=> [LỖI] Không tìm thấy file LoginPopup.fxml");
+                showAlert("Lỗi", "Không tìm thấy màn hình đăng nhập!");
                 return;
             }
-
-            // 4. Load khi đã có location chuẩn
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader();
-            loader.setLocation(location);
+            
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(location);
             javafx.scene.Parent root = loader.load();
             
             javafx.scene.Scene currentScene = userTable.getScene();
-
-        // 3. THAY ĐỔI GỐC (ROOT) - Đây là chìa khóa để giữ nguyên cửa sổ
             currentScene.setRoot(root);
+            
             javafx.stage.Stage stage = (javafx.stage.Stage) currentScene.getWindow();
             stage.setTitle("Đăng nhập");
-            
-            // Nếu màn hình Login nhỏ hơn màn hình Admin, dùng dòng này để cửa sổ co lại cho đẹp:
-            stage.sizeToScene(); 
+            stage.sizeToScene();
             stage.centerOnScreen();
             
-            System.out.println("=> [ADMIN] Chuyển cảnh thành công!");
-
+            System.out.println("=> [ADMIN] Đăng xuất thành công!");
         } catch (Exception e) {
-            System.err.println("=> [EXCEPTION] Lỗi khi load FXML:");
+            System.err.println("=> [EXCEPTION] Lỗi khi đăng xuất:");
             e.printStackTrace();
         }
     }

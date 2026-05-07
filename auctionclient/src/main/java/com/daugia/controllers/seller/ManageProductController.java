@@ -154,7 +154,20 @@ public class ManageProductController {
 
     @FXML
     private void goBackHome(MouseEvent event) {
-        // Code quay lại trang chủ của bác
+        try {
+            // 1. Đăng xuất
+            SessionManager.logout();
+            
+            // 2. Chuyển về màn hình đăng nhập
+            Parent root = FXMLLoader.load(getClass().getResource("/views/auth/LoginPopup.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.getScene().setRoot(root);
+            stage.setTitle("Đăng nhập");
+            stage.sizeToScene();
+            stage.centerOnScreen();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {

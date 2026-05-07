@@ -35,7 +35,6 @@ public class HeaderController {
     
     @FXML private Label trangChuLabel;
     @FXML private Label taiSanLabel;
-    @FXML private Label phienDauGiaLabel;
     @FXML private Label gioiThieuLabel;
     @FXML private Label lienHeLabel;
 
@@ -113,7 +112,7 @@ public class HeaderController {
 
     private void setActiveMenu(Label activeLabel) {
 
-        Label[] menuLabels = {trangChuLabel, taiSanLabel, phienDauGiaLabel, gioiThieuLabel, lienHeLabel};
+        Label[] menuLabels = {trangChuLabel, taiSanLabel, gioiThieuLabel, lienHeLabel};
         
         for (Label label : menuLabels) {
             label.getStyleClass().remove("menu-item-active");
@@ -217,25 +216,6 @@ public class HeaderController {
         khac.setOnAction(e -> loadCategoryView("Tài sản khác"));
 
         menu.getItems().addAll(batDongSan, nhaNuoc, phuongTien, suuTam, khac);
-        menu.show((Node) event.getSource(), Side.BOTTOM, 0, 5);
-    }
-
-    @FXML
-    private void showPhienDauGiaMenu(MouseEvent event) {
-        setActiveMenu(phienDauGiaLabel);
-        
-        ContextMenu menu = new ContextMenu();
-        
-        MenuItem sapdaugia = new MenuItem("Sắp đấu giá");
-        sapdaugia.setOnAction(e -> loadCenterContent("/views/SapDauGiaView.fxml"));
-
-        MenuItem dangdienra = new MenuItem("Đang diễn ra");
-        dangdienra.setOnAction(e -> loadCenterContent("/views/DangDienRaView.fxml"));
-
-        MenuItem daketthuc = new MenuItem("Phiên đấu giá đã kết thúc");
-        daketthuc.setOnAction(e -> loadCenterContent("/views/DaKetThucView.fxml"));
-
-        menu.getItems().addAll(sapdaugia, dangdienra, daketthuc);
         menu.show((Node) event.getSource(), Side.BOTTOM, 0, 5);
     }
 

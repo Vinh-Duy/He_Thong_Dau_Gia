@@ -14,8 +14,8 @@
     </padding>
 
     <HBox alignment="CENTER_LEFT">
-        <Label text="← Quay lại Trang chủ" onMouseClicked="#goBackHome" 
-               style="-fx-text-fill: #3498db; -fx-cursor: hand; -fx-font-weight: bold;"/>
+        <Label text="🚪 Đăng xuất" onMouseClicked="#goBackHome" 
+               style="-fx-text-fill: #e74c3c; -fx-cursor: hand; -fx-font-weight: bold;"/>
     </HBox>
 
     <Text text="ĐĂNG SẢN PHẨM ĐẤU GIÁ MỚI" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: #2c3e50;"/>
@@ -27,17 +27,20 @@
         <Label text="Mô tả chi tiết:" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-font-weight: bold;"/>
         <TextArea fx:id="txtDescription" promptText="Tình trạng máy, phụ kiện kèm theo..." GridPane.columnIndex="1" GridPane.rowIndex="1" prefHeight="100" wrapText="true"/>
 
-        <Label text="Giá khởi điểm (VNĐ):" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-font-weight: bold;"/>
-        <TextField fx:id="txtStartingPrice" promptText="Ví dụ: 1000000" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <Label text="Phân loại sản phẩm:" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="cmbCategory" promptText="-- Chọn loại --" prefWidth="400" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-        <Label text="Ngày kết thúc:" GridPane.columnIndex="0" GridPane.rowIndex="3" style="-fx-font-weight: bold;"/>
-        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="3">
+        <Label text="Giá khởi điểm (VNĐ):" GridPane.columnIndex="0" GridPane.rowIndex="3" style="-fx-font-weight: bold;"/>
+        <TextField fx:id="txtStartingPrice" promptText="Ví dụ: 1000000" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+        <Label text="Ngày kết thúc:" GridPane.columnIndex="0" GridPane.rowIndex="4" style="-fx-font-weight: bold;"/>
+        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
             <DatePicker fx:id="dateEnd" promptText="Chọn ngày" prefWidth="150"/>
             <Label text="Giờ (HH:mm):" style="-fx-alignment: center; -fx-padding: 5 0 0 0;"/>
             <TextField fx:id="txtTimeEnd" promptText="18:00" prefWidth="80"/>
         </HBox>
 
-        <HBox spacing="15" alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <HBox spacing="15" alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="5">
             <Button text="Làm mới" onAction="#handleClear" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-cursor: hand;"/>
             <Button text="Đăng Sản Phẩm" onAction="#handleAddProduct" 
                     style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-cursor: hand;"/>

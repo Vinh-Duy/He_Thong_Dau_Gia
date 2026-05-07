@@ -97,6 +97,17 @@ public class AddProductController {
         }
     }
 
+    @FXML
+    private void goBackToManage(MouseEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/views/seller/ManageProductView.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // --- HÀM THOÁT RA HOMEVIEW CHO SELLER ---
     @FXML
     private void goBackHome(MouseEvent event) {

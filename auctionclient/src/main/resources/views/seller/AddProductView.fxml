@@ -13,7 +13,9 @@
         <Insets top="20" right="40" bottom="30" left="40"/>
     </padding>
 
-    <HBox alignment="CENTER_LEFT">
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <Label text="← Quay lại quản lý" onMouseClicked="#goBackToManage" 
+               style="-fx-text-fill: #3498db; -fx-cursor: hand; -fx-font-weight: bold;"/>
         <Label text="🚪 Đăng xuất" onMouseClicked="#goBackHome" 
                style="-fx-text-fill: #e74c3c; -fx-cursor: hand; -fx-font-weight: bold;"/>
     </HBox>

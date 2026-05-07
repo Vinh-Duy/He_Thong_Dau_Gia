@@ -11,13 +11,19 @@ import com.google.gson.reflect.TypeToken;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class DanhSachSanPhamController {
 
     @FXML private Label lblTitle;
-    @FXML private FlowPane productContainer;
+    @FXML private VBox productContainer;
     private java.util.Map<String, Label> mapGiaSanPham = new java.util.HashMap<>();
 
     private String currentCategory;
@@ -102,7 +108,7 @@ public class DanhSachSanPhamController {
                             lblEmpty.setStyle("-fx-font-size: 16px; -fx-text-fill: gray; -fx-padding: 20px;");
                             productContainer.getChildren().add(lblEmpty);
                         } else {
-                            hienThiLenGiaoDien(dsSanPham);
+                            hienThiLuoiCard(dsSanPham);
                         }
                     });
                 } else {
@@ -134,7 +140,7 @@ public class DanhSachSanPhamController {
 
                     Platform.runLater(() -> {
                         System.out.println("--- BƯỚC 6: Bắt đầu vẽ lên giao diện... ---");
-                        hienThiLenGiaoDien(dsSanPham);
+                        hienThiTheoNhom(dsSanPham);
                     });
                 }
             } catch (Exception e) {
@@ -144,55 +150,130 @@ public class DanhSachSanPhamController {
         }).start();
     }
 
-    private void hienThiLenGiaoDien(List<Auction> ds) {
-        productContainer.getChildren().clear(); 
+    // ============ HIỂN THỊ THEO NHÓM CATEGORY (khi xem tất cả) ============
+    private void hienThiTheoNhom(List<Auction> ds) {
+        productContainer.getChildren().clear();
+        
+        java.util.Map<String, java.util.List<Auction>> groups = new java.util.LinkedHashMap<>();
+        for (Auction sp : ds) {
+            String cat = sp.getCategory();
+            if (cat == null || cat.isEmpty()) cat = "Chưa phân loại";
+            groups.computeIfAbsent(cat, k -> new java.util.ArrayList<>()).add(sp);
+        }
+        
+        for (java.util.Map.Entry<String, java.util.List<Auction>> entry : groups.entrySet()) {
+            Label lblCat = new Label("📂 " + entry.getKey());
+            lblCat.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
+            
+            FlowPane flow = new FlowPane();
+            flow.setHgap(20);
+            flow.setVgap(20);
+            flow.setPadding(new Insets(0, 0, 20, 0));
+            
+            for (Auction sp : entry.getValue()) {
+                flow.getChildren().add(taoCardSanPham(sp));
+            }
+            
+            productContainer.getChildren().addAll(lblCat, flow);
+        }
+    }
+
+    // ============ HIỂN THỊ DẠNG LƯỚI CARD (khi lọc theo 1 category) ============
+    private void hienThiLuoiCard(List<Auction> ds) {
+        productContainer.getChildren().clear();
+        
+        FlowPane flow = new FlowPane();
+        flow.setHgap(20);
+        flow.setVgap(20);
+        flow.setPadding(new Insets(10, 0, 20, 0));
         
         for (Auction sp : ds) {
-            // 1. Tạo một cái HBox (Hộp nằm ngang) để chứa thông tin cho gọn
-            javafx.scene.layout.HBox hbox = new javafx.scene.layout.HBox(15); 
-            hbox.setStyle("-fx-padding: 10px; -fx-border-color: lightgray; -fx-border-width: 0 0 1 0; -fx-alignment: center-left;");
-            
-            // 2. Chữ hiển thị thông tin
-            javafx.scene.layout.VBox infoBox = new javafx.scene.layout.VBox(5);
-            javafx.scene.control.Label lblName = new javafx.scene.control.Label(sp.getProductName());
-            lblName.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
-            
-            // Lấy giá cao nhất hiện tại (currentHighestBid), nếu nó bằng 0 thì lấy giá khởi điểm
-            double giaHienTai = sp.getCurrentHighestBid() > 0 ? sp.getCurrentHighestBid() : sp.getStartPrice();
-            javafx.scene.control.Label lblPrice = new javafx.scene.control.Label("Giá hiện tại: " + String.format("%,.0f", giaHienTai) + " VNĐ");
-            lblPrice.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 14px;");
-            infoBox.getChildren().addAll(lblName, lblPrice);
-            
-            mapGiaSanPham.put(String.valueOf(sp.getId()), lblPrice);
-            // 3. Ô nhập tiền và Nút bấm
-            javafx.scene.control.TextField txtBid = new javafx.scene.control.TextField();
-            txtBid.setPromptText("Nhập giá cao hơn...");
-            
-            javafx.scene.control.Button btnBid = new javafx.scene.control.Button("Ra Giá");
-            btnBid.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;");
-            
-            // 4. Bắt sự kiện khi bấm nút "Ra Giá"
-            btnBid.setOnAction(event -> {
-                // 🔥 THÊM CHỐT KIỂM TRA ĐĂNG NHẬP Ở ĐÂY 🔥
-                String currentUser = com.daugia.utils.SessionManager.getUsername();
-                if (currentUser == null || currentUser.isEmpty()) {
-                    javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.WARNING);
-                    alert.setTitle("Cảnh báo");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Bác chưa đăng nhập! Vui lòng đăng nhập tài khoản để tham gia đấu giá nhé.");
-                    alert.showAndWait();
-                    
-                    return; // <--- Lệnh này sẽ đá văng người dùng ra, không cho chạy câu lệnh bên dưới
-                }
-
-                // Nếu đã qua được cửa bảo vệ (đã đăng nhập), thì mới cho phép gọi hàm xử lý đặt giá
-                xuLyDatGia(sp.getId(), txtBid.getText());
-            });
-            
-            // Nhét tất cả vào HBox, rồi nhét HBox vào Container chính
-            hbox.getChildren().addAll(infoBox, txtBid, btnBid);
-            productContainer.getChildren().add(hbox);
+            flow.getChildren().add(taoCardSanPham(sp));
         }
+        productContainer.getChildren().add(flow);
+    }
+
+    // ============ TẠO CARD CHO 1 SẢN PHẨM ============
+    private VBox taoCardSanPham(Auction sp) {
+        // Card container
+        VBox card = new VBox(10);
+        card.setPadding(new Insets(15));
+        card.setPrefWidth(260);
+        card.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-background-radius: 12px;" +
+            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 10, 0, 0, 4);"
+        );
+        
+        // Tên sản phẩm
+        Label lblName = new Label(sp.getProductName());
+        lblName.setWrapText(true);
+        lblName.setStyle("-fx-font-weight: bold; -fx-font-size: 15px; -fx-text-fill: #2c3e50;");
+        lblName.setPrefWidth(230);
+        
+        // Mô tả (giới hạn)
+        String desc = sp.getDescription();
+        if (desc == null) desc = "";
+        if (desc.length() > 60) desc = desc.substring(0, 60) + "...";
+        Label lblDesc = new Label(desc);
+        lblDesc.setWrapText(true);
+        lblDesc.setPrefWidth(230);
+        lblDesc.setStyle("-fx-text-fill: #7f8c8d; -fx-font-size: 12px;");
+        
+        // Trạng thái badge
+        Label lblStatus = new Label(sp.getStatus() != null ? sp.getStatus() : "Đang mở");
+        String statusColor = "#27ae60";
+        if ("ENDED".equalsIgnoreCase(sp.getStatus()) || "KẾT THÚC".equals(sp.getStatus())) {
+            statusColor = "#95a5a6";
+        }
+        lblStatus.setStyle(
+            "-fx-background-color: " + statusColor + ";" +
+            "-fx-text-fill: white;" +
+            "-fx-padding: 3 10;" +
+            "-fx-background-radius: 10;" +
+            "-fx-font-size: 11px;"
+        );
+        
+        // Giá hiện tại
+        double giaHienTai = sp.getCurrentHighestBid() > 0 ? sp.getCurrentHighestBid() : sp.getStartPrice();
+        Label lblPrice = new Label(String.format("%,.0f", giaHienTai) + " VNĐ");
+        lblPrice.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold; -fx-font-size: 16px;");
+        mapGiaSanPham.put(String.valueOf(sp.getId()), lblPrice);
+        
+        // Input + Button đặt giá
+        TextField txtBid = new TextField();
+        txtBid.setPromptText("Nhập giá...");
+        txtBid.setStyle("-fx-background-radius: 6;");
+        txtBid.setPrefWidth(150);
+        
+        Button btnBid = new Button("Ra Giá");
+        btnBid.setStyle(
+            "-fx-background-color: #e74c3c;" +
+            "-fx-text-fill: white;" +
+            "-fx-font-weight: bold;" +
+            "-fx-background-radius: 6;" +
+            "-fx-cursor: hand;"
+        );
+        btnBid.setOnAction(event -> {
+            String currentUser = com.daugia.utils.SessionManager.getUsername();
+            if (currentUser == null || currentUser.isEmpty()) {
+                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.WARNING);
+                alert.setTitle("Cảnh báo");
+                alert.setHeaderText(null);
+                alert.setContentText("Bác chưa đăng nhập! Vui lòng đăng nhập tài khoản để tham gia đấu giá nhé.");
+                alert.showAndWait();
+                return;
+            }
+            xuLyDatGia(sp.getId(), txtBid.getText());
+        });
+        
+        HBox bidBox = new HBox(10, txtBid, btnBid);
+        bidBox.setAlignment(Pos.CENTER_LEFT);
+        
+        // Thêm tất cả vào card
+        card.getChildren().addAll(lblName, lblDesc, lblStatus, lblPrice, bidBox);
+        
+        return card;
     }
 
     private void xuLyDatGia(String auctionId, String tienNhapVao) {

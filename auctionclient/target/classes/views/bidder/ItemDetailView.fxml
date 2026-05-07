@@ -128,29 +128,56 @@
                            </children>
                         </VBox>
                         
-                        <VBox prefHeight="200.0" style="-fx-background-color: #f8f9fa; -fx-background-radius: 15; -fx-padding: 25;" VBox.vgrow="ALWAYS">
+                        <VBox spacing="12.0" style="-fx-background-color: linear-gradient(to bottom, #fff9c4, #fffde7); -fx-background-radius: 15; -fx-padding: 25; -fx-border-color: #fbc02d; -fx-border-radius: 15; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
                            <children>
-                              <Label text="Đấu giá tự động (Auto-Bid)" textFill="#333333">
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <Label style="-fx-text-fill: #f57f17; -fx-font-size: 22px;" text="⚡" />
+                                    <Label text="Đấu giá tự động" textFill="#f57f17">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <Label text="Hệ thống sẽ tự động đặt giá thay bạn khi có người khác bid, cho đến khi đạt giá tối đa." textFill="#795548" wrapText="true">
                                  <font>
-                                    <Font name="System Bold" size="18.0" />
+                                    <Font size="13.0" />
                                  </font>
                               </Label>
                               <Separator prefWidth="200.0" />
-                              <Label text="Giá tối đa (VNĐ):" textFill="#555555">
+                              
+                              <VBox spacing="6.0">
+                                 <children>
+                                    <Label text="💰 Giá tối đa (VNĐ):" textFill="#5d4037">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txtMaxBid" prefHeight="42.0" promptText="VD: 100000000" style="-fx-background-radius: 10; -fx-border-color: #ffcc80; -fx-border-radius: 10; -fx-border-width: 2; -fx-font-size: 15px; -fx-background-color: white;" />
+                                 </children>
+                              </VBox>
+                              
+                              <VBox spacing="6.0">
+                                 <children>
+                                    <Label text="📈 Bước giá (VNĐ):" textFill="#5d4037">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txtIncrement" prefHeight="42.0" promptText="VD: 10000000" style="-fx-background-radius: 10; -fx-border-color: #ffcc80; -fx-border-radius: 10; -fx-border-width: 2; -fx-font-size: 15px; -fx-background-color: white;" />
+                                 </children>
+                              </VBox>
+                              
+                              <Label fx:id="lblAutoBidStatus" text="Chưa bật" textFill="#9e9e9e">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font size="13.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="txtMaxBid" prefHeight="40.0" promptText="Nhập giá tối đa..." style="-fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-font-size: 14px;" />
-                              <Label text="Bước giá (VNĐ):" textFill="#555555">
+                              
+                              <Button fx:id="btnToggleAutoBid" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #ff8f00; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" text="🔥 Bật Auto-Bid">
                                  <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="txtIncrement" prefHeight="40.0" promptText="Nhập bước giá..." style="-fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-font-size: 14px;" />
-                              <Button fx:id="btnToggleAutoBid" mnemonicParsing="false" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;" text="Bật Auto-Bid">
-                                 <font>
-                                    <Font size="14.0" />
+                                    <Font size="15.0" />
                                  </font>
                               </Button>
                            </children>

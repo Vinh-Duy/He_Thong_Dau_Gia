@@ -159,7 +159,8 @@ public class DanhSachSanPhamController {
             
             // Lấy giá cao nhất hiện tại (currentHighestBid), nếu nó bằng 0 thì lấy giá khởi điểm
             double giaHienTai = sp.getCurrentHighestBid() > 0 ? sp.getCurrentHighestBid() : sp.getStartPrice();
-            javafx.scene.control.Label lblPrice = new javafx.scene.control.Label("Giá hiện tại: " + String.format("%.0f", giaHienTai) + " VNĐ");
+            javafx.scene.control.Label lblPrice = new javafx.scene.control.Label("Giá hiện tại: " + String.format("%,.0f", giaHienTai) + " VNĐ");
+            lblPrice.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 14px;");
             infoBox.getChildren().addAll(lblName, lblPrice);
             
             mapGiaSanPham.put(String.valueOf(sp.getId()), lblPrice);

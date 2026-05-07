@@ -4,12 +4,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import com.daugia.ClientHandler;
 import com.daugia.dao.AuctionDAO;
 import com.daugia.models.Auction;
 import com.daugia.models.AuthUserContext;
 import com.daugia.network.Request;
 import com.daugia.network.Response;
 import com.daugia.services.AuctionManager;
+import com.daugia.services.AutoBidService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -17,6 +19,7 @@ import com.google.gson.JsonParser;
 public class PlaceBidHandler implements ActionHandler {
     private final Gson gson = new Gson();
     private final AuctionDAO auctionDAO = new AuctionDAO();
+    private final AutoBidService autoBidService = new AutoBidService();
 
     private static final DateTimeFormatter[] END_TIME_FORMATS = new DateTimeFormatter[] {
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"),
@@ -63,13 +66,28 @@ public class PlaceBidHandler implements ActionHandler {
                 currentAuction.setCurrentHighestBid(bidAmount);
                 auctionDAO.updateHighestBid(auctionId, bidAmount);
 
+                // Execute auto-bids after this bid is placed
+                autoBidService.executeAutoBids(auctionId, bidAmount);
+
+                // Lấy giá MỚI NHẤT sau khi auto-bids trigger (có thể đã tăng)
+                double finalHighestBid = currentAuction.getCurrentHighestBid();
+
                 JsonObject successData = new JsonObject();
                 successData.addProperty("auctionId", auctionId);
-                successData.addProperty("newHighestBid", bidAmount);
+                successData.addProperty("newHighestBid", finalHighestBid);
 
                 JsonObject event = new JsonObject();
                 event.addProperty("action", "BID_UPDATE");
                 event.addProperty("payload", gson.toJson(successData));
+
+                // Broadcast BID_UPDATE cho TẤT CẢ clients (real-time update)
+                JsonObject broadcastEvent = new JsonObject();
+                broadcastEvent.addProperty("action", "BID_UPDATE");
+                JsonObject broadcastPayload = new JsonObject();
+                broadcastPayload.addProperty("auctionId", auctionId);
+                broadcastPayload.addProperty("newHighestBid", finalHighestBid);
+                broadcastEvent.addProperty("payload", gson.toJson(broadcastPayload));
+                ClientHandler.broadcastAll(gson.toJson(broadcastEvent));
 
                 JsonObject result = new JsonObject();
                 result.add("bidResult", successData);

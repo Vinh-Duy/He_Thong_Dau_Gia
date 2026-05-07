@@ -2,8 +2,6 @@ package com.daugia.controllers.bidder;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import com.daugia.models.Auction;
 import com.daugia.network.NetworkClient;
@@ -20,8 +18,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 
 public class ItemDetailController implements Initializable {
     
@@ -29,9 +27,6 @@ public class ItemDetailController implements Initializable {
     @FXML private ImageView imgItem;
     @FXML private Label lblItemName;
     @FXML private Label lblCurrentBid;
-    @FXML private Label lblTimeRemaining;
-    @FXML private Label lblSeller;
-    @FXML private Label lblCategory;
     @FXML private TextArea txtDescription;
     @FXML private TextField txtBidInput;
     @FXML private Button btnPlaceBid;
@@ -41,10 +36,9 @@ public class ItemDetailController implements Initializable {
     @FXML private TextField txtMaxBid;
     @FXML private TextField txtIncrement;
     @FXML private Button btnToggleAutoBid;
-    @FXML private VBox autoBidPanel;
+    @FXML private Label lblAutoBidStatus;
     
     private Auction currentAuction;
-    private Timer countdownTimer;
     private boolean autoBidEnabled = false;
     private long currentPriceValue = 0;
     
@@ -54,9 +48,6 @@ public class ItemDetailController implements Initializable {
         
         // Setup real-time listener
         NetworkClient.getInstance().setOnMessageReceived(this::handleRealTimeUpdate);
-        
-        // Initially hide auto-bid panel
-        autoBidPanel.setVisible(false);
         
         // Setup input validation
         txtBidInput.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -68,7 +59,6 @@ public class ItemDetailController implements Initializable {
         
         // Setup button actions
         btnToggleAutoBid.setOnAction(e -> toggleAutoBid());
-        btnPlaceBid.setOnAction(e -> placeBid());
     }
     
     public void setAuction(Auction auction) {
@@ -115,8 +105,6 @@ public class ItemDetailController implements Initializable {
         if (currentAuction != null) {
             lblItemName.setText(currentAuction.getProductName());
             lblCurrentBid.setText(formatVietnameseCurrency(currentPriceValue));
-            lblSeller.setText("Người bán: " + getSellerName(currentAuction.getSellerId()));
-            lblCategory.setText("Danh mục: " + currentAuction.getCategory());
             txtDescription.setText(currentAuction.getDescription());
             
             // Update current auction object
@@ -141,15 +129,6 @@ public class ItemDetailController implements Initializable {
                         currentAuction.setCurrentHighestBid(newPrice);
                         lblCurrentBid.setText(formatVietnameseCurrency(currentPriceValue));
                         
-                        // Flash effect for price update
-                        lblCurrentBid.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
-                        new Timer().schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                Platform.runLater(() -> lblCurrentBid.setStyle("-fx-text-fill: black;"));
-                            }
-                        }, 1500);
-                        
                         // Check auto-bid logic
                         if (autoBidEnabled) {
                             checkAutoBid(newPrice);
@@ -162,7 +141,8 @@ public class ItemDetailController implements Initializable {
         });
     }
     
-    private void placeBid() {
+    @FXML
+    private void handlePlaceBid() {
         String username = SessionManager.getUsername();
         if (username == null || username.isEmpty()) {
             showAlert("Cảnh báo", "Vui lòng đăng nhập để tham gia đấu giá!");
@@ -218,12 +198,53 @@ public class ItemDetailController implements Initializable {
     }
     
     private void toggleAutoBid() {
-        autoBidEnabled = !autoBidEnabled;
-        autoBidPanel.setVisible(autoBidEnabled);
-        btnToggleAutoBid.setText(autoBidEnabled ? "Tắt Auto-Bid" : "Bật Auto-Bid");
+        String maxBidText = txtMaxBid.getText().trim();
+        String incrementText = txtIncrement.getText().trim();
         
-        if (autoBidEnabled) {
-            validateAutoBidSettings();
+        if (maxBidText.isEmpty() || incrementText.isEmpty()) {
+            showAlert("Lỗi", "Vui lòng nhập giá tối đa và bước giá!");
+            return;
+        }
+        
+        try {
+            long maxBid = Long.parseLong(maxBidText);
+            long increment = Long.parseLong(incrementText);
+            
+            if (maxBid <= currentPriceValue) {
+                showAlert("Lỗi", "Giá tối đa phải cao hơn giá hiện tại!");
+                return;
+            }
+            
+            if (increment <= 0) {
+                showAlert("Lỗi", "Bước giá phải lớn hơn 0!");
+                return;
+            }
+            
+            // Send SET_AUTO_BID request to server
+            com.google.gson.JsonObject payload = new com.google.gson.JsonObject();
+            payload.addProperty("auctionId", currentAuction.getId());
+            payload.addProperty("maxBid", maxBid);
+            payload.addProperty("increment", increment);
+            
+            new Thread(() -> {
+                Request request = new Request("SET_AUTO_BID", payload.toString());
+                Response response = NetworkClient.getInstance().sendRequest(request);
+                
+                Platform.runLater(() -> {
+                    if (response != null && "SUCCESS".equals(response.getStatus())) {
+                        autoBidEnabled = true;
+                        btnToggleAutoBid.setText("Tắt Auto-Bid");
+                        showAlert("Thành công", "Đấu giá tự động đã được kích hoạt!");
+                        System.out.println("Auto-bid activated: max=" + maxBid + ", increment=" + increment);
+                    } else {
+                        String errorMsg = response != null ? response.getMessage() : "Lỗi không xác định";
+                        showAlert("Lỗi", "Không thể kích hoạt Auto-Bid: " + errorMsg);
+                    }
+                });
+            }).start();
+            
+        } catch (NumberFormatException e) {
+            showAlert("Lỗi", "Vui lòng nhập số hợp lệ!");
         }
     }
     
@@ -281,8 +302,11 @@ public class ItemDetailController implements Initializable {
                 // Disable auto-bid when max is reached
                 Platform.runLater(() -> {
                     autoBidEnabled = false;
-                    autoBidPanel.setVisible(false);
-                    btnToggleAutoBid.setText("Bật Auto-Bid");
+                    if (lblAutoBidStatus != null) {
+                        lblAutoBidStatus.setText("Đã tắt - đạt giá tối đa");
+                        lblAutoBidStatus.setStyle("-fx-text-fill: #e74c3c;");
+                    }
+                    btnToggleAutoBid.setText("🔥 Bật Auto-Bid");
                     showAlert("Thông báo", "Đã đạt giá tối đa, Auto-Bid tự động tắt!");
                 });
             }
@@ -292,32 +316,7 @@ public class ItemDetailController implements Initializable {
     }
     
     private void startCountdown() {
-        if (countdownTimer != null) {
-            countdownTimer.cancel();
-        }
-        
-        countdownTimer = new Timer();
-        countdownTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
-                    // Simple countdown logic - you can enhance this based on endTime
-                    if (currentAuction != null && currentAuction.getEndTime() != null) {
-                        lblTimeRemaining.setText("Thời gian còn lại: " + calculateTimeRemaining());
-                    }
-                });
-            }
-        }, 0, 1000);
-    }
-    
-    private String calculateTimeRemaining() {
-        // Simple implementation - you can enhance this
-        return "Đang cập nhật...";
-    }
-    
-    private String getSellerName(int sellerId) {
-        // You can implement this to fetch seller name from database
-        return "Seller " + sellerId;
+        // Timer placeholder - can be enhanced later
     }
     
     private String formatVietnameseCurrency(long amount) {

@@ -19,6 +19,7 @@ public class HandlerRegistry {
         handlers.put("DELETE_PRODUCT", new DeleteProductHandler());
         handlers.put("ADD_PRODUCT", new AddProductHandler());
         handlers.put("PLACE_BID", new PlaceBidHandler());
+        handlers.put("DELETE_USER", new DeleteUserHandler());
     }
 
     public ActionHandler get(String action) {

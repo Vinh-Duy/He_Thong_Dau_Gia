@@ -14,7 +14,7 @@
 
     <center>
         <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-padding: 0 20 20 20;">
-            <FlowPane fx:id="productContainer" hgap="25" vgap="25" alignment="TOP_LEFT" />
+            <VBox fx:id="productContainer" spacing="30" />
         </ScrollPane>
     </center>
 </BorderPane>

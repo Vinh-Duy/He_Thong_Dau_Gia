@@ -78,13 +78,18 @@ public class HeaderController {
         alert.setContentText("Bác đã đăng xuất thành công!");
         alert.showAndWait();
 
-        // 4. (Tùy chọn) Nếu bác muốn đá họ về Trang chủ khi đăng xuất thì dùng đoạn này:
+        // 4. Chuyển về màn hình đăng nhập
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/views/common/HomeView.fxml"));
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/views/auth/LoginPopup.fxml"));
             javafx.scene.Parent root = loader.load();
-            ((javafx.scene.Node) event.getSource()).getScene().setRoot(root);
+            javafx.scene.Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
+            scene.setRoot(root);
+            javafx.stage.Stage stage = (javafx.stage.Stage) scene.getWindow();
+            stage.setTitle("Đăng nhập");
+            stage.sizeToScene();
+            stage.centerOnScreen();
         } catch (Exception e) {
-            System.err.println("Lỗi khi chuyển về trang chủ:");
+            System.err.println("Lỗi khi chuyển về đăng nhập:");
             e.printStackTrace();
         }
     }

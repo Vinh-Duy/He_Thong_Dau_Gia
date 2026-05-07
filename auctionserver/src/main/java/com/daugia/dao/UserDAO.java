@@ -135,6 +135,20 @@ public class UserDAO {
         }
     }
 
+    public boolean deleteUser(int userId) {
+        String sql = "DELETE FROM users WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (Exception e) {
+            System.out.println("Lỗi khi xóa user: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public User findByToken(String token) {
         String sql = "SELECT id, username, password, role FROM users WHERE token = ?";
         try (Connection conn = DatabaseConnection.getConnection();

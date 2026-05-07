@@ -31,7 +31,6 @@
         <HBox alignment="CENTER" spacing="15.0" HBox.hgrow="ALWAYS">
             <Label fx:id="trangChuLabel" onMouseClicked="#showTrangChu" styleClass="menu-item, menu-item-active" text="Trang chủ" />
             <Label fx:id="taiSanLabel" onMouseClicked="#showTaiSanMenu" styleClass="menu-item" text="Danh mục đấu giá" />
-            <Label fx:id="phienDauGiaLabel" onMouseClicked="#showPhienDauGiaMenu" styleClass="menu-item" text="Phòng đấu giá" />
             <Label fx:id="gioiThieuLabel" onMouseClicked="#showGioiThieu" styleClass="menu-item" text="Giới thiệu" />
             <Label fx:id="lienHeLabel" onMouseClicked="#showLienHe" styleClass="menu-item" text="Liên hệ" />
         </HBox>

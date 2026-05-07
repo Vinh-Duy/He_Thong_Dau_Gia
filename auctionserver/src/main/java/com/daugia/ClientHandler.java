@@ -117,4 +117,18 @@ public class ClientHandler implements Runnable {
             }
         }
     }
+
+    /**
+     * Public static method cho handlers gọi broadcast.
+     * Dùng để gửi real-time updates (auto-bid, bid updates) cho tất cả clients.
+     */
+    public static void broadcastAll(String message) {
+        for (PrintWriter writer : clientWriters) {
+            try {
+                writer.println(message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

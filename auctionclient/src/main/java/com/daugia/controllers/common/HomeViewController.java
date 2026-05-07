@@ -94,9 +94,10 @@ public class HomeViewController {
         }).start();
     }
 
-    private Node createAuctionCard(String id, String title, String price, String time, boolean isBanner) {
+    private Node createAuctionCard(String id, String title, String price, String status, boolean isBanner) {
         VBox card = new VBox();
-        card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);");
+        card.setStyle("-fx-background-color: white; -fx-background-radius: 12; "
+            + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.12), 15, 0, 0, 6);");
         
         if (isBanner) {
             card.setPrefWidth(580);
@@ -104,52 +105,65 @@ public class HomeViewController {
             card.setPrefWidth(280);
         }
 
+        // Image placeholder
         VBox imagePlaceholder = new VBox();
         imagePlaceholder.setAlignment(Pos.CENTER);
-        imagePlaceholder.setStyle("-fx-background-color: #e1bee7; -fx-background-radius: 10 10 0 0;");
+        imagePlaceholder.setStyle("-fx-background-color: linear-gradient(to bottom right, #e1bee7, #ce93d8); "
+            + "-fx-background-radius: 12 12 0 0;");
         imagePlaceholder.setPrefHeight(isBanner ? 180 : 160);
         Label imgLabel = new Label("Ảnh tài sản");
-        imgLabel.setStyle("-fx-text-fill: #6a1b9a; -fx-font-weight: bold;");
+        imgLabel.setStyle("-fx-text-fill: #6a1b9a; -fx-font-weight: bold; -fx-font-size: 14px;");
         imagePlaceholder.getChildren().add(imgLabel);
 
+        // Info section
         VBox infoBox = new VBox();
-        infoBox.setSpacing(8);
-        infoBox.setPadding(new Insets(15));
+        infoBox.setSpacing(10);
+        infoBox.setPadding(new Insets(18));
 
+        // Title
         Label titleLabel = new Label(title);
-        titleLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;");
+        titleLabel.setStyle("-fx-font-size: 17px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
         titleLabel.setWrapText(true);
+        titleLabel.setMaxWidth(isBanner ? 540 : 240);
 
-        Label priceLabel = new Label("Giá k.điểm: " + price);
-        priceLabel.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #9c27b0;");
+        // Price
+        Label priceLabel = new Label(price);
+        priceLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #e74c3c;");
 
-        Label timeLabel = new Label(time);
-        timeLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #757575;");
+        // Status badge
+        String statusColor = "OPEN".equals(status) || "RUNNING".equals(status) 
+            ? "#27ae60" : "#e74c3c";
+        String statusText = "OPEN".equals(status) || "RUNNING".equals(status) 
+            ? "Đang mở" : "Đã đóng";
+        Label statusLabel = new Label(statusText);
+        statusLabel.setStyle("-fx-background-color: " + statusColor + "; -fx-text-fill: white; "
+            + "-fx-padding: 4 12; -fx-background-radius: 12; -fx-font-size: 12px; -fx-font-weight: bold;");
 
+        // Button
         Button actionBtn = new Button("Đấu giá ngay");
-        actionBtn.setStyle("-fx-background-color: #9c27b0; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-radius: 5; -fx-background-radius: 5;");
+        actionBtn.setStyle("-fx-background-color: #9c27b0; -fx-text-fill: white; "
+            + "-fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand; "
+            + "-fx-font-size: 14px;");
         actionBtn.setMaxWidth(Double.MAX_VALUE);
+        actionBtn.setPrefHeight(40);
 
         actionBtn.setOnAction(event -> {
             try {
                 System.out.println("Đang mở sản phẩm có ID: " + id);
-
-                javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/views/bidder/ItemDetailView.fxml"));
+                javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                    getClass().getResource("/views/bidder/ItemDetailView.fxml"));
                 javafx.scene.Parent detailRoot = loader.load();
-
                 com.daugia.controllers.bidder.ItemDetailController controller = loader.getController();
                 controller.setAuctionId(id);
-
                 javafx.stage.Stage stage = (javafx.stage.Stage) actionBtn.getScene().getWindow();
                 stage.getScene().setRoot(detailRoot);
-
             } catch (Exception e) {
                 System.out.println("Lỗi khi chuyển sang trang Chi Tiết: " + e.getMessage());
                 e.printStackTrace();
             }
         });
 
-        infoBox.getChildren().addAll(titleLabel, priceLabel, timeLabel, actionBtn);
+        infoBox.getChildren().addAll(titleLabel, priceLabel, statusLabel, actionBtn);
         card.getChildren().addAll(imagePlaceholder, infoBox);
 
         return card;

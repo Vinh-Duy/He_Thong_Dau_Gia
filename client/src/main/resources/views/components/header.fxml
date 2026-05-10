@@ -35,14 +35,22 @@
             <Label fx:id="dateLabel" text="Ngày tháng năm" />
         </VBox>
         
-        <HBox fx:id="authBox" alignment="CENTER" spacing="15.0">
+        <HBox fx:id="authBox" alignment="CENTER" spacing="15.0" managed="false" visible="false">
             <Label onMouseClicked="#goToSignup" styleClass="signup-btn" text="Đăng ký" />
             <Label onMouseClicked="#goToSignin" styleClass="signin-btn" text="Đăng nhập" />
         </HBox>
 
-        <HBox fx:id="userBox" alignment="CENTER" spacing="15.0" managed="false" visible="false">
-            <Label fx:id="userLabel" text="Xin chào, Admin" />
-            <Label onMouseClicked="#handleLogout" styleClass="signout-btn" text="Đăng xuất" />
+        <HBox fx:id="userBox" alignment="CENTER" spacing="15.0" managed="true" visible="true">
+            <Label fx:id="userLabel" styleClass="user-btn" text="Xin chào, User" />
+            <children>
+                <MenuButton fx:id="profileMenu" styleClass="profile-menu">
+                    <items>
+                        <MenuItem onAction="#showThongTinCaNhan" text="Thông tin cá nhân" />
+                        <MenuItem onAction="#showTaiSan" text="Tài sản" />
+                        <MenuItem onAction="#showDangXuat" text="Đăng xuất" />
+                    </items>
+                </MenuButton>
+            </children>
         </HBox>
     </HBox>
 </StackPane>

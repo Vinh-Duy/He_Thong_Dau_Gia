@@ -30,6 +30,9 @@
     max-height: 36px;
     -fx-max-height: 36px;
 
+    font-family: Montserrat;
+    -fx-font-family: Montserrat;
+
     font-weight: bold;
     -fx-font-weight: bold;
 
@@ -88,15 +91,10 @@
     font-size: 20px;
 }
 
-.signup-btn,
-#userLabel {
+.signup-btn {
     -fx-alignment: center;
-
-    min-width: 120px;
+    min-width: 120;
     -fx-min-width: 120;
-
-    max-width: 120px;
-    -fx-max-width: 120;
 
     background-color: -fx-third-color;
     -fx-background-color: -fx-third-color;
@@ -109,6 +107,9 @@
     -fx-background-radius: 10px;
     -fx-text-fill: -fx-primary-color;
 
+    font-family: Montserrat;
+    -fx-font-family: Montserrat;
+
     font-weight: bold;
     -fx-font-weight: bold;
 
@@ -122,31 +123,17 @@
     -fx-border-color: transparent;
 }
 
-#userLabel {
-    min-width: 150px;
-    -fx-min-width: 150;
-
-    max-width: 150px;
-    -fx-max-width: 150;
-}
-
-.signup-btn:hover,
-#userLabel:hover {
+.signup-btn:hover {
     background-color: -fx-primary-color;
     -fx-background-color: -fx-primary-color;
 
     -fx-text-fill: -fx-third-color;
 }
 
-.signin-btn,
-.signout-btn {
+.signin-btn {
     -fx-alignment: center;
-
-    min-width: 120px;
-    -fx-min-width: 120;
-
-    max-width: 120px;
-    -fx-max-width: 120;
+    min-width: 100;
+    -fx-min-width: 100;
 
     background-color: -fx-primary-color;
     -fx-background-color: -fx-primary-color;
@@ -159,6 +146,9 @@
     -fx-border-radius: 10px;
     -fx-text-fill: white;
 
+    font-family: Montserrat;
+    -fx-font-family: Montserrat;
+
     font-weight: bold;
     -fx-font-weight: bold;
 
@@ -169,10 +159,117 @@
     -fx-cursor: hand;
 }
 
-.signin-btn:hover,
-.signout-btn:hover {
+.signin-btn:hover {
     background-color: -fx-third-color;
     -fx-background-color: -fx-third-color;
 
     -fx-text-fill: -fx-primary-color;
 }
+
+.profile-btn {
+    -fx-alignment: center;
+    min-width: 100;
+}
+.user-btn {
+    -fx-alignment: center;
+    min-width: 120;
+    -fx-min-width: 120;
+
+    background-color: -fx-third-color;
+    -fx-background-color: -fx-third-color;
+
+    border-color: -fx-primary-color;
+    -fx-border-color: -fx-primary-color;
+
+    border-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-text-fill: -fx-primary-color;
+
+    font-family: Montserrat;
+    -fx-font-family: Montserrat;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    padding: 8px 20px;
+    -fx-padding: 8 20;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.logout-btn {
+    -fx-alignment: center;
+    min-width: 100;
+    -fx-min-width: 100;
+
+    background-color: transparent;
+    -fx-background-color: transparent;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+
+    border-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-text-fill: -fx-primary-color;
+
+    font-family: Montserrat;
+    -fx-font-family: Montserrat;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    padding: 8px 20px;
+    -fx-padding: 8 20;
+
+    cursor: hand;
+    -fx-cursor: hand;
+}
+ /* hiep */
+.profile-menu {
+
+    -fx-background-color: transparent;
+
+    -fx-padding: 0;
+
+    -fx-cursor: hand;
+}
+
+ .profile-menu > .label {
+
+    -fx-background-image: url(../../images/profile-icon.png);
+
+     -fx-background-repeat: no-repeat;
+
+    -fx-background-position: center;
+
+    -fx-background-size: 35px 35px;
+
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+
+    -fx-max-width: 40px;
+    -fx-max-height: 40px;
+
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+
+    -fx-background-color: transparent;
+}
+
+.profile-menu:hover .label {
+
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+
+}
+/* ẩn mũi tên */
+.profile-menu .arrow-button {
+
+    -fx-opacity: 0;
+    -fx-padding: -7;
+}
+/* het hiep */
+

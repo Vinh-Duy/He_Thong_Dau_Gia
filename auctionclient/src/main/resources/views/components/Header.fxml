@@ -1,67 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<StackPane stylesheets="@../../css/glass-header.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.daugia.controllers.components.HeaderController">
+<StackPane stylesheets="@../../css/components/header-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.components.HeaderController">
+    <HBox fx:id="header" alignment="CENTER" minHeight="80.0" spacing="30.0">
+        <Label styleClass="logo" text="BidNova">
+         <HBox.margin>
+            <Insets />
+         </HBox.margin></Label>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="650.0" spacing="20.0" styleClass="menu">
+            <children>
+                <Label onMouseClicked="#showTrangChu" styleClass="text, menu-item-active" text="Trang chủ" />
+                
+                <MenuButton text="Danh mục đấu giá">
+                    <items>
+                        <MenuItem onAction="#showDanhMucBatDongSan" text="Bất động sản" />
+                        <MenuItem onAction="#showDanhMucTaiSanNhaNuoc" text="Tài sản nhà nước" />
+                        <MenuItem onAction="#showDanhMucPhuongTienXeCo" text="Phương tiện - Xe cộ" />
+                        <MenuItem onAction="#showDanhMucSuuTamNgheThuat" text="Sưu tầm - nghệ thuật" />
+                        <MenuItem onAction="#showDanhMucTaiSanKhac" text="Tài sản khác" />
+                    </items>
+                </MenuButton>
+                
+                <MenuButton text="Phòng đấu giá">
+                    <items>
+                        <MenuItem onAction="#showDanhMucSapDauGia" text="Sắp đấu giá" />
+                        <MenuItem onAction="#showDanhMucDangDauGia" text="Đang đấu giá" />
+                        <MenuItem onAction="#showDanhMucDaDauGia" text="Đã đấu giá" />
+                    </items>
+                </MenuButton>
 
-    <HBox fx:id="header" alignment="CENTER" minHeight="80.0" spacing="20.0">
-      <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
-         <image>
-            <Image url="@../../images/Logo.png" />
-         </image>
-      </ImageView>
-        
-        <HBox alignment="CENTER" prefWidth="500.0" spacing="10.0" HBox.hgrow="ALWAYS">
-            <Label fx:id="trangChuLabel" onMouseClicked="#showTrangChu" text="Trang chủ">
-            <styleClass>
-               <String fx:value="menu-item" />
-               <String fx:value="menu-item-active" />
-            </styleClass></Label>
-            <Label fx:id="taiSanLabel" onMouseClicked="#showTaiSanMenu" styleClass="menu-item" text="Danh mục đấu giá" />
-            <Label fx:id="phienDauGiaLabel" onMouseClicked="#showPhienDauGiaMenu" styleClass="menu-item" text="Phòng đấu giá" />
-            <Label fx:id="gioiThieuLabel" onMouseClicked="#showGioiThieu" styleClass="menu-item" text="Giới thiệu" />
-            <Label fx:id="lienHeLabel" onMouseClicked="#showLienHe" styleClass="menu-item" text="Liên hệ" />
+                <Label fx:id="gioiThieuLabel" onMouseClicked="#showGioiThieu" styleClass="text" text="Giới thiệu" />
+                
+                <Label fx:id="lienHeLabel" onMouseClicked="#showLienHe" styleClass="text" text="Liên hệ" />
+            </children>
         </HBox>
-      <HBox alignment="CENTER_RIGHT" spacing="0.0">
-         <children>
-            <TextField fx:id="txtSearch" prefWidth="200.0" promptText="Tìm kiếm" style="-fx-background-radius: 20 0 0 20; -fx-background-color: white;">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </TextField>
-            <Button fx:id="btnSearch" alignment="CENTER_RIGHT" mnemonicParsing="false" styleClass="btn-search" text="Search">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
         
         <VBox alignment="CENTER_RIGHT" spacing="2">
-            <Label fx:id="timeLabel" style="-fx-text-fill: white; -fx-font-weight: bold;" text="00:00:00" />
-            <Label fx:id="dateLabel" style="-fx-text-fill: white; -fx-font-size: 11px;" text="Ngày tháng năm" />
+            <Label fx:id="timeLabel" style="-fx-font-weight: bold;" text="00:00:00" />
+            <Label fx:id="dateLabel" text="Ngày tháng năm" />
         </VBox>
         
-        <HBox alignment="CENTER" spacing="25.0">
-            <Label onMouseClicked="#goToSignupClick" styleClass="btn-galaxy-transparent" text="Đăng ký" />
-            <Label onMouseClicked="#goToLoginClick" styleClass="btn-galaxy-filled" text="Đăng nhập" />
+        <HBox alignment="CENTER" spacing="15.0">
+            <Label onMouseClicked="#goToSignup" styleClass="signup-btn" text="Đăng ký" />
+            <Label onMouseClicked="#goToSignin" styleClass="signin-btn" text="Đăng nhập" />
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
         </HBox>
-      <styleClass>
-         <String fx:value="header" />
-         <String fx:value="glassy-header-background" />
-      </styleClass>
-      <padding>
-         <Insets left="70.0" right="70.0" />
-      </padding>
+      <StackPane.margin>
+         <Insets />
+      </StackPane.margin>
     </HBox>
 </StackPane>

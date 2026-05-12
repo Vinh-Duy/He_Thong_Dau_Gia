@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane stylesheets="@../../css/bidder/auction-detail-style.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.bidnova.controllers.bidder.AuctionDetailController">
+    <top>
+        <fx:include source="../components/header.fxml" />
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true">
+            <content>
+                <HBox alignment="CENTER" spacing="30.0">
+
+                    <!-- CỘT TRÁI: ảnh + khung đặt giá -->
+                    <VBox spacing="20.0" HBox.hgrow="ALWAYS">
+                        <HBox.margin><Insets left="150.0" /></HBox.margin>
+                        <Pane fx:id="imgProduct" />
+                        <VBox fx:id="timeContainer">
+                            <Label fx:id="lblProductName" text="Tên sản phẩm" />
+                            <Label fx:id="lblProductPrice" text="Giá khởi điểm" />
+                            <Label text="THỜI GIAN CÒN LẠI" textFill="WHITE" />
+                            <Label fx:id="lblTimer" text="--:--" />
+                            <Separator />
+                            <Label text="Giá cao nhất hiện tại:" textFill="WHITE" />
+                            <!-- Label này cập nhật realtime mỗi khi có NEW_BID -->
+                            <Label fx:id="lblCurrentBid" text="---" />
+                            <TextField fx:id="txtBidAmount"
+                                       promptText="Nhập giá đặt (VNĐ)" />
+                            <Button fx:id="btn"
+                                    text="ĐẤU GIÁ NGAY"
+                                    mnemonicParsing="false"
+                                    onAction="#handlePlaceBid" />
+                        </VBox>
+                    </VBox>
+
+                    <!-- CỘT PHẢI: mô tả + biểu đồ giá + log -->
+                    <VBox spacing="20.0" HBox.hgrow="ALWAYS">
+                        <HBox.margin><Insets right="150.0" /></HBox.margin>
+
+                        <!-- Mô tả sản phẩm -->
+                        <VBox fx:id="describe" spacing="10.0">
+                            <Label text="Mô tả tài sản" textFill="#333333" alignment="CENTER">
+                                <font><Font name="System Bold" size="18.0" /></font>
+                            </Label>
+                            <Region styleClass="line" />
+                            <TextArea fx:id="txtDescription" editable="false"
+                                      wrapText="true" VBox.vgrow="ALWAYS"
+                                      style="-fx-background-color:transparent;-fx-text-fill:#555;-fx-font-size:15px;" />
+                        </VBox>
+
+                        <!-- Biểu đồ + log -->
+                        <VBox fx:id="logs" spacing="10.0">
+                            <Label text="LỊCH SỬ GIÁ ĐẤU" textFill="#333333" alignment="CENTER">
+                                <font><Font name="System Bold" size="18.0" /></font>
+                            </Label>
+                            <Region styleClass="line" />
+
+                            <!--
+                                LineChart — BIỂU ĐỒ REALTIME
+                                animated="false": tắt animation vì update liên tục sẽ giật
+                                CategoryAxis (X): nhãn là chuỗi "HH:mm:ss"
+                                NumberAxis (Y): giá tiền, forceZeroInRange=false để zoom vào vùng giá thực
+                            -->
+                            <LineChart fx:id="bidChart"
+                                       animated="false"
+                                       createSymbols="true"
+                                       legendVisible="false"
+                                       prefHeight="260"
+                                       prefWidth="680">
+                                <xAxis>
+                                    <CategoryAxis fx:id="timeAxis"
+                                                  label="Thời gian"
+                                                  tickLabelRotation="-40" />
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis fx:id="priceAxis"
+                                                label="Giá (VNĐ)"
+                                                forceZeroInRange="false" />
+                                </yAxis>
+                            </LineChart>
+
+                            <!-- ListView log text -->
+                            <ListView fx:id="listHistory" prefHeight="160" />
+                        </VBox>
+                    </VBox>
+
+                    <padding><Insets bottom="30.0" top="30.0" /></padding>
+                </HBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

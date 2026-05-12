@@ -1,0 +1,275 @@
+@import url(../base-style.css);
+
+ScrollPane {
+    background: transparent;
+    -fx-background: transparent;
+
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+ScrollPane > .viewport {
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+VBox {
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+BorderPane {
+    background-color: -fx-bgc;
+    -fx-background-color: -fx-bgc;
+}
+
+#content {
+    -fx-spacing: 20;
+
+    padding: 50px 100px;
+    -fx-padding: 50 100;
+}
+
+#lblProductName {
+    font-size: 30px;
+    -fx-font-size: 30;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: -fx-text-color;
+
+    padding: 0 0 50px 0;
+    -fx-padding: 0 0 50 0;
+}
+
+#lblProductPrice {
+    font-size: 20px;
+    -fx-font-size: 20px;
+    -fx-text-fill: -fx-forth-color;
+
+    font-weight: 700;
+    -fx-font-weight: 700;
+
+    padding: 0 0 20px 0;
+    -fx-padding: 0 0 20 0;
+}
+
+#content HBox {
+    -fx-spacing: 100;
+}
+
+#imgProduct {
+    min-width: 500px;
+    -fx-min-width: 500px;
+
+    max-width: 500px;
+    -fx-max-width: 500;
+
+    min-height: 400px;
+    -fx-min-height: 400;
+
+    max-height: 400px;
+    -fx-max-height: 400;
+
+    background-color: red;
+    -fx-background-color: red;
+
+    -fx-background-radius: 15;
+
+    border-radius: 15px;
+    -fx-border-radius: 15;
+
+}
+
+#timeContainer {
+    min-width: 500px;
+    -fx-min-width: 500px;
+
+    max-width: 500px;
+    -fx-max-width: 500;
+
+    min-height: 400px;
+    -fx-min-height: 400;
+
+    max-height: 400px;
+    -fx-max-height: 400;
+
+    -fx-spacing: 15;
+
+    -fx-alignment: CENTER;
+
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 15;
+
+    border-color: #e0e0e0;
+    -fx-boder-color: #e0e0e0;
+}
+
+#lblTimer {
+    -fx-text-fill: -fx-primary-color;
+
+    font-size: 40px;
+    -fx-font-size: 40;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+.separator .line {
+    border-color: white;
+    -fx-border-color: white;
+
+    opacity: 0.5;
+    -fx-opacity: 0.5;
+}
+
+#btn {
+    width: 200px;
+    -fx-pref-width: 200;
+
+    min-height: 40px;
+    -fx-min-height: 40;
+
+    max-height: 40px;
+    -fx-max-height: 40;
+
+    background-color: -fx-forth-color;
+    -fx-background-color: -fx-forth-color;
+
+    -fx-text-fill: -fx-third-color;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+#describe {
+    min-width: 700px;
+    -fx-min-width: 700px;
+
+    max-width: 700px;
+    -fx-max-width: 700;
+
+    min-height: 350px;
+    -fx-min-height: 350;
+
+    max-height: 350px;
+    -fx-max-height: 350;
+
+    padding: 25px;
+    -fx-padding: 25;
+
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 15;
+
+    border-color: #e0e0e0;
+    -fx-boder-color: #e0e0e0;
+}
+
+#discribe .label{
+    font-size: 18px;
+    -fx-font-size: 18;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #333333;
+
+    padding: 0 0 15px 0;
+    -fx-padding: 0 0 15 0;
+}
+
+.line {
+    -fx-background-color: -fx-secondary-color; 
+    -fx-pref-width: 140px;
+    -fx-min-height: 3px;
+    -fx-max-height: 3px;
+    -fx-background-radius: 2px;
+}
+
+#logs {
+    min-width: 700px;
+    -fx-min-width: 700px;
+
+    max-width: 700px;
+    -fx-max-width: 700;
+
+    min-height: 450px;
+    -fx-min-height: 450;
+
+    max-height: 450px;
+    -fx-max-height: 450;
+
+    padding: 25px;
+    -fx-padding: 25;
+
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 15;
+
+    border-color: #e0e0e0;
+    -fx-boder-color: #e0e0e0;
+}
+
+#logs .label {
+    font-size: 18px;
+    -fx-font-size: 18;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #333333;
+}
+
+#logs .list-view {
+    background-color: white;
+    -fx-background-color: white;
+}
+/* ── Biểu đồ giá realtime ── */
+#bidChart {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+}
+#bidChart .chart-plot-background {
+    -fx-background-color: #fafafa;
+}
+/* Đường vẽ — dùng màu đỏ theme của dự án */
+#bidChart .chart-series-line {
+    -fx-stroke: -fx-forth-color;
+    -fx-stroke-width: 2.5px;
+}
+/* Chấm tròn tại mỗi điểm bid */
+#bidChart .chart-line-symbol {
+    -fx-background-color: -fx-forth-color, white;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 5px;
+    -fx-padding: 4px;
+}
+
+/* TextField nhập giá */
+#txtBidAmount {
+    -fx-pref-width: 300px;
+    -fx-min-height: 40px;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #e0e0e0;
+    -fx-padding: 5 10;
+}
+
+/* Label giá hiện tại */
+#lblCurrentBid {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -fx-forth-color;
+}
+

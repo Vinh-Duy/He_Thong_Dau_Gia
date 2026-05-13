@@ -46,6 +46,7 @@ public class AddProductHandler implements ActionHandler {
                 newAuction.getProductName(),
                 newAuction.getDescription(),
                 newAuction.getStartPrice(),
+                newAuction.getCurrentHighestBid(),
                 newAuction.getEndTime(),
                 newAuction.getSellerId(),
                 newAuction.getStatus()

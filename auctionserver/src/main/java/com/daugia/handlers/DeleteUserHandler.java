@@ -1,5 +1,16 @@
 package com.daugia.handlers;
 
+/**
+ * XỬ LÝ VIỆC XÓA TÀI KHOẢN NGƯỜI DÙNG (ADMIN).
+ *
+ * Luồng xử lý:
+ * 1. Admin chọn 1 user trong bảng, bấm "Xóa người dùng".
+ * 2. Client gửi request action="DELETE_USER" với {userId}.
+ * 3. Server kiểm tra admin đã đăng nhập chưa (authUser != null).
+ * 4. Gọi UserDAO.deleteUser(userId) để xóa khỏi database.
+ * 5. Trả về SUCCESS hoặc ERROR.
+ */
+
 import com.daugia.dao.UserDAO;
 import com.daugia.models.AuthUserContext;
 import com.daugia.network.Request;

@@ -1,13 +1,17 @@
 package com.daugia.services;
 
+import java.util.List;
+
 import com.daugia.dao.AuctionDAO;
 import com.daugia.models.Auction;
-import java.util.List;
 
 public class DatabaseInitializer {
     
     public static void initializeActiveAuctions() {
         System.out.println("Đang kết nối Database để nạp dữ liệu...");
+        
+        // Seed test data with endTime for anti-sniping testing
+        TestDataSeeder.seedTestData();
         
         AuctionDAO dao = new AuctionDAO();
         List<Auction> activeAuctions = dao.getAllActiveAuctions();

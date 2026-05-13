@@ -1,5 +1,20 @@
 package com.daugia;
 
+/**
+ * ĐÂY LÀ "TIẾP VIÊN HÀNG KHÔNG" CỦA SERVER.
+ *
+ * Mỗi khi có 1 client (app JavaFX) kết nối vào Server qua Socket (cổng 8888),
+ * Server tạo 1 đối tượng ClientHandler MỚI để xử lý riêng client đó.
+ * => Mỗi người dùng đang online = 1 ClientHandler đang chạy song song (multi-thread).
+ *
+ * Nhiệm vụ chính:
+ * 1. Đọc tin nhắn JSON từ client gửi lên.
+ * 2. Dùng HandlerRegistry để tìm đúng "chuyên gia" xử lý (ví dụ: LOGIN -> LoginHandler).
+ * 3. Gửi kết quả trả về cho client.
+ * 4. PHÁT SÓNG (broadcast) thông báo cho TẤT CẢ clients khi có sự kiện quan trọng
+ *    (ví dụ: giá đấu thay đổi -> mọi người phải thấy ngay).
+ */
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -67,7 +82,10 @@ public class ClientHandler implements Runnable {
                         Response handled = handler.handle(request, authUser);
                         out.println(gson.toJson(handled));
 
-                        // Broadcast cho PLACE_BID nếu handler trả event
+                        // 🔴 REAL-TIME BROADCAST 🔴
+                        // Khi có người đặt giá thành công (PLACE_BID),
+                        // Server phải THÔNG BÁO cho TẤT CẢ clients khác biết giá đã thay đổi.
+                        // Ví dụ: User A đặt giá -> User B đang nhìn màn hình cũng thấy giá nhảy lên ngay lập tức.
                         if ("PLACE_BID".equals(request.getAction())
                                 && handled != null
                                 && "SUCCESS".equals(handled.getStatus())
@@ -76,7 +94,8 @@ public class ClientHandler implements Runnable {
                                 String payloadStr = String.valueOf(handled.getPayload());
                                 JsonObject wrap = JsonParser.parseString(payloadStr).getAsJsonObject();
                                 if (wrap.has("event")) {
-                                    broadcast(wrap.get("event").toString());
+                                    // Gọi hàm static broadcastAll để gửi tin nhắn cho mọi client đang kết nối
+                                    broadcastAll(wrap.get("event").toString());
                                 }
                             } catch (Exception ignored) {
                             }
@@ -108,19 +127,17 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    private void broadcast(String message) {
-        for (PrintWriter writer : clientWriters) {
-            try {
-                writer.println(message);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     /**
-     * Public static method cho handlers gọi broadcast.
-     * Dùng để gửi real-time updates (auto-bid, bid updates) cho tất cả clients.
+     * PHÁT SÓNG THÔNG BÁO CHO TẤT CẢ CLIENT.
+     *
+     * Tại sao phải là STATIC?
+     * - Vì các Handler (như PlaceBidHandler, AutoBidService...) KHÔNG có reference
+     *   đến instance ClientHandler cụ thể nào. Mỗi client kết nối tạo 1 ClientHandler mới.
+     * - Static cho phép GỌI TỪ BẤT CỨ ĐÂU trong project: ClientHandler.broadcastAll(msg)
+     *
+     * Tại sao lại có 2 hàm giống nhau trước đây?
+     * - Cũ: 1 hàm private (dùng trong run()), 1 hàm static public (dùng ngoài handler).
+     * - Giờ: CHỈ GIỮ 1 HÀM STATIC cho cả 2 chỗ, gọn gàng hơn.
      */
     public static void broadcastAll(String message) {
         for (PrintWriter writer : clientWriters) {

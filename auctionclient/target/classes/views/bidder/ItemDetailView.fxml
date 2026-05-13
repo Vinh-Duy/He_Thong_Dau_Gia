@@ -76,6 +76,20 @@
                                     </Label>
                                  </children>
                               </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <Label text="⏱ Thời gian còn lại:" textFill="#d71920">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lblCountdown" text="00:00:00" textFill="#d71920">
+                                       <font>
+                                          <Font name="System Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
                               <Separator prefWidth="200.0" />
                               <Label text="Nhập giá muốn đặt (VNĐ)" textFill="#333333">
                                  <font>
@@ -149,7 +163,7 @@
                               
                               <VBox spacing="6.0">
                                  <children>
-                                    <Label text="💰 Giá tối đa (VNĐ):" textFill="#5d4037">
+                                    <Label text="Giá tối đa (VNĐ):" textFill="#5d4037">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
@@ -160,7 +174,7 @@
                               
                               <VBox spacing="6.0">
                                  <children>
-                                    <Label text="📈 Bước giá (VNĐ):" textFill="#5d4037">
+                                    <Label text="Bước giá (VNĐ):" textFill="#5d4037">
                                        <font>
                                           <Font name="System Bold" size="14.0" />
                                        </font>
@@ -175,7 +189,7 @@
                                  </font>
                               </Label>
                               
-                              <Button fx:id="btnToggleAutoBid" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #ff8f00; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" text="🔥 Bật Auto-Bid">
+                              <Button fx:id="btnToggleAutoBid" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #ff8f00; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" text="Bật Auto-Bid">
                                  <font>
                                     <Font size="15.0" />
                                  </font>

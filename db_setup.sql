@@ -57,10 +57,10 @@ TRUNCATE TABLE users;
 -- ============================================================
 -- INSERT TEST DATA - AUCTIONS
 -- ============================================================
-INSERT INTO auctions (id, name, start_price, current_highest_bid, status, category, description, seller_id) VALUES
-('A001', 'Lamborghini Aventador', 5000000000.00, 5000000000.00, 'OPEN', 'Phương tiện', 'Siêu xe hạng A', 1),
-('A002', 'Biệt thự biển Đà Nẵng', 25000000000.00, 25000000000.00, 'OPEN', 'Bất động sản', 'Biệt thự view biển', 2),
-('A003', 'Tranh sơn dầu cổ', 1000000000.00, 1000000000.00, 'OPEN', 'Sưu tầm - nghệ thuật', 'Tranh thế kỷ 19', 3);
+INSERT INTO auctions (id, name, start_price, current_highest_bid, status, category, description, end_time, seller_id) VALUES
+('A001', 'Lamborghini Aventador', 5000000000.00, 5000000000.00, 'OPEN', 'Phương tiện', 'Siêu xe hạng A', DATE_ADD(NOW(), INTERVAL 5 MINUTE), 1),
+('A002', 'Biệt thự biển Đà Nẵng', 25000000000.00, 25000000000.00, 'OPEN', 'Bất động sản', 'Biệt thự view biển', DATE_ADD(NOW(), INTERVAL 10 MINUTE), 2),
+('A003', 'Tranh sơn dầu cổ', 1000000000.00, 1000000000.00, 'OPEN', 'Sưu tầm - nghệ thuật', 'Tranh thế kỷ 19', DATE_ADD(NOW(), INTERVAL 3 MINUTE), 3);
 
 -- ============================================================
 -- INSERT TEST DATA - USERS

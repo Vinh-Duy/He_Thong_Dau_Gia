@@ -10,16 +10,39 @@ import com.daugia.models.Auction;
 import com.daugia.models.AuthUserContext;
 import com.daugia.network.Request;
 import com.daugia.network.Response;
+import com.daugia.services.AntiSnipingService;
 import com.daugia.services.AuctionManager;
 import com.daugia.services.AutoBidService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+/**
+ * XỬ LÝ VIỆC ĐẶT GIÁ (Ra Giá) TRONG PHIÊN ĐẤU GIÁ.
+ *
+ * Luồng xử lý khi User bấm "Ra Giá" ở client:
+ * 1. Client gửi request action="PLACE_BID" với {auctionId, amount, username}.
+ * 2. Server nhận -> HandlerRegistry đưa request này cho PlaceBidHandler.
+ * 3. PlaceBidHandler kiểm tra:
+ *    - User đã đăng nhập chưa (authUser != null).
+ *    - Auction có tồn tại không.
+ *    - Phiên đấu giá còn mở không (status = OPEN/RUNNING).
+ *    - Phiên đã hết hạn chưa (endTime).
+ *    - Giá đặt có CAO HƠN giá hiện tại không.
+ * 4. Nếu hợp lệ:
+ *    - Cập nhật giá cao nhất trong AuctionManager (RAM) và AuctionDAO (Database).
+ *    - Gọi AutoBidService.executeAutoBids() -> tự động đặt giá cho những user đã
+ *      bật auto-bid trước đó.
+ *    - Lấy giá MỚI NHẤT sau auto-bid.
+ *    - Gửi BID_UPDATE broadcast cho TẤT CẢ clients đang online
+ *      -> Mọi người thấy giá nhảy real-time trên màn hình.
+ * 5. Trả response về client gọi.
+ */
 public class PlaceBidHandler implements ActionHandler {
     private final Gson gson = new Gson();
     private final AuctionDAO auctionDAO = new AuctionDAO();
     private final AutoBidService autoBidService = new AutoBidService();
+    private final AntiSnipingService antiSnipingService = new AntiSnipingService();
 
     private static final DateTimeFormatter[] END_TIME_FORMATS = new DateTimeFormatter[] {
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"),
@@ -68,6 +91,9 @@ public class PlaceBidHandler implements ActionHandler {
 
                 // Execute auto-bids after this bid is placed
                 autoBidService.executeAutoBids(auctionId, bidAmount);
+                
+                // Check and apply anti-sniping if needed
+                String newEndTime = antiSnipingService.checkAndExtendIfNeeded(auctionId, currentAuction);
 
                 // Lấy giá MỚI NHẤT sau khi auto-bids trigger (có thể đã tăng)
                 double finalHighestBid = currentAuction.getCurrentHighestBid();
@@ -75,6 +101,10 @@ public class PlaceBidHandler implements ActionHandler {
                 JsonObject successData = new JsonObject();
                 successData.addProperty("auctionId", auctionId);
                 successData.addProperty("newHighestBid", finalHighestBid);
+                if (newEndTime != null) {
+                    successData.addProperty("newEndTime", newEndTime);
+                    System.out.println("✓ Anti-Sniping: Time extended to " + newEndTime);
+                }
 
                 JsonObject event = new JsonObject();
                 event.addProperty("action", "BID_UPDATE");
@@ -86,6 +116,9 @@ public class PlaceBidHandler implements ActionHandler {
                 JsonObject broadcastPayload = new JsonObject();
                 broadcastPayload.addProperty("auctionId", auctionId);
                 broadcastPayload.addProperty("newHighestBid", finalHighestBid);
+                if (newEndTime != null) {
+                    broadcastPayload.addProperty("newEndTime", newEndTime);
+                }
                 broadcastEvent.addProperty("payload", gson.toJson(broadcastPayload));
                 ClientHandler.broadcastAll(gson.toJson(broadcastEvent));
 

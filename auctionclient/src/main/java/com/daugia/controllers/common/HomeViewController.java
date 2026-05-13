@@ -38,8 +38,8 @@ public class HomeViewController {
         if (sapDienRaContainer != null) sapDienRaContainer.getChildren().clear();
 
         if (bannerContainer != null) {
-            bannerContainer.getChildren().add(createAuctionCard("B1", "Siêu xe Lamborghini Aventador", "5,000,000,000 VNĐ", "05:20:15", true));
-            bannerContainer.getChildren().add(createAuctionCard("B2", "Biệt thự biển Đà Nẵng", "25,000,000,000 VNĐ", "12:45:00", true));
+            bannerContainer.getChildren().add(createAuctionCard("B1", "Siêu xe Lamborghini Aventador", "5,000,000,000 VNĐ", "05:20:15", true, null));
+            bannerContainer.getChildren().add(createAuctionCard("B2", "Biệt thự biển Đà Nẵng", "25,000,000,000 VNĐ", "12:45:00", true, null));
         }
 
         new Thread(() -> {
@@ -81,8 +81,11 @@ public class HomeViewController {
                                 
                                 String status = auctionJson.has("status") ? auctionJson.get("status").getAsString() : "OPEN";
                                 
+                                // Extract end_time and calculate remaining time
+                                String endTime = auctionJson.has("endTime") ? auctionJson.get("endTime").getAsString() : null;
+                                
                                 dangDienRaContainer.getChildren().add(
-                                    createAuctionCard(id, itemName, priceStr, status, false)
+                                    createAuctionCard(id, itemName, priceStr, status, false, endTime)
                                 );
                             }
                         }
@@ -94,7 +97,7 @@ public class HomeViewController {
         }).start();
     }
 
-    private Node createAuctionCard(String id, String title, String price, String status, boolean isBanner) {
+    private Node createAuctionCard(String id, String title, String price, String status, boolean isBanner, String endTime) {
         VBox card = new VBox();
         card.setStyle("-fx-background-color: white; -fx-background-radius: 12; "
             + "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.12), 15, 0, 0, 6);");
@@ -130,22 +133,69 @@ public class HomeViewController {
         Label priceLabel = new Label(price);
         priceLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #e74c3c;");
 
-        // Status badge
-        String statusColor = "OPEN".equals(status) || "RUNNING".equals(status) 
-            ? "#27ae60" : "#e74c3c";
-        String statusText = "OPEN".equals(status) || "RUNNING".equals(status) 
-            ? "Đang mở" : "Đã đóng";
+        // Time remaining - Calculate from endTime
+        Label timeLabel = new Label("Tính toán...");
+        long minutesRemaining = -1;
+        
+        if (endTime != null && !endTime.isEmpty()) {
+            try {
+                minutesRemaining = calculateMinutesRemaining(endTime);
+                String timeText;
+                String timeStyle;
+                
+                if (minutesRemaining < 0) {
+                    timeText = "⏱ Đã hết hạn";
+                    timeStyle = "-fx-text-fill: #999; -fx-font-size: 12px; -fx-font-weight: bold;";
+                } else if (minutesRemaining <= 5) {
+                    // Warning: Within anti-sniping threshold
+                    timeText = String.format("⚠️ Còn lại: %d phút", minutesRemaining);
+                    timeStyle = "-fx-text-fill: #d71920; -fx-font-size: 12px; -fx-font-weight: bold;";
+                } else {
+                    timeText = String.format("⏱ Còn lại: %d phút", minutesRemaining);
+                    timeStyle = "-fx-text-fill: #27ae60; -fx-font-size: 12px; -fx-font-weight: bold;";
+                }
+                
+                timeLabel.setText(timeText);
+                timeLabel.setStyle(timeStyle);
+            } catch (Exception e) {
+                timeLabel.setText("Không xác định");
+                timeLabel.setStyle("-fx-text-fill: #999; -fx-font-size: 12px;");
+            }
+        }
+
+        // Status badge - Dùng endTime, không dùng status từ server
+        String statusColor;
+        String statusText;
+        
+        if (endTime != null && minutesRemaining >= 0) {
+            // Thời gian còn lại → Auction đang mở
+            statusColor = "#27ae60";
+            statusText = "Dự giá ngay";
+        } else {
+            // Hết hạn → Auction đã đóng
+            statusColor = "#e74c3c";
+            statusText = "Đã đóng";
+        }
+        
         Label statusLabel = new Label(statusText);
         statusLabel.setStyle("-fx-background-color: " + statusColor + "; -fx-text-fill: white; "
             + "-fx-padding: 4 12; -fx-background-radius: 12; -fx-font-size: 12px; -fx-font-weight: bold;");
 
-        // Button
+        // Button - Enable/Disable based on endTime
         Button actionBtn = new Button("Đấu giá ngay");
         actionBtn.setStyle("-fx-background-color: #9c27b0; -fx-text-fill: white; "
             + "-fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand; "
             + "-fx-font-size: 14px;");
         actionBtn.setMaxWidth(Double.MAX_VALUE);
         actionBtn.setPrefHeight(40);
+        
+        // Disable button nếu auction đã hết hạn
+        if (minutesRemaining < 0) {
+            actionBtn.setDisable(true);
+            actionBtn.setStyle("-fx-background-color: #bdc3c7; -fx-text-fill: #7f8c8d; "
+                + "-fx-font-weight: bold; -fx-background-radius: 8; "
+                + "-fx-font-size: 14px;");
+        }
 
         actionBtn.setOnAction(event -> {
             try {
@@ -163,9 +213,22 @@ public class HomeViewController {
             }
         });
 
-        infoBox.getChildren().addAll(titleLabel, priceLabel, statusLabel, actionBtn);
+        infoBox.getChildren().addAll(titleLabel, priceLabel, timeLabel, statusLabel, actionBtn);
         card.getChildren().addAll(imagePlaceholder, infoBox);
 
         return card;
+    }
+    
+    private long calculateMinutesRemaining(String endTimeStr) {
+        try {
+            java.time.LocalDateTime endTime = java.time.LocalDateTime.parse(
+                endTimeStr, 
+                java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+            );
+            java.time.LocalDateTime now = java.time.LocalDateTime.now();
+            return java.time.temporal.ChronoUnit.MINUTES.between(now, endTime);
+        } catch (Exception e) {
+            return -1;
+        }
     }
 }

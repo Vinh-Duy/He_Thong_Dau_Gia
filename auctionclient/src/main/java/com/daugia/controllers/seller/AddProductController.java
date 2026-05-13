@@ -53,14 +53,41 @@ public class AddProductController {
                 showAlert(Alert.AlertType.WARNING, "Thiếu tin", "Bác chọn phân loại sản phẩm nhé!");
                 return;
             }
+            if (txtStartingPrice.getText().isEmpty()) {
+                showAlert(Alert.AlertType.WARNING, "Thiếu tin", "Bác phải nhập giá khởi điểm nhé!");
+                return;
+            }
 
             // Dùng Auction đang sửa (nếu có), không thì tạo mới
             Auction auction = (editingAuction != null) ? editingAuction : new Auction();
             auction.setProductName(txtName.getText());
             auction.setCategory(cmbCategory.getValue());
             auction.setDescription(txtDescription.getText());
-            auction.setStartPrice(Double.parseDouble(txtStartingPrice.getText()));
-            // Set thêm ngày giờ ở đây...
+            
+            double startPrice = Double.parseDouble(txtStartingPrice.getText());
+            if (startPrice <= 0) {
+                showAlert(Alert.AlertType.WARNING, "Lỗi", "Giá khởi điểm phải lớn hơn 0 đồng!");
+                return;
+            }
+            
+            auction.setStartPrice(startPrice);
+            // Khởi tạo current highest bid = start price
+            auction.setCurrentHighestBid(startPrice);
+            
+            // Xử lý ngày giờ kết thúc
+            if (dateEnd.getValue() == null) {
+                showAlert(Alert.AlertType.WARNING, "Thiếu tin", "Bác chọn ngày kết thúc nhé!");
+                return;
+            }
+            if (txtTimeEnd.getText().isEmpty()) {
+                showAlert(Alert.AlertType.WARNING, "Thiếu tin", "Bác nhập giờ kết thúc (HH:mm) nhé!");
+                return;
+            }
+            
+            // Format endTime: yyyy-MM-dd HH:mm:ss
+            String endDateTime = dateEnd.getValue() + " " + txtTimeEnd.getText() + ":00";
+            auction.setEndTime(endDateTime);
+            auction.setStatus("OPEN");
 
             String payload = gson.toJson(auction);
             

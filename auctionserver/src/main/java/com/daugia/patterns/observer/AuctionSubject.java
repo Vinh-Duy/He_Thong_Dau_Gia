@@ -1,7 +1,6 @@
 package com.daugia.patterns.observer;
 
 import com.daugia.models.Auction;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 

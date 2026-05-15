@@ -1,8 +1,5 @@
 package com.daugia.controllers.auth;
 
-import java.io.IOException;
-
-import com.daugia.controllers.bidder.DanhSachSanPhamController;
 import com.daugia.controllers.components.HeaderController;
 import com.daugia.models.User;
 import com.daugia.network.NetworkClient;
@@ -107,27 +104,6 @@ public class LoginPopupController {
         } catch (Exception e) {
             System.err.println("Lỗi chuyển trang Đăng ký:");
             e.printStackTrace();
-        }
-    }
-
-
-    private void loadCategoryView(String categoryName) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/bidder/DanhSachSanPhamView.fxml"));
-            Parent content = loader.load();
-
-            DanhSachSanPhamController controller = loader.getController();
-
-            controller.setCategory(categoryName);
-
-            mainBorderPane.setCenter(content);
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setContentText("Không thể tải trang danh mục: " + categoryName);
-            alert.showAndWait();
         }
     }
 

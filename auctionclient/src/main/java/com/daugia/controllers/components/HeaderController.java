@@ -11,7 +11,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -23,7 +22,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -189,14 +187,6 @@ public class HeaderController {
             System.err.println("Lỗi khi chuyển về Trang chủ:");
             e.printStackTrace();
         }
-    }
-
-    private void loadPlaceholderContent(String title) {
-        VBox vbox = new VBox();
-        vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().add(new Label("Placeholder cho: " + title));
-        
-        updateMainContent(vbox);
     }
 
     @FXML

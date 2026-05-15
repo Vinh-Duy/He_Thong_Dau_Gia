@@ -1,8 +1,5 @@
 package com.daugia.controllers.auth;
 
-import java.io.IOException;
-
-import com.daugia.controllers.bidder.DanhSachSanPhamController;
 import com.daugia.network.NetworkClient;
 import com.daugia.network.Request;
 import com.daugia.network.Response;
@@ -237,26 +234,6 @@ public class SignUpController {
         } else {
             label.setText("✖ " + label.getText().substring(2));
             label.setStyle("-fx-text-fill: red;");
-        }
-    }
-
-    private void loadCategoryView(String categoryName) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/bidder/DanhSachSanPhamView.fxml"));
-            Parent content = loader.load();
-
-            DanhSachSanPhamController controller = loader.getController();
-
-            controller.setCategory(categoryName);
-
-            mainBorderPane.setCenter(content);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setContentText("Không thể tải trang danh mục: " + categoryName);
-            alert.showAndWait();
         }
     }
 

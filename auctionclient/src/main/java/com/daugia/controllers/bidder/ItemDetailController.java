@@ -274,38 +274,6 @@ public class ItemDetailController implements Initializable {
         }
     }
     
-    private void validateAutoBidSettings() {
-        String maxBidText = txtMaxBid.getText().trim();
-        String incrementText = txtIncrement.getText().trim();
-        
-        if (maxBidText.isEmpty() || incrementText.isEmpty()) {
-            showAlert("Lỗi", "Vui lòng nhập giá tối đa và bước giá!");
-            toggleAutoBid(); // Turn off if invalid
-            return;
-        }
-        
-        try {
-            long maxBid = Long.parseLong(maxBidText);
-            long increment = Long.parseLong(incrementText);
-            
-            if (maxBid <= currentPriceValue) {
-                showAlert("Lỗi", "Giá tối đa phải cao hơn giá hiện tại!");
-                toggleAutoBid();
-                return;
-            }
-            
-            if (increment <= 0) {
-                showAlert("Lỗi", "Bước giá phải lớn hơn 0!");
-                toggleAutoBid();
-                return;
-            }
-            
-        } catch (NumberFormatException e) {
-            showAlert("Lỗi", "Vui lòng nhập số hợp lệ!");
-            toggleAutoBid();
-        }
-    }
-    
     private void checkAutoBid(double currentPrice) {
         try {
             long maxBid = Long.parseLong(txtMaxBid.getText().trim());

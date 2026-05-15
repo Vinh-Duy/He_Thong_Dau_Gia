@@ -3,7 +3,6 @@ package com.daugia.network;
 public class Request {
     private String action;
     private String payload; 
-    private String data;   // Dữ liệu (JSON chữ)
     
     // Chỗ để nhét chìa khóa vào mỗi lần gửi lệnh
     private String token; 

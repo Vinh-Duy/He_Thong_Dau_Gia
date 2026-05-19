@@ -1,0 +1,348 @@
+@import url(../base-style.css);
+
+VBox {
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.card {
+    min-width: 700px;
+    -fx-min-width: 700;
+
+    max-width: 700px;
+    -fx-max-width: 700;
+
+    background-color: white;
+    -fx-background-color: white;
+
+    padding: 20px 40px;
+    -fx-padding: 20 40;
+
+    -fx-background-radius: 8;
+
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 5);
+}
+
+.title {
+    font-size: 30px;
+    -fx-font-size: 30px;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: -fx-forth-color;
+}
+
+.field {
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    min-width: 150px;
+    -fx-min-width: 150px;
+
+    max-width: 150px;
+    -fx-max-width: 150px;
+
+    min-height: 50px;
+    -fx-min-height: 50px;
+
+    max-height: 50px;
+    -fx-max-height: 50px;
+
+    font-size: 13px;
+    -fx-font-size: 13;
+}
+
+.hour {
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    min-width: 100px;
+    -fx-min-width: 100px;
+
+    max-width: 100px;
+    -fx-max-width: 100px;
+
+    min-height: 50px;
+    -fx-min-height: 50px;
+
+    max-height: 50px;
+    -fx-max-height: 50px;
+}
+
+.btn {
+    padding: 8px 20px;
+    -fx-padding: 8 20;
+
+    -fx-text-fill: white;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+.btn .glyph-icon {
+    fill: white;
+    -fx-fill: white;
+}
+
+.back-btn {
+    background-color: -fx-back-color;
+    -fx-background-color: -fx-back-color;
+}
+
+.logout-btn {
+    background-color: -fx-forth-color;
+    -fx-background-color: -fx-forth-color;
+}
+
+.clear-btn {
+    background-color: -fx-clear-color;
+    -fx-background-color: -fx-clear-color;
+}
+
+.add-btn {
+    background-color: -fx-add-color;
+    -fx-background-color: -fx-add-color;
+}
+
+#txtName,
+#txtDescription,
+#txtStartingPrice,
+#cmbCategory,
+#dateStart,
+#txtTimeStart,
+#dateEnd,
+#txtTimeEnd {
+    -fx-background-radius: 5;
+
+    border-radius: 5px;
+    -fx-border-radius: 5px;
+
+    background-color: white;
+    -fx-background-color: white;
+
+    border-color: #e0e0e0;
+    -fx-border-color: #e0e0e0;
+
+    font-size: 13px;
+    -fx-font-size: 13;
+}
+
+#txtDescription .content,
+#dateStart .content,
+#dateEnd .content {
+    background-color: white;
+    -fx-background-color: white;
+}
+
+#dateStart,
+#dateEnd,
+#dateStart:focused,
+#dateEnd:focused {
+    -fx-focus-color: white;
+    -fx-faint-focus-color: white;
+
+    background-color: white;
+    -fx-background-color: white;
+
+    border-color: #e0e0e0;
+}
+
+#txtName,
+#cmbCategory,
+#txtStartingPrice,
+#dateStart,
+#txtTimeStart,
+#dateEnd,
+#txtTimeEnd {
+    min-height: 50px;
+    -fx-min-height: 50;
+
+    max-height: 50px;
+    -fx-max-height: 50;
+}
+
+#cmbCategory {
+    min-width: 455px;
+    -fx-min-width: 455;
+
+    max-width: 455px;
+    -fx-alignment: 455;
+}
+
+#txtDescription {
+    min-height: 100px;
+    -fx-min-height: 100;
+
+    max-height: 100px;
+    -fx-max-height: 100;
+}
+
+.combo-box-popup .list-view {
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 5;
+
+    border-radius: 5px;
+    -fx-border-radius: 5;
+
+    border-color: #ced4da;
+    -fx-border-color: #ced4da;
+
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 8, 0, 0, 4);
+}
+
+.combo-box-popup .list-cell {
+    padding: 10px 15px;
+    -fx-padding: 10 15;
+
+    -fx-text-fill: -fx-text-color;
+
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.combo-box-popup .list-cell:hover {
+    background-color: -fx-bgc;
+    -fx-background-color: -fx-bgc;
+    -fx-text-fill: -fx-forth-color;
+}
+
+.combo-box-popup .list-cell:filled:selected {
+    background-color: -fx-forth-color;
+    -fx-background-color: -fx-forth-color;
+
+    -fx-text-fill: white;
+}
+
+.date-picker-popup {
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 8;
+
+    border-radius: 8px;
+    -fx-border-radius: 8;
+
+    border-color: #e0e0e0;
+    -fx-border-color: #e0e0e0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 10, 0, 0, 4);
+
+    padding: 10px;
+    -fx-padding: 10;
+}
+
+.date-picker-popup > .top-node {
+    background-color: red;
+    -fx-background-color: red;
+
+    -fx-background-radius: 5px 5px 0 0;
+
+    padding: 8px 0;
+    -fx-padding: 8 0;
+}
+
+.date-picker-popup > .top-node > .left-button,
+.date-picker-popup > .top-node > .right-button {
+    background-color: transparent;
+    -fx-background-color: transparent;
+
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+.date-picker-popup > .top-node > .left-button:hover,
+.date-picker-popup > .top-node > .right-button:hover {
+    background-color: #e0e0e0;
+    -fx-background-color: #e0e0e0;
+}
+
+.date-picker-popup > .top-node > .left-button:focused,
+.date-picker-popup > .top-node > .right-button:focused,
+.date-picker-popup > .top-node > .left-button:selected,
+.date-picker-popup > .top-node > .right-button:selected {
+    background-color: transparent;
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+
+    border-width: 0;
+    -fx-border-width: 0;
+}
+
+.date-picker-popup .spinner .label {
+    -fx-text-fill: #333333;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+.date-picker-popup .day-name-cell {
+    -fx-text-fill: #6c757d;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    font-size: 11px;
+    -fx-font-size: 11px;
+}
+
+.date-picker-popup .day-cell {
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-text-fill: #333333;
+    -fx-background-radius: 4px;
+
+    padding: 6px;
+    -fx-padding: 6px;
+}
+
+.date-picker-popup .day-cell:hover {
+    background-color: #f0d9d9;
+    -fx-background-color: #f0d9d9;
+
+    -fx-text-fill: -fx-forth-color;
+
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+.date-picker-popup .today {
+    background-color: transparent;
+    -fx-background-color: transparent;
+
+    border-color: -fx-forth-color;
+    -fx-border-color: -fx-forth-color;
+
+    border-width: 1px;
+    -fx-border-width: 1px;
+
+    border-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-text-fill: -fx-forth-color;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+.date-picker-popup .day-cell:selected,
+.date-picker-popup .day-cell:focused {
+    background-color: -fx-forth-color;
+    -fx-background-color: -fx-forth-color;
+
+    -fx-text-fill: white;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+.date-picker-popup .previous-month,
+.date-picker-popup .next-month {
+    -fx-text-fill: #ced4da;
+}

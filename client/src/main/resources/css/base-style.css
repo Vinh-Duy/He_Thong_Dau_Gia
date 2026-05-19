@@ -1,0 +1,100 @@
+@font-face {
+    font-family: Montserrat;
+    font-weight: normal;
+    src: url("../fonts/Montserrat-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Montserrat Medium";
+    src: url("../fonts/Montserrat-Medium.ttf");
+}
+
+@font-face {
+    font-family: "Montserrat Bold";
+    font-weight: bold;
+    src: url("../fonts/Montserrat-Bold.ttf");
+}
+
+@font-face {
+    font-family: "Inter 18pt";
+    font-weight: normal;
+    src: url("../fonts/Inter_18pt-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Inter 18pt Medium";
+    font-weight: bold;
+    src: url("../fonts/Inter_18pt-Medium.ttf");
+}
+
+.root {
+    -fx-primary-color: #ce2626;
+    -fx-secondary-color: #52525284;
+    -fx-third-color: #fffdeb;
+    -fx-forth-color: #b41712;
+    -fx-text-color: #1b0c0c;
+    -fx-logo-color: #f63049;
+    -fx-bgc: #ececec;
+    -fx-linear-from: #f2e6ee;
+    -fx-linear-to: #977dff;
+    -fx-add-color: #28a745;
+    -fx-edit-color: rgb(222, 222, 72);
+    -fx-clear-color: #6c757d;
+    -fx-back-color: #ced4da;
+    font-family: Montserrat;
+    -fx-font-family: Montserrat;
+}
+
+ScrollPane:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* làm nền thanh cuộn trong suốt */
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+/* Phần "track" (đường chạy) */
+.scroll-bar:vertical .track,
+.scroll-bar:horizontal .track {
+    background-color: transparent;
+    -fx-background-color: transparent;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Phần "thumb" (nút kéo) */
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    background-color: rgba(150, 150, 150, 0.4);
+    -fx-background-color: rgba(150, 150, 150, 0.4);
+    -fx-background-radius: 5;
+}
+
+.scroll-bar:vertical .thumb:hover,
+.scroll-bar:horizontal .thumb:hover {
+    background-color: rgba(100, 100, 100, 1);
+    -fx-background-color: rgba(100, 100, 100, 1);
+}
+
+/* Ẩn 2 nút mũi tên lên/xuống */
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    background-color: transparent;
+    -fx-background-color: transparent;
+
+    padding: 0;
+    -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+
+    padding: 0;
+    -fx-padding: 0;
+}

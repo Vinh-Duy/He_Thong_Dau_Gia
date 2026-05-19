@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane stylesheets="@../../css/components/header-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.components.HeaderController">
+    <HBox fx:id="header" alignment="CENTER" minHeight="80.0" spacing="30.0">
+        <Label styleClass="logo" text="BidNova" />
+        <HBox alignment="CENTER" spacing="15.0" styleClass="menu">
+            <children>
+                <Label onMouseClicked="#showTrangChu" styleClass="text, menu-item-active" text="Trang chủ" />
+                
+                <MenuButton fx:id="menuButton" contentDisplay="RIGHT" graphicTextGap="10.0" text="Danh mục đấu giá">
+                    <items>
+                        <MenuItem onAction="#showDanhMucBatDongSan" text="Bất động sản" />
+                        <MenuItem onAction="#showDanhMucTaiSanNhaNuoc" text="Tài sản nhà nước" />
+                        <MenuItem onAction="#showDanhMucPhuongTienXeCo" text="Phương tiện - Xe cộ" />
+                        <MenuItem onAction="#showDanhMucSuuTamNgheThuat" text="Sưu tầm - nghệ thuật" />
+                        <MenuItem onAction="#showDanhMucTaiSanKhac" text="Tài sản khác" />
+                    </items>
+                    <graphic>
+                        <FontAwesomeIconView glyphName="ANGLE_DOWN" size="15.0" styleClass="menu-icon" />
+                    </graphic>
+                </MenuButton>
+
+                <Label fx:id="gioiThieuLabel" onMouseClicked="#showGioiThieu" styleClass="text" text="Giới thiệu" />
+                
+                <Label fx:id="lienHeLabel" onMouseClicked="#showLienHe" styleClass="text" text="Liên hệ" />
+            </children>
+        </HBox>
+        
+        <VBox alignment="CENTER_RIGHT" spacing="2">
+            <Label fx:id="timeLabel" style="-fx-font-weight: bold;" text="00:00:00" />
+            <Label fx:id="dateLabel" text="Ngày tháng năm" />
+        </VBox>
+        
+        <HBox fx:id="authBox" alignment="CENTER" spacing="15.0">
+            <Label onMouseClicked="#goToSignup" styleClass="signup-btn" text="Đăng ký" />
+            <Label onMouseClicked="#goToSignin" styleClass="signin-btn" text="Đăng nhập" />
+        </HBox>
+
+        <HBox fx:id="userBox" alignment="CENTER" managed="false" spacing="15.0" visible="false">
+            <Label fx:id="userLabel" text="Xin chào, Admin" />
+            <Label onMouseClicked="#handleLogout" styleClass="signout-btn" text="Đăng xuất" />
+        </HBox>
+    </HBox>
+</StackPane>

@@ -1,0 +1,182 @@
+@import url(../base-style.css);
+
+ScrollPane {
+    background: transparent;
+    -fx-background: transparent;
+
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+ScrollPane > .viewport {
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+VBox {
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+BorderPane {
+    background-color: -fx-bgc;
+    -fx-background-color: -fx-bgc;
+}
+
+#content {
+    -fx-spacing: 20;
+
+    padding: 50px 100px;
+    -fx-padding: 50 100;
+}
+
+#lblProductName {
+    font-size: 40px;
+    -fx-font-size: 40;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: -fx-text-color;
+
+    padding: 0 0 50px 0;
+    -fx-padding: 0 0 50 0;
+}
+
+#content HBox {
+    -fx-spacing: 100;
+}
+
+#imgProduct {
+    min-width: 600px;
+    -fx-min-width: 600px;
+
+    max-width: 600px;
+    -fx-max-width: 600;
+
+    min-height: 400px;
+    -fx-min-height: 400;
+
+    max-height: 400px;
+    -fx-max-height: 400;
+
+    background-color: red;
+    -fx-background-color: red;
+
+    -fx-background-radius: 5;
+
+    border-radius: 5px;
+    -fx-border-radius: 5;
+}
+
+#info {
+    min-width: 300px;
+    -fx-min-width: 300;
+
+    max-width: 300px;
+    -fx-max-width: 300;
+
+    -fx-spacing: 20;
+}
+
+#logs {
+    min-height: 170px;
+    -fx-min-height: 170;
+
+    max-height: 170px;
+    -fx-max-height: 170;
+
+    padding: 15px;
+    -fx-padding: 15;
+
+    -fx-alignment: CENTER;
+
+    border-color: #aaa;
+    -fx-border-color: #aaa;
+
+    background-color: #333;
+    -fx-background-color: #333;
+
+    -fx-background-radius: 5;
+
+    border-radius: 5px;
+    -fx-border-radius: 5;
+}
+
+#logs .label {
+    font-size: 12px;
+    -fx-font-size: 12;
+
+    /* font-weight: bold;
+    -fx-font-weight: bold; */
+
+    -fx-text-fill: white;
+
+    padding: 0 0 15px 0;
+    -fx-padding: 0 0 15 0;
+}
+
+#logs .list-view {
+    background-color: white;
+    -fx-background-color: white;
+}
+
+#timeContainer {
+    min-height: 210px;
+    -fx-min-height: 210;
+
+    max-height: 210px;
+    -fx-max-height: 210;
+
+    -fx-spacing: 15;
+
+    -fx-alignment: CENTER;
+
+    background-color: #333;
+    -fx-background-color: #333;
+
+    padding: 20px;
+    -fx-padding: 20;
+
+    -fx-background-radius: 5;
+}
+
+#lblTimer {
+    -fx-text-fill: -fx-primary-color;
+
+    font-size: 40px;
+    -fx-font-size: 40;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+.separator .line {
+    border-color: white;
+    -fx-border-color: white;
+
+    opacity: 0.5;
+    -fx-opacity: 0.5;
+}
+
+#btn {
+    width: 200px;
+    -fx-pref-width: 200;
+
+    min-height: 40px;
+    -fx-min-height: 40;
+
+    max-height: 40px;
+    -fx-max-height: 40;
+
+    background-color: -fx-forth-color;
+    -fx-background-color: -fx-forth-color;
+
+    -fx-text-fill: -fx-third-color;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    cursor: hand;
+    -fx-cursor: hand;
+}

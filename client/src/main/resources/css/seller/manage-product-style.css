@@ -1,0 +1,106 @@
+@import url(../base-style.css);
+
+VBox {
+    padding: 20px;
+    -fx-padding: 20;
+}
+
+.title {
+    font-size: 30px;
+    -fx-font-size: 30px;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: -fx-forth-color;
+}
+
+.btn {
+    padding: 8px 20px;
+    -fx-padding: 8 20;
+
+    -fx-text-fill: white;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+.add-btn {
+    background-color: -fx-add-color;
+    -fx-background-color: -fx-add-color;
+}
+
+.edit-btn {
+    background-color: -fx-edit-color;
+    -fx-background-color: -fx-edit-color;
+}
+
+.delete-btn {
+    background-color: -fx-primary-color;
+    -fx-background-color: -fx-primary-color;
+}
+
+.logout-btn {
+    background-color: -fx-primary-color;
+    -fx-background-color: -fx-primary-color;
+}
+
+.btn .glyph-icon {
+    fill: white;
+    -fx-fill: white;
+}
+
+.table-view {
+    -fx-fixed-cell-size: 50px;
+}
+
+.table-view .table-cell {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-view:focused,
+.table-view:selected,
+.table-view:focused .table-row-cell,
+.table-view:selected .table-row-cell,
+.table-view:focused .table-row-cell:selected,
+.table-view .table-row-cell:selected .table-cell {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.table-view .table-row-cell:selected .table-cell {
+    border-color: white;
+    -fx-border-color: white;
+
+    border-width: 1px;
+    -fx-border-width: 1;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-row-cell:hover {
+    background-color: #ce26268a;
+    -fx-background-color: #ce26268a;
+}
+
+.table-view .table-row-cell:hover .table-cell {
+    -fx-text-fill: white;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+
+    background-color: -fx-primary-color;
+    -fx-background-color: -fx-primary-color;
+
+    -fx-text-fill: white;
+}
+
+/* .table-view .column-header {
+    -fx-background-color: transparent;
+} */

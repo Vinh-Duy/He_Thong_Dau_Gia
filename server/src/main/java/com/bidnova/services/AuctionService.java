@@ -1,0 +1,12 @@
+package com.bidnova.services;
+
+import java.util.List;
+
+import com.bidnova.models.Auction;
+
+public interface AuctionService {
+    List<Auction> getAuctionsBySellerId(int sellerId);
+    boolean canModify(String auctionId, int requesterUserId, String requesterRole);
+    boolean updateProduct(Auction auction, int requesterUserId, String requesterRole);
+    boolean deleteProduct(String auctionId, int requesterUserId, String requesterRole);
+}

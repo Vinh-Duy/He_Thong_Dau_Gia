@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" stylesheets="@../../css/seller/add-product-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.seller.AddProductController">
+
+    <VBox styleClass="card">
+        <VBox alignment="TOP_CENTER" spacing="20">
+            <HBox alignment="CENTER_LEFT" spacing="20">
+                <Button mnemonicParsing="false" onAction="#goBackToManage" styleClass="btn, back-btn" text="Quay lại quản lý sản phẩm">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="ARROW_LEFT" />
+                    </graphic>
+                </Button>
+                
+                <Button mnemonicParsing="false" onAction="#signOut" styleClass="btn, logout-btn" text="Đăng xuất">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="SIGN_OUT" />
+                    </graphic>
+                </Button>
+            </HBox>
+
+            <Label styleClass="title" text="ĐĂNG SẢN PHẨM ĐẤU GIÁ MỚI" />
+
+            <GridPane alignment="CENTER" hgap="15" vgap="15">
+                <Label styleClass="field" text="Tên sản phẩm:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="txtName" promptText="Ví dụ: iPhone 15 Pro Max" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label styleClass="field" text="Mô tả chi tiết:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextArea fx:id="txtDescription" promptText="Tình trạng máy, phụ kiện kèm theo..." wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label styleClass="field" text="Phân loại sản phẩm:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <ComboBox fx:id="cmbCategory" promptText="Loại sản phẩm" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label styleClass="field" text="Giá khởi điểm (VNĐ):" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <TextField fx:id="txtStartingPrice" promptText="Ví dụ: 1000000" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                <Label styleClass="field" text="Ngày bắt đầu:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+                    <DatePicker fx:id="dateStart" promptText="Chọn ngày" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label styleClass="hour" text="Giờ (HH:mm):">
+                        <HBox.margin>
+                            <Insets left="65.0" />
+                        </HBox.margin>
+                    </Label>
+                    <TextField fx:id="txtTimeStart" promptText="18:00" />
+                </HBox>
+
+                <Label styleClass="field" text="Ngày kết thúc:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <HBox GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <DatePicker fx:id="dateEnd" promptText="Chọn ngày" />
+                    <Label styleClass="hour" text="Giờ (HH:mm):">
+                        <HBox.margin>
+                            <Insets left="65.0" />
+                        </HBox.margin>
+                    </Label>
+                    <TextField fx:id="txtTimeEnd" promptText="18:00" />
+                </HBox>
+
+                <HBox alignment="CENTER_RIGHT" spacing="15" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                    <Button fx:id="btnChooseImage" onAction="#handleChooseImage" styleClass="btn" text="Chọn ảnh">
+                    <graphic>
+                        <FontAwesomeIconView glyphName="IMAGE" />
+                    </graphic>
+                </Button>
+
+                <Button onAction="#handleClear" styleClass="btn, clear-btn" text="Làm mới">
+                        <graphic>
+                            <FontAwesomeIconView glyphName="REFRESH" />
+                        </graphic>
+                    </Button>
+
+                    <Button onAction="#handleAddProduct" styleClass="btn, add-btn" text="Đăng Sản Phẩm">
+                        <graphic>
+                            <FontAwesomeIconView glyphName="UPLOAD" />
+                        </graphic>
+                    </Button>
+                </HBox>
+            </GridPane>
+        </VBox>
+    </VBox>
+</VBox>

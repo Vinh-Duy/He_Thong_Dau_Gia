@@ -6,7 +6,6 @@ import com.bidnova.network.Response;
 import com.google.gson.JsonObject;
 
 import javafx.application.Platform;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,6 +15,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 public class SignupController {
@@ -27,7 +28,7 @@ public class SignupController {
     @FXML private PasswordField passwordField;
     @FXML private TextField passwordTextField;
     @FXML private Label ruleLength, ruleUpper, ruleLower, ruleNumber, ruleSpecial;
-    @FXML private TextField confirmPasswordField;
+    @FXML private PasswordField confirmPasswordField;
     @FXML private TextField emailField;
     @FXML private TextField phoneField;
     @FXML private ComboBox<String> genderBox;
@@ -50,6 +51,35 @@ public class SignupController {
             updateRule(ruleLower, newVal.matches(".*[a-z].*"));
             updateRule(ruleNumber, newVal.matches(".*\\d.*"));
             updateRule(ruleSpecial, newVal.matches(".*[!@#$%^&*()].*"));
+        });
+
+        // Logic chuyển focus khi nhấn Enter
+        fullNameField.setOnAction(e -> usernameField.requestFocus());
+        usernameField.setOnAction(e -> {
+            if (passwordField.isVisible()) passwordField.requestFocus();
+            else passwordTextField.requestFocus();
+        });
+        passwordField.setOnAction(e -> confirmPasswordField.requestFocus());
+        passwordTextField.setOnAction(e -> confirmPasswordField.requestFocus());
+        confirmPasswordField.setOnAction(e -> emailField.requestFocus());
+        emailField.setOnAction(e -> phoneField.requestFocus());
+
+        // Khi nhấn Enter ở phoneField, nhảy sang genderBox và tự động mở danh sách
+        phoneField.setOnAction(e -> {
+            genderBox.requestFocus();
+            genderBox.show();
+        });
+
+        // Khi đang focus ở genderBox, nhấn Enter sẽ mở danh sách nếu nó đang đóng
+        genderBox.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+            if (e.getCode() == KeyCode.ENTER && !genderBox.isShowing()) {
+                if (genderBox.getValue() == null) {
+                    genderBox.show();
+                }
+                else {
+                    handleSignup();
+                }
+            }
         });
 
         genderBox.getItems().addAll("Nam", "Nữ", "Chọn giới tính");
@@ -104,7 +134,7 @@ public class SignupController {
     }
 
     @FXML
-    private void handleSignup(Event event) {
+    private void handleSignup() {
         // 1. Lấy dữ liệu từ giao diện
         String role = rbBidderButton != null && rbBidderButton.isSelected() ? "BIDDER" : "SELLER";
         String fullName = fullNameField != null ? fullNameField.getText().trim() : "";

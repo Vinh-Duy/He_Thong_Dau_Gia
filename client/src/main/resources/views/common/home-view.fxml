@@ -29,16 +29,16 @@
                             <Insets bottom="50" left="60" right="60" top="40" />
                         </padding>
                         <VBox alignment="CENTER">
-                            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #4a148c; -fx-padding: 0 0 20 0;" text="PHIÊN ĐẤU GIÁ NỔI BẬT" />
+                            <Label styleClass="hot-auction" text="PHIÊN ĐẤU GIÁ NỔI BẬT" />
                             <HBox fx:id="bannerContainer" alignment="CENTER" spacing="20.0" />
                         </VBox>
                         <VBox spacing="15.0">
-                            <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #9c27b0;" text="ĐANG DIỄN RA" />
+                            <Label styleClass="ongoing-auction" text="ĐANG DIỄN RA" />
                             <FlowPane fx:id="dangDienRaContainer" hgap="25.0" vgap="25.0" />
                         </VBox>
 
                         <VBox spacing="15.0">
-                            <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #9c27b0;" text="SẮP DIỄN RA" />
+                            <Label styleClass="upcoming-auction" text="SẮP DIỄN RA" />
                             <FlowPane fx:id="sapDienRaContainer" hgap="25.0" vgap="25.0" />
                         </VBox>
                     </VBox>

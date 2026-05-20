@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -13,12 +12,11 @@ import com.google.gson.JsonParser;
 
 /**
  * Upload ảnh lên Cloudinary (unsigned upload với upload preset).
- * Không cần thêm thư viện Cloudinary, dùng HTTP request thuần.
  */
 public class CloudinaryUploader {
-
-    private static final String CLOUD_NAME = "dxdqjjcp2"; // thay bằng cloud_name của bạn
-    private static final String UPLOAD_PRESET = "bidnova_preset"; // tạo unsigned preset trên Cloudinary Dashboard
+    /* TODO: những thông tin này là thông tin mật, phải để trong .env. */
+    private static final String CLOUD_NAME = "deuqbo9ul"; 
+    private static final String UPLOAD_PRESET = "bidnova_preset"; 
 
     /**
      * Upload file ảnh lên Cloudinary.

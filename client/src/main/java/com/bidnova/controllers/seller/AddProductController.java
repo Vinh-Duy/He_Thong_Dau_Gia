@@ -16,6 +16,7 @@ import com.bidnova.utils.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,8 +24,12 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -37,6 +42,9 @@ public class AddProductController {
     @FXML private TextField txtTimeStart;
     @FXML private DatePicker dateEnd;
     @FXML private TextField txtTimeEnd;
+    @FXML private ImageView imgPreview;
+    @FXML private Label lblImageStatus;
+    @FXML private FontAwesomeIconView iconStatus;
     private Auction editingAuction = null;
 
     private Gson gson = new GsonBuilder()
@@ -55,6 +63,10 @@ public class AddProductController {
             "Sưu tầm - nghệ thuật",
             "Tài sản khác"
         );
+
+        // Ban đầu không hiện icon
+        iconStatus.setVisible(false);
+        iconStatus.setManaged(false);
     }
 
     @FXML
@@ -69,21 +81,34 @@ public class AddProductController {
         File file = fileChooser.showOpenDialog(stage);
         if (file == null) return;
 
+        // Hiển thị preview local trước
+        Image previewImage = new Image(file.toURI().toString());
+        imgPreview.setImage(previewImage);
+        lblImageStatus.setText("Đang upload lên Cloudinary...");
+        iconStatus.setVisible(false); // Ẩn icon khi đang trong quá trình upload
+        iconStatus.setManaged(false);
+
         // Upload lên Cloudinary trong background thread
         new Thread(() -> {
-            Platform.runLater(() -> {
-                showAlert(Alert.AlertType.INFORMATION, "Đang xử lý", "Đang upload ảnh lên Cloudinary...");
-            });
-
             String url = CloudinaryUploader.upload(file);
             if (url != null) {
                 selectedImageUrl = url;
                 Platform.runLater(() -> {
-                    showAlert(Alert.AlertType.INFORMATION, "Thành công", "Đã upload ảnh thành công!");
+                    lblImageStatus.setText("Upload thành công");
+                    lblImageStatus.setStyle("-fx-text-fill: #00703c; -fx-font-weight: bold;");
+                    iconStatus.setGlyphName("CHECK");
+                    iconStatus.setFill(Color.valueOf("#00703c"));
+                    iconStatus.setVisible(true);
+                    iconStatus.setManaged(true);
                 });
             } else {
                 Platform.runLater(() -> {
-                    showAlert(Alert.AlertType.ERROR, "Lỗi", "Upload ảnh thất bại. Vui lòng thử lại.");
+                    lblImageStatus.setText("Upload thất bại");
+                    lblImageStatus.setStyle("-fx-text-fill: #b41712; -fx-font-weight: bold;");
+                    iconStatus.setGlyphName("CLOSE");
+                    iconStatus.setFill(Color.valueOf("#b41712"));
+                    iconStatus.setVisible(true);
+                    iconStatus.setManaged(true);
                 });
             }
         }).start();
@@ -93,11 +118,11 @@ public class AddProductController {
     private void handleAddProduct() {
         try {
             if (txtName.getText().isEmpty()) {
-                showAlert(Alert.AlertType.WARNING, "Thiếu tin", "Bác nhập tên sản phẩm nhé!");
+                showAlert(Alert.AlertType.WARNING, "Thiếu thông tin", "Bác nhập tên sản phẩm nhé!");
                 return;
             }
             if (cmbCategory.getValue() == null) {
-                showAlert(Alert.AlertType.WARNING, "Thiếu tin", "Bác chọn phân loại sản phẩm nhé!");
+                showAlert(Alert.AlertType.WARNING, "Thiếu thông tin", "Bác chọn phân loại sản phẩm nhé!");
                 return;
             }
 
@@ -171,7 +196,6 @@ public class AddProductController {
         }
     }
 
-    // --- HÀM THOÁT RA HOMEVIEW CHO SELLER ---
     @FXML
     private void goTo(String fxmlPath) {
         try {
@@ -197,15 +221,26 @@ public class AddProductController {
     }
 
     private void clearFields() {
-        txtName.clear();
-        txtDescription.clear();
-        cmbCategory.getSelectionModel().clearSelection();
-        txtStartingPrice.clear();
-        txtTimeEnd.clear();
-        txtTimeStart.clear();
-        dateEnd.setValue(null);
-        dateStart.setValue(null);
-        selectedImageUrl = null;
+        if (editingAuction != null) {
+            // Nếu đang sửa, reset về dữ liệu ban đầu từ DB
+            setAuctionToEdit(editingAuction);
+        } else {
+            // Nếu thêm mới, xóa trắng toàn bộ
+            txtName.clear();
+            txtDescription.clear();
+            cmbCategory.getSelectionModel().clearSelection();
+            txtStartingPrice.clear();
+            txtTimeEnd.clear();
+            txtTimeStart.clear();
+            dateEnd.setValue(null);
+            dateStart.setValue(null);
+            selectedImageUrl = null;
+            imgPreview.setImage(null);
+            lblImageStatus.setText("Chưa chọn ảnh");
+            lblImageStatus.setStyle("-fx-text-fill: #999");
+            iconStatus.setVisible(false);
+            iconStatus.setManaged(false);
+        }
     }
 
     private void showAlert(Alert.AlertType type, String title, String content) {
@@ -221,6 +256,7 @@ public class AddProductController {
         clearFields();
     }
 
+    /* Reset dữ liệu lấy từ database */
     public void setAuctionToEdit(Auction auction) {
         this.editingAuction = auction;
         
@@ -231,8 +267,43 @@ public class AddProductController {
             cmbCategory.setValue(auction.getCategory());
         }
         txtStartingPrice.setText(String.valueOf(auction.getStartPrice()));
+
+        // Đổ ngày giờ bắt đầu
+        if (auction.getStartTime() != null) {
+            dateStart.setValue(auction.getStartTime().toLocalDate());
+            txtTimeStart.setText(auction.getStartTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+        } else {
+            dateStart.setValue(null);
+            txtTimeStart.clear();
+        }
+
+        // Đổ ngày giờ kết thúc
+        if (auction.getEndTime() != null) {
+            dateEnd.setValue(auction.getEndTime().toLocalDate());
+            txtTimeEnd.setText(auction.getEndTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+        } else {
+            dateEnd.setValue(null);
+            txtTimeEnd.clear();
+        }
+
+        // Đổ ảnh và trạng thái icon
         if (auction.getImageUrl() != null) {
             selectedImageUrl = auction.getImageUrl();
+            Image previewImage = new Image(selectedImageUrl, true);
+            imgPreview.setImage(previewImage);
+            lblImageStatus.setText("Ảnh hiện tại");
+            lblImageStatus.setStyle("-fx-text-fill: #00703c; -fx-font-weight: bold;");
+            iconStatus.setGlyphName("CHECK");
+            iconStatus.setFill(Color.valueOf("#00703c"));
+            iconStatus.setVisible(true);
+            iconStatus.setManaged(true);
+        } else {
+            selectedImageUrl = null;
+            imgPreview.setImage(null);
+            lblImageStatus.setText("Chưa chọn ảnh");
+            lblImageStatus.setStyle("-fx-text-fill: #999");
+            iconStatus.setVisible(false);
+            iconStatus.setManaged(false);
         }
     }
 }

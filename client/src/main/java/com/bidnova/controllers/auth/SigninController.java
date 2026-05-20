@@ -26,6 +26,13 @@ public class SigninController {
     private Gson gson = new Gson();
 
     @FXML
+    public void initialize() {
+        // Logic chuyển focus khi nhấn Enter
+        usernameField.setOnAction(e -> passwordField.requestFocus());
+        passwordField.setOnAction(e -> handleSignin());
+    }
+
+    @FXML
     private void goTo(String fxmlPath) {
         try {
             Stage stage = (Stage) usernameField.getScene().getWindow();

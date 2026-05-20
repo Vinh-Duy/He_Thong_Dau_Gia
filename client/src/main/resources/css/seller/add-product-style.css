@@ -5,22 +5,9 @@ VBox {
     -fx-background-color: transparent;
 }
 
-.card {
-    min-width: 700px;
-    -fx-min-width: 700;
-
-    max-width: 700px;
-    -fx-max-width: 700;
-
-    background-color: white;
-    -fx-background-color: white;
-
-    padding: 20px 40px;
-    -fx-padding: 20 40;
-
-    -fx-background-radius: 8;
-
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 5);
+.main-content {
+    padding: 40px;
+    -fx-padding: 40;
 }
 
 .title {
@@ -34,6 +21,7 @@ VBox {
 }
 
 .field {
+    -fx-text-fill: -fx-text-color;
     font-weight: bold;
     -fx-font-weight: bold;
 
@@ -54,6 +42,7 @@ VBox {
 }
 
 .hour {
+    -fx-text-fill: -fx-text-color;
     font-weight: bold;
     -fx-font-weight: bold;
 
@@ -96,6 +85,11 @@ VBox {
 .logout-btn {
     background-color: -fx-forth-color;
     -fx-background-color: -fx-forth-color;
+}
+
+.image-btn {
+    background-color: -fx-image-color;
+    -fx-background-color: -fx-image-color;
 }
 
 .clear-btn {
@@ -166,11 +160,11 @@ VBox {
 }
 
 #cmbCategory {
-    min-width: 455px;
-    -fx-min-width: 455;
+    min-width: 600px;
+    -fx-min-width: 600;
 
-    max-width: 455px;
-    -fx-alignment: 455;
+    max-width: 600px;
+    -fx-alignment: 600;
 }
 
 #txtDescription {
@@ -179,6 +173,35 @@ VBox {
 
     max-height: 100px;
     -fx-max-height: 100;
+}
+
+.image-preview {
+    background-color: #dcdcdc;
+    -fx-background-color: #dcdcdc;
+
+    -fx-background-radius: 8;
+
+    border-color: #b8b8b8;
+    -fx-border-color: #b8b8b8;
+
+    border-radius: 8px;
+    -fx-border-radius: 8;
+
+    border-width: 2px;
+    -fx-border-width: 2;
+
+    border-style: dashed;
+    -fx-border-style: dashed;
+}
+
+.image-status {
+    -fx-text-fill: #999;
+
+    font-size: 12px;
+    -fx-font-size: 12;
+
+    padding: 5px 0 0 0;
+    -fx-padding: 5 0 0 0;
 }
 
 .combo-box-popup .list-view {
@@ -345,4 +368,21 @@ VBox {
 .date-picker-popup .previous-month,
 .date-picker-popup .next-month {
     -fx-text-fill: #ced4da;
+}
+
+.add-product-image {
+    min-height: 300px;
+    -fx-min-height: 300px;
+
+    max-height: 300px;
+    -fx-max-height: 300px;
+
+    border-width: 1px;
+    -fx-border-width: 1px;
+
+    border-color: #ced4da;
+    -fx-border-color: #ced4da;
+
+    border-radius: 5px;
+    -fx-border-radius: 5px;
 }

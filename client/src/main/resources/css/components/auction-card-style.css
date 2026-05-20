@@ -1,6 +1,6 @@
 @import url(../base-style.css);
 
-#card {
+#auctionCard {
     min-width: 300px;
     -fx-min-width: 300;
 
@@ -19,7 +19,7 @@
     -fx-border-radius: 5;
 
     background-color: -fx-bgc;
-    -fx-background-color: -fx-bgc;
+    -fx-background-color: red;
 
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 1), 10, 0, 0, 5);
 }

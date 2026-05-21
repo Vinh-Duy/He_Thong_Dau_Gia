@@ -88,7 +88,7 @@ public class SigninController {
     private void handleSignin() {
         // 1. Lấy dữ liệu từ giao diện
         String username = usernameField != null ? usernameField.getText().trim() : "";
-        String password = passwordField != null ? passwordField.getText().trim() : "";
+        String password = passwordField != null && passwordField.isVisible() ? passwordField.getText().trim() : passwordTextField.getText().trim();
 
         // 2. Kiểm tra sơ bộ (Validation)
         if (username.isEmpty() || password.isEmpty()) {

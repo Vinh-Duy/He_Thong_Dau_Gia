@@ -84,6 +84,9 @@ public class AuctionDetailController implements Initializable {
             if (bidHistoryTableController != null) {
                 bidHistoryTableController.loadHistory(auction.getId());
             }
+            
+            // Kiểm tra trạng thái Auto-Bid trên server (nếu user đã bật trước đó)
+            checkAutoBidState();
         }
     }
 
@@ -364,6 +367,50 @@ public class AuctionDetailController implements Initializable {
         } catch (Exception e) {
             disableAutoBid("Lỗi cấu hình");
         }
+    }
+    
+    private void checkAutoBidState() {
+        if (currentAuction == null) return;
+        
+        String username = SessionManager.getUsername();
+        if (username == null || username.isEmpty()) return;
+        
+        new Thread(() -> {
+            try {
+                com.google.gson.JsonObject payload = new com.google.gson.JsonObject();
+                payload.addProperty("auctionId", currentAuction.getId());
+                
+                Request request = new Request("GET_AUTO_BID", payload.toString());
+                Response response = NetworkClient.getInstance().sendRequest(request);
+                
+                Platform.runLater(() -> {
+                    if (response != null && "SUCCESS".equals(response.getStatus()) && response.getData() != null) {
+                        try {
+                            JsonObject autoBidJson = JsonParser.parseString(response.getData().toString()).getAsJsonObject();
+                            
+                            if (autoBidJson.has("isActive") && autoBidJson.get("isActive").getAsBoolean()) {
+                                double maxBid = autoBidJson.get("maxBid").getAsDouble();
+                                double increment = autoBidJson.get("increment").getAsDouble();
+                                
+                                // Đã có auto-bid đang hoạt động trên server
+                                autoBidEnabled = true;
+                                btnToggleAutoBid.setText("Tắt Auto-Bid");
+                                btnToggleAutoBid.setStyle("-fx-background-color: #6c757d;");
+                                txtMaxBid.setText(String.valueOf(maxBid));
+                                txtIncrement.setText(String.valueOf(increment));
+                                if (lblAutoBidStatus != null) {
+                                    lblAutoBidStatus.setText("Auto-Bid đang bật");
+                                }
+                            }
+                        } catch (Exception e) {
+                            // Không parse được -> không có auto-bid, giữ trạng thái mặc định
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                System.err.println("Error checking auto-bid state: " + e.getMessage());
+            }
+        }).start();
     }
     
     private String formatVietnameseCurrency(double amount) {

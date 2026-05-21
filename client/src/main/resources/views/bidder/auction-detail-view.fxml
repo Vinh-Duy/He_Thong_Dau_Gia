@@ -79,19 +79,28 @@
                                     
                                     <VBox spacing="6.0">
                                         <children>
-                                            <Label styleClass="subtitle, auto-bid-subtitle" text="💰 Giá tối đa cho phép (VNĐ):" />
+                                            <Label styleClass="subtitle, auto-bid-subtitle" text="Giá tối đa cho phép (VNĐ):">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="MONEY" />
+                                       </graphic></Label>
                                             <TextField fx:id="txtMaxBid" prefHeight="42.0" promptText="VD: 100000000" styleClass="input, auto-bid-input" />
                                         </children>
                                     </VBox>
                                     
                                     <VBox spacing="6.0">
                                         <children>
-                                            <Label styleClass="subtitle, increment-subtitle" text="📈 Bước giá (VNĐ):" />
+                                            <Label styleClass="subtitle, increment-subtitle" text="Bước giá (VNĐ):">
+                                       <graphic>
+                                          <FontAwesomeIconView glyphName="LINE_CHART" />
+                                       </graphic></Label>
                                             <TextField fx:id="txtIncrement" prefHeight="42.0" promptText="VD: 10000000" styleClass="input, increment-input" />
                                         </children>
                                     </VBox>
                                     
-                                    <Button fx:id="btnToggleAutoBid" styleClass="auto-bid-btn" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" text="🔥 Bật Auto-Bid" />
+                                    <Button fx:id="btnToggleAutoBid" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" styleClass="auto-bid-btn" text="Bật Auto-Bid">
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="MAGIC" />
+                                 </graphic></Button>
                                     <Label fx:id="lblAutoBidStatus" textAlignment="CENTER" textFill="#757575" />
                                 </children>
                             </VBox>

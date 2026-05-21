@@ -7,6 +7,7 @@ import com.bidnova.models.AuthUserContext;
 import com.bidnova.network.Request;
 import com.bidnova.network.Response;
 import com.bidnova.dao.AuctionDAO;
+import com.bidnova.services.AuctionManager;
 import com.bidnova.utils.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,6 +30,9 @@ public class GetAuctionByIdHandler implements ActionHandler {
             Auction auction = auctionDAO.findById(auctionId);
             
             if (auction != null) {
+                // Kiểm tra và cập nhật trạng thái hết hạn
+                AuctionManager.getInstance().checkAndUpdateExpiredStatus(auction);
+                
                 String auctionJson = gson.toJson(auction);
                 return new Response("SUCCESS", "Auction found", auctionJson);
             } else {

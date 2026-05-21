@@ -25,6 +25,7 @@ public class HandlerRegistry {
         handlers.put("PLACE_BID", new PlaceBidHandler());
         handlers.put("DELETE_USER", new DeleteUserHandler());
         handlers.put("GET_BID_HISTORY", new GetBidHistoryHandler());
+        handlers.put("GET_AUTO_BID", new GetAutoBidHandler());
     }
 
     public ActionHandler get(String action) {

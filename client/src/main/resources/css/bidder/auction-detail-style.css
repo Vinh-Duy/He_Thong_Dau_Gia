@@ -126,6 +126,12 @@
     -fx-text-fill: #5d4037;
 }
 
+.auto-bid-subtitle .glyph-icon,
+.increment-subtitle .glyph-icon {
+    fill: #5d4037;
+    -fx-fill: #5d4037;
+}
+
 .input {
     -fx-background-radius: 10;
 
@@ -161,6 +167,11 @@
 
     font-size: 15px;
     -fx-font-size: 15px;
+}
+
+.auto-bid-btn .glyph-icon {
+    fill: white;
+    -fx-fill: white;
 }
 
 .auto-bid-btn:hover {

@@ -82,9 +82,17 @@ VBox {
     -fx-background-color: -fx-back-color;
 }
 
+.back-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, -fx-back-color, 15, 0.4, 0, 0);
+}
+
 .logout-btn {
     background-color: -fx-forth-color;
     -fx-background-color: -fx-forth-color;
+}
+
+.logout-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, -fx-forth-color, 15, 0.4, 0, 0);
 }
 
 .image-btn {
@@ -92,14 +100,26 @@ VBox {
     -fx-background-color: -fx-image-color;
 }
 
+.image-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, -fx-image-color, 15, 0.4, 0, 0);
+}
+
 .clear-btn {
     background-color: -fx-clear-color;
     -fx-background-color: -fx-clear-color;
 }
 
+.clear-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, -fx-clear-color, 15, 0.4, 0, 0);
+}
+
 .add-btn {
     background-color: -fx-add-color;
     -fx-background-color: -fx-add-color;
+}
+
+.add-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, -fx-add-color, 15, 0.4, 0, 0);
 }
 
 #txtName,
@@ -125,6 +145,24 @@ VBox {
     -fx-font-size: 13;
 }
 
+#txtName:focused,
+#txtDescription:focused,
+#txtStartingPrice:focused,
+#cmbCategory:focused,
+#dateStart:focused,
+#txtTimeStart:focused,
+#dateEnd:focused,
+#txtTimeEnd:focused {
+    border-color: -fx-forth-color;
+    -fx-border-color: -fx-forth-color;
+
+    border-width: 2px;
+    -fx-border-width: 2px;
+
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
 #txtDescription .content,
 #dateStart .content,
 #dateEnd .content {
@@ -136,13 +174,22 @@ VBox {
 #dateEnd,
 #dateStart:focused,
 #dateEnd:focused {
-    -fx-focus-color: white;
-    -fx-faint-focus-color: white;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 
     background-color: white;
     -fx-background-color: white;
+}
 
-    border-color: #e0e0e0;
+#dateStart:focused,
+#dateEnd:focused {
+    border-color: -fx-forth-color;
+    -fx-border-color: -fx-forth-color;
+
+    border-width: 2px;
+    -fx-border-width: 2px;
+
+    -fx-border-insets: -2;
 }
 
 #txtName,

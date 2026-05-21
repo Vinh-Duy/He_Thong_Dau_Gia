@@ -88,6 +88,13 @@ public class ClientHandler implements Runnable {
                             }
                         }
 
+                        // Tự động broadcast khi có thay đổi sản phẩm (Thêm/Sửa/Xóa)
+                        if (isProductModification(request.getAction()) && "SUCCESS".equals(handled.getStatus())) {
+                            JsonObject updateMsg = new JsonObject();
+                            updateMsg.addProperty("action", "AUCTION_LIST_UPDATE");
+                            broadcastAll(gson.toJson(updateMsg));
+                        }
+
                         continue;
                     }
 
@@ -112,6 +119,11 @@ public class ClientHandler implements Runnable {
             } catch (Exception ignore) {
             }
         }
+    }
+
+    private boolean isProductModification(String action) {
+        return "ADD_PRODUCT".equals(action) || "UPDATE_PRODUCT".equals(action) || 
+               "DELETE_PRODUCT".equals(action) || "PLACE_BID".equals(action);
     }
 
     private void broadcast(String message) {

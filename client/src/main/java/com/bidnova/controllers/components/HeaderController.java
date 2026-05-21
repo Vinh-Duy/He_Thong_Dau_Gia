@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
+import com.bidnova.controllers.bidder.CategoryController;
 import com.bidnova.utils.SessionManager;
 
 import javafx.animation.KeyFrame;
@@ -133,42 +134,42 @@ public class HeaderController {
 
     @FXML
     private void showDanhMucBatDongSan(ActionEvent event) {
-        // goTo("/views/bidder/category-view.fxml", loader -> {
-        //     CategoryController categoryController = loader.getController();
-        //     categoryController.resetCategoryData("BẤT ĐỘNG SẢN", ProductLoader.loadProducts());
-        // });
+        goTo("/views/bidder/category-view.fxml", loader -> {
+            CategoryController categoryController = loader.getController();
+            categoryController.setCategory("Bất động sản");
+        });
     }
 
     @FXML
     private void showDanhMucTaiSanNhaNuoc(ActionEvent event) {
-        // goTo("/views/bidder/category-view.fxml", loader -> {
-        //     CategoryController categoryController = loader.getController();
-        //     categoryController.resetCategoryData("TÀI SẢN NHÀ NƯỚC", ProductLoader.loadProducts());
-        // });
+        goTo("/views/bidder/category-view.fxml", loader -> {
+            CategoryController categoryController = loader.getController();
+            categoryController.setCategory("Tài sản nhà nước");
+        });
     }
 
     @FXML
     private void showDanhMucPhuongTienXeCo(ActionEvent event) {
-        // goTo("/views/bidder/category-view.fxml", loader -> {
-        //     CategoryController categoryController = loader.getController();
-        //     categoryController.resetCategoryData("PHƯƠNG TIỆN - XE CỘ", ProductLoader.loadProducts());
-        // });
+        goTo("/views/bidder/category-view.fxml", loader -> {
+            CategoryController categoryController = loader.getController();
+            categoryController.setCategory("Phương tiện - Xe cộ");
+        });
     }
 
     @FXML
     private void showDanhMucSuuTamNgheThuat(ActionEvent event) {
-        // goTo("/views/bidder/category-view.fxml", loader -> {
-        //     CategoryController categoryController = loader.getController();
-        //     categoryController.resetCategoryData("SƯU TẦM - NGHỆ THUẬT", ProductLoader.loadProducts());
-        // });
+        goTo("/views/bidder/category-view.fxml", loader -> {
+            CategoryController categoryController = loader.getController();
+            categoryController.setCategory("Sưu tầm - nghệ thuật");
+        });
     }
 
     @FXML
     private void showDanhMucTaiSanKhac(ActionEvent event) {
-        // goTo("/views/bidder/category-view.fxml", loader -> {
-        //     CategoryController categoryController = loader.getController();
-        //     categoryController.resetCategoryData("TÀI SẢN KHÁC", ProductLoader.loadProducts());
-        // });
+        goTo("/views/bidder/category-view.fxml", loader -> {
+            CategoryController categoryController = loader.getController();
+            categoryController.setCategory("Tài sản khác");
+        });
     }
 
     @FXML

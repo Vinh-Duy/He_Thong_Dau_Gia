@@ -5,9 +5,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -26,7 +28,8 @@ public class NetworkClient {
     private final Gson gson = new Gson();
 
     private final BlockingQueue<String> responseQueue = new LinkedBlockingQueue<>();
-    private Consumer<String> onMessageReceived;
+    // Danh sách các listener để hỗ trợ nhiều màn hình nhận tin nhắn cùng lúc
+    private final List<Consumer<String>> messageListeners = new CopyOnWriteArrayList<>();
 
     private static final Set<String> PUBLIC_ACTIONS =
             new HashSet<>(Arrays.asList("LOGIN", "REGISTER"));
@@ -42,8 +45,14 @@ public class NetworkClient {
         return instance;
     }
 
-    public void setOnMessageReceived(Consumer<String> callback) {
-        this.onMessageReceived = callback;
+    // Phương thức mới: Thêm listener
+    public void addOnMessageReceivedListener(Consumer<String> listener) {
+        if (listener != null) messageListeners.add(listener);
+    }
+
+    // Phương thức mới: Xóa listener khi không dùng nữa (để tránh rò rỉ bộ nhớ)
+    public void removeOnMessageReceivedListener(Consumer<String> listener) {
+        messageListeners.remove(listener);
     }
 
     private void connect(String ip, int port) {
@@ -57,9 +66,11 @@ public class NetworkClient {
                 try {
                     String line;
                     while ((line = in.readLine()) != null) {
-                        if (line.contains("\"action\":\"BID_UPDATE\"")) {
-                            if (onMessageReceived != null) {
-                                onMessageReceived.accept(line);
+                        // Kiểm tra nếu là tin nhắn Broadcast (có chứa trường action)
+                        if (line.contains("\"action\":\"")) {
+                            // Gửi tin nhắn cho tất cả các Controller đang đăng ký lắng nghe
+                            for (Consumer<String> listener : messageListeners) {
+                                listener.accept(line);
                             }
                         } else {
                             responseQueue.offer(line);

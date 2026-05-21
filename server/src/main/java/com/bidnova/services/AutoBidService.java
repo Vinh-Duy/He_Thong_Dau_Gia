@@ -1,11 +1,16 @@
 package com.bidnova.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.bidnova.dao.AuctionDAO;
 import com.bidnova.dao.AutoBidDAO;
+import com.bidnova.dao.BidHistoryDAO;
+import com.bidnova.dao.UserDAO;
 import com.bidnova.models.Auction;
 import com.bidnova.models.AutoBid;
+import com.bidnova.models.BidHistory;
+import com.bidnova.models.User;
 
 /**
  * Service to handle automatic bidding logic
@@ -13,6 +18,8 @@ import com.bidnova.models.AutoBid;
 public class AutoBidService {
     private final AutoBidDAO autoBidDAO = new AutoBidDAO();
     private final AuctionDAO auctionDAO = new AuctionDAO();
+    private final BidHistoryDAO bidHistoryDAO = new BidHistoryDAO();
+    private final UserDAO userDAO = new UserDAO();
     private final AuctionManager auctionManager = AuctionManager.getInstance();
 
     /**
@@ -22,10 +29,13 @@ public class AutoBidService {
     public void executeAutoBids(String auctionId, double currentHighestBid) {
         try {
             List<AutoBid> autoBids = autoBidDAO.getActiveAutoBids(auctionId);
+            Auction auction = auctionManager.getAuction(auctionId);
+            if (auction == null) return;
             
             // Sort by creation time (FIFO) - first person to set auto-bid gets priority
             for (AutoBid autoBid : autoBids) {
-                if (!isAutoBidValid(autoBid, currentHighestBid)) {
+                String currentLeader = auction.getHighestBidder();
+                if (!isAutoBidValid(autoBid, currentHighestBid, currentLeader)) {
                     continue;
                 }
 
@@ -55,7 +65,7 @@ public class AutoBidService {
     /**
      * Validate if auto-bid should be executed
      */
-    private boolean isAutoBidValid(AutoBid autoBid, double currentBid) {
+    private boolean isAutoBidValid(AutoBid autoBid, double currentBid, String currentLeader) {
         // Auto-bid must be active
         if (!autoBid.isActive()) {
             return false;
@@ -63,6 +73,11 @@ public class AutoBidService {
 
         // Auto-bid max must be higher than current bid
         if (autoBid.getMaxBid() <= currentBid) {
+            return false;
+        }
+
+        // Không tự đấu giá đè lên chính mình
+        if (autoBid.getUsername().equals(currentLeader)) {
             return false;
         }
 
@@ -93,6 +108,19 @@ public class AutoBidService {
                     
                     // Update database
                     auctionDAO.updateHighestBid(auctionId, bidAmount);
+                    
+                    // Ghi lại lịch sử đấu giá cho Auto-bid (Sử dụng trim để tránh lỗi khoảng trắng)
+                    User user = userDAO.findByUsername(username.trim());
+                    if (user != null) {
+                        BidHistory history = new BidHistory(
+                            auctionId,
+                            user.getId(),
+                            username.trim(),
+                            bidAmount,
+                            LocalDateTime.now()
+                        );
+                        bidHistoryDAO.addBid(history);
+                    }
                     
                     System.out.println("Auto-bid executed: " + username + " -> " + bidAmount);
                 } else {

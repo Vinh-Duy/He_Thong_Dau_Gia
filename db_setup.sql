@@ -9,20 +9,24 @@ USE auction_db;
 -- ============================================================
 -- TABLE: auctions
 -- ============================================================
-CREATE TABLE IF NOT EXISTS auctions (
-  id VARCHAR(50) PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  start_price DECIMAL(20, 2) NOT NULL,
-  current_highest_bid DECIMAL(20, 2) DEFAULT 0,
-  status VARCHAR(50) DEFAULT 'OPEN',
-  category VARCHAR(100),
-  description TEXT,
-  image_url VARCHAR(500),
-  start_time DATETIME,
-  end_time DATETIME,
-  seller_id INT DEFAULT 0,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+CREATE TABLE `auctions` (
+	`id` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`name` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci',
+	`description` TEXT NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`image_url` VARCHAR(500) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`start_price` DOUBLE NULL DEFAULT NULL,
+	`current_highest_bid` DOUBLE NULL DEFAULT NULL,
+	`start_time` DATETIME NULL DEFAULT NULL,
+	`end_time` DATETIME NULL DEFAULT NULL,
+	`status` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`category` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`seller_id` INT NULL DEFAULT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+)
+COLLATE='utf8mb4_0900_ai_ci'
+ENGINE=InnoDB
+;
+
 
 -- ============================================================
 -- TABLE: auto_bids
@@ -41,13 +45,45 @@ CREATE TABLE IF NOT EXISTS auto_bids (
 -- ============================================================
 -- TABLE: users
 -- ============================================================
-CREATE TABLE IF NOT EXISTS users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(100) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  role VARCHAR(50) DEFAULT 'BIDDER',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+CREATE TABLE `users` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`username` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`password` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`token` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`role` VARCHAR(50) NULL DEFAULT 'user' COLLATE 'utf8mb4_0900_ai_ci',
+	`full_name` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`email` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`phone` VARCHAR(20) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`gender` VARCHAR(10) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	PRIMARY KEY (`id`) USING BTREE,
+	UNIQUE INDEX `username` (`username`) USING BTREE
+)
+COLLATE='utf8mb4_0900_ai_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=24
+;
+
+
+-- ============================================================
+-- TABLE: bidhistory
+-- ============================================================
+CREATE TABLE `bidhistory` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`auction_id` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`user_id` INT NOT NULL,
+	`username` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`bid_amount` DOUBLE NOT NULL,
+	`bid_time` DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `auction_id` (`auction_id`) USING BTREE,
+	INDEX `user_id` (`user_id`) USING BTREE,
+	CONSTRAINT `bidhistory_ibfk_1` FOREIGN KEY (`auction_id`) REFERENCES `auctions` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+	CONSTRAINT `bidhistory_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
+)
+COLLATE='utf8mb4_0900_ai_ci'
+ENGINE=InnoDB
+;
+
 
 -- ============================================================
 -- CLEAR OLD DATA
@@ -55,32 +91,3 @@ CREATE TABLE IF NOT EXISTS users (
 TRUNCATE TABLE auto_bids;
 TRUNCATE TABLE auctions;
 TRUNCATE TABLE users;
-
--- ============================================================
--- INSERT TEST DATA - AUCTIONS
--- ============================================================
-INSERT INTO auctions (id, name, start_price, current_highest_bid, status, category, description, start_time, end_time, seller_id) VALUES
-('A001', 'Lamborghini Aventador', 5000000000.00, 5000000000.00, 'OPEN', 'Phương tiện', 'Siêu xe hạng A', '2026-05-18 10:00:00', '2026-06-18 10:00:00', 1),
-('A002', 'Biệt thự biển Đà Nẵng', 25000000000.00, 25000000000.00, 'OPEN', 'Bất động sản', 'Biệt thự view biển', '2026-05-18 10:00:00', '2026-06-18 10:00:00', 2),
-('A003', 'Tranh sơn dầu cổ', 1000000000.00, 1000000000.00, 'OPEN', 'Sưu tầm - nghệ thuật', 'Tranh thế kỷ 19', '2026-05-18 10:00:00', '2026-06-18 10:00:00', 3);
-
--- ============================================================
--- INSERT TEST DATA - USERS
--- ============================================================
-INSERT INTO users (username, password, role) VALUES
-('userA', 'pass123', 'BIDDER'),
-('userB', 'pass123', 'BIDDER'),
-('userC', 'pass123', 'BIDDER'),
-('admin', 'admin123', 'ADMIN');
-
--- ============================================================
--- VERIFY DATA
--- ============================================================
-SELECT '✓ Auctions loaded:' as status;
-SELECT id, name, current_highest_bid FROM auctions;
-
-SELECT '✓ Users loaded:' as status;
-SELECT id, username, role FROM users;
-
-SELECT '✓ Auto-bids table ready:' as status;
-SELECT COUNT(*) as auto_bid_count FROM auto_bids;

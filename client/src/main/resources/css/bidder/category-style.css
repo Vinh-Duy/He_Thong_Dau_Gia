@@ -6,23 +6,27 @@ FlowPane {
     -fx-vgap: 20;
 }
 
-#content {
-    min-height: 546px;
-    -fx-min-height: 546;
+.content {
+    -fx-spacing: 50;
 
     padding: 50px 100px;
     -fx-padding: 50 100;
 }
 
-#lblCategoryTitle {
+.category-item {
+    background-color: linear-gradient(to right, #000b18, #0a3b5c, #00c8e8);
+    -fx-background-color: linear-gradient(to right, -fx-forth-color, white);
+
+    -fx-background-radius: 15;
+
+    padding: 20 40;
+    -fx-padding: 20 40;
+}
+
+.title {
     font-size: 40px;
     -fx-font-size: 40;
 
     font-weight: bold;
     -fx-font-weight: bold;
-
-    -fx-text-fill: -fx-text-color;
-
-    padding: 0 0 50px 0;
-    -fx-padding: 0 0 50 0;
 }

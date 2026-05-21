@@ -2,22 +2,58 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="auctionCard" alignment="TOP_CENTER" spacing="12" styleClass="card" stylesheets="@../../css/components/auction-card-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.components.AuctionCardController">
-    
-    <ImageView fx:id="imgProduct" fitHeight="140" fitWidth="300.0" preserveRatio="true" />
-    <VBox prefHeight="200.0" prefWidth="100.0">
+<VBox fx:id="auctionCard" alignment="TOP_CENTER" styleClass="card" stylesheets="@../../css/components/auction-card-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.components.AuctionCardController">
+    <StackPane fx:id="imgContainer" prefHeight="200.0" prefWidth="300.0" styleClass="image-container" />
+
+    <VBox styleClass="product-info">
         <children>
             
-            <Label fx:id="lblName" style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Tên sản phẩm" />
+            <Label fx:id="lblName" styleClass="product-name" text="Tên sản phẩm" />
+
+            <HBox>
+                <children>    
+                    <Label styleClass="starting-price-field" text="Giá khởi điểm:" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblPrice" styleClass="value, starting-price" text="0 VNĐ" />
+                </children>
+            </HBox>
+
+            <HBox>
+                <children>
+                    <Label styleClass="start-time-field" text="Bắt đầu: " />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="startTime" styleClass="value, time" text="20/05/2026 00:00" />
+                </children>
+            </HBox>
+
+            <HBox>
+                <children>
+                    <Label styleClass="end-time-field" text="Kết thúc: " />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="endTime" styleClass="value, time" text="21/05/2026 00:00" />
+                </children>
+            </HBox>
+
+            <HBox>
+                <children>
+                    <Label styleClass="time-field" text="Còn lại: " />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="lblTime" styleClass="value, time" text="2 ngày" />
+                </children>
+            </HBox>
+
+            <HBox>
+                <children>
+                    <Label fx:id="lblStatus" styleClass="status" text="Đang diễn ra" />
+                </children>
+            </HBox>
             
-            <Label fx:id="lblPrice" style="-fx-text-fill: #d71920; -fx-font-size: 18px; -fx-font-weight: bold;" text="0 VNĐ" />
-            
-            <Label fx:id="lblTime" style="-fx-text-fill: #555;" text="Còn lại: 2 ngày" />
-            
-            <Button onAction="#handleBidClick" prefWidth="180" styleClass="btn-primary" text="Đấu giá ngay" />
+            <Button fx:id="btn" id="btn" onAction="#handleBidClick" prefWidth="180" text="Đấu giá ngay" />
         </children>
     </VBox>
 </VBox>

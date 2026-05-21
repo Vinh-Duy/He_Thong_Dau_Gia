@@ -13,12 +13,15 @@ import com.bidnova.utils.LocalDateTimeAdapter;
 import com.bidnova.utils.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -89,29 +92,23 @@ public class ManageProductController {
                 Response response = NetworkClient.getInstance().sendRequest(request);
 
                 Platform.runLater(() -> {
-                    if (response == null) {
-                        showAlert(Alert.AlertType.ERROR, "Lỗi", "Không nhận được phản hồi từ server.");
-                        return;
-                    }
-
-                    if (!"SUCCESS".equals(response.getStatus())) {
+                    if (response == null || !"SUCCESS".equals(response.getStatus())) {
                         showAlert(Alert.AlertType.ERROR, "Lỗi tải sản phẩm", response.getMessage());
                         return;
                     }
 
-                    // TODO: sửa lại cái json thành response.getData().toString()
-                    Object raw = response.getPayload();
-                    String json = (raw instanceof String) ? (String) raw : gson.toJson(raw);
-
-                    List<Auction> list = gson.fromJson(
-                        json,
-                        new TypeToken<List<Auction>>() {}.getType()
-                    );
-
-                    auctionList.clear();
-                    if (list != null) {
-                        auctionList.addAll(list);
+                    // Kiểm tra an toàn trước khi Parse mảng
+                    String rawData = response.getData() != null ? response.getData().toString() : "[]";
+                    JsonElement element = JsonParser.parseString(rawData);
+                    
+                    if (element.isJsonArray()) {
+                        List<Auction> list = gson.fromJson(element, new TypeToken<List<Auction>>() {}.getType());
+                        auctionList.clear();
+                        if (list != null) auctionList.addAll(list);
+                    } else {
+                        System.err.println("Dữ liệu không phải mảng: " + rawData);
                     }
+
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -155,7 +152,7 @@ public class ManageProductController {
     }
 
     @FXML
-    private void handleEdit(javafx.event.ActionEvent event) {
+    private void handleEdit(ActionEvent event) {
         Auction selected = productTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert(Alert.AlertType.WARNING, "Chưa chọn", "Bác chọn 1 sản phẩm để sửa nhé!");
@@ -178,7 +175,7 @@ public class ManageProductController {
     }
 
     @FXML
-    private void handleAdd(javafx.event.ActionEvent event) {
+    private void handleAdd(ActionEvent event) {
         // Mở file AddProductView bình thường, không truyền data gì cả
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/views/seller/add-product-view.fxml"));

@@ -17,12 +17,14 @@ public class HandlerRegistry {
         handlers.put("GET_AUCTIONS_BY_CATEGORY", new GetAuctionsByCategoryHandler());
         handlers.put("GET_AUCTION_BY_ID", new GetAuctionByIdHandler());
         handlers.put("SET_AUTO_BID", new SetAutoBidHandler());
+        handlers.put("DEACTIVATE_AUTO_BID", new DeactivateAutoBidHandler());
         handlers.put("GET_MY_AUCTIONS", new GetMyAuctionsHandler());
         handlers.put("UPDATE_PRODUCT", new UpdateProductHandler());
         handlers.put("DELETE_PRODUCT", new DeleteProductHandler());
         handlers.put("ADD_PRODUCT", new AddProductHandler());
         handlers.put("PLACE_BID", new PlaceBidHandler());
         handlers.put("DELETE_USER", new DeleteUserHandler());
+        handlers.put("GET_BID_HISTORY", new GetBidHistoryHandler());
     }
 
     public ActionHandler get(String action) {

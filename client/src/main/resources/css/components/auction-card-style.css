@@ -1,6 +1,6 @@
 @import url(../base-style.css);
 
-#auctionCard {
+.card {
     min-width: 300px;
     -fx-min-width: 300;
 
@@ -18,28 +18,24 @@
     border-radius: 5px;
     -fx-border-radius: 5;
 
-    background-color: -fx-bgc;
-    -fx-background-color: red;
+    background-color: white;
+    -fx-background-color: white;
 
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 1), 10, 0, 0, 5);
 }
 
-/* ảnh sản phẩm */
-#imgProduct {
+.image-container {
     min-width: 300px;
     -fx-min-width: 300;
 
     max-width: 300px;
     -fx-max-width: 300;
 
-    min-height: 200px;
-    -fx-min-height: 200;
+    min-height: 1500px;
+    -fx-min-height: 150;
 
-    max-height: 200px;
-    -fx-max-height: 200;
-
-    background-size: cover;
-    -fx-background-size: cover;
+    max-height: 150px;
+    -fx-max-height: 150;
 
     background-repeat: no-repeat;
     -fx-background-repeat: no-repeat;
@@ -47,33 +43,35 @@
     background-position: center;
     -fx-background-position: center;
 
-    -fx-background-radius: 5;
+    background-size: cover;
+    -fx-background-size: cover;
 
-    border-radius: 5px;
-    -fx-border-radius: 5;
+    -fx-background-radius: 5;
 }
 
-#content {
-    min-width: 300px;
-    -fx-min-width: 300;
+.product-info {
+    -fx-alignment: CENTER;
 
-    max-width: 300px;
-    -fx-max-width: 300;
+    padding: 20px;
+    -fx-padding: 20;
 
-    padding: 20px 20px;
-    -fx-padding: 20 20;
+    -fx-spacing: 5;
 }
 
 /* tên sản phẩm */
-.title {
+.product-name {
+    -fx-alignment: TOP_LEFT;
+
+    -fx-wrap-text: true;
+
     max-width: 300px;
     -fx-max-width: 300;
 
-    min-height: 80px;
-    -fx-min-height: 80;
+    min-height: 60px;
+    -fx-min-height: 60;
 
-    max-height: 80px;
-    -fx-max-height: 80;
+    max-height: 60px;
+    -fx-max-height: 60;
 
     font-size: 18px;
     -fx-font-size: 18;
@@ -85,17 +83,48 @@
     -fx-wrap-text: true;
 }
 
-/* giá khởi điểm */
-.startingPrice {
+/* Các tiêu đề bên trái */
+.starting-price-field,
+.start-time-field,
+.end-time-field,
+.time-field {
+    -fx-text-fill: #555555;
+
+    font-size: 13px;
+    -fx-font-size: 13px;
+
+    font-weight: normal;
+    -fx-font-weight: normal;
+}
+
+.value {
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: black;
+}
+
+.starting-price {
     font-size: 13px;
     -fx-font-size: 13px;
     -fx-text-fill: -fx-forth-color;
+}
 
-    font-weight: 700;
-    -fx-font-weight: 700;
+.status {
+    padding: 5px;
+    -fx-padding: 5;
 
-    padding: 0 0 20px 0;
-    -fx-padding: 0 0 20 0;
+    background-color: green;
+    -fx-background-color: green;
+
+    -fx-background-radius: 10;
+
+    border-radius: 10px;
+    -fx-border-radius: 10;
+
+    -fx-text-fill: -fx-third-color;
+    font-weight: bold;
+    -fx-font-weight: bold;
 }
 
 #btn {

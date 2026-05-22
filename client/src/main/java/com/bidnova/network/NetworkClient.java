@@ -45,16 +45,6 @@ public class NetworkClient {
         return instance;
     }
 
-    // Phương thức mới: Thêm listener
-    public void addOnMessageReceivedListener(Consumer<String> listener) {
-        if (listener != null) messageListeners.add(listener);
-    }
-
-    // Phương thức mới: Xóa listener khi không dùng nữa (để tránh rò rỉ bộ nhớ)
-    public void removeOnMessageReceivedListener(Consumer<String> listener) {
-        messageListeners.remove(listener);
-    }
-
     private void connect(String ip, int port) {
         try {
             socket = new Socket(ip, port);

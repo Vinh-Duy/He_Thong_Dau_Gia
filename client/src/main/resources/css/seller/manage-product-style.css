@@ -1,13 +1,44 @@
 @import url(../base-style.css);
 
-VBox {
-    padding: 20px;
-    -fx-padding: 20;
+/* Main container - background xám nhạt */
+.scroll-pane {
+    background: transparent;
+    -fx-background: transparent;
+
+    background-color: -fx-bgc;
+    -fx-background-color: -fx-bgc;
 }
 
+.scroll-pane .viewport {
+    background-color: -fx-bgc;
+    -fx-background-color: -fx-bgc;
+}
+
+/* Card trắng trung tâm */
+.card {
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 16;
+    border-radius: 16px;
+    -fx-border-radius: 16;
+
+    padding: 40px 40px 35px 40px;
+    -fx-padding: 40 40 35 40;
+
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.08), 20, 0, 0, 4);
+}
+
+/* Icon header */
+.card-icon {
+    fill: -fx-primary-color;
+    -fx-fill: -fx-primary-color;
+}
+
+/* Title */
 .title {
-    font-size: 30px;
-    -fx-font-size: 30px;
+    font-size: 26px;
+    -fx-font-size: 26;
 
     font-weight: bold;
     -fx-font-weight: bold;
@@ -15,37 +46,172 @@ VBox {
     -fx-text-fill: -fx-forth-color;
 }
 
-.btn {
-    padding: 8px 20px;
-    -fx-padding: 8 20;
+/* Subtitle */
+.subtitle {
+    font-size: 13px;
+    -fx-font-size: 13;
 
-    -fx-text-fill: white;
+    color: rgba(0, 0, 0, 0.5);
+    -fx-text-fill: rgba(0, 0, 0, 0.5);
+}
+
+/* Separator */
+.separator {
+    background-color: #e8e8e8;
+    -fx-background-color: #e8e8e8;
+
+    padding: 0;
+    -fx-padding: 0;
+
+    max-height: 1px;
+    -fx-max-height: 1;
+}
+
+.separator .line {
+    background-color: #e8e8e8;
+    -fx-background-color: #e8e8e8;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* TableView */
+.product-table {
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 10;
+    border-radius: 10px;
+    -fx-border-radius: 10;
+
+    border-color: #e8e8e8;
+    -fx-border-color: #e8e8e8;
+
+    -fx-fixed-cell-size: 48;
+
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.product-table:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* Column header */
+.product-table .column-header-background {
+    background-color: -fx-bgc;
+    -fx-background-color: -fx-bgc;
+
+    -fx-background-radius: 10 10 0 0;
+
+    padding: 0 0 2px 0;
+    -fx-padding: 0 0 2 0;
+}
+
+.product-table .column-header {
+    background-color: transparent;
+    -fx-background-color: transparent;
+
+    padding: 12px 6px;
+    -fx-padding: 12 6;
+
+    border-color: transparent #e0e0e0 transparent transparent;
+    -fx-border-color: transparent #e0e0e0 transparent transparent;
+
+    border-width: 0 1px 0 0;
+    -fx-border-width: 0 1 0 0;
+}
+
+.product-table .column-header .label {
+    font-size: 12px;
+    -fx-font-size: 12;
 
     font-weight: bold;
     -fx-font-weight: bold;
 
-    cursor: hand;
+    -fx-text-fill: -fx-text-color;
+
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Cell */
+.product-table .table-cell {
+    -fx-alignment: CENTER_LEFT;
+
+    padding: 8px 10px;
+    -fx-padding: 8 10;
+
+    font-size: 12px;
+    -fx-font-size: 12;
+
+    border-color: transparent transparent #f0f0f0 transparent;
+    -fx-border-color: transparent transparent #f0f0f0 transparent;
+
+    border-width: 0 0 1px 0;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* Row */
+.product-table .table-row-cell {
+    background-color: white;
+    -fx-background-color: white;
+}
+
+.product-table .table-row-cell:odd {
+    background-color: #fafafa;
+    -fx-background-color: #fafafa;
+}
+
+.product-table .table-row-cell:hover {
+    background-color: #f5e6e6;
+    -fx-background-color: #f5e6e6;
+
+    cursor: pointer;
     -fx-cursor: hand;
 }
 
-.add-btn {
-    background-color: -fx-add-color;
-    -fx-background-color: -fx-add-color;
-}
-
-.edit-btn {
-    background-color: -fx-edit-color;
-    -fx-background-color: -fx-edit-color;
-}
-
-.delete-btn {
+.product-table .table-row-cell:selected {
     background-color: -fx-primary-color;
     -fx-background-color: -fx-primary-color;
 }
 
-.logout-btn {
-    background-color: -fx-primary-color;
-    -fx-background-color: -fx-primary-color;
+.product-table .table-row-cell:selected .table-cell {
+    -fx-text-fill: white;
+    color: white;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Base button */
+.btn {
+    padding: 10px 24px;
+    -fx-padding: 10 24;
+
+    -fx-text-fill: white;
+    color: white;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    font-size: 13px;
+    -fx-font-size: 13;
+
+    -fx-background-radius: 8;
+    border-radius: 8px;
+
+    cursor: pointer;
+    -fx-cursor: hand;
+
+    min-height: 44px;
+    -fx-min-height: 44;
+
+    border-width: 0;
+    -fx-border-width: 0;
 }
 
 .btn .glyph-icon {
@@ -53,54 +219,36 @@ VBox {
     -fx-fill: white;
 }
 
-.table-view {
-    -fx-fixed-cell-size: 50px;
+.btn:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 12, 0.3, 0, 0);
 }
 
-.table-view .table-cell {
-    -fx-alignment: CENTER_LEFT;
+/* Add button */
+.add-btn {
+    background-color: -fx-add-color;
+    -fx-background-color: -fx-add-color;
 }
 
-.table-view:focused,
-.table-view:selected,
-.table-view:focused .table-row-cell,
-.table-view:selected .table-row-cell,
-.table-view:focused .table-row-cell:selected,
-.table-view .table-row-cell:selected .table-cell {
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
+.add-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, -fx-add-color, 15, 0.4, 0, 0);
 }
 
-.table-view .table-row-cell:selected .table-cell {
-    border-color: white;
-    -fx-border-color: white;
-
-    border-width: 1px;
-    -fx-border-width: 1;
-
-    font-weight: bold;
-    -fx-font-weight: bold;
+/* Edit button */
+.edit-btn {
+    background-color: -fx-edit-color;
+    -fx-background-color: -fx-edit-color;
 }
 
-.table-view .table-row-cell:hover {
-    background-color: #ce26268a;
-    -fx-background-color: #ce26268a;
+.edit-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, -fx-edit-color, 15, 0.4, 0, 0);
 }
 
-.table-view .table-row-cell:hover .table-cell {
-    -fx-text-fill: white;
-}
-
-.table-view .table-row-cell:selected {
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
-
+/* Delete button */
+.delete-btn {
     background-color: -fx-primary-color;
     -fx-background-color: -fx-primary-color;
-
-    -fx-text-fill: white;
 }
 
-/* .table-view .column-header {
-    -fx-background-color: transparent;
-} */
+.delete-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, -fx-primary-color, 15, 0.4, 0, 0);
+}

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -34,6 +37,8 @@
             </children>
         </HBox>
         
+        <Region HBox.hgrow="ALWAYS" />
+        
         <VBox alignment="CENTER_RIGHT" spacing="2">
             <Label fx:id="timeLabel" style="-fx-font-weight: bold;" text="00:00:00" />
             <Label fx:id="dateLabel" text="Ngày tháng năm" />
@@ -45,7 +50,7 @@
         </HBox>
 
         <HBox fx:id="userBox" alignment="CENTER" managed="false" spacing="15.0" visible="false">
-            <Label fx:id="userLabel" text="Xin chào, Admin" />
+            <Label fx:id="userLabel" onMouseClicked="#toggleUserPopup" styleClass="user-label" text="Xin chào, Admin" />
             <Label onMouseClicked="#handleLogout" styleClass="signout-btn" text="Đăng xuất" />
         </HBox>
     </HBox>

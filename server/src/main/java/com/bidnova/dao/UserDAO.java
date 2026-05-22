@@ -21,7 +21,7 @@ public class UserDAO {
     /** Lấy user theo tên người dùng. */
     public User findByUsername(String username) {
         // Lấy thông tin user theo tên người dùng
-        String sql = "SELECT id, username, password, role, token FROM users WHERE username = ?";
+        String sql = "SELECT * FROM users WHERE username = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
                 
@@ -32,6 +32,10 @@ public class UserDAO {
                         rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
+                        rs.getString("email"),
+                        rs.getString("full_name"),
+                        rs.getString("phone"),
+                        rs.getString("gender"),
                         rs.getString("role"),
                         rs.getString("token")
                     );
@@ -103,7 +107,8 @@ public class UserDAO {
                     rs.getString("full_name"), // Check lại tên cột trong DB của bác
                     rs.getString("phone"),
                     rs.getString("gender"),
-                    rs.getString("role")
+                    rs.getString("role"),
+                    rs.getString("token")
                 );
                 list.add(user);
             }
@@ -134,6 +139,33 @@ public class UserDAO {
         }
     }
 
+    public User findById(int userId) {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("email"),
+                        rs.getString("full_name"),
+                        rs.getString("phone"),
+                        rs.getString("gender"),
+                        rs.getString("role"),
+                        rs.getString("token")
+                    );
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi khi tìm user theo id: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public boolean deleteUser(int userId) {
         String sql = "DELETE FROM users WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -149,7 +181,7 @@ public class UserDAO {
     }
 
     public User findByToken(String token) {
-        String sql = "SELECT id, username, password, role FROM users WHERE token = ?";
+        String sql = "SELECT * FROM users WHERE token = ?";
         try (Connection conn = DatabaseConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, token);
@@ -159,7 +191,12 @@ public class UserDAO {
                         rs.getInt("id"),
                         rs.getString("username"),
                         rs.getString("password"),
-                        rs.getString("role")
+                        rs.getString("email"),
+                        rs.getString("full_name"),
+                        rs.getString("phone"),
+                        rs.getString("gender"),
+                        rs.getString("role"),
+                        rs.getString("token")
                     );
                 }
             }

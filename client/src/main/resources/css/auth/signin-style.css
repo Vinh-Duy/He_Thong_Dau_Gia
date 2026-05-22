@@ -23,6 +23,7 @@ VBox {
     font-weight: bold;
     -fx-font-weight: bold;
 
+    color: -fx-text-color;
     -fx-text-fill: -fx-text-color;
 }
 
@@ -32,14 +33,18 @@ VBox {
 }
 
 .to-signup .subtitle {
+    color: -fx-text-color;
     -fx-text-fill: -fx-text-color;
 }
 
 .to-signup .signup-label {
+    color: -fx-primary-color;
     -fx-text-fill: -fx-primary-color;
+
+    text-decoration: underline;
     -fx-underline: true;
 
-    cursor: hand;
+    cursor: pointer;
     -fx-cursor: hand;
 
     font-weight: bold;
@@ -65,11 +70,14 @@ VBox {
     font-size: 20px;
     -fx-font-size: 20;
 
-    cursor: hand;
+    cursor: pointer;
     -fx-cursor: hand;
 
     border-color: transparent;
     -fx-border-color: transparent;
+
+    border-width: 0;
+    -fx-border-width: 0;
 
     background-color: transparent;
     -fx-background-color: transparent;
@@ -87,21 +95,21 @@ VBox {
     -fx-border-color: -fx-primary-color;
 
     -fx-background-radius: 5;
-
     border-radius: 5px;
     -fx-border-radius: 5;
 
     border-width: 2px;
     -fx-border-width: 2;
-
-    -fx-border-insets: -2;
 }
 
 .forgot-link {
+    color: -fx-primary-color;
     -fx-text-fill: -fx-primary-color;
+
+    text-decoration: underline;
     -fx-underline: true;
 
-    cursor: hand;
+    cursor: pointer;
     -fx-cursor: hand;
 
     font-size: 14px;
@@ -120,12 +128,17 @@ VBox {
 
     background-color: -fx-primary-color;
     -fx-background-color: -fx-primary-color;
+
+    color: -fx-third-color;
     -fx-text-fill: -fx-third-color;
 
     font-weight: bold;
     -fx-font-weight: bold;
     -fx-background-radius: 5;
 
-    cursor: hand;
+    cursor: pointer;
     -fx-cursor: hand;
+
+    border-width: 0;
+    -fx-border-width: 0;
 }

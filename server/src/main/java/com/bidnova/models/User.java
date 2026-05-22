@@ -30,7 +30,7 @@ public class User {
 
     // Constructor đầy đủ cho Admin View
     public User(int id, String username, String password, String email,
-                String fullName, String phone, String gender, String role) {
+                String fullName, String phone, String gender, String role, String token) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -39,6 +39,7 @@ public class User {
         this.phone = phone;
         this.gender = gender;
         this.role = role;
+        this.token = token;
     }
 
     // Getter / Setter

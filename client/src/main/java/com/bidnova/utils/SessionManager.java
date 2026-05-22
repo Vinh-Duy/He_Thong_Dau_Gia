@@ -1,10 +1,17 @@
 package com.bidnova.utils;
 
+import com.bidnova.models.User;
+
 public class SessionManager {
     private static int userId;
-    private static String username = null; // Biến lưu tên người dùng
+    private static String username = null;
     private static String currentToken = null;
-    
+    private static String email = null;
+    private static String fullName = null;
+    private static String phone = null;
+    private static String gender = null;
+    private static String role = null;
+
     // Cất token vào két
     public static void setToken(String token) {
         currentToken = token;
@@ -25,20 +32,36 @@ public class SessionManager {
         return username != null && !username.trim().isEmpty() && userId > 0;
     }
 
-    public static void login(int _id, String _username, String _token) {
-        userId = _id;
-        username = _username;
-        currentToken = _token;
+    public static void login(User user) {
+        userId = user.getId();
+        username = user.getUsername();
+        currentToken = user.getToken();
+        email = user.getEmail();
+        fullName = user.getFullName();
+        phone = user.getPhone();
+        gender = user.getGender();
+        role = user.getRole();
     }
     
     public static String getUsername() { 
         return username; 
     }
     
+    public static String getEmail() { return email; }
+    public static String getFullName() { return fullName; }
+    public static String getPhone() { return phone; }
+    public static String getGender() { return gender; }
+    public static String getRole() { return role; }
+
     // Đăng xuất thì xóa trắng cả 2
     public static void logout() {
         currentToken = null;
         username = null;
         userId = 0;
+        email = null;
+        fullName = null;
+        phone = null;
+        gender = null;
+        role = null;
     }
 }

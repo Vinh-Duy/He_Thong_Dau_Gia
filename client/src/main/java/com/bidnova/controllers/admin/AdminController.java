@@ -1,14 +1,17 @@
 package com.bidnova.controllers.admin;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.bidnova.models.Auction;
 import com.bidnova.models.User;
 import com.bidnova.network.NetworkClient;
 import com.bidnova.network.Request;
 import com.bidnova.network.Response;
-import com.bidnova.utils.SessionManager;
+import com.bidnova.utils.LocalDateTimeAdapter;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -16,14 +19,13 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
+import javafx.scene.layout.VBox;
 
 public class AdminController {
     @FXML private TableView<User> userTable;
@@ -33,54 +35,110 @@ public class AdminController {
     @FXML private TableColumn<User, String> emailCol;
     @FXML private TableColumn<User, String> roleCol;
 
+    @FXML private TableView<Auction> auctionTable;
+    @FXML private TableColumn<Auction, String> auctionIdCol;
+    @FXML private TableColumn<Auction, String> auctionNameCol;
+    @FXML private TableColumn<Auction, String> auctionCategoryCol;
+    @FXML private TableColumn<Auction, Double> auctionStartPriceCol;
+    @FXML private TableColumn<Auction, Double> auctionCurrentPriceCol;
+    @FXML private TableColumn<Auction, String> auctionStatusCol;
+    @FXML private TableColumn<Auction, String> auctionStartTimeCol;
+    @FXML private TableColumn<Auction, String> auctionEndTimeCol;
+
+    @FXML private VBox userPanel;
+    @FXML private VBox auctionPanel;
+    @FXML private Button btnUserTab;
+    @FXML private Button btnAuctionTab;
+
     private ObservableList<User> userList = FXCollections.observableArrayList();
+    private ObservableList<Auction> auctionList = FXCollections.observableArrayList();
     private Gson gson = new Gson();
+    private Gson auctionGson = new GsonBuilder()
+        .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+        .create();
 
     @FXML
     public void initialize() {
-        // Cấu hình các cột của bảng
+        // User columns
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         usernameCol.setCellValueFactory(new PropertyValueFactory<>("username"));
         fullNameCol.setCellValueFactory(new PropertyValueFactory<>("fullName"));
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
 
-        // Cấu hình kích thước cột
-        userTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        // Auction columns
+        auctionIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        auctionNameCol.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        auctionCategoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
+        auctionStartPriceCol.setCellValueFactory(new PropertyValueFactory<>("startPrice"));
+        auctionCurrentPriceCol.setCellValueFactory(new PropertyValueFactory<>("currentHighestBid"));
+        auctionStatusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+        auctionStartTimeCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+        auctionEndTimeCol.setCellValueFactory(new PropertyValueFactory<>("endTime"));
 
-        // Tải dữ liệu người dùng từ Server
+        userTable.setItems(userList);
+        auctionTable.setItems(auctionList);
+
+        // Configure resize
+        userTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+        auctionTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+
+        // Load data
         loadUsers();
+        loadAuctions();
     }
 
-    private void Alert(String title, String message) {
+    private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, message);
         alert.setTitle(title);
         alert.showAndWait();
     }
 
-    /** Làm mới danh sách. */
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, message);
+        alert.setTitle(title);
+        alert.showAndWait();
+    }
+
+    // ============ TAB SWITCHING ============
+
+    @FXML
+    private void switchToUserTab() {
+        userPanel.setVisible(true);
+        userPanel.setManaged(true);
+        auctionPanel.setVisible(false);
+        auctionPanel.setManaged(false);
+        btnUserTab.getStyleClass().add("tab-active");
+        btnAuctionTab.getStyleClass().remove("tab-active");
+    }
+
+    @FXML
+    private void switchToAuctionTab() {
+        userPanel.setVisible(false);
+        userPanel.setManaged(false);
+        auctionPanel.setVisible(true);
+        auctionPanel.setManaged(true);
+        btnAuctionTab.getStyleClass().add("tab-active");
+        btnUserTab.getStyleClass().remove("tab-active");
+    }
+
+    // ============ USER MANAGEMENT ============
+
     @FXML
     private void handleRefresh() {
         loadUsers();
     }
 
-    /** Lấy dữ liệu từ Server. */
     private void loadUsers() {
         new Thread(() -> {
             try {
-                // Gửi yêu cầu lấy tất cả user
                 Request request = new Request("GET_ALL_USERS", "");
                 Response response = NetworkClient.getInstance().sendRequest(request);
 
                 if ("SUCCESS".equals(response.getStatus())) {
-                    // Ép kiểu JSON data thành List<User>
-                    List<User> list = gson.fromJson(response.getData().toString(), 
+                    List<User> list = gson.fromJson(response.getData().toString(),
                                       new TypeToken<List<User>>(){}.getType());
-                    
-                    Platform.runLater(() -> {
-                        userList.setAll(list);
-                        userTable.setItems(userList);
-                    });
+                    Platform.runLater(() -> userList.setAll(list));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -88,71 +146,93 @@ public class AdminController {
         }).start();
     }
 
-    /** Xóa người dùng đã chọn. */
     @FXML
     private void handleDelete() {
         User selectedUser = userTable.getSelectionModel().getSelectedItem();
         if (selectedUser == null) {
-            Alert("Thông báo", "Vui lòng chọn một người dùng để xóa!");
+            showAlert("Thông báo", "Vui lòng chọn một người dùng để xóa!");
             return;
         }
 
-        // Xác nhận trước khi xóa
-        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có chắc muốn xóa người dùng " + selectedUser.getUsername() + "?");
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION,
+            "Bạn có chắc muốn xóa người dùng " + selectedUser.getUsername() + "?");
         Optional<ButtonType> result = confirmAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // Xóa người dùng
             new Thread(() -> {
                 try {
                     JsonObject payload = new JsonObject();
                     payload.addProperty("userId", selectedUser.getId());
-                    
                     Request request = new Request("DELETE_USER", payload.toString());
                     Response response = NetworkClient.getInstance().sendRequest(request);
                     if ("SUCCESS".equals(response.getStatus())) {
                         Platform.runLater(() -> {
                             userList.remove(selectedUser);
-                            userTable.getItems().remove(selectedUser);
-                            Alert("Thông báo", response.getMessage());
+                            showAlert("Thông báo", response.getMessage());
                         });
                     } else {
-                        Platform.runLater(() -> Alert("Lỗi", response.getMessage()));
+                        Platform.runLater(() -> showError("Lỗi", response.getMessage()));
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
-                    Platform.runLater(() -> Alert("Lỗi", "Lỗi khi xóa người dùng!"));
+                    Platform.runLater(() -> showError("Lỗi", "Lỗi khi xóa người dùng!"));
                 }
             }).start();
         }
     }
 
+    // ============ AUCTION MANAGEMENT ============
+
     @FXML
-    private void goTo(String fxmlPath) {
-        try {
-            Stage stage = (Stage) userTable.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-            stage.getScene().setRoot(root);
-        } catch (Exception e) {
-            System.out.println("Lỗi khi tải trang");
-            e.printStackTrace();
-        }
+    private void handleRefreshAuctions() {
+        loadAuctions();
     }
 
-    /** Đăng xuất. */
-    @FXML
-    private void handleLogout() {
-        try {
-            // 1. Đăng xuất
-            SessionManager.logout();
+    private void loadAuctions() {
+        new Thread(() -> {
+            try {
+                Request request = new Request("GET_ALL_AUCTIONS", "");
+                Response response = NetworkClient.getInstance().sendRequest(request);
 
-            // 2. Chuyển về trang chủ
-            goTo("/views/auth/signin-view.fxml");
+                if ("SUCCESS".equals(response.getStatus())) {
+                    List<Auction> list = auctionGson.fromJson(response.getData().toString(),
+                                        new TypeToken<List<Auction>>(){}.getType());
+                    Platform.runLater(() -> auctionList.setAll(list));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    @FXML
+    private void handleDeleteAuction() {
+        Auction selectedAuction = auctionTable.getSelectionModel().getSelectedItem();
+        if (selectedAuction == null) {
+            showAlert("Thông báo", "Vui lòng chọn một phiên đấu giá để xóa!");
+            return;
         }
-        catch (Exception e) {
-            Alert("Lỗi", "Lỗi khi đăng xuất!");
-            e.printStackTrace();
+
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION,
+            "Bạn có chắc muốn xóa phiên đấu giá [" + selectedAuction.getProductName() + "]?");
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            new Thread(() -> {
+                try {
+                    Request request = new Request("DELETE_PRODUCT", selectedAuction.getId());
+                    Response response = NetworkClient.getInstance().sendRequest(request);
+                    if ("SUCCESS".equals(response.getStatus())) {
+                        Platform.runLater(() -> {
+                            auctionList.remove(selectedAuction);
+                            showAlert("Thành công", "Đã xóa phiên đấu giá!");
+                        });
+                    } else {
+                        Platform.runLater(() -> showError("Lỗi", response.getMessage()));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Platform.runLater(() -> showError("Lỗi", "Lỗi khi xóa phiên đấu giá!"));
+                }
+            }).start();
         }
     }
 }

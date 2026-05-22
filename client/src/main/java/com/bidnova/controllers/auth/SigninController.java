@@ -116,7 +116,7 @@ public class SigninController {
                     String jsonString = (rawData instanceof String) ? (String) rawData : gson.toJson(rawData);
                     User user = gson.fromJson(jsonString, User.class);
 
-                    SessionManager.login(user.getId(), user.getUsername(), user.getToken());
+                    SessionManager.login(user);
 
                     // chuyển trang tương ứng dựa vào role
                     String role = user.getRole();

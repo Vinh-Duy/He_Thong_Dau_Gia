@@ -59,9 +59,6 @@ public class AuctionDetailController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("ItemDetailController đã được khởi tạo!");
         
-        // Setup real-time listener
-        NetworkClient.getInstance().addOnMessageReceivedListener(this::handleRealTimeUpdate);
-        
         // Setup input validation
         txtBidInput.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -154,46 +151,6 @@ public class AuctionDetailController implements Initializable {
             System.err.println("Lỗi load ảnh: " + e.getMessage());
             imgItem.setImage(new Image(getClass().getResource("/images/abstract-background.jpg").toExternalForm()));
         }
-    }
-    
-    private void handleRealTimeUpdate(String message) {
-        Platform.runLater(() -> {
-            try {
-                JsonObject data = JsonParser.parseString(message).getAsJsonObject();
-                
-                // Server có thể gửi BID_UPDATE qua field 'action' hoặc 'status' tùy logic Broadcast
-                String action = data.has("action") ? data.get("action").getAsString() : "";
-                
-                if ("BID_UPDATE".equals(action)) {
-                    JsonObject payload;
-                    // Kiểm tra xem payload là String JSON hay là Object trực tiếp
-                    if (data.get("payload").isJsonPrimitive()) {
-                        payload = JsonParser.parseString(data.get("payload").getAsString()).getAsJsonObject();
-                    } else {
-                        payload = data.get("payload").getAsJsonObject();
-                    }
-                    
-                    String updatedAuctionId = payload.get("auctionId").getAsString();
-                    double newPrice = payload.get("newHighestBid").getAsDouble();
-                    
-                    if (currentAuction != null && updatedAuctionId.equals(currentAuction.getId())) {
-                        currentPriceValue = newPrice;
-                        lblCurrentBid.setText(formatVietnameseCurrency(currentPriceValue));
-                        
-                        // Cập nhật lại bảng lịch sử real-time
-                        if (bidHistoryTableController != null) {
-                            bidHistoryTableController.loadHistory(currentAuction.getId());
-                        }
-
-                        if (autoBidEnabled) {
-                            checkAutoBid(newPrice);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                System.err.println("Error handling real-time update: " + e.getMessage());
-            }
-        });
     }
 
     @FXML
@@ -344,28 +301,6 @@ public class AuctionDetailController implements Initializable {
         btnToggleAutoBid.setStyle(""); // Trả về style mặc định trong CSS
         if (lblAutoBidStatus != null) {
             lblAutoBidStatus.setText(reason);
-        }
-    }
-
-    private void checkAutoBid(double currentPrice) {
-        try {
-            double maxBid = Double.parseDouble(txtMaxBid.getText().trim());
-            double increment = Double.parseDouble(txtIncrement.getText().trim());
-            
-            double nextBid = currentPrice + increment;
-            
-            if (nextBid <= maxBid) {
-                // Việc đặt giá tự động thực tế nên để SERVER xử lý để đảm bảo công bằng.
-                // Client chỉ cập nhật UI hoặc thông báo trạng thái.
-                System.out.println("Auto-bid logic: Đang chờ server xử lý bước giá tiếp theo...");
-            } else {
-                Platform.runLater(() -> {
-                    disableAutoBid("Đã dừng - Chạm mức tối đa");
-                    showAlert("Thông báo", "Đã đạt giá tối đa, Auto-Bid tự động tắt!");
-                });
-            }
-        } catch (Exception e) {
-            disableAutoBid("Lỗi cấu hình");
         }
     }
     

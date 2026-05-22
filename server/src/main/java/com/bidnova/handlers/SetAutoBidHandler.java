@@ -31,17 +31,17 @@ public class SetAutoBidHandler implements ActionHandler {
             // Validate auction exists and is active
             Auction auction = auctionDAO.findById(auctionId);
             if (auction == null) {
-                return new Response("ERROR", "Auction not found", null);
+                return new Response("ERROR", "Không tìm thấy phiên đấu giá", null);
             }
 
-            if (!"OPEN".equals(auction.getStatus()) && !"RUNNING".equals(auction.getStatus())) {
-                return new Response("ERROR", "Auction is not active", null);
+            if (!"OPEN".equals(auction.getStatus())) {
+                return new Response("ERROR", "Phiên đấu giá đã đóng", null);
             }
 
             // Check if user already has an auto-bid for this auction
             AutoBid existingAutoBid = autoBidDAO.findByUserAndAuction(authUser.getUsername(), auctionId);
             if (existingAutoBid != null) {
-                return new Response("ERROR", "You already have an active auto-bid for this auction", null);
+                return new Response("ERROR", "Bạn đã bật tính năng Auto-bid cho phiên đấu giá này", null);
             }
 
             // Create new auto-bid
@@ -53,9 +53,9 @@ public class SetAutoBidHandler implements ActionHandler {
 
             boolean created = autoBidDAO.createAutoBid(autoBid);
             if (created) {
-                return new Response("SUCCESS", "Auto-bid activated successfully", gson.toJson(autoBid));
+                return new Response("SUCCESS", "Bật thành công tính năng Auto-bid", gson.toJson(autoBid));
             } else {
-                return new Response("ERROR", "Failed to activate auto-bid", null);
+                return new Response("ERROR", "Bật thất bại tính năng Auto-bid", null);
             }
 
         } catch (Exception e) {

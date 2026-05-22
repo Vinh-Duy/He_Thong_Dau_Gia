@@ -27,7 +27,9 @@
     src: url("../fonts/Inter_18pt-Medium.ttf");
 }
 
-.root {
+/* Thêm .user-popup vào đây để các biến màu có hiệu lực ngay cả khi nằm trong Popup */
+.root,
+.user-popup {
     -fx-primary-color: #ce2626;
     -fx-secondary-color: #52525284;
     -fx-third-color: #fffdeb;

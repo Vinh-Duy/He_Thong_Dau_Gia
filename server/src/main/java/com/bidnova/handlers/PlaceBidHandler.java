@@ -39,9 +39,7 @@ public class PlaceBidHandler implements ActionHandler {
 
             synchronized (currentAuction) {
                 String status = currentAuction.getStatus();
-                if (status != null
-                        && !status.equalsIgnoreCase("OPEN")
-                        && !status.equalsIgnoreCase("RUNNING")) {
+                if (status != null && !status.equalsIgnoreCase("OPEN")) {
                     return new Response("ERROR", "Phiên đấu giá đã đóng", null);
                 }
 

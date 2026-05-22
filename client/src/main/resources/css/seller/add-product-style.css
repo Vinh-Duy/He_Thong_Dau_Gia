@@ -1,18 +1,44 @@
 @import url(../base-style.css);
 
-VBox {
-    background-color: transparent;
-    -fx-background-color: transparent;
+/* Main container - background xám nhạt */
+.scroll-pane {
+    background: transparent;
+    -fx-background: transparent;
+
+    background-color: -fx-bgc;
+    -fx-background-color: -fx-bgc;
 }
 
-.main-content {
-    padding: 40px;
-    -fx-padding: 40;
+.scroll-pane .viewport {
+    background-color: -fx-bgc;
+    -fx-background-color: -fx-bgc;
 }
 
+/* Card trắng trung tâm */
+.card {
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 16;
+    border-radius: 16px;
+    -fx-border-radius: 16;
+
+    padding: 40px 50px 35px 50px;
+    -fx-padding: 40 50 35 50;
+
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.08), 20, 0, 0, 4);
+}
+
+/* Icon header */
+.card-icon {
+    fill: -fx-primary-color;
+    -fx-fill: -fx-primary-color;
+}
+
+/* Title */
 .title {
-    font-size: 30px;
-    -fx-font-size: 30px;
+    font-size: 26px;
+    -fx-font-size: 26;
 
     font-weight: bold;
     -fx-font-weight: bold;
@@ -20,120 +46,122 @@ VBox {
     -fx-text-fill: -fx-forth-color;
 }
 
-.field {
-    -fx-text-fill: -fx-text-color;
-    font-weight: bold;
-    -fx-font-weight: bold;
-
-    min-width: 150px;
-    -fx-min-width: 150px;
-
-    max-width: 150px;
-    -fx-max-width: 150px;
-
-    min-height: 50px;
-    -fx-min-height: 50px;
-
-    max-height: 50px;
-    -fx-max-height: 50px;
-
+/* Subtitle */
+.subtitle {
     font-size: 13px;
     -fx-font-size: 13;
+
+    color: rgba(0, 0, 0, 0.5);
+    -fx-text-fill: rgba(0, 0, 0, 0.5);
 }
 
-.hour {
+/* Separator */
+.separator {
+    background-color: #e8e8e8;
+    -fx-background-color: #e8e8e8;
+
+    padding: 0;
+    -fx-padding: 0;
+
+    max-height: 1px;
+    -fx-max-height: 1;
+}
+
+.separator .line {
+    background-color: #e8e8e8;
+    -fx-background-color: #e8e8e8;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Form grid */
+.form-grid {
+    padding: 0;
+    -fx-padding: 0;
+}
+
+/* Icon bên cạnh field-label */
+.field-icon {
+    fill: -fx-primary-color;
+    -fx-fill: -fx-primary-color;
+
+    min-width: 16px;
+    -fx-min-width: 16;
+
+    min-height: 16px;
+    -fx-min-height: 16;
+}
+
+/* Field label bên trái */
+.field-label {
+    font-size: 13px;
+    -fx-font-size: 13;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    color: -fx-text-color;
     -fx-text-fill: -fx-text-color;
-    font-weight: bold;
-    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
 
-    min-width: 100px;
-    -fx-min-width: 100px;
-
-    max-width: 100px;
-    -fx-max-width: 100px;
-
-    min-height: 50px;
-    -fx-min-height: 50px;
-
-    max-height: 50px;
-    -fx-max-height: 50px;
+    min-height: 44px;
+    -fx-min-height: 44;
 }
 
-.btn {
-    padding: 8px 20px;
-    -fx-padding: 8 20;
-
-    -fx-text-fill: white;
+/* Currency label bên cạnh giá */
+.currency-label {
+    font-size: 13px;
+    -fx-font-size: 13;
 
     font-weight: bold;
     -fx-font-weight: bold;
 
-    cursor: hand;
-    -fx-cursor: hand;
+    color: -fx-forth-color;
+    -fx-text-fill: -fx-forth-color;
+
+    background-color: #f8f8f8;
+    -fx-background-color: #f8f8f8;
+
+    -fx-background-radius: 0 8 8 0;
+
+    padding: 6px 12px;
+    -fx-padding: 6 12;
+
+    border-color: #e0e0e0;
+    -fx-border-color: #e0e0e0;
+
+    border-radius: 0 8px 8px 0;
+    -fx-border-radius: 0 8 8 0;
+
+    min-height: 44px;
+    -fx-min-height: 44;
 }
 
-.btn .glyph-icon {
-    fill: white;
-    -fx-fill: white;
+/* Dấu chấm phân cách giờ */
+.time-sep {
+    font-size: 8px;
+    -fx-font-size: 8;
+
+    color: -fx-forth-color;
+    -fx-text-fill: -fx-forth-color;
+
+    min-width: 10px;
+    -fx-min-width: 10;
+
+    -fx-alignment: CENTER;
 }
 
-.back-btn {
-    background-color: -fx-back-color;
-    -fx-background-color: -fx-back-color;
-}
-
-.back-btn:hover {
-    -fx-effect: dropshadow(three-pass-box, -fx-back-color, 15, 0.4, 0, 0);
-}
-
-.logout-btn {
-    background-color: -fx-forth-color;
-    -fx-background-color: -fx-forth-color;
-}
-
-.logout-btn:hover {
-    -fx-effect: dropshadow(three-pass-box, -fx-forth-color, 15, 0.4, 0, 0);
-}
-
-.image-btn {
-    background-color: -fx-image-color;
-    -fx-background-color: -fx-image-color;
-}
-
-.image-btn:hover {
-    -fx-effect: dropshadow(three-pass-box, -fx-image-color, 15, 0.4, 0, 0);
-}
-
-.clear-btn {
-    background-color: -fx-clear-color;
-    -fx-background-color: -fx-clear-color;
-}
-
-.clear-btn:hover {
-    -fx-effect: dropshadow(three-pass-box, -fx-clear-color, 15, 0.4, 0, 0);
-}
-
-.add-btn {
-    background-color: -fx-add-color;
-    -fx-background-color: -fx-add-color;
-}
-
-.add-btn:hover {
-    -fx-effect: dropshadow(three-pass-box, -fx-add-color, 15, 0.4, 0, 0);
-}
-
+/* Input fields */
 #txtName,
 #txtDescription,
 #txtStartingPrice,
 #cmbCategory,
-#dateStart,
 #txtTimeStart,
-#dateEnd,
 #txtTimeEnd {
-    -fx-background-radius: 5;
-
-    border-radius: 5px;
-    -fx-border-radius: 5px;
+    -fx-background-radius: 8;
+    border-radius: 8px;
+    -fx-border-radius: 8;
 
     background-color: white;
     -fx-background-color: white;
@@ -143,8 +171,46 @@ VBox {
 
     font-size: 13px;
     -fx-font-size: 13;
+
+    padding: 8px 12px;
+    -fx-padding: 8 12;
+
+    min-height: 44px;
+    -fx-min-height: 44;
 }
 
+/* Fix TextArea: màu nền content === màu nền TextArea */
+#txtDescription {
+    min-height: 100px;
+    -fx-min-height: 100;
+
+    max-height: 100px;
+    -fx-max-height: 100;
+
+    -fx-background-radius: 8;
+    border-radius: 8px;
+    -fx-border-radius: 8;
+
+    padding: 0;
+    -fx-padding: 0;
+}
+
+#txtDescription .content {
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 8;
+    border-radius: 8px;
+    -fx-border-radius: 8;
+
+    padding: 8px 12px;
+    -fx-padding: 8 12;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Focus style */
 #txtName:focused,
 #txtDescription:focused,
 #txtStartingPrice:focused,
@@ -157,119 +223,60 @@ VBox {
     -fx-border-color: -fx-forth-color;
 
     border-width: 2px;
-    -fx-border-width: 2px;
+    -fx-border-width: 2;
 
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
+
+    -fx-effect: dropshadow(three-pass-box, rgba(180, 23, 18, 0.15), 8, 0, 0, 0);
 }
 
-#txtDescription .content,
-#dateStart .content,
-#dateEnd .content {
-    background-color: white;
-    -fx-background-color: white;
-}
-
+/* DatePicker */
 #dateStart,
-#dateEnd,
-#dateStart:focused,
-#dateEnd:focused {
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
-
-    background-color: white;
-    -fx-background-color: white;
-}
-
-#dateStart:focused,
-#dateEnd:focused {
-    border-color: -fx-forth-color;
-    -fx-border-color: -fx-forth-color;
-
-    border-width: 2px;
-    -fx-border-width: 2px;
-
-    -fx-border-insets: -2;
-}
-
-#txtName,
-#cmbCategory,
-#txtStartingPrice,
-#dateStart,
-#txtTimeStart,
-#dateEnd,
-#txtTimeEnd {
-    min-height: 50px;
-    -fx-min-height: 50;
-
-    max-height: 50px;
-    -fx-max-height: 50;
-}
-
-#cmbCategory {
-    min-width: 600px;
-    -fx-min-width: 600;
-
-    max-width: 600px;
-    -fx-alignment: 600;
-}
-
-#txtDescription {
-    min-height: 100px;
-    -fx-min-height: 100;
-
-    max-height: 100px;
-    -fx-max-height: 100;
-}
-
-.image-preview {
-    background-color: #dcdcdc;
-    -fx-background-color: #dcdcdc;
-
+#dateEnd {
     -fx-background-radius: 8;
-
-    border-color: #b8b8b8;
-    -fx-border-color: #b8b8b8;
-
     border-radius: 8px;
     -fx-border-radius: 8;
 
-    border-width: 2px;
-    -fx-border-width: 2;
+    background-color: white;
+    -fx-background-color: white;
 
-    border-style: dashed;
-    -fx-border-style: dashed;
+    border-color: #e0e0e0;
+    -fx-border-color: #e0e0e0;
+
+    font-size: 13px;
+    -fx-font-size: 13;
+
+    min-height: 44px;
+    -fx-min-height: 44;
 }
 
-.image-status {
-    -fx-text-fill: #999;
-
-    font-size: 12px;
-    -fx-font-size: 12;
-
-    padding: 5px 0 0 0;
-    -fx-padding: 5 0 0 0;
+#dateStart > .text-field,
+#dateEnd > .text-field {
+    padding: 8px 0 8px 12px;
+    -fx-padding: 8 0 8 12;
 }
 
+/* ComboBox popup */
 .combo-box-popup .list-view {
     background-color: white;
     -fx-background-color: white;
 
-    -fx-background-radius: 5;
-
-    border-radius: 5px;
-    -fx-border-radius: 5;
+    -fx-background-radius: 8;
+    border-radius: 8px;
+    -fx-border-radius: 8;
 
     border-color: #ced4da;
     -fx-border-color: #ced4da;
 
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 8, 0, 0, 4);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.12), 10, 0, 0, 4);
 }
 
 .combo-box-popup .list-cell {
     padding: 10px 15px;
     -fx-padding: 10 15;
 
+    color: -fx-text-color;
     -fx-text-fill: -fx-text-color;
 
     background-color: transparent;
@@ -279,6 +286,8 @@ VBox {
 .combo-box-popup .list-cell:hover {
     background-color: -fx-bgc;
     -fx-background-color: -fx-bgc;
+
+    color: -fx-forth-color;
     -fx-text-fill: -fx-forth-color;
 }
 
@@ -286,31 +295,33 @@ VBox {
     background-color: -fx-forth-color;
     -fx-background-color: -fx-forth-color;
 
+    color: white;
     -fx-text-fill: white;
 }
 
+/* Date picker popup */
 .date-picker-popup {
     background-color: white;
     -fx-background-color: white;
 
-    -fx-background-radius: 8;
-
-    border-radius: 8px;
-    -fx-border-radius: 8;
+    -fx-background-radius: 10;
+    border-radius: 10px;
+    -fx-border-radius: 10;
 
     border-color: #e0e0e0;
     -fx-border-color: #e0e0e0;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 10, 0, 0, 4);
+
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.12), 12, 0, 0, 4);
 
     padding: 10px;
     -fx-padding: 10;
 }
 
 .date-picker-popup > .top-node {
-    background-color: red;
-    -fx-background-color: red;
+    background-color: -fx-primary-color;
+    -fx-background-color: -fx-primary-color;
 
-    -fx-background-radius: 5px 5px 0 0;
+    -fx-background-radius: 8 8 0 0;
 
     padding: 8px 0;
     -fx-padding: 8 0;
@@ -321,65 +332,50 @@ VBox {
     background-color: transparent;
     -fx-background-color: transparent;
 
-    cursor: hand;
+    cursor: pointer;
     -fx-cursor: hand;
 }
 
-.date-picker-popup > .top-node > .left-button:hover,
-.date-picker-popup > .top-node > .right-button:hover {
-    background-color: #e0e0e0;
-    -fx-background-color: #e0e0e0;
-}
-
-.date-picker-popup > .top-node > .left-button:focused,
-.date-picker-popup > .top-node > .right-button:focused,
-.date-picker-popup > .top-node > .left-button:selected,
-.date-picker-popup > .top-node > .right-button:selected {
-    background-color: transparent;
-    -fx-background-color: rgba(255, 255, 255, 0.2);
-
-    border-color: transparent;
-    -fx-border-color: transparent;
-
-    border-width: 0;
-    -fx-border-width: 0;
-}
-
 .date-picker-popup .spinner .label {
-    -fx-text-fill: #333333;
+    color: white;
+    -fx-text-fill: white;
 
     font-weight: bold;
     -fx-font-weight: bold;
 }
 
 .date-picker-popup .day-name-cell {
+    color: #6c757d;
     -fx-text-fill: #6c757d;
 
     font-weight: bold;
     -fx-font-weight: bold;
 
     font-size: 11px;
-    -fx-font-size: 11px;
+    -fx-font-size: 11;
 }
 
 .date-picker-popup .day-cell {
     background-color: white;
     -fx-background-color: white;
 
-    -fx-text-fill: #333333;
-    -fx-background-radius: 4px;
+    color: #333;
+    -fx-text-fill: #333;
+
+    -fx-background-radius: 6;
 
     padding: 6px;
-    -fx-padding: 6px;
+    -fx-padding: 6;
 }
 
 .date-picker-popup .day-cell:hover {
-    background-color: #f0d9d9;
-    -fx-background-color: #f0d9d9;
+    background-color: #f5e6e6;
+    -fx-background-color: #f5e6e6;
 
+    color: -fx-forth-color;
     -fx-text-fill: -fx-forth-color;
 
-    cursor: hand;
+    cursor: pointer;
     -fx-cursor: hand;
 }
 
@@ -390,11 +386,10 @@ VBox {
     border-color: -fx-forth-color;
     -fx-border-color: -fx-forth-color;
 
-    border-width: 1px;
-    -fx-border-width: 1px;
+    border-radius: 6px;
+    -fx-border-radius: 6;
 
-    border-radius: 4px;
-    -fx-border-radius: 4px;
+    color: -fx-forth-color;
     -fx-text-fill: -fx-forth-color;
 
     font-weight: bold;
@@ -406,6 +401,7 @@ VBox {
     background-color: -fx-forth-color;
     -fx-background-color: -fx-forth-color;
 
+    color: white;
     -fx-text-fill: white;
 
     font-weight: bold;
@@ -414,22 +410,113 @@ VBox {
 
 .date-picker-popup .previous-month,
 .date-picker-popup .next-month {
+    color: #ced4da;
     -fx-text-fill: #ced4da;
 }
 
-.add-product-image {
-    min-height: 300px;
-    -fx-min-height: 300px;
+/* Image preview container */
+.image-preview {
+    background-color: #f5f5f5;
+    -fx-background-color: #f5f5f5;
 
-    max-height: 300px;
-    -fx-max-height: 300px;
+    -fx-background-radius: 10;
 
-    border-width: 1px;
-    -fx-border-width: 1px;
+    border-color: #e0e0e0;
+    -fx-border-color: #e0e0e0;
 
-    border-color: #ced4da;
-    -fx-border-color: #ced4da;
+    border-width: 2px;
+    -fx-border-width: 2;
 
-    border-radius: 5px;
-    -fx-border-radius: 5px;
+    border-style: dashed;
+    -fx-border-style: dashed;
+
+    border-radius: 10px;
+    -fx-border-radius: 10;
+
+    min-height: 200px;
+    -fx-min-height: 200;
+
+    min-width: 540px;
+    -fx-min-width: 540;
+}
+
+/* Image status label */
+.image-status {
+    color: #999;
+    -fx-text-fill: #999;
+
+    font-size: 12px;
+    -fx-font-size: 12;
+
+    padding: 0 0 0 5px;
+    -fx-padding: 0 0 0 5;
+}
+
+/* Base button */
+.btn {
+    padding: 10px 24px;
+    -fx-padding: 10 24;
+
+    color: white;
+    -fx-text-fill: white;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    font-size: 13px;
+    -fx-font-size: 13;
+
+    -fx-background-radius: 8;
+    border-radius: 8px;
+
+    cursor: pointer;
+    -fx-cursor: hand;
+
+    min-height: 44px;
+    -fx-min-height: 44;
+
+    border-width: 0;
+    -fx-border-width: 0;
+}
+
+.btn .glyph-icon {
+    fill: white;
+    -fx-fill: white;
+}
+
+.btn:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 12, 0.3, 0, 0);
+}
+
+/* Clear button */
+.clear-btn {
+    background-color: -fx-clear-color;
+    -fx-background-color: -fx-clear-color;
+}
+
+.clear-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, -fx-clear-color, 15, 0.4, 0, 0);
+}
+
+/* Add button */
+.add-btn {
+    background-color: -fx-add-color;
+    -fx-background-color: -fx-add-color;
+
+    padding: 10px 40px;
+    -fx-padding: 10 40;
+}
+
+.add-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, -fx-add-color, 15, 0.4, 0, 0);
+}
+
+/* Image button */
+.image-btn {
+    background-color: -fx-image-color;
+    -fx-background-color: -fx-image-color;
+}
+
+.image-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, -fx-image-color, 15, 0.4, 0, 0);
 }

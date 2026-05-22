@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<!-- Header dùng chung cho các trang Dashboard (Admin & Seller) -->
+<StackPane stylesheets="@../../css/components/header-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.components.DashboardHeaderController">
+    <HBox fx:id="header" alignment="CENTER" minHeight="80.0" spacing="30.0">
+        <Label styleClass="logo" text="BidNova" />
+        
+        <Region HBox.hgrow="ALWAYS" />
+        
+        <VBox alignment="CENTER_RIGHT" spacing="2">
+            <Label fx:id="timeLabel" style="-fx-font-weight: bold;" text="00:00:00" />
+            <Label fx:id="dateLabel" text="Ngày tháng năm" />
+        </VBox>
+
+        <HBox fx:id="userBox" alignment="CENTER" spacing="15.0">
+            <Label fx:id="userLabel" text="Xin chào" />
+            <Label onMouseClicked="#handleLogout" styleClass="signout-btn" text="Đăng xuất" />
+        </HBox>
+    </HBox>
+</StackPane>

@@ -97,7 +97,7 @@ public class AutoBidService {
 
             synchronized (auction) {
                 // Verify auction is still active
-                if (!"RUNNING".equals(auction.getStatus()) && !"OPEN".equals(auction.getStatus())) {
+                if (!"OPEN".equals(auction.getStatus())) {
                     return;
                 }
 

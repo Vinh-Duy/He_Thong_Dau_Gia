@@ -42,19 +42,31 @@ public class AuctionManager {
     }
     
     /**
-     * Kiểm tra nếu auction đã hết hạn (endTime đã qua) thì set status = "FINISHED"
+     * Kiểm tra và cập nhật trạng thái auction:
+     * - Nếu endTime đã qua và chưa FINISHED/CLOSED → set FINISHED
+     * - Nếu endTime chưa qua và đang FINISHED/CLOSED → set OPEN (reopen)
      */
     public void checkAndUpdateExpiredStatus(Auction auction) {
         if (auction == null) return;
         if (auction.getEndTime() == null) return;
         
         String currentStatus = auction.getStatus();
-        if ("FINISHED".equals(currentStatus) || "CLOSED".equals(currentStatus)) return;
+        boolean isExpired = LocalDateTime.now().isAfter(auction.getEndTime());
         
-        if (LocalDateTime.now().isAfter(auction.getEndTime())) {
-            auction.setStatus("FINISHED");
-            AuctionDAO dao = new AuctionDAO();
-            dao.updateAuction(auction);
+        if (isExpired) {
+            // Hết hạn nhưng chưa đánh dấu → set FINISHED
+            if (!"FINISHED".equals(currentStatus) && !"CLOSED".equals(currentStatus)) {
+                auction.setStatus("FINISHED");
+                AuctionDAO dao = new AuctionDAO();
+                dao.updateAuction(auction);
+            }
+        } else {
+            // Chưa hết hạn nhưng đang FINISHED/CLOSED → reopen về OPEN
+            if ("FINISHED".equals(currentStatus) || "CLOSED".equals(currentStatus)) {
+                auction.setStatus("OPEN");
+                AuctionDAO dao = new AuctionDAO();
+                dao.updateAuction(auction);
+            }
         }
     }
 }

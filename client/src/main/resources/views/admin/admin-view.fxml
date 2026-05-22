@@ -3,42 +3,121 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="600.0" prefWidth="800.0" spacing="10" stylesheets="@../../css/admin/admin-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.admin.AdminController">
-    <Label styleClass="title" text="QUẢN LÝ NGƯỜI DÙNG" />
-    <HBox spacing="10.0">
-        <children>
-            <Button onAction="#handleRefresh" styleClass="btn, refresh-btn" text="Làm mới danh sách">
-                <graphic>
-                    <FontAwesomeIconView glyphName="REFRESH" size="16" />
-                </graphic>
-            </Button>
+<BorderPane prefWidth="1200" stylesheets="@../../css/admin/admin-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.admin.AdminController">
+    <top>
+        <fx:include source="../components/dashboard-header.fxml" />
+    </top>
 
-            <Button onAction="#handleDelete" styleClass="btn, delete-btn" text="Xóa người dùng">
-                <graphic>
-                    <FontAwesomeIconView glyphName="USER_TIMES" size="16" />
-                </graphic>
-            </Button>
+    <center>
+        <ScrollPane fitToWidth="true">
+            <VBox alignment="CENTER" spacing="25" style="-fx-padding: 30 0 50 0;">
+                <!-- Tab buttons -->
+                <HBox alignment="CENTER" spacing="0" styleClass="tab-bar">
+                    <Button fx:id="btnUserTab" onAction="#switchToUserTab" styleClass="tab-btn, tab-active" text="Người dùng">
+                        <graphic>
+                            <FontAwesomeIconView glyphName="USERS" size="14" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="btnAuctionTab" onAction="#switchToAuctionTab" styleClass="tab-btn" text="Phiên đấu giá">
+                        <graphic>
+                            <FontAwesomeIconView glyphName="GAVEL" size="14" />
+                        </graphic>
+                    </Button>
+                </HBox>
 
-            <Button onAction="#handleLogout" styleClass="btn, logout-btn" text="Đăng xuất">
-                <graphic>
-                    <FontAwesomeIconView glyphName="SIGN_OUT" size="16" />
-                </graphic>
-            </Button>
-        </children>
-    </HBox>
+                <!-- User management panel -->
+                <StackPane>
 
-    <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
-        <columns>
-            <TableColumn fx:id="idCol" text="ID" />
-            <TableColumn fx:id="usernameCol" text="Tên đăng nhập" />
-            <TableColumn fx:id="fullNameCol" text="Họ và tên" />
-            <TableColumn fx:id="emailCol" text="Email" />
-            <TableColumn fx:id="roleCol" text="Quyền" />
-        </columns>
-    </TableView>
-</VBox>
+                    <!-- Auctions card -->
+                    <VBox fx:id="auctionPanel" managed="false" maxWidth="1100" prefWidth="1100.0" spacing="25.0" styleClass="card" visible="false">
+                        <VBox alignment="CENTER" spacing="8">
+                            <FontAwesomeIconView glyphName="GAVEL" size="40" styleClass="card-icon" />
+                            <Label styleClass="title" text="QUẢN LÝ PHIÊN ĐẤU GIÁ" />
+                            <Label styleClass="subtitle" text="Xem và quản lý tất cả phiên đấu giá đang diễn ra trên hệ thống" />
+                        </VBox>
+
+                        <Separator styleClass="separator" />
+
+                        <TableView fx:id="auctionTable" styleClass="data-table" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="auctionIdCol" prefWidth="80.0" text="ID" />
+                                <TableColumn fx:id="auctionNameCol" prefWidth="150.0" text="Tên sản phẩm" />
+                                <TableColumn fx:id="auctionCategoryCol" prefWidth="120.0" text="Danh mục" />
+                                <TableColumn fx:id="auctionStartPriceCol" prefWidth="100.0" text="Giá khởi điểm" />
+                                <TableColumn fx:id="auctionCurrentPriceCol" prefWidth="100.0" text="Giá hiện tại" />
+                                <TableColumn fx:id="auctionStatusCol" prefWidth="100.0" text="Trạng thái" />
+                                <TableColumn fx:id="auctionStartTimeCol" prefWidth="150.0" text="Bắt đầu" />
+                                <TableColumn fx:id="auctionEndTimeCol" prefWidth="150.0" text="Kết thúc" />
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+                        </TableView>
+
+                        <Separator styleClass="separator" />
+
+                        <HBox alignment="CENTER" spacing="15">
+                            <Button onAction="#handleRefreshAuctions" styleClass="btn, refresh-btn" text="Làm mới">
+                                <graphic>
+                                    <FontAwesomeIconView glyphName="REFRESH" />
+                                </graphic>
+                            </Button>
+                            <Button onAction="#handleDeleteAuction" styleClass="btn, delete-btn" text="Xóa phiên đấu giá">
+                                <graphic>
+                                    <FontAwesomeIconView glyphName="TRASH_ALT" />
+                                </graphic>
+                            </Button>
+                        </HBox>
+                    </VBox>
+                    <!-- Users card -->
+                    <VBox fx:id="userPanel" maxWidth="1100" prefWidth="1100.0" spacing="25.0" styleClass="card">
+                        <VBox alignment="CENTER" spacing="8">
+                            <FontAwesomeIconView glyphName="USERS" size="40" styleClass="card-icon" />
+                            <Label styleClass="title" text="QUẢN LÝ NGƯỜI DÙNG" />
+                            <Label styleClass="subtitle" text="Xem danh sách, phân quyền và quản lý tài khoản thành viên hệ thống" />
+                        </VBox>
+
+                        <Separator styleClass="separator" />
+
+                        <TableView fx:id="userTable" styleClass="data-table" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="idCol" prefWidth="60.0" text="ID" />
+                                <TableColumn fx:id="usernameCol" prefWidth="150.0" text="Tên đăng nhập" />
+                                <TableColumn fx:id="fullNameCol" prefWidth="200.0" text="Họ và tên" />
+                                <TableColumn fx:id="emailCol" prefWidth="250.0" text="Email" />
+                                <TableColumn fx:id="roleCol" prefWidth="120.0" text="Quyền hạn" />
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+                        </TableView>
+
+                        <Separator styleClass="separator" />
+
+                        <HBox alignment="CENTER" spacing="15">
+                            <Button onAction="#handleRefresh" styleClass="btn, refresh-btn" text="Làm mới">
+                                <graphic>
+                                    <FontAwesomeIconView glyphName="REFRESH" />
+                                </graphic>
+                            </Button>
+                            <Button onAction="#handleDelete" styleClass="btn, delete-btn" text="Xóa tài khoản">
+                                <graphic>
+                                    <FontAwesomeIconView glyphName="USER_TIMES" />
+                                </graphic>
+                            </Button>
+                        </HBox>
+                    </VBox>
+                </StackPane>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

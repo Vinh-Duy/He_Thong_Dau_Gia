@@ -2,13 +2,16 @@ package com.bidnova.services; // Bác nhớ check lại tên package cho chuẩn
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.UUID;
 
+import com.bidnova.dao.UserDAO;
 import com.bidnova.database.DatabaseConnection;
-import com.bidnova.network.Response; // Import cái file nối DB của bác vào
+import com.bidnova.models.User;
+import com.bidnova.network.Response;
 
 public class ServerManager {
+    private final UserDAO userDAO = new UserDAO();
+
     public Response handleLogin(String username, String password) {
         System.out.println("Client đang yêu cầu đăng nhập với tài khoản: " + username);
         
@@ -20,14 +23,9 @@ public class ServerManager {
                 return new Response("ERROR", "Lỗi máy chủ Database", null);
             }
             
-            // 1. Soi xem DB có tài khoản này không
-            String checkSql = "SELECT id FROM Users WHERE username = ? AND password = ?";
-            PreparedStatement checkStmt = conn.prepareStatement(checkSql);
-            checkStmt.setString(1, username);
-            checkStmt.setString(2, password);
-            ResultSet rs = checkStmt.executeQuery();
-            
-            if (rs.next()) {
+            // 1. Kiểm tra tài khoản
+            User user = userDAO.findByUsername(username);
+            if (user != null && user.getPassword().equals(password)) {
                 // 2. Pass đúng! Tạo chìa khóa (Token) mới
                 String newToken = UUID.randomUUID().toString();
                 
@@ -40,8 +38,9 @@ public class ServerManager {
                 
                 System.out.println("Đã cập nhật Token vào DB! Số dòng thay đổi: " + rowAffected);
                 
-                // 4. Trả kết quả về cho Client
-                return new Response("SUCCESS", "Đăng nhập thành công", newToken);
+                // 4. Gán token mới vào object user và trả về toàn bộ thông tin
+                user.setToken(newToken);
+                return new Response("SUCCESS", "Đăng nhập thành công", user);
             }
             
         } catch (Exception e) {

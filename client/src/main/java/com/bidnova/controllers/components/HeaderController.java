@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import com.bidnova.controllers.bidder.CategoryController;
 import com.bidnova.utils.SessionManager;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
@@ -20,6 +21,8 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -40,6 +43,9 @@ public class HeaderController {
     @FXML private HBox userBox;
     @FXML private Label userLabel;
 
+    private UserPopupController userPopupController;
+    private Popup popup;
+
     private static HeaderController instance;
 
     public static HeaderController getInstance() {
@@ -52,7 +58,6 @@ public class HeaderController {
         userBox.setVisible(loggedIn);
         userBox.setManaged(loggedIn);
 
-        authBox.setVisible(!loggedIn);
         authBox.setVisible(!loggedIn);
 
         if (loggedIn) {
@@ -198,8 +203,51 @@ public class HeaderController {
     }
 
     @FXML
+    private void toggleUserPopup() {
+        if (popup == null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/components/user-popup.fxml"));
+                VBox popupContent = loader.load();
+                userPopupController = loader.getController();
+                
+                popup = new Popup();
+                popup.getContent().add(popupContent);
+                popup.setAutoHide(true); // Tự động đóng khi nhấn ra ngoài
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+
+        if (popup.isShowing()) {
+            popup.hide();
+        } else {
+            // Lấy tọa độ tuyệt đối của header trên màn hình
+            // X = Lề phải của header - chiều rộng popup (300) - khoảng cách (30)
+            double x = header.localToScreen(header.getWidth(), 0).getX() - 330;
+            // Y = Lề dưới của header + khoảng cách (10)
+            double y = header.localToScreen(0, header.getHeight()).getY() + 10;
+            
+            userPopupController.updateData();
+            
+            popup.show(header.getScene().getWindow(), x, y);
+            
+            // Lấy node nội dung để áp dụng hiệu ứng
+            Node content = popup.getContent().get(0);
+            content.setOpacity(0); // Khởi tạo độ trong suốt bằng 0
+            // Tạo và chạy hiệu ứng Fade In
+
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(300), content);
+            fadeIn.setFromValue(0);
+            fadeIn.setToValue(1);
+            fadeIn.play();
+        }
+    }
+
+    @FXML
     private void handleLogout(MouseEvent event) {
         SessionManager.logout();
+        if (popup != null) popup.hide();
         showAuthBox();
         goToHome();
     }

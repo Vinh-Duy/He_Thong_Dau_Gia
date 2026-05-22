@@ -7,6 +7,7 @@ import com.bidnova.network.Request;
 import com.bidnova.network.Response;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +37,15 @@ public class GetAllUsersHandler implements ActionHandler {
             }
 
             List<User> danhSachUser = userDAO.getAllUsers();
-            String payloadUsers = gson.toJson(danhSachUser);
+            // Lọc bỏ các tài khoản admin khỏi danh sách hiển thị
+            // tránh trường hợp admin xóa nhầm admin khác hoặc chính mình
+            List<User> filtered = new ArrayList<>();
+            for (User user : danhSachUser) {
+                if (!"ADMIN".equalsIgnoreCase(user.getRole())) {
+                    filtered.add(user);
+                }
+            }
+            String payloadUsers = gson.toJson(filtered);
             return new Response("SUCCESS", "Lấy danh sách người dùng thành công", payloadUsers);
 
         } catch (Exception e) {

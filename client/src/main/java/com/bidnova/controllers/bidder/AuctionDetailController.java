@@ -57,7 +57,7 @@ public class AuctionDetailController implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("ItemDetailController đã được khởi tạo!");
+        System.out.println("AuctionDetailController đã được khởi tạo!");
         
         // Setup input validation
         txtBidInput.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -69,6 +69,9 @@ public class AuctionDetailController implements Initializable {
         
         // Setup button actions
         btnToggleAutoBid.setOnAction(e -> toggleAutoBid());
+
+        // Đăng ký lắng nghe thông điệp real-time từ server
+        NetworkClient.getInstance().onMessageReceived(this::handleRealTimeUpdate);
     }
     
     public void setAuction(Auction auction) {
@@ -153,6 +156,34 @@ public class AuctionDetailController implements Initializable {
         }
     }
 
+    private void handleRealTimeUpdate(String message) {
+        try {
+            JsonObject json = JsonParser.parseString(message).getAsJsonObject();
+            if (json.has("action") && "BID_UPDATE".equals(json.get("action").getAsString())) {
+                // Server gửi payload là một chuỗi JSON string bên trong
+                JsonObject payload = JsonParser.parseString(json.get("payload").getAsString()).getAsJsonObject();
+                String auctionId = payload.get("auctionId").getAsString();
+                
+                // Chỉ cập nhật nếu đúng là sản phẩm đang xem
+                if (currentAuction != null && auctionId.equals(currentAuction.getId())) {
+                    double newBid = payload.get("newHighestBid").getAsDouble();
+                    
+                    Platform.runLater(() -> {
+                        currentPriceValue = newBid;
+                        lblCurrentBid.setText(formatVietnameseCurrency(newBid));
+                        
+                        // Cập nhật lại bảng lịch sử đấu giá
+                        if (bidHistoryTableController != null) {
+                            bidHistoryTableController.loadHistory(currentAuction.getId());
+                        }
+                    });
+                }
+            }
+        } catch (Exception e) {
+            // Bỏ qua nếu tin nhắn không đúng định dạng JSON cho BID_UPDATE
+        }
+    }
+
     @FXML
     private void goTo(String fxmlPath) {
         try {
@@ -192,13 +223,13 @@ public class AuctionDetailController implements Initializable {
             }
 
             // Send bid request
-            com.google.gson.JsonObject payload = new com.google.gson.JsonObject();
+            JsonObject payload = new JsonObject();
             payload.addProperty("auctionId", currentAuction.getId());
             payload.addProperty("amount", bidAmount);
             payload.addProperty("username", username);
             
             new Thread(() -> {
-                Request request = new Request("PLACE_BID", payload.toString());
+                Request request = new Request("PLACE_BID", payload.toString(), SessionManager.getToken());
                 Response response = NetworkClient.getInstance().sendRequest(request);
                 
                 Platform.runLater(() -> {
@@ -207,6 +238,10 @@ public class AuctionDetailController implements Initializable {
                             showAlert("Thành công", "Đặt giá thành công!");
                             txtBidInput.clear();
                             lblBidError.setVisible(false);
+                            
+                            // Cập nhật giá hiển thị tại chỗ cho mượt (UX tốt hơn)
+                            currentPriceValue = bidAmount;
+                            lblCurrentBid.setText(formatVietnameseCurrency(bidAmount));
                         } else {
                             lblBidError.setText(response.getMessage());
                             lblBidError.setVisible(true);
@@ -226,11 +261,11 @@ public class AuctionDetailController implements Initializable {
     private void toggleAutoBid() {
         if (autoBidEnabled) {
             // Gửi yêu cầu hủy Auto-Bid lên server
-            com.google.gson.JsonObject payload = new com.google.gson.JsonObject();
+            JsonObject payload = new JsonObject();
             payload.addProperty("auctionId", currentAuction.getId());
             
             new Thread(() -> {
-                Request request = new Request("DEACTIVATE_AUTO_BID", payload.toString());
+                Request request = new Request("DEACTIVATE_AUTO_BID", payload.toString(), SessionManager.getToken());
                 Response response = NetworkClient.getInstance().sendRequest(request);
                 
                 Platform.runLater(() -> {
@@ -267,13 +302,13 @@ public class AuctionDetailController implements Initializable {
             }
             
             // Send SET_AUTO_BID request to server
-            com.google.gson.JsonObject payload = new com.google.gson.JsonObject();
+            JsonObject payload = new JsonObject();
             payload.addProperty("auctionId", currentAuction.getId());
             payload.addProperty("maxBid", maxBid);
             payload.addProperty("increment", increment);
             
             new Thread(() -> {
-                Request request = new Request("SET_AUTO_BID", payload.toString());
+                Request request = new Request("SET_AUTO_BID", payload.toString(), SessionManager.getToken());
                 Response response = NetworkClient.getInstance().sendRequest(request);
                 
                 Platform.runLater(() -> {
@@ -312,10 +347,10 @@ public class AuctionDetailController implements Initializable {
         
         new Thread(() -> {
             try {
-                com.google.gson.JsonObject payload = new com.google.gson.JsonObject();
+                JsonObject payload = new JsonObject();
                 payload.addProperty("auctionId", currentAuction.getId());
                 
-                Request request = new Request("GET_AUTO_BID", payload.toString());
+                Request request = new Request("GET_AUTO_BID", payload.toString(), SessionManager.getToken());
                 Response response = NetworkClient.getInstance().sendRequest(request);
                 
                 Platform.runLater(() -> {

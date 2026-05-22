@@ -31,6 +31,7 @@ public class NetworkClient {
     // Danh sách các listener để hỗ trợ nhiều màn hình nhận tin nhắn cùng lúc
     private final List<Consumer<String>> messageListeners = new CopyOnWriteArrayList<>();
 
+    // Danh sách các action không cần xác thực JWT
     private static final Set<String> PUBLIC_ACTIONS =
             new HashSet<>(Arrays.asList("LOGIN", "REGISTER"));
 
@@ -75,6 +76,11 @@ public class NetworkClient {
             e.printStackTrace();
             System.out.println("Không thể kết nối tới Server.");
         }
+    }
+
+    /** Đăng ký listener để nhận tin nhắn broadcast từ server */
+    public void onMessageReceived(Consumer<String> listener) {
+        messageListeners.add(listener);
     }
 
     public synchronized Response sendRequest(Request request) {

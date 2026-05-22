@@ -32,10 +32,10 @@ public class SessionManager {
         return username != null && !username.trim().isEmpty() && userId > 0;
     }
 
-    public static void login(User user) {
+    public static void login(User user, String token) {
         userId = user.getId();
         username = user.getUsername();
-        currentToken = user.getToken();
+        currentToken = token;
         email = user.getEmail();
         fullName = user.getFullName();
         phone = user.getPhone();
@@ -53,7 +53,7 @@ public class SessionManager {
     public static String getGender() { return gender; }
     public static String getRole() { return role; }
 
-    // Đăng xuất thì xóa trắng cả 2
+    // Đăng xuất thì xóa trắng
     public static void logout() {
         currentToken = null;
         username = null;

@@ -124,12 +124,13 @@ public class AuctionCardController {
 
     private void setPaneBackground(Image image) {
         if (image == null) return;
-        // Sử dụng CSS inline để set background-image. 
-        // Cách này giúp đạt được hiệu ứng "Cover" (chiếm toàn bộ khung hình và center)
-        String url = image.getUrl();
+        // Đã sửa: Encode URL và giữ lại bo góc để ảnh không bị tràn
+        String url = image.getUrl().replace(" ", "%20"); 
         imgContainer.setStyle("-fx-background-image: url('" + url + "'); " +
                              "-fx-background-size: cover; " +
-                             "-fx-background-position: center;");
+                             "-fx-background-position: center; " +
+                             "-fx-background-repeat: no-repeat; " +
+                             "-fx-background-radius: 10 10 0 0;"); // Khớp với bo góc của card
     }
 
     private String determineStatus(Auction auction) {

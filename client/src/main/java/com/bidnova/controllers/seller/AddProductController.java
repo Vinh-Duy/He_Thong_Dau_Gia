@@ -169,22 +169,22 @@ public class AddProductController {
             String payload = gson.toJson(auction);
             
             // QUYẾT ĐỊNH LỆNH GỬI: UPDATE hay ADD
-            String command = (editingAuction != null) ? "UPDATE_PRODUCT" : "ADD_PRODUCT";
+            String action = (editingAuction != null) ? "UPDATE_PRODUCT" : "ADD_PRODUCT";
 
             new Thread(() -> {
                 try {
-                    Request req = new Request(command, payload);
-                    Response res = NetworkClient.getInstance().sendRequest(req);
+                    Request request = new Request(action, payload);
+                    Response response = NetworkClient.getInstance().sendRequest(request);
                     
                     Platform.runLater(() -> {
-                        if (res != null && "SUCCESS".equals(res.getStatus())) {
+                        if (request != null && "SUCCESS".equals(response.getStatus())) {
                             String msg = (editingAuction != null) ? "Sửa thành công!" : "Hàng đã lên sàn thành công!";
                             showAlert(Alert.AlertType.INFORMATION, "Ngon rồi", msg);
                             
                             // Lưu xong thì quay lại màn quản lý luôn cho tiện
                             goBackToManage();
                         } else {
-                            showAlert(Alert.AlertType.ERROR, "Lỗi", "Server từ chối: " + (res != null ? res.getMessage() : ""));
+                            showAlert(Alert.AlertType.ERROR, "Lỗi", "Server từ chối: " + (response != null ? response.getMessage() : ""));
                         }
                     });
                 } catch (Exception e) { e.printStackTrace(); }

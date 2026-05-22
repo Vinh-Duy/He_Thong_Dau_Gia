@@ -59,6 +59,7 @@ public class ClientHandler implements Runnable {
                         continue;
                     }
 
+                    // Xác thực người dùng
                     AuthUserContext authUser = null;
                     if (!PUBLIC_ACTIONS.contains(request.getAction())) {
                         authUser = authService.validateToken(request.getToken());
@@ -82,7 +83,7 @@ public class ClientHandler implements Runnable {
                                 String payloadStr = String.valueOf(handled.getPayload());
                                 JsonObject wrap = JsonParser.parseString(payloadStr).getAsJsonObject();
                                 if (wrap.has("event")) {
-                                    broadcast(wrap.get("event").toString());
+                                    broadcastAll(wrap.get("event").toString());
                                 }
                             } catch (Exception ignored) {
                             }

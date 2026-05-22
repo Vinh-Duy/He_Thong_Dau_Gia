@@ -9,7 +9,6 @@ public class User {
     private String phone;
     private String gender;
     private String role;
-    private String token; // thêm token cho auth middleware
 
     // Constructor cơ bản
     public User(int id, String username, String password, String role) {
@@ -19,18 +18,9 @@ public class User {
         this.role = role;
     }
 
-    // Constructor có token (dùng cho login/check token)
-    public User(int id, String username, String password, String role, String token) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.token = token;
-    }
-
-    // Constructor đầy đủ cho Admin View
+    // Constructor đầy đủ cho Profile/Admin View (8 tham số)
     public User(int id, String username, String password, String email,
-                String fullName, String phone, String gender, String role, String token) {
+                String fullName, String phone, String gender, String role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -39,7 +29,6 @@ public class User {
         this.phone = phone;
         this.gender = gender;
         this.role = role;
-        this.token = token;
     }
 
     // Getter / Setter
@@ -66,7 +55,4 @@ public class User {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
-
-    public String getToken() { return token; }
-    public void setToken(String token) { this.token = token; }
 }

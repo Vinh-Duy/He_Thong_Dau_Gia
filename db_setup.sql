@@ -49,7 +49,6 @@ CREATE TABLE `users` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`username` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
 	`password` VARCHAR(255) NOT NULL COLLATE 'utf8mb4_0900_ai_ci',
-	`token` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
 	`role` VARCHAR(50) NULL DEFAULT 'user' COLLATE 'utf8mb4_0900_ai_ci',
 	`full_name` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
 	`email` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',

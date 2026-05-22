@@ -109,14 +109,15 @@ public class SigninController {
             Platform.runLater(() -> {
                 if ("SUCCESS".equals(response.getStatus())) {
                     alert("Thành công", response.getMessage());
-                    System.out.println(response.getData());
                     
                     // Lấy thông tin user và lưu vào két sắt
                     Object rawData = response.getData();
-                    String jsonString = (rawData instanceof String) ? (String) rawData : gson.toJson(rawData);
-                    User user = gson.fromJson(jsonString, User.class);
+                    JsonObject data = (rawData instanceof JsonObject) ? (JsonObject) rawData : gson.toJsonTree(rawData).getAsJsonObject();
+                    
+                    User user = gson.fromJson(data.get("user"), User.class);
+                    String token = data.get("token").getAsString();
 
-                    SessionManager.login(user);
+                    SessionManager.login(user, token);
 
                     // chuyển trang tương ứng dựa vào role
                     String role = user.getRole();

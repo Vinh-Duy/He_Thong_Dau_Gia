@@ -13,6 +13,13 @@ public class Request {
         this.payload = payload;
     }
 
+    // Constructor đầy đủ
+    public Request(String action, String payload, String token) {
+        this.action = action;
+        this.payload = payload;
+        this.token = token;
+    }
+
     public String getAction() { return action; }
     public String getPayload() { return payload; }
 

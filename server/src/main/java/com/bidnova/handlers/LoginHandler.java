@@ -7,13 +7,15 @@ import com.bidnova.models.AuthUserContext;
 import com.bidnova.models.User;
 import com.bidnova.network.Request;
 import com.bidnova.network.Response;
-import com.google.gson.Gson;
+import com.bidnova.utils.JwtUtil;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /** Class này là handler để xử lý các yêu cầu đăng nhập. */
 public class LoginHandler implements ActionHandler {
-    private final Gson gson = new Gson();
     private final UserDAO userDAO = new UserDAO();
 
     /**
@@ -35,9 +37,14 @@ public class LoginHandler implements ActionHandler {
 
             // 2. Kiểm tra mật khẩu
             if (user != null && BCrypt.checkpw(password, user.getPassword())) {
-                // Đăng nhập thành công
-                String userJsonPayload = gson.toJson(user);
-                return new Response("SUCCESS", "Đăng nhập thành công", userJsonPayload);
+                // Nếu đăng nhập thành công, tạo JWT Token
+                String token = JwtUtil.generateToken(user);
+                
+                Map<String, Object> data = new HashMap<>();
+                data.put("user", user);
+                data.put("token", token);
+
+                return new Response("SUCCESS", "Đăng nhập thành công", data);
             } else {
                 // Sai tài khoản hoặc mật khẩu (lúc này nên báo chung để bảo mật)
                 return new Response("ERROR", "Sai tài khoản hoặc mật khẩu", null);

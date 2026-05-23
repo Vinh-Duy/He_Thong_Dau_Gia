@@ -10,6 +10,8 @@ import com.bidnova.models.Auction;
 import com.bidnova.network.NetworkClient;
 import com.bidnova.network.Request;
 import com.bidnova.controllers.components.BidHistoryController;
+import com.bidnova.controllers.components.BidChartController;
+import com.bidnova.models.BidHistory;
 import com.bidnova.network.Response;
 import com.bidnova.utils.LocalDateTimeAdapter;
 import com.bidnova.utils.SessionManager;
@@ -50,6 +52,7 @@ public class AuctionDetailController implements Initializable {
     
     // Inject controller của file bid-history-table.fxml (fx:id + "Controller")
     @FXML private BidHistoryController bidHistoryTableController;
+    @FXML private BidChartController bidChartController;
     
     private Auction currentAuction;
     private boolean autoBidEnabled = false;
@@ -83,6 +86,11 @@ public class AuctionDetailController implements Initializable {
             // Cập nhật lịch sử đặt giá nếu controller con đã sẵn sàng
             if (bidHistoryTableController != null) {
                 bidHistoryTableController.loadHistory(auction.getId());
+            }
+            
+            // Cập nhật biểu đồ giá đấu khi controller chart đã sẵn sàng
+            if (bidChartController != null) {
+                bidChartController.loadChartData(auction.getId());
             }
             
             // Kiểm tra trạng thái Auto-Bid trên server (nếu user đã bật trước đó)
@@ -176,6 +184,11 @@ public class AuctionDetailController implements Initializable {
                         if (bidHistoryTableController != null) {
                             bidHistoryTableController.loadHistory(currentAuction.getId());
                         }
+                        
+                        // Cập nhật biểu đồ giá đấu
+                        if (bidChartController != null) {
+                            bidChartController.appendBidPoint(newBid);
+                        }
                     });
                 }
             }
@@ -242,6 +255,9 @@ public class AuctionDetailController implements Initializable {
                             // Cập nhật giá hiển thị tại chỗ cho mượt (UX tốt hơn)
                             currentPriceValue = bidAmount;
                             lblCurrentBid.setText(formatVietnameseCurrency(bidAmount));
+                            if (bidChartController != null) {
+                                bidChartController.appendBidPoint(bidAmount);
+                            }
                         } else {
                             lblBidError.setText(response.getMessage());
                             lblBidError.setVisible(true);

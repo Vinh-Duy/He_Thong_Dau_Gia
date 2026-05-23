@@ -1,0 +1,288 @@
+Folder PATH listing for volume New Volume
+Volume serial number is CE5A-25E2
+D:.
+|   .gitignore
+|   sodothumuc.txt
+|   
++---.github
+|   \---java-upgrade
+|       |   .gitignore
+|       |   
+|       +---20260508035242
+|       |   \---logs
+|       |           0.log
+|       |           
+|       \---hooks
+|           \---scripts
+|                   recordToolUse.ps1
+|                   recordToolUse.sh
+|                   
++---.vscode
+|       settings.json
+|       
++---auctionclient
+|   |   pom.xml
+|   |   
+|   +---src
+|   |   \---main
+|   |       +---java
+|   |       |   \---com
+|   |       |       \---bidnova
+|   |       |           |   Main.java
+|   |       |           |   
+|   |       |           +---controllers
+|   |       |           |   +---auth
+|   |       |           |   |       SigninController.java
+|   |       |           |   |       SignupController.java
+|   |       |           |   |       
+|   |       |           |   +---bidder
+|   |       |           |   |       AuctionDetailController.java
+|   |       |           |   |       CategoryController.java
+|   |       |           |   |       
+|   |       |           |   +---common
+|   |       |           |   |       GioiThieuController.java
+|   |       |           |   |       HomeController.java
+|   |       |           |   |       LienHeController.java
+|   |       |           |   |       
+|   |       |           |   \---components
+|   |       |           |           HeaderController.java
+|   |       |           |           ProductCardController.java
+|   |       |           |           
+|   |       |           +---models
+|   |       |           |       BidMessage.java
+|   |       |           |       Product.java
+|   |       |           |       
+|   |       |           \---utils
+|   |       |                   LocalDateTimeAdapter.java
+|   |       |                   ProductLoader.java
+|   |       |                   
+|   |       \---resources
+|   |           +---css
+|   |           |   |   base-style.css
+|   |           |   |   
+|   |           |   +---auth
+|   |           |   |       signin-style.css
+|   |           |   |       signup-style.css
+|   |           |   |       
+|   |           |   +---bidder
+|   |           |   |       auction-detail-style.css
+|   |           |   |       category-style.css
+|   |           |   |       
+|   |           |   +---common
+|   |           |   |       gioi-thieu-style.css
+|   |           |   |       home-style.css
+|   |           |   |       lien-he-style.css
+|   |           |   |       
+|   |           |   \---components
+|   |           |           header-style.css
+|   |           |           product-card-style.css
+|   |           |           
+|   |           +---data
+|   |           |       products.json
+|   |           |       
+|   |           +---fonts
+|   |           |       Inter_18pt-Medium.ttf
+|   |           |       Inter_18pt-Regular.ttf
+|   |           |       Montserrat-Bold.ttf
+|   |           |       Montserrat-Medium.ttf
+|   |           |       Montserrat-Regular.ttf
+|   |           |       
+|   |           +---images
+|   |           |       abstract-background.jpg
+|   |           |       car.png
+|   |           |       gauze-01.jpg
+|   |           |       house.png
+|   |           |       
+|   |           \---views
+|   |               +---auth
+|   |               |       signin-view.fxml
+|   |               |       signup-view.fxml
+|   |               |       
+|   |               +---bidder
+|   |               |       auction-detail-view.fxml
+|   |               |       category-view.fxml
+|   |               |       
+|   |               +---common
+|   |               |       gioi-thieu-view.fxml
+|   |               |       home-view.fxml
+|   |               |       lien-he-view.fxml
+|   |               |       
+|   |               \---components
+|   |                       header.fxml
+|   |                       product-card.fxml
+|   |                       
+|   \---target
+|       +---classes
+|       |   +---com
+|       |   |   \---bidnova
+|       |   |       |   Main.class
+|       |   |       |   
+|       |   |       +---controllers
+|       |   |       |   +---auth
+|       |   |       |   |       SigninController.class
+|       |   |       |   |       SignupController.class
+|       |   |       |   |       
+|       |   |       |   +---bidder
+|       |   |       |   |       AuctionDetailController.class
+|       |   |       |   |       CategoryController.class
+|       |   |       |   |       
+|       |   |       |   +---common
+|       |   |       |   |       GioiThieuController.class
+|       |   |       |   |       HomeController.class
+|       |   |       |   |       LienHeController.class
+|       |   |       |   |       
+|       |   |       |   \---components
+|       |   |       |           HeaderController.class
+|       |   |       |           ProductCardController.class
+|       |   |       |           
+|       |   |       +---models
+|       |   |       |       BidMessage.class
+|       |   |       |       Product.class
+|       |   |       |       
+|       |   |       \---utils
+|       |   |               LocalDateTimeAdapter.class
+|       |   |               ProductLoader$1.class
+|       |   |               ProductLoader.class
+|       |   |               
+|       |   +---css
+|       |   |   |   base-style.css
+|       |   |   |   
+|       |   |   +---auth
+|       |   |   |       signin-style.css
+|       |   |   |       signup-style.css
+|       |   |   |       
+|       |   |   +---bidder
+|       |   |   |       auction-detail-style.css
+|       |   |   |       category-style.css
+|       |   |   |       
+|       |   |   +---common
+|       |   |   |       gioi-thieu-style.css
+|       |   |   |       home-style.css
+|       |   |   |       lien-he-style.css
+|       |   |   |       
+|       |   |   \---components
+|       |   |           header-style.css
+|       |   |           product-card-style.css
+|       |   |           
+|       |   +---data
+|       |   |       products.json
+|       |   |       
+|       |   +---fonts
+|       |   |       Inter_18pt-Medium.ttf
+|       |   |       Inter_18pt-Regular.ttf
+|       |   |       Montserrat-Bold.ttf
+|       |   |       Montserrat-Medium.ttf
+|       |   |       Montserrat-Regular.ttf
+|       |   |       
+|       |   +---images
+|       |   |       abstract-background.jpg
+|       |   |       car.png
+|       |   |       gauze-01.jpg
+|       |   |       house.png
+|       |   |       
+|       |   \---views
+|       |       +---auth
+|       |       |       signin-view.fxml
+|       |       |       signup-view.fxml
+|       |       |       
+|       |       +---bidder
+|       |       |       auction-detail-view.fxml
+|       |       |       category-view.fxml
+|       |       |       
+|       |       +---common
+|       |       |       gioi-thieu-view.fxml
+|       |       |       home-view.fxml
+|       |       |       lien-he-view.fxml
+|       |       |       
+|       |       \---components
+|       |               header.fxml
+|       |               product-card.fxml
+|       |               
+|       +---generated-sources
+|       |   \---annotations
+|       +---maven-status
+|       |   \---maven-compiler-plugin
+|       |       \---compile
+|       |           \---default-compile
+|       |                   createdFiles.lst
+|       |                   inputFiles.lst
+|       |                   
+|       \---test-classes
+\---auctionserver
+    |   pom.xml
+    |   
+    +---src
+    |   \---main
+    |       \---java
+    |           \---com
+    |               \---daugia
+    |                   |   ClientHandler.java
+    |                   |   ServerMain.java
+    |                   |   
+    |                   +---dao
+    |                   |       UserDAO.java
+    |                   |       
+    |                   +---database
+    |                   |       DatabaseConnection.java
+    |                   |       
+    |                   +---models
+    |                   |       ArtCollectible.java
+    |                   |       Auction.java
+    |                   |       BidMessage.java
+    |                   |       Item.java
+    |                   |       ItemFactory.java
+    |                   |       RealEstate.java
+    |                   |       StateProperty.java
+    |                   |       User.java
+    |                   |       Vehicle.java
+    |                   |       
+    |                   +---network
+    |                   |       Request.java
+    |                   |       Response.java
+    |                   |       WebSocketConfig.java
+    |                   |       
+    |                   \---services
+    |                           AuctionManager.java
+    |                           
+    \---target
+        +---classes
+        |   \---com
+        |       \---daugia
+        |           |   ClientHandler.class
+        |           |   ServerMain.class
+        |           |   
+        |           +---dao
+        |           |       UserDAO.class
+        |           |       
+        |           +---database
+        |           |       DatabaseConnection.class
+        |           |       
+        |           +---models
+        |           |       ArtCollectible.class
+        |           |       Auction.class
+        |           |       BidMessage.class
+        |           |       Item.class
+        |           |       ItemFactory.class
+        |           |       RealEstate.class
+        |           |       StateProperty.class
+        |           |       User.class
+        |           |       Vehicle.class
+        |           |       
+        |           +---network
+        |           |       Request.class
+        |           |       Response.class
+        |           |       WebSocketConfig.class
+        |           |       
+        |           \---services
+        |                   AuctionManager.class
+        |                   
+        +---generated-sources
+        |   \---annotations
+        +---maven-status
+        |   \---maven-compiler-plugin
+        |       \---compile
+        |           \---default-compile
+        |                   createdFiles.lst
+        |                   inputFiles.lst
+        |                   
+        \---test-classes

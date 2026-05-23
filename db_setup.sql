@@ -3,8 +3,8 @@
 -- ============================================================
 
 -- Tạo database
-CREATE DATABASE IF NOT EXISTS auction_db;
-USE auction_db;
+CREATE DATABASE IF NOT EXISTS Tai_Xiu_db;
+USE Tai_Xiu_db;
 
 -- ============================================================
 -- TABLE: auctions

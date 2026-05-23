@@ -109,11 +109,19 @@
                     
                     <VBox spacing="20.0">
                         <children>
-                            <VBox prefHeight="200.0" spacing="10.0" styleClass="bid-history" VBox.vgrow="ALWAYS">
+                            <VBox prefHeight="200.0" prefWidth="600.0" maxWidth="600.0" minWidth="600.0" spacing="10.0" styleClass="bid-history" VBox.vgrow="ALWAYS">
                                 <children>
                                     <Label styleClass="bid-history-title" text="Lịch sử đặt giá" />
                                     <Separator prefWidth="200.0" />
                                     <fx:include fx:id="bidHistoryTable" source="../components/bid-history-table.fxml" />
+                                </children>
+                            </VBox>
+                            
+                            <VBox prefHeight="420.0" prefWidth="600.0" maxWidth="600.0" minWidth="600.0" spacing="10.0" styleClass="bid-chart-box" VBox.vgrow="ALWAYS">
+                                <children>
+                                    <Label styleClass="bid-chart-title" text="Biểu đồ giá đấu" />
+                                    <Separator prefWidth="200.0" />
+                                    <fx:include fx:id="bidChart" source="../components/bid-chart.fxml" />
                                 </children>
                             </VBox>
                             

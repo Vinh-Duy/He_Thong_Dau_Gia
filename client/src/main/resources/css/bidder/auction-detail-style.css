@@ -196,6 +196,57 @@
     -fx-font-weight: bold;
 }
 
+.bid-chart {
+    background-color: white;
+    -fx-background-color: white;
+    -fx-background-radius: 18;
+    -fx-border-color: rgba(46, 134, 222, 0.18);
+    -fx-border-width: 1;
+    -fx-border-radius: 18;
+    padding: 20px;
+    -fx-padding: 20;
+}
+
+.bid-chart-title {
+    font-size: 26px;
+    -fx-font-size: 26;
+    font-weight: bold;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.bid-chart .chart-plot-background {
+    -fx-background-color: linear-gradient(to bottom, #f7fbff, #e9f2ff);
+}
+
+.bid-chart .chart-vertical-grid-lines,
+.bid-chart .chart-horizontal-grid-lines {
+    -fx-stroke: rgba(200, 0, 0, 0.15);
+}
+
+.bid-chart .chart-series-line {
+    -fx-stroke: #ff3b3b;
+    -fx-stroke-width: 3px;
+}
+
+.bid-chart .chart-symbol {
+    -fx-background-color: #ff3b3b, white;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 5px;
+}
+
+.bid-chart .axis-label,
+.bid-chart .axis-tick-mark-label {
+    -fx-text-fill: #4a4a4a;
+    -fx-font-size: 14px;
+    -fx-font-size: 14;
+}
+
+.bid-chart .axis-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
 .auction-info {
     background-color: white;
     -fx-background-color: white;

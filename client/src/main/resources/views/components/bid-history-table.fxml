@@ -6,7 +6,7 @@
 
 <VBox spacing="10" styleClass="history-container" stylesheets="@../../css/components/bid-history-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.components.BidHistoryController">
     
-    <TableView fx:id="historyTable" focusTraversable="false" prefHeight="300" prefWidth="500" styleClass="history-table">
+    <TableView fx:id="historyTable" focusTraversable="false" prefHeight="200.0" prefWidth="500" styleClass="history-table">
         <columns>
             <TableColumn fx:id="colTime" prefWidth="150" text="Thời gian" />
             <TableColumn fx:id="colUser" prefWidth="150" text="Người đặt" />

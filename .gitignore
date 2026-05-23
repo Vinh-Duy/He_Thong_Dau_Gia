@@ -20,3 +20,6 @@ Thumbs.db
 
 # === Git specific ===
 .github/java-upgrade/.gitignore
+
+# === Environment Variables ===
+.env

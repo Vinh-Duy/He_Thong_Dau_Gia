@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox styleClass="bid-chart" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.components.BidChartController">
+   <children>
+      <LineChart fx:id="bidChart" animated="false" VBox.vgrow="ALWAYS" prefHeight="350.0" prefWidth="500.0">
+        <xAxis>
+          <CategoryAxis fx:id="xAxis" label="Thời gian" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis fx:id="yAxis" side="LEFT" label="Giá (VNĐ)" />
+        </yAxis>
+      </LineChart>
+   </children>
+</VBox>

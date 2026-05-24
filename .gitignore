@@ -1,0 +1,26 @@
+# === Maven & Java ===
+*/target/
+target/
+*.class
+*.jar
+*.war
+*.log
+
+# === IDEs (VS Code, IntelliJ, Eclipse) ===
+.vscode/
+.idea/
+*.iml
+*.iws
+.settings/
+.project
+.classpath
+
+# === OS Files ===
+.DS_Store
+Thumbs.db
+
+# === Git specific ===
+.github/java-upgrade/.gitignore
+
+# === Environment variables ===
+.env

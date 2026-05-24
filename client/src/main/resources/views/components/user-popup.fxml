@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="root" maxWidth="300" prefWidth="300" styleClass="user-popup" stylesheets="@../../css/components/user-popup-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.components.UserPopupController">
+    <VBox alignment="CENTER" spacing="10" styleClass="popup-header">
+        <FontAwesomeIconView glyphName="USER_CIRCLE" size="40" styleClass="popup-avatar" />
+        <Label fx:id="popupUsername" styleClass="popup-name" text="Username" />
+        <Label fx:id="popupRole" styleClass="popup-role" text="Vai trò" />
+    </VBox>
+    
+    <Separator styleClass="popup-separator" />
+    
+    <VBox spacing="12" styleClass="popup-details">
+        <HBox spacing="10" styleClass="popup-row">
+            <FontAwesomeIconView glyphName="ENVELOPE" size="14" styleClass="popup-row-icon" />
+            <VBox>
+                <Label styleClass="popup-row-label" text="Email" />
+                <Label fx:id="popupEmail" styleClass="popup-row-value" text="Chưa có" />
+            </VBox>
+        </HBox>
+        
+        <HBox spacing="10" styleClass="popup-row">
+            <FontAwesomeIconView glyphName="USER" size="14" styleClass="popup-row-icon" />
+            <VBox>
+                <Label styleClass="popup-row-label" text="Họ và tên" />
+                <Label fx:id="popupFullName" styleClass="popup-row-value" text="Chưa có" />
+            </VBox>
+        </HBox>
+
+        <HBox spacing="10" styleClass="popup-row">
+            <FontAwesomeIconView glyphName="PHONE" size="14" styleClass="popup-row-icon" />
+            <VBox>
+                <Label styleClass="popup-row-label" text="Số điện thoại" />
+                <Label fx:id="popupPhone" styleClass="popup-row-value" text="Chưa có" />
+            </VBox>
+        </HBox>
+
+        <HBox spacing="10" styleClass="popup-row">
+            <FontAwesomeIconView glyphName="VENUS_MARS" size="14" styleClass="popup-row-icon" />
+            <VBox>
+                <Label styleClass="popup-row-label" text="Giới tính" />
+                <Label fx:id="popupGender" styleClass="popup-row-value" text="Chưa có" />
+            </VBox>
+        </HBox>
+    </VBox>
+</VBox>

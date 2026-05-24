@@ -1,0 +1,325 @@
+@import url(../base-style.css);
+
+/* Main container - background xám nhạt */
+.scroll-pane {
+    background: transparent;
+    -fx-background: transparent;
+
+    background-color: -fx-bgc;
+    -fx-background-color: -fx-bgc;
+}
+
+.scroll-pane .viewport {
+    background-color: -fx-bgc;
+    -fx-background-color: -fx-bgc;
+}
+
+/* Tab bar */
+.tab-bar {
+    padding: 20px;
+    -fx-padding: 20;
+
+    -fx-spacing: 0;
+
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 12;
+
+    border-radius: 12px;
+    -fx-border-radius: 12;
+
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.06), 10, 0, 0, 2);
+
+    min-height: 50px;
+    -fx-min-height: 50;
+}
+
+.tab-btn {
+    background-color: transparent;
+    -fx-background-color: transparent;
+
+    -fx-text-fill: -fx-text-color;
+
+    font-size: 14px;
+    -fx-font-size: 14;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    padding: 12px 30px;
+    -fx-padding: 12 30;
+
+    cursor: pointer;
+    -fx-cursor: hand;
+
+    -fx-background-radius: 0;
+
+    border-width: 0;
+    -fx-border-width: 0;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+
+    min-height: 50px;
+    -fx-min-height: 50;
+}
+
+.tab-btn .glyph-icon {
+    fill: -fx-text-color;
+    -fx-fill: -fx-text-color;
+
+    padding: 0 8px 0 0;
+    -fx-padding: 0 8 0 0;
+}
+
+.tab-btn:hover {
+    background-color: #f5f5f5;
+    -fx-background-color: #f5f5f5;
+}
+
+.tab-active {
+    background-color: -fx-primary-color;
+    -fx-background-color: -fx-primary-color;
+    -fx-text-fill: white;
+    -fx-background-radius: 12;
+}
+
+.tab-active .glyph-icon {
+    fill: white;
+    -fx-fill: white;
+}
+
+.tab-active:hover {
+    background-color: -fx-primary-color;
+    -fx-background-color: -fx-primary-color;
+}
+
+/* Card trắng trung tâm */
+.card {
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 16;
+    border-radius: 16px;
+    -fx-border-radius: 16;
+
+    padding: 40px 40px 35px 40px;
+    -fx-padding: 40 40 35 40;
+
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.08), 20, 0, 0, 4);
+}
+
+/* Icon header */
+.card-icon {
+    fill: -fx-primary-color;
+    -fx-fill: -fx-primary-color;
+}
+
+/* Title */
+.title {
+    font-size: 26px;
+    -fx-font-size: 26;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: -fx-forth-color;
+}
+
+/* Subtitle */
+.subtitle {
+    font-size: 13px;
+    -fx-font-size: 13;
+
+    color: rgba(0, 0, 0, 0.5);
+    -fx-text-fill: rgba(0, 0, 0, 0.5);
+}
+
+/* Separator */
+.separator {
+    background-color: #e8e8e8;
+    -fx-background-color: #e8e8e8;
+
+    padding: 0;
+    -fx-padding: 0;
+
+    max-height: 1px;
+    -fx-max-height: 1;
+}
+
+.separator .line {
+    background-color: #e8e8e8;
+    -fx-background-color: #e8e8e8;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* TableView */
+.data-table {
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 10;
+    border-radius: 10px;
+    -fx-border-radius: 10;
+
+    border-color: #e8e8e8;
+    -fx-border-color: #e8e8e8;
+
+    -fx-fixed-cell-size: 48;
+
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.data-table:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* Column header */
+.data-table .column-header-background {
+    background-color: -fx-bgc;
+    -fx-background-color: -fx-bgc;
+
+    -fx-background-radius: 10 10 0 0;
+
+    padding: 0 0 2px 0;
+    -fx-padding: 0 0 2 0;
+}
+
+.data-table .column-header {
+    background-color: transparent;
+    -fx-background-color: transparent;
+
+    padding: 12px 6px;
+    -fx-padding: 12 6;
+
+    border-color: transparent #e0e0e0 transparent transparent;
+    -fx-border-color: transparent #e0e0e0 transparent transparent;
+
+    border-width: 0 1px 0 0;
+    -fx-border-width: 0 1 0 0;
+}
+
+.data-table .column-header .label {
+    font-size: 12px;
+    -fx-font-size: 12;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: -fx-text-color;
+
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Cell */
+.data-table .table-cell {
+    -fx-alignment: CENTER_LEFT;
+
+    padding: 8px 10px;
+    -fx-padding: 8 10;
+
+    font-size: 12px;
+    -fx-font-size: 12;
+
+    border-color: transparent transparent #f0f0f0 transparent;
+    -fx-border-color: transparent transparent #f0f0f0 transparent;
+
+    border-width: 0 0 1px 0;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* Row */
+.data-table .table-row-cell {
+    background-color: white;
+    -fx-background-color: white;
+}
+
+.data-table .table-row-cell:odd {
+    background-color: #fafafa;
+    -fx-background-color: #fafafa;
+}
+
+.data-table .table-row-cell:hover {
+    background-color: #f5e6e6;
+    -fx-background-color: #f5e6e6;
+
+    cursor: pointer;
+    -fx-cursor: hand;
+}
+
+.data-table .table-row-cell:selected {
+    background-color: -fx-primary-color;
+    -fx-background-color: -fx-primary-color;
+}
+
+.data-table .table-row-cell:selected .table-cell {
+    -fx-text-fill: white;
+    color: white;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Base button */
+.btn {
+    padding: 10px 24px;
+    -fx-padding: 10 24;
+
+    -fx-text-fill: white;
+    color: white;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    font-size: 13px;
+    -fx-font-size: 13;
+
+    -fx-background-radius: 8;
+    border-radius: 8px;
+
+    cursor: pointer;
+    -fx-cursor: hand;
+
+    min-height: 44px;
+    -fx-min-height: 44;
+
+    border-width: 0;
+    -fx-border-width: 0;
+}
+
+.btn .glyph-icon {
+    fill: white;
+    -fx-fill: white;
+}
+
+.btn:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 12, 0.3, 0, 0);
+}
+
+/* Refresh button */
+.refresh-btn {
+    background-color: -fx-image-color;
+    -fx-background-color: -fx-image-color;
+}
+
+.refresh-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, -fx-image-color, 15, 0.4, 0, 0);
+}
+
+/* Delete button */
+.delete-btn {
+    background-color: -fx-primary-color;
+    -fx-background-color: -fx-primary-color;
+}
+
+.delete-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, -fx-primary-color, 15, 0.4, 0, 0);
+}

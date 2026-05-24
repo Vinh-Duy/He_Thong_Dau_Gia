@@ -1,0 +1,27 @@
+.history-container {
+    padding: 15px;
+    -fx-padding: 15;
+
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 10;
+
+    border-radius: 10px;
+    -fx-border-radius: 10;
+}
+
+.history-table {
+    /* Bạn có thể thêm các style tùy chỉnh cho TableView ở đây */
+    min-height: 500px;
+    -fx-min-height: 500;
+
+    -fx-background-radius: 5;
+}
+
+.bid-amount-cell {
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #0e8716;
+}

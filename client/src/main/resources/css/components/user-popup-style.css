@@ -1,0 +1,96 @@
+@import url(../base-style.css);
+
+/* User Info Popup Styles */
+.user-popup {
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 15;
+
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 10, 0, 0, 5);
+
+    border-color: #eeeeee;
+    -fx-border-color: #eeeeee;
+
+    border-radius: 15px;
+    -fx-border-radius: 15;
+}
+
+.popup-header {
+    padding: 30px 20px;
+    -fx-padding: 30 20;
+
+    background-color: #fcfcfc;
+    -fx-background-color: #fcfcfc;
+
+    -fx-background-radius: 15 15 0 0;
+}
+
+.popup-avatar {
+    fill: -fx-primary-color;
+    -fx-fill: -fx-primary-color;
+}
+
+.popup-name {
+    font-size: 20px;
+    -fx-font-size: 20px;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: -fx-forth-color;
+}
+
+.popup-role {
+    font-size: 11px;
+    -fx-font-size: 11px;
+
+    -fx-text-fill: white;
+
+    background-color: -fx-forth-color;
+    -fx-background-color: -fx-forth-color;
+
+    padding: 3px 12px;
+    -fx-padding: 3 12;
+
+    -fx-background-radius: 12;
+}
+
+.popup-details {
+    padding: 25px;
+    -fx-padding: 25;
+}
+
+.popup-row {
+    -fx-alignment: CENTER_LEFT;
+}
+
+.popup-row-icon {
+    fill: #adb5bd;
+    -fx-fill: #adb5bd;
+}
+
+.popup-row-label {
+    -fx-text-fill: #6c757d;
+
+    min-width: 90px;
+    -fx-min-width: 90;
+
+    font-size: 14px;
+    -fx-font-size: 14px;
+}
+
+.popup-row-value {
+    -fx-text-fill: -fx-text-color;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    font-size: 14px;
+    -fx-font-size: 14px;
+}
+
+.popup-separator {
+    background-color: #f1f1f1;
+    -fx-background-color: #f1f1f1;
+}

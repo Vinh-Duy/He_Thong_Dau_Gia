@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox styleClass="bid-chart" stylesheets="@../../css/components/bid-chart-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.components.BidChartController">
+   <children>
+      <!-- Toolbar: zoom/pan controls -->
+      <HBox alignment="CENTER_LEFT" spacing="8.0" styleClass="chart-toolbar">
+         <children>
+            <Button fx:id="btnZoomIn" mnemonicParsing="false" onAction="#zoomIn" styleClass="chart-scroll-btn">
+               <graphic>
+                  <FontAwesomeIconView glyphName="SEARCH_PLUS" size="14" />
+               </graphic>
+            </Button>
+            <Button fx:id="btnZoomOut" mnemonicParsing="false" onAction="#zoomOut" styleClass="chart-scroll-btn">
+               <graphic>
+                  <FontAwesomeIconView glyphName="SEARCH_MINUS" size="14" />
+               </graphic>
+            </Button>
+            <Button fx:id="btnResetView" mnemonicParsing="false" onAction="#resetView" styleClass="chart-scroll-btn" text="Reset">
+               <graphic>
+                  <FontAwesomeIconView glyphName="REFRESH" size="14" />
+               </graphic>
+            </Button>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="lblDataInfo" styleClass="chart-data-info" text="0 điểm dữ liệu" />
+            <Button fx:id="btnScrollEnd" mnemonicParsing="false" onAction="#scrollToEnd" styleClass="chart-scroll-end-btn" text="Mới nhất">
+               <graphic>
+                  <FontAwesomeIconView glyphName="FAST_FORWARD" size="12" />
+               </graphic>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="4.0" top="4.0" />
+         </padding>
+      </HBox>
+
+      <!-- Chart with NumberAxis on both axes -->
+      <LineChart fx:id="bidChart" animated="false" legendVisible="false" prefHeight="320.0" VBox.vgrow="ALWAYS">
+         <xAxis>
+            <NumberAxis autoRanging="false" label="Thời gian" minorTickVisible="false" side="BOTTOM" fx:id="xAxis" />
+         </xAxis>
+         <yAxis>
+            <NumberAxis fx:id="yAxis" forceZeroInRange="false" label="Giá (VNĐ)" side="LEFT" />
+         </yAxis>
+      </LineChart>
+
+      <Label styleClass="chart-hint" text="Kéo chuột để dịch · Scroll để zoom">
+         <graphic>
+            <FontAwesomeIconView glyphName="MOUSE_POINTER" />
+         </graphic></Label>
+   </children>
+</VBox>

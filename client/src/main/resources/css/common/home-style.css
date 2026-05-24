@@ -1,0 +1,114 @@
+@import url(../base-style.css);
+
+ScrollPane {
+    background: transparent;
+    -fx-background: transparent;
+
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+ScrollPane > .viewport {
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+VBox {
+    background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+BorderPane {
+    background-image: url(../../images/gauze-01.jpg);
+    -fx-background-image: url(../../images/gauze-01.jpg);
+
+    background-size: cover;
+    -fx-background-size: cover;
+
+    background-repeat: no-repeat;
+    -fx-background-repeat: no-repeat;
+
+    background-position: center;
+    -fx-background-position: center;
+}
+
+#content {
+    height: 546px;
+    -fx-pref-height: 546px;
+
+    padding: 0 100px;
+    -fx-padding: 0 100px;
+}
+
+#content .text {
+    -fx-text-fill: -fx-third-color;
+
+    padding: 10px 0;
+    -fx-padding: 10 0;
+}
+
+#content .text1 {
+    font-size: 30px;
+    -fx-font-size: 30px;
+
+    font-weight: 400;
+    -fx-font-weight: 400;
+}
+
+#content .text2 {
+    width: 500px;
+    -fx-pref-width: 500px;
+
+    -fx-wrap-text: true;
+
+    font-size: 40px;
+    -fx-font-size: 40px;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+#content .text3 {
+    font-size: 20px;
+    -fx-font-size: 20px;
+
+    font-weight: 400;
+    -fx-font-weight: 400;
+}
+
+.hot-auction,
+.ongoing-auction,
+.upcoming-auction {
+    padding: 40px 0 10px 0;
+    -fx-padding: 40 0 10 0;
+}
+
+.hot-auction {
+    font-size: 24px;
+    -fx-font-size: 24px;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: -fx-third-color;
+}
+
+.ongoing-auction {
+    font-size: 20px;
+    -fx-font-size: 20px;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: -fx-third-color;
+}
+
+.upcoming-auction {
+    font-size: 20px;
+    -fx-font-size: 20px;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: -fx-third-color;
+}

@@ -1,0 +1,323 @@
+@import url(../base-style.css);
+
+.top-bar {
+    font-size: 16px;
+    -fx-font-size: 16;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+.back-button {
+    background-color: transparent;
+    -fx-background-color: transparent;
+
+    border-color: transparent;
+    -fx-border-color: transparent;
+
+    cursor: hand;
+    -fx-cursor: hand;
+}
+
+#content {
+    -fx-spacing: 20;
+
+    padding: 50px 100px;
+    -fx-padding: 50 100;
+}
+
+.item-image {
+    /* min-height: 400px;
+    -fx-min-height: 400;
+
+    max-height: 400px;
+    -fx-max-height: 400;
+
+    min-width: 700px;
+    -fx-min-width: 700;
+
+    min-width: 700px;
+    -fx-min-width: 700; */
+
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 15;
+
+    border-radius: 15px;
+    -fx-border-radius: 15;
+
+    border-color: #e5e5e5;
+    -fx-border-color: #e5e5e5;
+}
+
+.item-info,
+.time-left {
+    /* min-height: 450px;
+    -fx-min-height: 450;
+
+    max-height: 450px;
+    -fx-max-height: 450; */
+
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 15;
+
+    padding: 25px;
+    -fx-padding: 25;
+}
+
+.time-left-box {
+    min-height: 150px;
+    -fx-min-height: 150;
+
+    max-height: 150px;
+    -fx-max-height: 150;
+
+    -fx-alignment: CENTER;
+}
+
+.time-left-box .label {
+    -fx-text-fill: #795548;
+
+    font-size: 25px;
+    -fx-font-size: 25;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+.item-info-title,
+.time-left-title {
+    font-size: 22px;
+    -fx-font-size: 22;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+.item-info-description {
+    background-color: transparent;
+    -fx-background-color: transparent;
+
+    -fx-text-fill: #555555;
+
+    font-size: 15px;
+    -fx-font-size: 15px;
+
+    -fx-wrap-text: true;
+}
+
+.auto-bid {
+    background-color: linear-gradient(to bottom, #fff9c4, #fffde7);
+    -fx-background-color: linear-gradient(to bottom, #fff9c4, #fffde7);
+
+    -fx-background-radius: 15;
+
+    padding: 25px;
+    -fx-padding: 25;
+
+    border-color: #fbc02d;
+    -fx-border-color: #fbc02d;
+
+    border-radius: 15px;
+    -fx-border-radius: 15;
+
+    border-width: 2px;
+    -fx-border-width: 2;
+}
+
+.auto-bid-title {
+    font-size: 22px;
+    -fx-font-size: 22;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #f57f17;
+}
+
+.auto-bid-title .glyph-icon {
+    fill: #f57f17;
+    -fx-fill: #f57f17;
+}
+
+.auto-bid-subtitle,
+.increment-subtitle {
+    -fx-text-fill: #5d4037;
+}
+
+.auto-bid-subtitle .glyph-icon,
+.increment-subtitle .glyph-icon {
+    fill: #5d4037;
+    -fx-fill: #5d4037;
+}
+
+.input {
+    -fx-background-radius: 10;
+
+    border-color: #ffcc80;
+    -fx-border-color: #ffcc80;
+
+    border-radius: 10px;
+    -fx-border-radius: 10;
+
+    border-width: 2px;
+    -fx-border-width: 2;
+
+    font-size: 15px;
+    -fx-font-size: 15px;
+
+    background-color: white;
+    -fx-background-color: white;
+}
+
+.auto-bid-btn {
+    background-color: #ff8f00;
+    -fx-background-color: #ff8f00;
+
+    -fx-text-fill: white;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 10;
+
+    cursor: hand;
+    -fx-cursor: hand;
+
+    font-size: 15px;
+    -fx-font-size: 15px;
+}
+
+.auto-bid-btn .glyph-icon {
+    fill: white;
+    -fx-fill: white;
+}
+
+.auto-bid-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, #f57f17, 10, 0, 0, 2);
+}
+
+.bid-history,
+.bid-chart-box {
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 15;
+
+    padding: 25px;
+    -fx-padding: 25;
+}
+
+.bid-history-title,
+.bid-chart-title {
+    font-size: 22px;
+    -fx-font-size: 22;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+.auction-info {
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 15;
+
+    padding: 25px;
+    -fx-padding: 25;
+}
+
+.item-name {
+    -fx-alignment: TOP_LEFT;
+
+    min-height: 1000px;
+    -fx-min-height: 100;
+
+    max-height: 100px;
+    -fx-max-height: 100;
+
+    min-width: 600px;
+    -fx-min-width: 600;
+
+    max-width: 600px;
+    -fx-max-width: 600;
+
+    font-size: 22px;
+    -fx-font-size: 22;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+.subtitle {
+    font-size: 16px;
+    -fx-font-size: 16;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+}
+
+.current-bid {
+    font-size: 16px;
+    -fx-font-size: 16;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: -fx-forth-color;
+}
+
+.bid-input {
+    min-height: 45px;
+    -fx-min-height: 45;
+
+    max-height: 45px;
+    -fx-max-height: 45;
+
+    -fx-background-radius: 8;
+
+    border-color: #e0e0e0;
+    -fx-border-color: #e0e0e0;
+
+    border-radius: 8px;
+    -fx-border-radius: 8;
+
+    font-size: 16px;
+    -fx-font-size: 16px;
+}
+
+.bid-input:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+
+    border-color: -fx-forth-color;
+    -fx-border-color: -fx-forth-color;
+
+    border-width: 2px;
+    -fx-border-width: 2px;
+}
+
+.place-bid-btn {
+    background-color: -fx-forth-color;
+    -fx-background-color: -fx-forth-color;
+
+    -fx-text-fill: white;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 8;
+
+    cursor: hand;
+    -fx-cursor: hand;
+
+    font-size: 14px;
+    -fx-font-size: 14;
+}
+
+.place-bid-btn:hover {
+    -fx-effect: dropshadow(three-pass-box, -fx-forth-color, 10, 0, 0, 2);
+}

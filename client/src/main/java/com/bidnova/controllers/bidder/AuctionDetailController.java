@@ -22,7 +22,6 @@ import com.google.gson.JsonParser;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -204,7 +203,6 @@ public class AuctionDetailController implements Initializable {
                                 System.err.println("Lỗi parse newEndTime: " + ex.getMessage());
                             }
                         }
-                        
                         // Cập nhật lại bảng lịch sử đấu giá
                         if (bidHistoryTableController != null) {
                             bidHistoryTableController.loadHistory(currentAuction.getId());

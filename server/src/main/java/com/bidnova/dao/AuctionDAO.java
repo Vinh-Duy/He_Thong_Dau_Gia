@@ -14,7 +14,6 @@ import com.bidnova.database.DatabaseConnection;
 import com.bidnova.models.Auction;
 
 public class AuctionDAO {
-
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private LocalDateTime parseDateTime(String str) {
@@ -26,7 +25,6 @@ public class AuctionDAO {
             return null;
         }
     }
-
     public List<Auction> getAllActiveAuctions() {
         List<Auction> list = new ArrayList<>();
         String sql = "SELECT * FROM auctions";
@@ -34,7 +32,6 @@ public class AuctionDAO {
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
-
             while (rs.next()) {
                 Auction auction = new Auction();
                 auction.setId(rs.getString("id"));

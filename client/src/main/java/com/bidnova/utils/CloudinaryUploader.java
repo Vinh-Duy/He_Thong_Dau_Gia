@@ -17,7 +17,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class CloudinaryUploader {
     private static final Dotenv dotenv = Dotenv.load();
     private static final String CLOUD_NAME = dotenv.get("CLOUD_NAME"); 
-    private static final String UPLOAD_PRESET = dotenv.get("UPLOAD_PRESET"); 
+    private static final String UPLOAD_PRESET = dotenv.get("UPLOAD_PRESET");
 
     /**
      * Upload file ảnh lên Cloudinary.

@@ -61,7 +61,6 @@
                                     <TextArea fx:id="txtDescription" editable="false" prefHeight="250.0" styleClass="item-info-description" VBox.vgrow="ALWAYS" />
                                 </children>
                             </VBox>
-
                             <VBox spacing="10.0" styleClass="time-left">
                                 <children>
                                     <Label styleClass="time-left-title" text="Thời gian còn lại" />
@@ -136,7 +135,6 @@
                                     <fx:include fx:id="bidChart" source="../components/bid-chart.fxml" />
                                 </children>
                             </VBox>
-                            
                             <VBox spacing="15.0" styleClass="auction-info">
                                 <children>
                                     <Label fx:id="lblItemName" styleClass="item-name" text="Tên tài sản đang được đấu giá" wrapText="true" />

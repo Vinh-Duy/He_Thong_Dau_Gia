@@ -85,7 +85,6 @@ public class PlaceBidHandler implements ActionHandler {
                         System.out.println("[Anti-Snipping] Gia hạn phiên đấu giá " + auctionId + " thêm 5 phút. Hạn mới: " + newEndTime);
                     }
                 }
-
                 // Execute auto-bids after this bid is placed
                 autoBidService.executeAutoBids(auctionId, bidAmount);
 

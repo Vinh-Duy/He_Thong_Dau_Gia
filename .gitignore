@@ -1,5 +1,4 @@
 # === Maven & Java ===
-*/target/
 target/
 *.class
 *.jar

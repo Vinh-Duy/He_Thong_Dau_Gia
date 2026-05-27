@@ -9,15 +9,21 @@ import java.nio.file.Files;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import io.github.cdimascio.dotenv.Dotenv;
 
 /**
  * Upload ảnh lên Cloudinary (unsigned upload với upload preset).
  */
 public class CloudinaryUploader {
-    private static final Dotenv dotenv = Dotenv.load();
-    private static final String CLOUD_NAME = dotenv.get("CLOUD_NAME"); 
-    private static final String UPLOAD_PRESET = dotenv.get("UPLOAD_PRESET");
+    // Cấu hình tìm ở thư mục cha (gốc dự án) và không báo lỗi nếu thiếu file
+    private static final Dotenv dotenv = Dotenv.configure()
+            .directory("..") 
+            .ignoreIfMissing()
+            .load();
+            
+    private static final String CLOUD_NAME = dotenv.get("CLOUD_NAME", "default_cloud_name"); 
+    private static final String CLOUDINARY_UPLOAD_PRESET = dotenv.get("CLOUDINARY_UPLOAD_PRESET", "default_preset");
 
     /**
      * Upload file ảnh lên Cloudinary.
@@ -26,6 +32,10 @@ public class CloudinaryUploader {
      * @return URL của ảnh trên Cloudinary, null nếu lỗi
      */
     public static String upload(File file) {
+        System.out.println("DEBUG: Đang upload bằng Cloud Name: " + CLOUD_NAME + ", Preset: " + CLOUDINARY_UPLOAD_PRESET);
+        if ("default_preset".equals(CLOUDINARY_UPLOAD_PRESET)) {
+            System.err.println("LỖI: Chưa load được file .env hoặc chưa cấu hình CLOUDINARY_UPLOAD_PRESET!");
+        }
         try {
             // Đọc file thành bytes
             byte[] fileBytes = Files.readAllBytes(file.toPath());
@@ -52,7 +62,7 @@ public class CloudinaryUploader {
             footerSb.append(twoHyphens).append(boundary).append(lineEnd);
             footerSb.append("Content-Disposition: form-data; name=\"upload_preset\"").append(lineEnd);
             footerSb.append(lineEnd);
-            footerSb.append(UPLOAD_PRESET).append(lineEnd);
+            footerSb.append(CLOUDINARY_UPLOAD_PRESET).append(lineEnd);
 
             footerSb.append(twoHyphens).append(boundary).append(twoHyphens).append(lineEnd);
 

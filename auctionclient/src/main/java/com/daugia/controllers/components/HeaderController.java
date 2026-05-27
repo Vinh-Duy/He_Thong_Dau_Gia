@@ -11,7 +11,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -21,10 +20,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 
 public class HeaderController {
 
@@ -33,13 +33,70 @@ public class HeaderController {
     
     @FXML private Label trangChuLabel;
     @FXML private Label taiSanLabel;
-    @FXML private Label phienDauGiaLabel;
     @FXML private Label gioiThieuLabel;
     @FXML private Label lienHeLabel;
+
+    @FXML private HBox authButtonsBox;
+    @FXML private HBox userInfoBox;
+    @FXML private Label userNameLabel;
+
+    // Mẹo để gọi Header từ bất cứ đâu
+    private static HeaderController instance;
+    public static HeaderController getInstance() { return instance; }
+
+    // Hàm "ảo thuật" chính
+    public void updateHeaderUI() {
+        boolean loggedIn = com.daugia.utils.SessionManager.isLoggedIn();
+        
+        // Hiện cái này thì ẩn cái kia
+        authButtonsBox.setVisible(!loggedIn);
+        authButtonsBox.setManaged(!loggedIn);
+        
+        userInfoBox.setVisible(loggedIn);
+        userInfoBox.setManaged(loggedIn);
+
+        if (loggedIn) {
+            // Lấy tên user đã lưu trong Session (Bác nhớ lưu cả username vào SessionManager nhé)
+            userNameLabel.setText("Xin chào, " + com.daugia.utils.SessionManager.getUsername());
+        }
+    }
+
+    @FXML
+    private void handleLogout(MouseEvent event) {
+        // 1. Xóa sạch Token và Username trong két sắt
+        com.daugia.utils.SessionManager.logout();
+
+        // 2. Cập nhật lại giao diện Header (ẩn tên User, hiện lại nút Đăng nhập)
+        updateHeaderUI();
+
+        // 3. Thông báo cho người dùng biết
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+        alert.setTitle("Đăng xuất");
+        alert.setHeaderText(null);
+        alert.setContentText("Bác đã đăng xuất thành công!");
+        alert.showAndWait();
+
+        // 4. Chuyển về màn hình đăng nhập
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/views/auth/LoginPopup.fxml"));
+            javafx.scene.Parent root = loader.load();
+            javafx.scene.Scene scene = ((javafx.scene.Node) event.getSource()).getScene();
+            scene.setRoot(root);
+            javafx.stage.Stage stage = (javafx.stage.Stage) scene.getWindow();
+            stage.setTitle("Đăng nhập");
+            stage.sizeToScene();
+            stage.centerOnScreen();
+        } catch (Exception e) {
+            System.err.println("Lỗi khi chuyển về đăng nhập:");
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     public void initialize() {
         startClock();
+        instance = this; // Lưu lại chính nó khi vừa khởi tạo
+        updateHeaderUI(); // Kiểm tra trạng thái đăng nhập ngay khi mở app
     }
 
     private void startClock() {
@@ -58,7 +115,7 @@ public class HeaderController {
 
     private void setActiveMenu(Label activeLabel) {
 
-        Label[] menuLabels = {trangChuLabel, taiSanLabel, phienDauGiaLabel, gioiThieuLabel, lienHeLabel};
+        Label[] menuLabels = {trangChuLabel, taiSanLabel, gioiThieuLabel, lienHeLabel};
         
         for (Label label : menuLabels) {
             label.getStyleClass().remove("menu-item-active");
@@ -132,14 +189,6 @@ public class HeaderController {
         }
     }
 
-    private void loadPlaceholderContent(String title) {
-        VBox vbox = new VBox();
-        vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().add(new Label("Placeholder cho: " + title));
-        
-        updateMainContent(vbox);
-    }
-
     @FXML
     private void showTaiSanMenu(MouseEvent event) {
         setActiveMenu(taiSanLabel); 
@@ -162,25 +211,6 @@ public class HeaderController {
         khac.setOnAction(e -> loadCategoryView("Tài sản khác"));
 
         menu.getItems().addAll(batDongSan, nhaNuoc, phuongTien, suuTam, khac);
-        menu.show((Node) event.getSource(), Side.BOTTOM, 0, 5);
-    }
-
-    @FXML
-    private void showPhienDauGiaMenu(MouseEvent event) {
-        setActiveMenu(phienDauGiaLabel);
-        
-        ContextMenu menu = new ContextMenu();
-        
-        MenuItem sapdaugia = new MenuItem("Sắp đấu giá");
-        sapdaugia.setOnAction(e -> loadCenterContent("/views/SapDauGiaView.fxml"));
-
-        MenuItem dangdienra = new MenuItem("Đang diễn ra");
-        dangdienra.setOnAction(e -> loadCenterContent("/views/DangDienRaView.fxml"));
-
-        MenuItem daketthuc = new MenuItem("Phiên đấu giá đã kết thúc");
-        daketthuc.setOnAction(e -> loadCenterContent("/views/DaKetThucView.fxml"));
-
-        menu.getItems().addAll(sapdaugia, dangdienra, daketthuc);
         menu.show((Node) event.getSource(), Side.BOTTOM, 0, 5);
     }
 

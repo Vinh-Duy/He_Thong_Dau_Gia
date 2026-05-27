@@ -1,23 +1,50 @@
 package com.daugia;
 
+/**
+ * ĐÂY LÀ "TIẾP VIÊN HÀNG KHÔNG" CỦA SERVER.
+ *
+ * Mỗi khi có 1 client (app JavaFX) kết nối vào Server qua Socket (cổng 8888),
+ * Server tạo 1 đối tượng ClientHandler MỚI để xử lý riêng client đó.
+ * => Mỗi người dùng đang online = 1 ClientHandler đang chạy song song (multi-thread).
+ *
+ * Nhiệm vụ chính:
+ * 1. Đọc tin nhắn JSON từ client gửi lên.
+ * 2. Dùng HandlerRegistry để tìm đúng "chuyên gia" xử lý (ví dụ: LOGIN -> LoginHandler).
+ * 3. Gửi kết quả trả về cho client.
+ * 4. PHÁT SÓNG (broadcast) thông báo cho TẤT CẢ clients khi có sự kiện quan trọng
+ *    (ví dụ: giá đấu thay đổi -> mọi người phải thấy ngay).
+ */
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
-import com.daugia.dao.UserDAO;
-import com.daugia.models.Auction;
-import com.daugia.models.User;
+import com.daugia.handlers.ActionHandler;
+import com.daugia.handlers.HandlerRegistry;
+import com.daugia.models.AuthUserContext;
 import com.daugia.network.Request;
 import com.daugia.network.Response;
-import com.daugia.services.AuctionManager;
+import com.daugia.services.AuthService;
+import com.daugia.services.impl.AuthServiceImpl;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class ClientHandler implements Runnable {
-    private Socket socket;
-    private Gson gson = new Gson();
+    private final Socket socket;
+    private final Gson gson = new Gson();
+
+    private final HandlerRegistry registry = new HandlerRegistry();
+    private final AuthService authService = new AuthServiceImpl();
+
+    private static final Set<PrintWriter> clientWriters = ConcurrentHashMap.newKeySet();
+    private static final Set<String> PUBLIC_ACTIONS =
+            new HashSet<>(Arrays.asList("LOGIN", "REGISTER"));
 
     public ClientHandler(Socket socket) {
         this.socket = socket;
@@ -25,106 +52,100 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        try (
+        PrintWriter out = null;
+        try {
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true)
-        ) {
+            out = new PrintWriter(socket.getOutputStream(), true);
+            clientWriters.add(out);
+
             String inputLine;
 
             while ((inputLine = in.readLine()) != null) {
-                System.out.println("Nhận từ Client: " + inputLine);
-                
-                Request request = gson.fromJson(inputLine, Request.class);
-                Response response = null;
-
-                UserDAO userDAO = new UserDAO();
-
-            switch (request.getAction()) {
-                case "LOGIN":
-
-                    JsonObject loginData = JsonParser.parseString(request.getPayload()).getAsJsonObject();
-                    String user = loginData.get("username").getAsString();
-                    String pass = loginData.get("password").getAsString();
-
-                    User loggedInUser = userDAO.checkLogin(user, pass);
-
-
-                    if (loggedInUser != null) {
-
-                        String userDataJson = gson.toJson(loggedInUser);
-                        response = new Response("SUCCESS", "Đăng nhập thành công", userDataJson);
-                    } else {
-
-                        response = new Response("ERROR", "Sai tài khoản hoặc mật khẩu", null);
+                try {
+                    Request request = gson.fromJson(inputLine, Request.class);
+                    if (request == null || request.getAction() == null || request.getAction().isBlank()) {
+                        out.println(gson.toJson(new Response("ERROR", "Thiếu action trong request", null)));
+                        continue;
                     }
-                    break;
 
-                case "REGISTER":
-                    JsonObject regData = JsonParser.parseString(request.getPayload()).getAsJsonObject();
-                    String regUser = regData.get("username").getAsString();
-                    String regPass = regData.get("password").getAsString();
-
-                    boolean isSuccess = userDAO.register(regUser, regPass);
-                    
-                    if (isSuccess) {
-                        response = new Response("SUCCESS", "Đăng ký thành công", null);
-                    } else {
-                        response = new Response("ERROR", "Tài khoản đã tồn tại!", null);
-                    }
-                    break;
-
-                case "PLACE_BID":
-                    JsonObject bidData = JsonParser.parseString(request.getPayload()).getAsJsonObject();
-                    int auctionId = bidData.get("auctionId").getAsInt();
-                    double amount = bidData.get("amount").getAsDouble();
-                    String username = bidData.get("username").getAsString();
-
-                    AuctionManager manager = AuctionManager.getInstance();
-                    Auction auction = manager.getAuction(auctionId);
-
-                    if (auction != null) {
-
-                        boolean success = auction.placeBid(username, amount); 
-                        
-                        if (success) {
-                            response = new Response("SUCCESS", "Đặt giá thành công!", String.valueOf(auction.getCurrentHighestBid()));
-                        } else {
-
-                            response = new Response("ERROR", "Giá không hợp lệ hoặc phiên đấu giá đã kết thúc!", null);
+                    AuthUserContext authUser = null;
+                    if (!PUBLIC_ACTIONS.contains(request.getAction())) {
+                        authUser = authService.validateToken(request.getToken());
+                        if (authUser == null) {
+                            out.println(gson.toJson(new Response("ERROR", "Unauthorized: token không hợp lệ", null)));
+                            continue;
                         }
-                    } else {
-                        response = new Response("ERROR", "Không tìm thấy phiên đấu giá này!", null);
                     }
-                    break;
 
-                case "GET_ALL_AUCTIONS":
+                    ActionHandler handler = registry.get(request.getAction());
+                    if (handler != null) {
+                        Response handled = handler.handle(request, authUser);
+                        out.println(gson.toJson(handled));
 
-                    String dummyAuctions = "[" +
-                        "{\"name\": \"Đồng hồ Rolex Datejust\", \"currentHighestBid\": 320000000}," +
-                        "{\"name\": \"Tranh sơn dầu thế kỷ 19\", \"currentHighestBid\": 150000000}" +
-                    "]";
-                    response = new Response("SUCCESS", "Lấy danh sách thành công", dummyAuctions);
-                    break;
+                        // 🔴 REAL-TIME BROADCAST 🔴
+                        // Khi có người đặt giá thành công (PLACE_BID),
+                        // Server phải THÔNG BÁO cho TẤT CẢ clients khác biết giá đã thay đổi.
+                        // Ví dụ: User A đặt giá -> User B đang nhìn màn hình cũng thấy giá nhảy lên ngay lập tức.
+                        if ("PLACE_BID".equals(request.getAction())
+                                && handled != null
+                                && "SUCCESS".equals(handled.getStatus())
+                                && handled.getPayload() != null) {
+                            try {
+                                String payloadStr = String.valueOf(handled.getPayload());
+                                JsonObject wrap = JsonParser.parseString(payloadStr).getAsJsonObject();
+                                if (wrap.has("event")) {
+                                    // Gọi hàm static broadcastAll để gửi tin nhắn cho mọi client đang kết nối
+                                    broadcastAll(wrap.get("event").toString());
+                                }
+                            } catch (Exception ignored) {
+                            }
+                        }
 
-                case "GET_ITEMS_BY_CATEGORY":
+                        continue;
+                    }
 
-                    String dummyJsonArray = "[" +
-                        "{\"name\": \"Sản phẩm test 1\", \"startingPrice\": 5000000}," +
-                        "{\"name\": \"Sản phẩm test 2\", \"startingPrice\": 12000000}" +
-                    "]";
-                    response = new Response("SUCCESS", "Lấy dữ liệu thành công", dummyJsonArray);
-                    break;
+                    Response response = new Response("ERROR", "Hành động không hợp lệ", null);
+                    out.println(gson.toJson(response));
 
-                default:
-                    response = new Response("ERROR", "Không tìm thấy Action", null);
+                } catch (Exception reqEx) {
+                    reqEx.printStackTrace();
+                    Response errorResponse = new Response("ERROR", "Dữ liệu yêu cầu không hợp lệ", null);
+                    out.println(gson.toJson(errorResponse));
+                }
             }
-            
 
-                String jsonResponse = gson.toJson(response);
-                out.println(jsonResponse);
-            }
         } catch (Exception e) {
-            System.out.println("Client đã ngắt kết nối.");
+            System.out.println("Client ngắt kết nối: " + e.getMessage());
+        } finally {
+            if (out != null) {
+                clientWriters.remove(out);
+            }
+            try {
+                socket.close();
+            } catch (Exception ignore) {
+            }
+        }
+    }
+
+    /**
+     * PHÁT SÓNG THÔNG BÁO CHO TẤT CẢ CLIENT.
+     *
+     * Tại sao phải là STATIC?
+     * - Vì các Handler (như PlaceBidHandler, AutoBidService...) KHÔNG có reference
+     *   đến instance ClientHandler cụ thể nào. Mỗi client kết nối tạo 1 ClientHandler mới.
+     * - Static cho phép GỌI TỪ BẤT CỨ ĐÂU trong project: ClientHandler.broadcastAll(msg)
+     *
+     * Tại sao lại có 2 hàm giống nhau trước đây?
+     * - Cũ: 1 hàm private (dùng trong run()), 1 hàm static public (dùng ngoài handler).
+     * - Giờ: CHỈ GIỮ 1 HÀM STATIC cho cả 2 chỗ, gọn gàng hơn.
+     */
+    public static void broadcastAll(String message) {
+        for (PrintWriter writer : clientWriters) {
+            try {
+                writer.println(message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

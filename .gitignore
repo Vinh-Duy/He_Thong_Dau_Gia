@@ -1,9 +1,5 @@
 # === Maven & Java ===
-<<<<<<< HEAD
 target/
-=======
-*/target/
->>>>>>> main
 *.class
 *.jar
 *.war
@@ -23,11 +19,7 @@ target/
 Thumbs.db
 
 # === Git specific ===
-<<<<<<< HEAD
 .github/java-upgrade/.gitignore
 
 # === environment variables ===
 .env
-=======
-.github/java-upgrade/.gitignore
->>>>>>> main

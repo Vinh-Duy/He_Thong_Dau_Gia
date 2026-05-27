@@ -1,6 +1,5 @@
 package com.daugia.controllers.bidder;
 
-<<<<<<< HEAD
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,14 +16,6 @@ import com.daugia.utils.SessionManager;
 import com.google.gson.Gson;
 
 import javafx.application.Platform;
-=======
-import java.io.IOException;
-import java.util.Currency;
-import java.util.Locale;
-
-import org.w3c.dom.Node;
-
->>>>>>> main
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;

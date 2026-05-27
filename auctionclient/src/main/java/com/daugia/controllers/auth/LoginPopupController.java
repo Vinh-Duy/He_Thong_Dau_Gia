@@ -1,8 +1,14 @@
 package com.daugia.controllers.auth;
 
-import java.io.IOException;
+import com.daugia.controllers.components.HeaderController;
+import com.daugia.models.User;
+import com.daugia.network.NetworkClient;
+import com.daugia.network.Request;
+import com.daugia.network.Response;
+import com.daugia.utils.SessionManager;
+import com.google.gson.Gson;
 
-import com.daugia.controllers.bidder.DanhSachSanPhamController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -22,6 +28,7 @@ public class LoginPopupController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
+    private Gson gson = new Gson();
 
     @FXML
     private void handleLogin() {
@@ -29,10 +36,60 @@ public class LoginPopupController {
         String pass = passwordField.getText();
 
         if (user == null || user.isEmpty() || pass == null || pass.isEmpty()) {
-            System.out.println("Vui lòng nhập đầy đủ thông tin");
+            showAlert(Alert.AlertType.WARNING, "Cảnh báo", "Bác chưa nhập đủ tài khoản hoặc mật khẩu kìa!");
             return;
         }
-        System.out.println("Đăng nhập thành công với: " + user);
+
+        new Thread(() -> {
+            try {
+                String requestPayload = "{\"username\":\"" + user + "\",\"password\":\"" + pass + "\"}";
+                Request req = new Request("LOGIN", requestPayload);
+                Response res = NetworkClient.getInstance().sendRequest(req);
+
+                Platform.runLater(() -> {
+                    if (res != null && "SUCCESS".equals(res.getStatus())) {
+                        try {
+                            // CHỖ NÀY QUAN TRỌNG: Sửa lỗi BEGIN_OBJECT
+                            Object rawData = res.getData(); 
+                            String jsonString = (rawData instanceof String) ? (String) rawData : gson.toJson(rawData);
+
+                            // Chuyển thành User
+                            User loggedInUser = gson.fromJson(jsonString, User.class);
+
+                            if (loggedInUser != null) {
+                                // 1. Lưu vào két sắt
+                                SessionManager.setSession(loggedInUser.getId(), loggedInUser.getUsername(), loggedInUser.getToken());
+
+                                // 2. ÉP HEADER CẬP NHẬT NGAY LẬP TỨC (Dành cho Bidder/Admin/Seller)
+                                if (HeaderController.getInstance() != null) {
+                                    HeaderController.getInstance().updateHeaderUI();
+                                }
+
+                                // 3. Phân quyền chuyển trang
+                                String viewPath = "/views/common/HomeView.fxml";
+                                if ("ADMIN".equals(loggedInUser.getRole())) {
+                                    viewPath = "/views/admin/AdminUserView.fxml";
+                                } else if ("SELLER".equals(loggedInUser.getRole())) {
+                                    viewPath = "/views/seller/ManageProductView.fxml";
+                                }
+
+                                // Chuyển cảnh
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource(viewPath));
+                                Parent root = loader.load();
+                                loginButton.getScene().setRoot(root);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            showAlert(Alert.AlertType.ERROR, "Lỗi", "Lỗi xử lý JSON, xem Console bác ơi!");
+                        }
+                    } else {
+                        showAlert(Alert.AlertType.ERROR, "Lỗi", "Sai tài khoản hoặc mật khẩu!");
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     @FXML
@@ -50,24 +107,11 @@ public class LoginPopupController {
         }
     }
 
-
-    private void loadCategoryView(String categoryName) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/bidder/DanhSachSanPhamView.fxml"));
-            Parent content = loader.load();
-
-            DanhSachSanPhamController controller = loader.getController();
-
-            controller.setCategory(categoryName);
-
-            mainBorderPane.setCenter(content);
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setContentText("Không thể tải trang danh mục: " + categoryName);
-            alert.showAndWait();
-        }
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }

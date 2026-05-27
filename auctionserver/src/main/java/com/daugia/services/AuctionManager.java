@@ -7,7 +7,8 @@ import com.daugia.models.Auction;
 public class AuctionManager {
     private static AuctionManager instance;
     
-    private ConcurrentHashMap<Integer, Auction> activeAuctions;
+    // 1. Đổi Integer thành String để nhận ID kiểu "A001"
+    private ConcurrentHashMap<String, Auction> activeAuctions;
 
     private AuctionManager() {
         activeAuctions = new ConcurrentHashMap<>();
@@ -21,10 +22,16 @@ public class AuctionManager {
     }
 
     public void addAuction(Auction auction) {
-        activeAuctions.put(auction.getAuctionId(), auction);
+        // 2. Sử dụng getId() trả về String
+        activeAuctions.put(auction.getId(), auction);
     }
 
-    public Auction getAuction(int auctionId) {
-        return activeAuctions.get(auctionId);
+    // 3. Tham số truyền vào phải là String
+    public Auction getAuction(String id) {
+        return activeAuctions.get(id);
+    }
+    // Thêm hàm này vào để lấy toàn bộ danh sách món hàng đang có trong bộ nhớ
+    public java.util.Collection<Auction> getAllAuctions() {
+        return activeAuctions.values();
     }
 }

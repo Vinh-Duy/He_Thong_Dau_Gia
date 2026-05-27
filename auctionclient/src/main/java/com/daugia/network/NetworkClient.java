@@ -4,7 +4,16 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
+import com.daugia.config.NetworkConfig;
+import com.daugia.utils.SessionManager;
 import com.google.gson.Gson;
 
 public class NetworkClient {
@@ -16,9 +25,14 @@ public class NetworkClient {
     private BufferedReader in;
     private final Gson gson = new Gson();
 
-    private NetworkClient() {
+    private final BlockingQueue<String> responseQueue = new LinkedBlockingQueue<>();
+    private Consumer<String> onMessageReceived;
 
-        connect("127.0.0.1", 8888); 
+    private static final Set<String> PUBLIC_ACTIONS =
+            new HashSet<>(Arrays.asList("LOGIN", "REGISTER"));
+
+    private NetworkClient() {
+        connect(NetworkConfig.getHost(), NetworkConfig.getPort());
     }
 
     public static synchronized NetworkClient getInstance() {
@@ -28,12 +42,34 @@ public class NetworkClient {
         return instance;
     }
 
+    public void setOnMessageReceived(Consumer<String> callback) {
+        this.onMessageReceived = callback;
+    }
+
     private void connect(String ip, int port) {
         try {
             socket = new Socket(ip, port);
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             System.out.println("Đã kết nối tới Server thành công!");
+
+            new Thread(() -> {
+                try {
+                    String line;
+                    while ((line = in.readLine()) != null) {
+                        if (line.contains("\"action\":\"BID_UPDATE\"")) {
+                            if (onMessageReceived != null) {
+                                onMessageReceived.accept(line);
+                            }
+                        } else {
+                            responseQueue.offer(line);
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println("Mất kết nối lắng nghe từ Server.");
+                }
+            }).start();
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Không thể kết nối tới Server.");
@@ -46,17 +82,22 @@ public class NetworkClient {
         }
 
         try {
+            if (request != null && request.getAction() != null
+                    && !PUBLIC_ACTIONS.contains(request.getAction())) {
+                request.setToken(SessionManager.getToken());
+            }
+
             String jsonRequest = gson.toJson(request);
             out.println(jsonRequest);
 
-            String jsonResponse = in.readLine();
+            String jsonResponse = responseQueue.poll(NetworkConfig.getTimeoutSeconds(), TimeUnit.SECONDS);
             if (jsonResponse != null) {
                 return gson.fromJson(jsonResponse, Response.class);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new Response("ERROR", "Lỗi đường truyền mạng", null);
+        return new Response("ERROR", "Lỗi đường truyền hoặc Timeout", null);
     }
 
     public void closeConnection() {

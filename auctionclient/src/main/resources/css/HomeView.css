@@ -12,12 +12,6 @@
     -fx-background-color: #f4f6f8;
 }
 
-.section-title {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #4a148c;
-    -fx-padding: 10 0 20 0;
-}
 
 .auction-card {
     -fx-background-color: white;
@@ -26,9 +20,6 @@
     -fx-cursor: hand;
 }
 
-.auction-card:hover {
-    -fx-effect: dropshadow(three-pass-box, rgba(156, 39, 176, 0.4), 15, 0, 0, 6);
-}
 
 .card-title {
     -fx-font-size: 16px;
@@ -36,30 +27,22 @@
     -fx-text-fill: #333333;
 }
 
-.card-price {
-    -fx-font-size: 15px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #9c27b0; 
+
+.heroSection{
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);
 }
 
-.card-time {
-    -fx-font-size: 13px;
-    -fx-text-fill: #757575;
+.red-line-main {
+    -fx-background-color: #B71C1C; /*Đỏ sẫm*/
+    -fx-pref-width: 45px;
+    -fx-min-height: 3px;
+    -fx-max-height: 3px;
+    -fx-background-radius: 2px;
 }
-
-.btn-action {
-    -fx-background-color: white;
-    -fx-border-color: #9c27b0;
-    -fx-border-radius: 5px;
-    -fx-border-width: 1.5px;
-    -fx-text-fill: #9c27b0;
-    -fx-font-weight: bold;
-    -fx-padding: 8 15;
-    -fx-cursor: hand;
-    -fx-margin-top: 10px;
-}
-
-.btn-action:hover {
-    -fx-background-color: #9c27b0;
-    -fx-text-fill: white;
+.red-line-dot {
+    -fx-background-color: #B71C1C;
+    -fx-pref-width: 6px;
+    -fx-min-height: 3px;
+    -fx-max-height: 3px;
+    -fx-background-radius: 2px;
 }

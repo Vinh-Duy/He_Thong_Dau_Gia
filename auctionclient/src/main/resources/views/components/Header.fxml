@@ -28,7 +28,6 @@
                <String fx:value="menu-item-active" />
             </styleClass></Label>
             <Label fx:id="taiSanLabel" onMouseClicked="#showTaiSanMenu" styleClass="menu-item" text="Danh mục đấu giá" />
-            <Label fx:id="phienDauGiaLabel" onMouseClicked="#showPhienDauGiaMenu" styleClass="menu-item" text="Phòng đấu giá" />
             <Label fx:id="gioiThieuLabel" onMouseClicked="#showGioiThieu" styleClass="menu-item" text="Giới thiệu" />
             <Label fx:id="lienHeLabel" onMouseClicked="#showLienHe" styleClass="menu-item" text="Liên hệ" />
         </HBox>
@@ -52,9 +51,15 @@
             <Label fx:id="dateLabel" style="-fx-text-fill: white; -fx-font-size: 11px;" text="Ngày tháng năm" />
         </VBox>
         
-        <HBox alignment="CENTER" spacing="25.0">
-            <Label onMouseClicked="#goToSignupClick" styleClass="btn-galaxy-transparent" text="Đăng ký" />
-            <Label onMouseClicked="#goToLoginClick" styleClass="btn-galaxy-filled" text="Đăng nhập" />
+        <HBox fx:id="authButtonsBox" alignment="CENTER" spacing="10">
+            <Label text="Đăng ký" onMouseClicked="#goToSignupClick" styleClass="header-link"/>
+            <Label text="|" style="-fx-text-fill: white;"/>
+            <Label text="Đăng nhập" onMouseClicked="#goToLoginClick" styleClass="header-link"/>
+        </HBox>
+
+        <HBox fx:id="userInfoBox" alignment="CENTER" spacing="10" managed="false" visible="false">
+            <Label fx:id="userNameLabel" text="Xin chào, Admin" style="-fx-text-fill: white; -fx-font-weight: bold;"/>
+            <Label text="(Thoát)" onMouseClicked="#handleLogout" style="-fx-text-fill: #ffcccc; -fx-cursor: hand; -fx-font-size: 12px;"/>
         </HBox>
       <styleClass>
          <String fx:value="header" />

@@ -99,7 +99,58 @@
                                        </font>
                                     </Label>
                                  </children>
-                              </VBox>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <Label text="⏱ Thời gian còn lại:" textFill="#d71920">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lblCountdown" text="00:00:00" textFill="#d71920">
+                                       <font>
+                                          <Font name="System Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <Separator prefWidth="200.0" />
+                              <Label text="Nhập giá muốn đặt (VNĐ)" textFill="#333333">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <HBox spacing="15.0">
+                                 <children>
+                                    <TextField fx:id="txtBidInput" prefHeight="45.0" promptText="Ví dụ: 50000000" style="-fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8; -fx-font-size: 16px;" HBox.hgrow="ALWAYS" />
+                                    <Button fx:id="btnPlaceBid" mnemonicParsing="false" onAction="#handlePlaceBid" prefHeight="45.0" prefWidth="120.0" style="-fx-background-color: #9c27b0; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;" text="ĐẶT GIÁ">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <Label fx:id="lblBidError" text="Giá đặt phải lớn hơn giá hiện tại!" textFill="RED" visible="false">
+                                 <font>
+                                    <Font name="System Italic" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  
+                  <VBox spacing="20.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <VBox spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 25;">
+                           <children>
+                              <Label text="Mô tả tài sản" textFill="#333333">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Separator prefWidth="200.0" />
+                              <TextArea fx:id="txtDescription" editable="false" prefHeight="250.0" style="-fx-background-color: transparent; -fx-text-fill: #555555; -fx-font-size: 15px;" wrapText="true" VBox.vgrow="ALWAYS" />
                            </children>
                            <HBox.margin>
                               <Insets />
@@ -135,6 +186,61 @@
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
+                        </VBox>
+                        
+                        <VBox spacing="12.0" style="-fx-background-color: linear-gradient(to bottom, #fff9c4, #fffde7); -fx-background-radius: 15; -fx-padding: 25; -fx-border-color: #fbc02d; -fx-border-radius: 15; -fx-border-width: 2;" VBox.vgrow="ALWAYS">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <Label style="-fx-text-fill: #f57f17; -fx-font-size: 22px;" text="⚡" />
+                                    <Label text="Đấu giá tự động" textFill="#f57f17">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <Label text="Hệ thống sẽ tự động đặt giá thay bạn khi có người khác bid, cho đến khi đạt giá tối đa." textFill="#795548" wrapText="true">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <Separator prefWidth="200.0" />
+                              
+                              <VBox spacing="6.0">
+                                 <children>
+                                    <Label text="Giá tối đa (VNĐ):" textFill="#5d4037">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txtMaxBid" prefHeight="42.0" promptText="VD: 100000000" style="-fx-background-radius: 10; -fx-border-color: #ffcc80; -fx-border-radius: 10; -fx-border-width: 2; -fx-font-size: 15px; -fx-background-color: white;" />
+                                 </children>
+                              </VBox>
+                              
+                              <VBox spacing="6.0">
+                                 <children>
+                                    <Label text="Bước giá (VNĐ):" textFill="#5d4037">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txtIncrement" prefHeight="42.0" promptText="VD: 10000000" style="-fx-background-radius: 10; -fx-border-color: #ffcc80; -fx-border-radius: 10; -fx-border-width: 2; -fx-font-size: 15px; -fx-background-color: white;" />
+                                 </children>
+                              </VBox>
+                              
+                              <Label fx:id="lblAutoBidStatus" text="Chưa bật" textFill="#9e9e9e">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              
+                              <Button fx:id="btnToggleAutoBid" mnemonicParsing="false" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #ff8f00; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 10; -fx-cursor: hand;" text="Bật Auto-Bid">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Button>
+                           </children>
                         </VBox>
                      </children>
                      <VBox.margin>

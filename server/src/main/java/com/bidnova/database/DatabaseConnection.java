@@ -16,6 +16,16 @@ public class DatabaseConnection {
     private static String USER = dotenv.get("DB_USER");
     private static String PASSWORD = dotenv.get("DB_PASSWORD"); 
 
+    static {
+        // Fallback kiểm tra thư mục cha nếu chạy từ module server
+        if (URL == null || URL.isEmpty()) {
+            Dotenv fallback = Dotenv.configure().directory("..").ignoreIfMissing().load();
+            URL = fallback.get("DB_URL");
+            USER = fallback.get("DB_USER");
+            PASSWORD = fallback.get("DB_PASSWORD");
+        }
+    }
+
     // Hàm này sẽ trả về một kết nối MỚI mỗi khi được gọi
     public static Connection getConnection() {
         try {

@@ -9,34 +9,21 @@ import java.nio.file.Files;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import io.github.cdimascio.dotenv.Dotenv;
 
 /**
  * Upload ảnh lên Cloudinary (unsigned upload với upload preset).
  */
 public class CloudinaryUploader {
+    // Cấu hình tìm ở thư mục cha (gốc dự án) và không báo lỗi nếu thiếu file
     private static final Dotenv dotenv = Dotenv.configure()
+            .directory("..") 
             .ignoreIfMissing()
-            .ignoreIfMalformed()
             .load();
-
-    private static String CLOUD_NAME = dotenv.get("CLOUD_NAME"); 
-    private static String CLOUDINARY_UPLOAD_PRESET = dotenv.get("CLOUDINARY_UPLOAD_PRESET");
-
-    static {
-        // Nếu không tìm thấy ở root module, thử tìm ở thư mục cha (project root)
-        if (CLOUD_NAME == null) {
-            Dotenv fallback = Dotenv.configure().directory("..").ignoreIfMissing().load();
-            CLOUD_NAME = fallback.get("CLOUD_NAME");
-            CLOUDINARY_UPLOAD_PRESET = fallback.get("CLOUDINARY_UPLOAD_PRESET");
-        }
-    }
-
-    public static void main(String[] args) {
-        System.out.println("Working Directory: " + System.getProperty("user.dir"));
-        System.out.println("CLOUD_NAME: " + CLOUD_NAME);
-        System.out.println("CLOUDINARY_UPLOAD_PRESET: " + CLOUDINARY_UPLOAD_PRESET);
-    }
+            
+    private static final String CLOUD_NAME = dotenv.get("CLOUD_NAME", "default_cloud_name"); 
+    private static final String CLOUDINARY_UPLOAD_PRESET = dotenv.get("CLOUDINARY_UPLOAD_PRESET", "default_preset");
 
     /**
      * Upload file ảnh lên Cloudinary.
@@ -45,6 +32,10 @@ public class CloudinaryUploader {
      * @return URL của ảnh trên Cloudinary, null nếu lỗi
      */
     public static String upload(File file) {
+        System.out.println("DEBUG: Đang upload bằng Cloud Name: " + CLOUD_NAME + ", Preset: " + CLOUDINARY_UPLOAD_PRESET);
+        if ("default_preset".equals(CLOUDINARY_UPLOAD_PRESET)) {
+            System.err.println("LỖI: Chưa load được file .env hoặc chưa cấu hình CLOUDINARY_UPLOAD_PRESET!");
+        }
         try {
             // Kiểm tra cấu hình trước khi upload
             if (CLOUD_NAME == null || CLOUD_NAME.isEmpty()) {

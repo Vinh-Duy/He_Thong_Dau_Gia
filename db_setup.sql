@@ -1,5 +1,5 @@
 -- ============================================================
--- HỆ THỐNG ĐẤU GIÁ - DATABASE SETUP (REVISED)
+-- HỆ THỐNG ĐẤU GIÁ - DATABASE SETUP (FINAL)
 -- ============================================================
 
 CREATE DATABASE IF NOT EXISTS auction_db;
@@ -47,11 +47,11 @@ CREATE TABLE `auctions` (
 CREATE TABLE `auto_bids` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `auction_id` VARCHAR(50) NOT NULL,
-    `user_id` INT NOT NULL,  -- Đã đổi từ username sang user_id
+    `user_id` INT NOT NULL,
     `max_bid` DECIMAL(20, 2) NOT NULL,
     `increment` DECIMAL(20, 2) NOT NULL,
     `is_active` BOOLEAN DEFAULT true,
-    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, -- Đã đổi từ BIGINT sang DATETIME
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`auction_id`) REFERENCES `auctions`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -61,9 +61,9 @@ CREATE TABLE `auto_bids` (
 -- ============================================================
 CREATE TABLE `bidhistory` (
     `id` INT NOT NULL AUTO_INCREMENT,
-    `auction_id` VARCHAR(50) NOT NULL, -- Đã sửa độ dài cho khớp với auctions.id
+    `auction_id` VARCHAR(50) NOT NULL,
     `user_id` INT NOT NULL,
-    `bid_amount` DECIMAL(20, 2) NOT NULL, -- Đã đổi từ DOUBLE sang DECIMAL
+    `bid_amount` DECIMAL(20, 2) NOT NULL,
     `bid_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`) USING BTREE,
     INDEX `auction_id` (`auction_id`) USING BTREE,
@@ -75,9 +75,9 @@ CREATE TABLE `bidhistory` (
 -- ============================================================
 -- CLEAR OLD DATA (AN TOÀN)
 -- ============================================================
-SET FOREIGN_KEY_CHECKS = 0; -- Tắt check khóa ngoại để Truncate không bị lỗi
+SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE bidhistory;
 TRUNCATE TABLE auto_bids;
 TRUNCATE TABLE auctions;
 TRUNCATE TABLE users;
-SET FOREIGN_KEY_CHECKS = 1; -- Bật lại sau khi xong
+SET FOREIGN_KEY_CHECKS = 1;

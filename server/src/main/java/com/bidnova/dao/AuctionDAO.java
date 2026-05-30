@@ -29,24 +29,28 @@ public class AuctionDAO {
         List<Auction> list = new ArrayList<>();
         String sql = "SELECT * FROM auctions";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                Auction auction = new Auction();
-                auction.setId(rs.getString("id"));
-                auction.setProductName(rs.getString("name"));
-                auction.setDescription(rs.getString("description"));
-                auction.setStartPrice(rs.getDouble("start_price"));
-                auction.setCurrentHighestBid(rs.getDouble("current_highest_bid"));
-                auction.setStartTime(parseDateTime(rs.getString("start_time")));
-                auction.setEndTime(parseDateTime(rs.getString("end_time")));
-                auction.setCategory(rs.getString("category"));
-                auction.setStatus(rs.getString("status"));
-                auction.setSellerId(rs.getInt("seller_id"));
-                auction.setImageUrl(rs.getString("image_url"));
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            if (conn == null) return list; // Tránh NullPointerException nếu mất kết nối DB
 
-                list.add(auction);
+            try (PreparedStatement ps = conn.prepareStatement(sql);
+                 ResultSet rs = ps.executeQuery()) {
+                
+                while (rs.next()) {
+                    Auction auction = new Auction();
+                    auction.setId(rs.getString("id"));
+                    auction.setProductName(rs.getString("name"));
+                    auction.setDescription(rs.getString("description"));
+                    auction.setStartPrice(rs.getDouble("start_price"));
+                    auction.setCurrentHighestBid(rs.getDouble("current_highest_bid"));
+                    auction.setStartTime(parseDateTime(rs.getString("start_time")));
+                    auction.setEndTime(parseDateTime(rs.getString("end_time")));
+                    auction.setCategory(rs.getString("category"));
+                    auction.setStatus(rs.getString("status"));
+                    auction.setSellerId(rs.getInt("seller_id"));
+                    auction.setImageUrl(rs.getString("image_url"));
+
+                    list.add(auction);
+                }
             }
         } catch (SQLException e) {
             System.err.println("Error loading active auctions: " + e.getMessage());

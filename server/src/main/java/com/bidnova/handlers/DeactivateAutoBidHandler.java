@@ -20,7 +20,7 @@ public class DeactivateAutoBidHandler implements ActionHandler {
             JsonObject data = JsonParser.parseString(request.getPayload()).getAsJsonObject();
             String auctionId = data.get("auctionId").getAsString();
 
-            boolean success = autoBidService.deactivateAutoBid(authUser.getUsername(), auctionId);
+            boolean success = autoBidService.deactivateAutoBid(authUser.getUserId(), auctionId);
             if (success) {
                 return new Response("SUCCESS", "Đã tắt đấu giá tự động", null);
             } else {

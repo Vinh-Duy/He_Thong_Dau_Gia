@@ -122,7 +122,7 @@ public class AuctionDetailController implements Initializable {
                     Gson gson = new GsonBuilder()
                         .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                         .create();
-                    Auction auction = gson.fromJson(response.getData().toString(), Auction.class);
+                    Auction auction = gson.fromJson((String) response.getData(), Auction.class);
                     
                     Platform.runLater(() -> {
                         setAuction(auction);
@@ -278,9 +278,11 @@ public class AuctionDetailController implements Initializable {
                             txtBidInput.clear();
                             lblBidError.setVisible(false);
                             
-                            // Cập nhật giá hiển thị tại chỗ cho mượt (UX tốt hơn)
+                            // Cập nhật giá hiển thị tạm thời với giá vừa đặt (Optimistic UI)
+                            // Giá chuẩn cuối cùng sẽ được cập nhật qua handleRealTimeUpdate (Socket)
                             currentPriceValue = bidAmount;
                             lblCurrentBid.setText(formatVietnameseCurrency(bidAmount));
+
                             // Không thêm điểm chart ở đây, để handleRealTimeUpdate xử lý
                             // tránh bị trùng 2 điểm
                         } else {
@@ -362,6 +364,7 @@ public class AuctionDetailController implements Initializable {
                         String errorMsg = (response != null && response.getMessage() != null) 
                                           ? response.getMessage() : "Lỗi không xác định";
                         showAlert("Lỗi", "Không thể kích hoạt Auto-Bid: " + errorMsg);
+                        System.out.println(errorMsg);
                     }
                 });
             }).start();
@@ -397,7 +400,7 @@ public class AuctionDetailController implements Initializable {
                 Platform.runLater(() -> {
                     if (response != null && "SUCCESS".equals(response.getStatus()) && response.getData() != null) {
                         try {
-                            JsonObject autoBidJson = JsonParser.parseString(response.getData().toString()).getAsJsonObject();
+                            JsonObject autoBidJson = JsonParser.parseString((String) response.getData()).getAsJsonObject();
                             
                             if (autoBidJson.has("isActive") && autoBidJson.get("isActive").getAsBoolean()) {
                                 double maxBid = autoBidJson.get("maxBid").getAsDouble();

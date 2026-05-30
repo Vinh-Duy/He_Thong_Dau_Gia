@@ -127,16 +127,6 @@ public class ClientHandler implements Runnable {
                "DELETE_PRODUCT".equals(action) || "PLACE_BID".equals(action);
     }
 
-    private void broadcast(String message) {
-        for (PrintWriter writer : clientWriters) {
-            try {
-                writer.println(message);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     /**
      * Public static method cho handlers gọi broadcast.
      * Dùng để gửi real-time updates (auto-bid, bid updates) cho tất cả clients.

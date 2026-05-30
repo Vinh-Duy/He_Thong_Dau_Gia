@@ -34,8 +34,12 @@ public class AutoBidService {
             
             // Sort by creation time (FIFO) - first person to set auto-bid gets priority
             for (AutoBid autoBid : autoBids) {
+                User user = userDAO.findById(autoBid.getUserId());
+                if (user == null) continue; // User no longer exists
+                String username = user.getUsername();
+                
                 String currentLeader = auction.getHighestBidder();
-                if (!isAutoBidValid(autoBid, currentHighestBid, currentLeader)) {
+                if (!isAutoBidValid(autoBid, currentHighestBid, currentLeader, user)) {
                     continue;
                 }
 
@@ -45,15 +49,15 @@ public class AutoBidService {
                 // Check if next bid is within max limit
                 if (nextBidAmount <= autoBid.getMaxBid()) {
                     // Place the auto bid
-                    placeAutoBidOnAuction(auctionId, autoBid.getUsername(), nextBidAmount);
-                    System.out.println("✓ Auto-bid placed: " + autoBid.getUsername() + " bid " + nextBidAmount);
+                    placeAutoBidOnAuction(auctionId, username, nextBidAmount);
+                    System.out.println("✓ Auto-bid placed: " + username + " bid " + nextBidAmount);
                     
                     // Update current highest bid for next auto-bid check
                     currentHighestBid = nextBidAmount;
                 } else {
                     // Max bid reached - deactivate this auto-bid
                     autoBidDAO.deactivateAutoBid(autoBid.getId());
-                    System.out.println("⊘ Auto-bid deactivated (max bid reached): " + autoBid.getUsername());
+                    System.out.println("⊘ Auto-bid deactivated (max bid reached): " + username);
                 }
             }
         } catch (Exception e) {
@@ -65,7 +69,7 @@ public class AutoBidService {
     /**
      * Validate if auto-bid should be executed
      */
-    private boolean isAutoBidValid(AutoBid autoBid, double currentBid, String currentLeader) {
+    private boolean isAutoBidValid(AutoBid autoBid, double currentBid, String currentLeader, User user) {
         // Auto-bid must be active
         if (!autoBid.isActive()) {
             return false;
@@ -77,7 +81,7 @@ public class AutoBidService {
         }
 
         // Không tự đấu giá đè lên chính mình
-        if (autoBid.getUsername().equals(currentLeader)) {
+        if (user.getUsername().equals(currentLeader)) {
             return false;
         }
 
@@ -135,9 +139,9 @@ public class AutoBidService {
     /**
      * Deactivate auto-bid for a user on an auction
      */
-    public boolean deactivateAutoBid(String username, String auctionId) {
+    public boolean deactivateAutoBid(int userId, String auctionId) {
         try {
-            AutoBid autoBid = autoBidDAO.findByUserAndAuction(username, auctionId);
+            AutoBid autoBid = autoBidDAO.findByUserAndAuction(userId, auctionId);
             if (autoBid != null) {
                 return autoBidDAO.deactivateAutoBid(autoBid.getId());
             }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,16 +14,16 @@ import com.bidnova.models.AutoBid;
 public class AutoBidDAO {
     
     public boolean createAutoBid(AutoBid autoBid) {
-        String sql = "INSERT INTO auto_bids (auction_id, username, max_bid, increment, is_active, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO auto_bids (auction_id, user_id, max_bid, increment, is_active, created_at) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             pstmt.setString(1, autoBid.getAuctionId());
-            pstmt.setString(2, autoBid.getUsername());
+            pstmt.setInt(2, autoBid.getUserId());
             pstmt.setDouble(3, autoBid.getMaxBid());
             pstmt.setDouble(4, autoBid.getIncrement());
             pstmt.setBoolean(5, autoBid.isActive());
-            pstmt.setLong(6, autoBid.getCreatedAt());
+            pstmt.setTimestamp(6, Timestamp.valueOf(autoBid.getCreatedAt()));
             
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -45,11 +46,11 @@ public class AutoBidDAO {
                     AutoBid autoBid = new AutoBid();
                     autoBid.setId(rs.getInt("id"));
                     autoBid.setAuctionId(rs.getString("auction_id"));
-                    autoBid.setUsername(rs.getString("username"));
+                    autoBid.setUserId(rs.getInt("user_id"));
                     autoBid.setMaxBid(rs.getDouble("max_bid"));
                     autoBid.setIncrement(rs.getDouble("increment"));
                     autoBid.setActive(rs.getBoolean("is_active"));
-                    autoBid.setCreatedAt(rs.getLong("created_at"));
+                    autoBid.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
                     
                     autoBids.add(autoBid);
                 }
@@ -74,12 +75,12 @@ public class AutoBidDAO {
         }
     }
     
-    public AutoBid findByUserAndAuction(String username, String auctionId) {
-        String sql = "SELECT * FROM auto_bids WHERE username = ? AND auction_id = ? AND is_active = true";
+    public AutoBid findByUserAndAuction(int userId, String auctionId) {
+        String sql = "SELECT * FROM auto_bids WHERE user_id = ? AND auction_id = ? AND is_active = true";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            pstmt.setString(1, username);
+            pstmt.setInt(1, userId);
             pstmt.setString(2, auctionId);
             
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -87,11 +88,11 @@ public class AutoBidDAO {
                     AutoBid autoBid = new AutoBid();
                     autoBid.setId(rs.getInt("id"));
                     autoBid.setAuctionId(rs.getString("auction_id"));
-                    autoBid.setUsername(rs.getString("username"));
+                    autoBid.setUserId(rs.getInt("user_id"));
                     autoBid.setMaxBid(rs.getDouble("max_bid"));
                     autoBid.setIncrement(rs.getDouble("increment"));
                     autoBid.setActive(rs.getBoolean("is_active"));
-                    autoBid.setCreatedAt(rs.getLong("created_at"));
+                    autoBid.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
                     
                     return autoBid;
                 }

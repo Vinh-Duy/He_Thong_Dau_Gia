@@ -13,7 +13,10 @@ import java.util.Date;
 
 public class JwtUtil {
     // Load .env từ thư mục gốc
-    private static final Dotenv dotenv = Dotenv.load();
+    private static final Dotenv dotenv = Dotenv.configure()
+            .ignoreIfMissing()
+            .ignoreIfMalformed()
+            .load();
     private static final String SECRET = dotenv.get("JWT_SECRET");
     private static final Key KEY = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
     private static final long EXPIRATION_TIME = 86400000; // 1 ngày tính bằng ms

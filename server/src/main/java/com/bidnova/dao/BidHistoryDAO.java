@@ -19,15 +19,14 @@ public class BidHistoryDAO {
      * @return true nếu thêm thành công, false nếu có lỗi.
      */
     public boolean addBid(BidHistory bidHistory) {
-        String sql = "INSERT INTO BidHistory (auction_id, user_id, username, bid_amount, bid_time) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO bidhistory (auction_id, user_id, bid_amount, bid_time) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, bidHistory.getAuctionId());
             stmt.setInt(2, bidHistory.getUserId());
-            stmt.setString(3, bidHistory.getUsername());
-            stmt.setDouble(4, bidHistory.getBidAmount());
-            stmt.setTimestamp(5, Timestamp.valueOf(bidHistory.getBidTime()));
+            stmt.setDouble(3, bidHistory.getBidAmount());
+            stmt.setTimestamp(4, Timestamp.valueOf(bidHistory.getBidTime()));
 
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -44,7 +43,7 @@ public class BidHistoryDAO {
      */
     public List<BidHistory> getBidHistoryForAuction(String auctionId) {
         List<BidHistory> bidHistories = new ArrayList<>();
-        String sql = "SELECT id, auction_id, user_id, username, bid_amount, bid_time FROM BidHistory WHERE auction_id = ? ORDER BY bid_time ASC";
+        String sql = "SELECT bh.id, bh.auction_id, bh.user_id, u.username, bh.bid_amount, bh.bid_time FROM bidhistory bh JOIN users u ON bh.user_id = u.id WHERE bh.auction_id = ? ORDER BY bh.bid_time ASC";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 

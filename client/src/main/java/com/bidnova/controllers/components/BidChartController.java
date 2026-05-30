@@ -1,5 +1,12 @@
 package com.bidnova.controllers.components;
 
+import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import com.bidnova.models.BidHistory;
 import com.bidnova.network.NetworkClient;
 import com.bidnova.network.Request;
@@ -8,25 +15,18 @@ import com.bidnova.utils.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
-
-import java.text.NumberFormat;
-import java.util.Locale;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BidChartController {
     @FXML private LineChart<Number, Number> bidChart;
@@ -127,7 +127,7 @@ public class BidChartController {
                             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                             .create();
 
-                    List<BidHistory> history = gson.fromJson(response.getData().toString(),
+                    List<BidHistory> history = gson.fromJson((String) response.getData(),
                             new TypeToken<List<BidHistory>>() {}.getType());
 
                     Platform.runLater(() -> {

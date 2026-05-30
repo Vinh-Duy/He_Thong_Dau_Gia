@@ -15,9 +15,28 @@ import io.github.cdimascio.dotenv.Dotenv;
  * Upload ảnh lên Cloudinary (unsigned upload với upload preset).
  */
 public class CloudinaryUploader {
-    private static final Dotenv dotenv = Dotenv.load();
-    private static final String CLOUD_NAME = dotenv.get("CLOUD_NAME"); 
-    private static final String UPLOAD_PRESET = dotenv.get("UPLOAD_PRESET");
+    private static final Dotenv dotenv = Dotenv.configure()
+            .ignoreIfMissing()
+            .ignoreIfMalformed()
+            .load();
+
+    private static String CLOUD_NAME = dotenv.get("CLOUD_NAME"); 
+    private static String CLOUDINARY_UPLOAD_PRESET = dotenv.get("CLOUDINARY_UPLOAD_PRESET");
+
+    static {
+        // Nếu không tìm thấy ở root module, thử tìm ở thư mục cha (project root)
+        if (CLOUD_NAME == null) {
+            Dotenv fallback = Dotenv.configure().directory("..").ignoreIfMissing().load();
+            CLOUD_NAME = fallback.get("CLOUD_NAME");
+            CLOUDINARY_UPLOAD_PRESET = fallback.get("CLOUDINARY_UPLOAD_PRESET");
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Working Directory: " + System.getProperty("user.dir"));
+        System.out.println("CLOUD_NAME: " + CLOUD_NAME);
+        System.out.println("CLOUDINARY_UPLOAD_PRESET: " + CLOUDINARY_UPLOAD_PRESET);
+    }
 
     /**
      * Upload file ảnh lên Cloudinary.
@@ -27,6 +46,21 @@ public class CloudinaryUploader {
      */
     public static String upload(File file) {
         try {
+            // Kiểm tra cấu hình trước khi upload
+            if (CLOUD_NAME == null || CLOUD_NAME.isEmpty()) {
+                String workingDir = System.getProperty("user.dir");
+                System.err.println("LỖI: Không tìm thấy cấu hình CLOUD_NAME.");
+                System.err.println("Đang chạy tại: " + workingDir);
+                System.err.println("Hãy đảm bảo file .env tồn tại trong thư mục trên.");
+                return null;
+            }
+            if (CLOUDINARY_UPLOAD_PRESET == null || CLOUDINARY_UPLOAD_PRESET.isEmpty()) {
+                System.err.println("LỖI: CLOUDINARY_UPLOAD_PRESET chưa được cấu hình. Hãy kiểm tra file .env");
+                return null;
+            }
+
+            System.out.println("Đang upload lên Cloudinary (Cloud: " + CLOUD_NAME + ")...");
+
             // Đọc file thành bytes
             byte[] fileBytes = Files.readAllBytes(file.toPath());
             String fileName = file.getName();
@@ -52,7 +86,7 @@ public class CloudinaryUploader {
             footerSb.append(twoHyphens).append(boundary).append(lineEnd);
             footerSb.append("Content-Disposition: form-data; name=\"upload_preset\"").append(lineEnd);
             footerSb.append(lineEnd);
-            footerSb.append(UPLOAD_PRESET).append(lineEnd);
+            footerSb.append(CLOUDINARY_UPLOAD_PRESET).append(lineEnd);
 
             footerSb.append(twoHyphens).append(boundary).append(twoHyphens).append(lineEnd);
 

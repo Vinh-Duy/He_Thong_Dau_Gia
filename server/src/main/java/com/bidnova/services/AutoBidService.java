@@ -16,11 +16,31 @@ import com.bidnova.models.User;
  * Service to handle automatic bidding logic
  */
 public class AutoBidService {
-    private final AutoBidDAO autoBidDAO = new AutoBidDAO();
-    private final AuctionDAO auctionDAO = new AuctionDAO();
-    private final BidHistoryDAO bidHistoryDAO = new BidHistoryDAO();
-    private final UserDAO userDAO = new UserDAO();
-    private final AuctionManager auctionManager = AuctionManager.getInstance();
+    private final AutoBidDAO autoBidDAO;
+    private final AuctionDAO auctionDAO;
+    private final BidHistoryDAO bidHistoryDAO;
+    private final UserDAO userDAO;
+    private final AuctionManager auctionManager;
+
+    // Constructor cho dependency injection (testing)
+    public AutoBidService(AutoBidDAO autoBidDAO, AuctionDAO auctionDAO,
+                         BidHistoryDAO bidHistoryDAO, UserDAO userDAO,
+                         AuctionManager auctionManager) {
+        this.autoBidDAO = autoBidDAO;
+        this.auctionDAO = auctionDAO;
+        this.bidHistoryDAO = bidHistoryDAO;
+        this.userDAO = userDAO;
+        this.auctionManager = auctionManager;
+    }
+
+    // Default constructor cho production use
+    public AutoBidService() {
+        this.autoBidDAO = new AutoBidDAO();
+        this.auctionDAO = new AuctionDAO();
+        this.bidHistoryDAO = new BidHistoryDAO();
+        this.userDAO = new UserDAO();
+        this.auctionManager = AuctionManager.getInstance();
+    }
 
     /**
      * Execute auto bids when a new bid is placed

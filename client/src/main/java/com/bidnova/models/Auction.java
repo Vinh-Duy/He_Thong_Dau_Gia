@@ -2,7 +2,6 @@ package com.bidnova.models;
 
 import java.time.LocalDateTime;
 
-// TODO: làm giá trần + bước giá tối thiểu
 public class Auction {
     private String id;
     private String productName;
@@ -16,11 +15,16 @@ public class Auction {
     private LocalDateTime endTime;
     private int sellerId;
     private String imageUrl;
+    
+    // ⭐️ NEW FIELDS
+    private Double priceCeiling;          // Giá trần - null = vô giới hạn
+    private double minBidIncrement = 1000; // Bước giá tối thiếu
 
 
     // Constructor
     public Auction() {
         this.status = "OPEN";
+        this.minBidIncrement = 1000; // Default 1 triệu
     }
 
     // Getters & Setters
@@ -59,6 +63,35 @@ public class Auction {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    // ⭐️ NEW GETTERS & SETTERS
+    public Double getPriceCeiling() { 
+        return priceCeiling; 
+    }
+    
+    public void setPriceCeiling(Double priceCeiling) { 
+        this.priceCeiling = priceCeiling; 
+    }
+
+    public double getMinBidIncrement() { 
+        return minBidIncrement; 
+    }
+    
+    public void setMinBidIncrement(double minBidIncrement) { 
+        this.minBidIncrement = minBidIncrement; 
+    }
+
+    // Helper method: Check if bid reaches ceiling
+    public boolean isBidAtCeiling(double bidAmount) {
+        if (priceCeiling == null) return false;
+        return bidAmount >= priceCeiling;
+    }
+
+    // Helper method: Validate if bid respects min increment
+    public boolean isBidIncrementValid(double bidAmount) {
+        double increment = bidAmount - currentHighestBid;
+        return increment >= minBidIncrement;
+    }
 
     // Hàm đặt giá
     public synchronized boolean placeBid(String username, double bidAmount) {

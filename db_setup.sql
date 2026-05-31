@@ -23,6 +23,8 @@ CREATE TABLE `auctions` (
 	`status` VARCHAR(50) NULL DEFAULT 'OPEN' COLLATE 'utf8mb4_0900_ai_ci',
 	`category` VARCHAR(255) NULL DEFAULT NULL COLLATE 'utf8mb4_0900_ai_ci',
 	`seller_id` INT NULL DEFAULT NULL,
+	`price_ceiling` DOUBLE NULL DEFAULT NULL COMMENT 'Giá tối đa - khi đạt giá này đấu giá kết thúc',
+	`min_bid_increment` DOUBLE NOT NULL DEFAULT 1000 COMMENT 'Bước giá tối thiếu (VD: 1tr)',
 	`created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	`updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`) USING BTREE,

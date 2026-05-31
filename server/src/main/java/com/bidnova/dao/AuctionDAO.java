@@ -45,6 +45,13 @@ public class AuctionDAO {
                 auction.setStatus(rs.getString("status"));
                 auction.setSellerId(rs.getInt("seller_id"));
                 auction.setImageUrl(rs.getString("image_url"));
+                
+                // ⭐️ NEW FIELDS
+                Object ceilingObj = rs.getObject("price_ceiling");
+                if (ceilingObj != null) {
+                    auction.setPriceCeiling(rs.getDouble("price_ceiling"));
+                }
+                auction.setMinBidIncrement(rs.getDouble("min_bid_increment"));
 
                 list.add(auction);
             }
@@ -194,6 +201,14 @@ public class AuctionDAO {
                     a.setStatus(rs.getString("status"));
                     a.setCategory(rs.getString("category"));
                     a.setImageUrl(rs.getString("image_url"));
+                    
+                    // ⭐️ NEW FIELDS
+                    Object ceilingObj = rs.getObject("price_ceiling");
+                    if (ceilingObj != null) {
+                        a.setPriceCeiling(rs.getDouble("price_ceiling"));
+                    }
+                    a.setMinBidIncrement(rs.getDouble("min_bid_increment"));
+                    
                     return a;
                 }
             }
@@ -201,5 +216,93 @@ public class AuctionDAO {
             System.err.println("Error finding auction by id: " + e.getMessage());
         }
         return null;
+    }
+
+    // ⭐️ NEW METHODS FOR PRICE CEILING & MIN BID INCREMENT
+
+    /**
+     * Get price ceiling for an auction
+     */
+    public Double getPriceCeiling(String auctionId) {
+        String sql = "SELECT price_ceiling FROM auctions WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, auctionId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getObject("price_ceiling", Double.class);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting price ceiling: " + e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * Update price ceiling for an auction
+     */
+    public void updatePriceCeiling(String auctionId, Double priceCeiling) {
+        String sql = "UPDATE auctions SET price_ceiling = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            if (priceCeiling == null) {
+                pstmt.setNull(1, java.sql.Types.DOUBLE);
+            } else {
+                pstmt.setDouble(1, priceCeiling);
+            }
+            pstmt.setString(2, auctionId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error updating price ceiling: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Get minimum bid increment for an auction
+     */
+    public double getMinBidIncrement(String auctionId) {
+        String sql = "SELECT min_bid_increment FROM auctions WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, auctionId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                double minIncrement = rs.getDouble("min_bid_increment");
+                return minIncrement > 0 ? minIncrement : 1000; // Default 1tr
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting min bid increment: " + e.getMessage());
+        }
+        return 1000; // Default
+    }
+
+    /**
+     * Update minimum bid increment for an auction
+     */
+    public void updateMinBidIncrement(String auctionId, double minBidIncrement) {
+        String sql = "UPDATE auctions SET min_bid_increment = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDouble(1, minBidIncrement);
+            pstmt.setString(2, auctionId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error updating min bid increment: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Update auction status
+     */
+    public void updateStatus(String auctionId, String status) {
+        String sql = "UPDATE auctions SET status = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, status);
+            pstmt.setString(2, auctionId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error updating status: " + e.getMessage());
+        }
     }
 }

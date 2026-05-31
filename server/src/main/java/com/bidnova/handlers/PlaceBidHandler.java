@@ -56,6 +56,19 @@ public class PlaceBidHandler implements ActionHandler {
                     );
                 }
 
+                // ⭐️ NEW: Validate minimum bid increment
+                double bidIncrement = bidAmount - currentAuction.getCurrentHighestBid();
+                if (bidIncrement < currentAuction.getMinBidIncrement()) {
+                    double minRequiredBid = currentAuction.getCurrentHighestBid() + currentAuction.getMinBidIncrement();
+                    return new Response(
+                        "ERROR",
+                        String.format("Bước giá tối thiểu là %.0f. Giá tối thiểu yêu cầu: %.0f", 
+                            currentAuction.getMinBidIncrement(), 
+                            minRequiredBid),
+                        null
+                    );
+                }
+
                 currentAuction.setCurrentHighestBid(bidAmount);
                 currentAuction.setHighestBidder(authUser.getUsername());
                 auctionDAO.updateHighestBid(auctionId, bidAmount);
@@ -91,16 +104,26 @@ public class PlaceBidHandler implements ActionHandler {
                 // Lấy giá MỚI NHẤT sau khi auto-bids trigger (có thể đã tăng)
                 double finalHighestBid = currentAuction.getCurrentHighestBid();
 
+                // ⭐️ NEW: Check if price ceiling reached
+                boolean ceilingReached = false;
+                if (currentAuction.isBidAtCeiling(finalHighestBid)) {
+                    currentAuction.setStatus("FINISHED");
+                    auctionDAO.updateStatus(auctionId, "FINISHED");
+                    ceilingReached = true;
+                    System.out.println("🎯 Auction " + auctionId + " FINISHED - Price ceiling reached!");
+                }
+
                 JsonObject successData = new JsonObject();
                 successData.addProperty("auctionId", auctionId);
                 successData.addProperty("newHighestBid", finalHighestBid);
+                successData.addProperty("ceilingReached", ceilingReached); // ⭐️ NEW
                 if (currentAuction.getEndTime() != null) {
                     successData.addProperty("newEndTime", currentAuction.getEndTime().toString());
                 }
                 successData.addProperty("isExtended", isExtended);
 
                 JsonObject event = new JsonObject();
-                event.addProperty("action", "BID_UPDATE");
+                event.addProperty("action", ceilingReached ? "AUCTION_FINISHED" : "BID_UPDATE"); // ⭐️ UPDATED
                 event.addProperty("payload", gson.toJson(successData));
 
                 JsonObject result = new JsonObject();

@@ -1,16 +1,15 @@
 package com.bidnova.controllers.bidder;
 
 import java.net.URL;
+import java.text.NumberFormat;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
-import java.time.LocalDateTime;
-import java.text.NumberFormat;
-
+import com.bidnova.controllers.components.BidChartController;
+import com.bidnova.controllers.components.BidHistoryController;
 import com.bidnova.models.Auction;
 import com.bidnova.network.NetworkClient;
 import com.bidnova.network.Request;
-import com.bidnova.controllers.components.BidHistoryController;
-import com.bidnova.controllers.components.BidChartController;
 import com.bidnova.network.Response;
 import com.bidnova.utils.LocalDateTimeAdapter;
 import com.bidnova.utils.SessionManager;
@@ -21,7 +20,6 @@ import com.google.gson.JsonParser;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.util.Duration;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +33,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class AuctionDetailController implements Initializable {
     @FXML private Button btnBack;
@@ -259,6 +258,29 @@ public class AuctionDetailController implements Initializable {
                 lblBidError.setText("Giá đấu phải cao hơn giá hiện tại!");
                 lblBidError.setVisible(true);
                 return;
+            }
+
+            // ⭐️ NEW: Check minimum bid increment
+            double bidIncrement = bidAmount - currentPriceValue;
+            double minBidIncrement = currentAuction.getMinBidIncrement();
+            
+            if (bidIncrement < minBidIncrement) {
+                double minRequiredBid = currentPriceValue + minBidIncrement;
+                lblBidError.setText(
+                    String.format("Bước giá tối thiểu: %.0f. Giá tối thiểu: %.0f",
+                        minBidIncrement, minRequiredBid)
+                );
+                lblBidError.setVisible(true);
+                return;
+            }
+
+            // ⭐️ NEW: Warn if approaching price ceiling
+            if (currentAuction.getPriceCeiling() != null) {
+                if (bidAmount >= currentAuction.getPriceCeiling()) {
+                    showAlert("Thông báo", "Giá của bạn đạt giới hạn trần - đấu giá sẽ kết thúc!");
+                } else if (bidAmount > currentAuction.getPriceCeiling() * 0.9) {
+                    showAlert("Cảnh báo", "Giá của bạn gần giới hạn trần!");
+                }
             }
 
             // Send bid request

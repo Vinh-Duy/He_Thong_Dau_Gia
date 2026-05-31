@@ -42,18 +42,44 @@ public class AutoBidService {
                 // Calculate next bid amount
                 double nextBidAmount = currentHighestBid + autoBid.getIncrement();
 
+                // ⭐️ NEW: Validate minimum bid increment
+                double minimumRequiredIncrement = auction.getMinBidIncrement();
+                if ((nextBidAmount - currentHighestBid) < minimumRequiredIncrement) {
+                    // Adjust to minimum increment
+                    nextBidAmount = currentHighestBid + minimumRequiredIncrement;
+                    System.out.println("📊 Adjusted bid from " + 
+                        (currentHighestBid + autoBid.getIncrement()) + 
+                        " to " + nextBidAmount + " (min increment: " + minimumRequiredIncrement + ")");
+                }
+
                 // Check if next bid is within max limit
                 if (nextBidAmount <= autoBid.getMaxBid()) {
-                    // Place the auto bid
-                    placeAutoBidOnAuction(auctionId, autoBid.getUsername(), nextBidAmount);
-                    System.out.println("✓ Auto-bid placed: " + autoBid.getUsername() + " bid " + nextBidAmount);
+                    
+                    // ⭐️ NEW: Check if bid reaches price ceiling
+                    if (auction.getPriceCeiling() != null && nextBidAmount >= auction.getPriceCeiling()) {
+                        // Bid reaches ceiling - place bid and close auction
+                        nextBidAmount = auction.getPriceCeiling();
+                        placeAutoBidOnAuction(auctionId, autoBid.getUsername(), nextBidAmount);
+                        
+                        // Close auction
+                        auction.setStatus("FINISHED");
+                        auctionDAO.updateStatus(auctionId, "FINISHED");
+                        autoBidDAO.deactivateAutoBid(autoBid.getId());
+                        
+                        System.out.println("🎯 Auto-bid at ceiling: " + autoBid.getUsername() + 
+                            " bid " + nextBidAmount + " - Auction finished!");
+                    } else {
+                        // Normal auto-bid
+                        placeAutoBidOnAuction(auctionId, autoBid.getUsername(), nextBidAmount);
+                        System.out.println("✓ Auto-bid placed: " + autoBid.getUsername() + " bid " + nextBidAmount);
+                    }
                     
                     // Update current highest bid for next auto-bid check
                     currentHighestBid = nextBidAmount;
                 } else {
                     // Max bid reached - deactivate this auto-bid
                     autoBidDAO.deactivateAutoBid(autoBid.getId());
-                    System.out.println("⊘ Auto-bid deactivated (max bid reached): " + autoBid.getUsername());
+                    System.out.println("⊘ Auto-bid deactivated: " + autoBid.getUsername() + " (max bid exceeded)");
                 }
             }
         } catch (Exception e) {

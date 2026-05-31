@@ -63,19 +63,19 @@ public class AutoBidService {
                     if (auction.getPriceCeiling() != null && nextBidAmount >= auction.getPriceCeiling()) {
                         // Bid reaches ceiling - place bid and close auction
                         nextBidAmount = auction.getPriceCeiling();
-                        placeAutoBidOnAuction(auctionId, autoBid.getUsername(), nextBidAmount);
+                        placeAutoBidOnAuction(auctionId, username, nextBidAmount);
                         
                         // Close auction
                         auction.setStatus("FINISHED");
                         auctionDAO.updateStatus(auctionId, "FINISHED");
                         autoBidDAO.deactivateAutoBid(autoBid.getId());
                         
-                        System.out.println("🎯 Auto-bid at ceiling: " + autoBid.getUsername() + 
+                        System.out.println("🎯 Auto-bid at ceiling: " + username + 
                             " bid " + nextBidAmount + " - Auction finished!");
                     } else {
                         // Normal auto-bid
-                        placeAutoBidOnAuction(auctionId, autoBid.getUsername(), nextBidAmount);
-                        System.out.println("✓ Auto-bid placed: " + autoBid.getUsername() + " bid " + nextBidAmount);
+                        placeAutoBidOnAuction(auctionId, username, nextBidAmount);
+                        System.out.println("✓ Auto-bid placed: " + username + " bid " + nextBidAmount);
                     }
                     
                     // Update current highest bid for next auto-bid check
@@ -83,9 +83,12 @@ public class AutoBidService {
                 } else {
                     // Max bid reached - deactivate this auto-bid
                     autoBidDAO.deactivateAutoBid(autoBid.getId());
-                    System.out.println("⊘ Auto-bid deactivated: " + autoBid.getUsername() + " (max bid exceeded)");
+                    System.out.println("⊘ Auto-bid deactivated: " + username + " (max bid exceeded)");
                 }
+            }
         } catch (Exception e) {
+            System.err.println("Error executing auto-bids: " + e.getMessage());
+        }
     }
 
     /**

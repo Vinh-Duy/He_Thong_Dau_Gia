@@ -46,32 +46,14 @@ public class AuctionDAO {
                 auction.setSellerId(rs.getInt("seller_id"));
                 auction.setImageUrl(rs.getString("image_url"));
                 
-                // ⭐️ NEW FIELDS
+                // Mapping các trường mới
                 Object ceilingObj = rs.getObject("price_ceiling");
                 if (ceilingObj != null) {
                     auction.setPriceCeiling(rs.getDouble("price_ceiling"));
                 }
                 auction.setMinBidIncrement(rs.getDouble("min_bid_increment"));
 
-            try (PreparedStatement ps = conn.prepareStatement(sql);
-                 ResultSet rs = ps.executeQuery()) {
-                
-                while (rs.next()) {
-                    Auction auction = new Auction();
-                    auction.setId(rs.getString("id"));
-                    auction.setProductName(rs.getString("name"));
-                    auction.setDescription(rs.getString("description"));
-                    auction.setStartPrice(rs.getDouble("start_price"));
-                    auction.setCurrentHighestBid(rs.getDouble("current_highest_bid"));
-                    auction.setStartTime(parseDateTime(rs.getString("start_time")));
-                    auction.setEndTime(parseDateTime(rs.getString("end_time")));
-                    auction.setCategory(rs.getString("category"));
-                    auction.setStatus(rs.getString("status"));
-                    auction.setSellerId(rs.getInt("seller_id"));
-                    auction.setImageUrl(rs.getString("image_url"));
-
-                    list.add(auction);
-                }
+                list.add(auction);
             }
         } catch (SQLException e) {
             System.err.println("Error loading active auctions: " + e.getMessage());
@@ -188,6 +170,13 @@ public class AuctionDAO {
                     a.setStatus(rs.getString("status"));
                     a.setCategory(rs.getString("category"));
                     a.setImageUrl(rs.getString("image_url"));
+
+                    Object ceilingObj = rs.getObject("price_ceiling");
+                    if (ceilingObj != null) {
+                        a.setPriceCeiling(rs.getDouble("price_ceiling"));
+                    }
+                    a.setMinBidIncrement(rs.getDouble("min_bid_increment"));
+                    
                     list.add(a);
                 }
             }

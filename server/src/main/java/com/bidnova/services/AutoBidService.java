@@ -13,7 +13,115 @@ import com.bidnova.models.BidHistory;
 import com.bidnova.models.User;
 
 /**
- * Service to handle automatic bidding logic
+ * 🤖 AutoBidService - Xử lý logic tự động đặt giá
+ * 
+ * <h2>Chức Năng:</h2>
+ * <p>Quản lý các quy tắc tự động đặt giá (AutoBid):</p>
+ * <ul>
+ *   <li>Kích hoạt AutoBid khi giá được đặt</li>
+ *   <li>Tính toán giá tiếp theo: current + increment</li>
+ *   <li>Kiểm tra constraints (maxBid, minIncrement, priceCeiling)</li>
+ *   <li>Tự động đặt giá cho người dùng</li>
+ *   <li>Ghi lịch sử AutoBid đặt giá</li>
+ *   <li>Vô hiệu hóa AutoBid khi hết hạn</li>
+ * </ul>
+ * 
+ * <h2>Quy Trình Hoạt Động:</h2>
+ * <pre>
+ * PlaceBidHandler.handle()
+ *   │
+ *   ├─ Cập nhật currentHighestBid = 105M
+ *   │
+ *   └─ autoBidService.executeAutoBids("auction123", 105)
+ *        │
+ *        ├─ Lấy danh sách AutoBid hoạt động
+ *        │
+ *        └─ Cho mỗi AutoBid (theo thứ tự FIFO):
+ *             │
+ *             ├─ Kiểm tra valid? (không phải người hiện tại, isActive=true)
+ *             │
+ *             ├─ Tính: nextBid = 105M + increment
+ *             │
+ *             ├─ ⭐ Điều chỉnh nếu < minIncrement
+ *             │
+ *             ├─ Kiểm tra nextBid <= maxBid?
+ *             │
+ *             ├─ ⭐ Kiểm tra nextBid >= priceCeiling?
+ *             │
+ *             ├─ Nếu >= ceiling:
+ *             │   ├─ Đặt giá = ceiling
+ *             │   ├─ Đóng phiên (status = FINISHED)
+ *             │   └─ Vô hiệu hóa AutoBid
+ *             │
+ *             └─ Nếu < ceiling:
+ *                 ├─ Đặt giá = nextBid
+ *                 └─ Giữ AutoBid hoạt động
+ * </pre>
+ * 
+ * <h2>Ví Dụ Chi Tiết:</h2>
+ * <pre>
+ * ==================== AutoBid Execution Example ====================
+ * 
+ * Setup:
+ * - Phiên: "Toyota Camry"
+ * - Current highest: 100M (User A)
+ * - Min increment: 2M
+ * - Price ceiling: 150M
+ * 
+ * User B's AutoBid:
+ * - maxBid: 180M (cao hơn ceiling)
+ * - increment: 5M
+ * - isActive: true
+ * 
+ * Execution Flow:
+ * 
+ * 1️⃣ User C bids 105M
+ *    → executeAutoBids("auction123", 105)
+ *    → nextBid = 105 + 5 = 110M
+ *    → 110M < 150M ceiling ✓
+ *    → Place bid 110M for User B
+ *    → AutoBid stays active
+ * 
+ * 2️⃣ User A bids 115M
+ *    → executeAutoBids("auction123", 115)
+ *    → nextBid = 115 + 5 = 120M
+ *    → 120M < 150M ceiling ✓
+ *    → Place bid 120M for User B
+ *    → AutoBid stays active
+ * 
+ * 3️⃣ User C bids 140M
+ *    → executeAutoBids("auction123", 140)
+ *    → nextBid = 140 + 5 = 145M
+ *    → 145M < 150M ceiling ✓
+ *    → Place bid 145M for User B
+ *    → AutoBid stays active
+ * 
+ * 4️⃣ User A bids 148M
+ *    → executeAutoBids("auction123", 148)
+ *    → nextBid = 148 + 5 = 153M
+ *    → ⚠️ 153M >= 150M ceiling!
+ *    → Set nextBid = 150M (ceiling)
+ *    → Place bid 150M for User B
+ *    → Mark auction as FINISHED
+ *    → Deactivate AutoBid
+ *    → Result: User B wins at 150M
+ * </pre>
+ * 
+ * <h2>Tính Năng Nâng Cao:</h2>
+ * <ul>
+ *   <li>✅ <b>FIFO Priority:</b> Sắp xếp AutoBid theo thời gian tạo (FIFO)</li>
+ *   <li>✅ <b>Min Increment Adjustment:</b> Tự động điều chỉnh nếu < minIncrement</li>
+ *   <li>✅ <b>Price Ceiling Handling:</b> Tự động kết thúc phiên khi đạt trần</li>
+ *   <li>✅ <b>User Validation:</b> Kiểm tra người dùng còn tồn tại không</li>
+ *   <li>✅ <b>Bid History Recording:</b> Ghi lại mọi AutoBid placement</li>
+ *   <li>✅ <b>Multiple AutoBids:</b> Hỗ trợ nhiều AutoBid trên cùng phiên</li>
+ * </ul>
+ * 
+ * @author BidNova Team
+ * @version 2.0 (with min increment & price ceiling)
+ * @see PlaceBidHandler
+ * @see AutoBid
+ * @see Auction
  */
 public class AutoBidService {
     private final AutoBidDAO autoBidDAO;
@@ -22,7 +130,15 @@ public class AutoBidService {
     private final UserDAO userDAO;
     private final AuctionManager auctionManager;
 
-    // Constructor cho dependency injection (testing)
+    /**
+     * Constructor cho dependency injection (hữu ích để testing)
+     * 
+     * @param autoBidDAO     DAO để quản lý AutoBid records
+     * @param auctionDAO     DAO để quản lý Auction records
+     * @param bidHistoryDAO  DAO để ghi lịch sử bids
+     * @param userDAO        DAO để lấy thông tin user
+     * @param auctionManager Manager để quản lý auctions in-memory
+     */
     public AutoBidService(AutoBidDAO autoBidDAO, AuctionDAO auctionDAO,
                          BidHistoryDAO bidHistoryDAO, UserDAO userDAO,
                          AuctionManager auctionManager) {
@@ -33,7 +149,9 @@ public class AutoBidService {
         this.auctionManager = auctionManager;
     }
 
-    // Default constructor cho production use
+    /**
+     * Constructor mặc định - Sử dụng DAO instances mặc định (production)
+     */
     public AutoBidService() {
         this.autoBidDAO = new AutoBidDAO();
         this.auctionDAO = new AuctionDAO();
@@ -43,8 +161,38 @@ public class AutoBidService {
     }
 
     /**
-     * Execute auto bids when a new bid is placed
-     * Checks all active auto-bids for the auction and places bids if conditions are met
+     * executeAutoBids() - Kích hoạt tất cả AutoBids để đấu chứng với bid mới
+     * 
+     * <h3>Quy Trình:</h3>
+     * <ol>
+     *   <li>Lấy danh sách AutoBids hoạt động cho phiên</li>
+     *   <li>Lấy Auction object từ AuctionManager</li>
+     *   <li>Cho mỗi AutoBid (theo thứ tự FIFO):
+     *     <ul>
+     *       <li>Kiểm tra người dùng còn tồn tại</li>
+     *       <li>Kiểm tra tính hợp lệ (người khác + isActive)</li>
+     *       <li>Tính nextBidAmount = currentHighestBid + increment</li>
+     *       <li>⭐ Điều chỉnh nếu < minBidIncrement</li>
+     *       <li>Kiểm tra nextBidAmount <= maxBid?
+     *         <ul>
+     *           <li>Nếu < ceiling: đặt giá bình thường</li>
+     *           <li>Nếu >= ceiling: đặt tại ceiling + đóng phiên</li>
+     *         </ul>
+     *       </li>
+     *       <li>Ngược lại: vô hiệu hóa AutoBid</li>
+     *     </ul>
+     *   </li>
+     * </ol>
+     * 
+     * @param auctionId         ID phiên đấu giá
+     * @param currentHighestBid Giá cao nhất hiện tại (mới được đặt)
+     * 
+     * <h3>Exception Handling:</h3>
+     * <p>Mọi exception bị catch và in log, không làm crash server.</p>
+     * 
+     * @see Auction#isBidAtCeiling(double)
+     * @see AutoBid#getMaxBid()
+     * @see AutoBid#getIncrement()
      */
     public void executeAutoBids(String auctionId, double currentHighestBid) {
         try {

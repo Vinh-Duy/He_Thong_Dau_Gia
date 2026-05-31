@@ -24,6 +24,53 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+/**
+ * 🔌 ClientHandler - Xử lý kết nối của mỗi client độc lập
+ * 
+ * <h2>Chức Năng:</h2>
+ * <ul>
+ *   <li>Đọc request JSON từ client qua socket</li>
+ *   <li>Xác thực token người dùng (Oauth)</li>
+ *   <li>Dispatch request tới ActionHandler thích hợp</li>
+ *   <li>Broadcast real-time updates tới tất cả clients</li>
+ *   <li>Ghi lại lịch sử hoạt động</li>
+ * </ul>
+ * 
+ * <h2>Kiến Trúc Request-Response:</h2>
+ * <pre>
+ * Client                     Server (ClientHandler)
+ *   │                              │
+ *   ├─ Request (JSON) ────→ Nhận dữ liệu
+ *   │                         │
+ *   │                         ├─ Parse JSON
+ *   │                         ├─ Validate Token
+ *   │                         ├─ Get ActionHandler
+ *   │                         └─ Handle.handle()
+ *   │                              │
+ *   ←─ Response (JSON) ────────── Gửi kết quả
+ *   │
+ *   ├─ Broadcast (nếu cần) ← Nhận cập nhật thời gian thực
+ * </pre>
+ * 
+ * <h2>Action Công Khai (Không cần token):</h2>
+ * <ul>
+ *   <li>LOGIN - Đăng nhập</li>
+ *   <li>REGISTER - Đăng ký tài khoản</li>
+ * </ul>
+ * 
+ * <h2>Action Yêu Cầu Token:</h2>
+ * <ul>
+ *   <li>PLACE_BID - Đặt giá (trigger broadcast)</li>
+ *   <li>SET_AUTO_BID - Thiết lập auto bid</li>
+ *   <li>ADD_PRODUCT - Tạo phiên đấu giá (trigger broadcast)</li>
+ *   <li>Và 15+ action khác...</li>
+ * </ul>
+ * 
+ * @author BidNova Team
+ * @version 1.0
+ * @see ActionHandler
+ * @see HandlerRegistry
+ */
 public class ClientHandler implements Runnable {
     private final Socket socket;
     private final Gson gson = new GsonBuilder()
@@ -37,10 +84,44 @@ public class ClientHandler implements Runnable {
     private static final Set<String> PUBLIC_ACTIONS =
             new HashSet<>(Arrays.asList("LOGIN", "REGISTER"));
 
+    /**
+     * Constructor - Khởi tạo handler cho một client mới
+     * 
+     * @param socket Socket kết nối tới client
+     */
     public ClientHandler(Socket socket) {
         this.socket = socket;
     }
 
+    /**
+     * run() - Luồng chính xử lý request từ client
+     * 
+     * <h3>Quy Trình:</h3>
+     * <ol>
+     *   <li>Mở BufferedReader để đọc JSON từ client</li>
+     *   <li>Mở PrintWriter để gửi response lại</li>
+     *   <li>Vòng lặp đọc request cho đến khi client đóng</li>
+     *   <li>Mỗi request:
+     *     <ul>
+     *       <li>Parse JSON thành Request object</li>
+     *       <li>Xác thực token (nếu không phải PUBLIC_ACTION)</li>
+     *       <li>Tìm ActionHandler phù hợp</li>
+     *       <li>Gọi handler.handle(request, authUser)</li>
+     *       <li>Gửi response JSON lại client</li>
+     *       <li>Broadcast nếu là PLACE_BID hoặc sửa sản phẩm</li>
+     *     </ul>
+     *   </li>
+     *   <li>Cleanup: Đóng socket, xóa PrintWriter khỏi broadcast list</li>
+     * </ol>
+     * 
+     * <h3>Exception Handling:</h3>
+     * <ul>
+     *   <li>JSON parse error → Gửi error response</li>
+     *   <li>Token không hợp lệ → ERROR: "Unauthorized: token không hợp lệ"</li>
+     *   <li>Action không tìm thấy → ERROR: "Hành động không hợp lệ"</li>
+     *   <li>Client ngắt kết nối → In log và cleanup</li>
+     * </ul>
+     */
     @Override
     public void run() {
         PrintWriter out = null;
@@ -122,14 +203,53 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * isProductModification() - Kiểm tra xem action có làm thay đổi sản phẩm/đấu giá không
+     * 
+     * @param action Tên action (ví dụ: "ADD_PRODUCT", "PLACE_BID", etc.)
+     * @return true nếu action gây thay đổi cần broadcast, false ngược lại
+     * 
+     * <h3>Actions Trigger Broadcast:</h3>
+     * <ul>
+     *   <li>ADD_PRODUCT - Tạo phiên đấu giá mới</li>
+     *   <li>UPDATE_PRODUCT - Cập nhật thông tin phiên</li>
+     *   <li>DELETE_PRODUCT - Xóa phiên đấu giá</li>
+     *   <li>PLACE_BID - Đặt giá (cập nhật giá hiện tại)</li>
+     * </ul>
+     */
     private boolean isProductModification(String action) {
         return "ADD_PRODUCT".equals(action) || "UPDATE_PRODUCT".equals(action) || 
                "DELETE_PRODUCT".equals(action) || "PLACE_BID".equals(action);
     }
 
     /**
-     * Public static method cho handlers gọi broadcast.
-     * Dùng để gửi real-time updates (auto-bid, bid updates) cho tất cả clients.
+     * broadcastAll() - Gửi message tới tất cả clients kết nối
+     * 
+     * <h3>Chức Năng:</h3>
+     * <p>Lặp qua toàn bộ PrintWriter trong clientWriters set và gửi message.</p>
+     * <p>Được gọi khi có thay đổi thời gian thực cần cập nhật mọi client:</p>
+     * <ul>
+     *   <li>Cập nhật giá sau khi PLACE_BID</li>
+     *   <li>Danh sách phiên đấu giá thay đổi (ADD/UPDATE/DELETE)</li>
+     *   <li>AutoBid trigger thành công</li>
+     *   <li>Phiên đấu giá kết thúc</li>
+     * </ul>
+     * 
+     * @param message JSON message để gửi (ví dụ: broadcast event)
+     * 
+     * <h3>Ví Dụ Message:</h3>
+     * <pre>
+     * {
+     *   "action": "AUCTION_LIST_UPDATE",
+     *   "status": "SUCCESS"
+     * }
+     * </pre>
+     * 
+     * <h3>Exception Handling:</h3>
+     * <p>Nếu writer throw exception (client đã disconnect), log error nhưng không crash server.</p>
+     * 
+     * @since Dùng cho real-time updates
+     * @see #isProductModification(String)
      */
     public static void broadcastAll(String message) {
         for (PrintWriter writer : clientWriters) {

@@ -136,7 +136,7 @@ public class AdminController {
                 Response response = NetworkClient.getInstance().sendRequest(request);
 
                 if ("SUCCESS".equals(response.getStatus())) {
-                    List<User> list = gson.fromJson(response.getData().toString(),
+                    List<User> list = gson.fromJson((String) response.getData(),
                                       new TypeToken<List<User>>(){}.getType());
                     Platform.runLater(() -> userList.setAll(list));
                 }
@@ -194,7 +194,7 @@ public class AdminController {
                 Response response = NetworkClient.getInstance().sendRequest(request);
 
                 if ("SUCCESS".equals(response.getStatus())) {
-                    List<Auction> list = auctionGson.fromJson(response.getData().toString(),
+                    List<Auction> list = auctionGson.fromJson((String) response.getData(),
                                         new TypeToken<List<Auction>>(){}.getType());
                     Platform.runLater(() -> auctionList.setAll(list));
                 }

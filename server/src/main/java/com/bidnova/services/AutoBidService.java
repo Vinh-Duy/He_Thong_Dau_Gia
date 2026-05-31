@@ -34,8 +34,12 @@ public class AutoBidService {
             
             // Sort by creation time (FIFO) - first person to set auto-bid gets priority
             for (AutoBid autoBid : autoBids) {
+                User user = userDAO.findById(autoBid.getUserId());
+                if (user == null) continue; // User no longer exists
+                String username = user.getUsername();
+                
                 String currentLeader = auction.getHighestBidder();
-                if (!isAutoBidValid(autoBid, currentHighestBid, currentLeader)) {
+                if (!isAutoBidValid(autoBid, currentHighestBid, currentLeader, user)) {
                     continue;
                 }
 
@@ -81,17 +85,13 @@ public class AutoBidService {
                     autoBidDAO.deactivateAutoBid(autoBid.getId());
                     System.out.println("⊘ Auto-bid deactivated: " + autoBid.getUsername() + " (max bid exceeded)");
                 }
-            }
         } catch (Exception e) {
-            System.err.println("Error executing auto-bids: " + e.getMessage());
-            e.printStackTrace();
-        }
     }
 
     /**
      * Validate if auto-bid should be executed
      */
-    private boolean isAutoBidValid(AutoBid autoBid, double currentBid, String currentLeader) {
+    private boolean isAutoBidValid(AutoBid autoBid, double currentBid, String currentLeader, User user) {
         // Auto-bid must be active
         if (!autoBid.isActive()) {
             return false;
@@ -103,7 +103,7 @@ public class AutoBidService {
         }
 
         // Không tự đấu giá đè lên chính mình
-        if (autoBid.getUsername().equals(currentLeader)) {
+        if (user.getUsername().equals(currentLeader)) {
             return false;
         }
 
@@ -161,9 +161,9 @@ public class AutoBidService {
     /**
      * Deactivate auto-bid for a user on an auction
      */
-    public boolean deactivateAutoBid(String username, String auctionId) {
+    public boolean deactivateAutoBid(int userId, String auctionId) {
         try {
-            AutoBid autoBid = autoBidDAO.findByUserAndAuction(username, auctionId);
+            AutoBid autoBid = autoBidDAO.findByUserAndAuction(userId, auctionId);
             if (autoBid != null) {
                 return autoBidDAO.deactivateAutoBid(autoBid.getId());
             }

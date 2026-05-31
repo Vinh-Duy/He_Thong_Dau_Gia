@@ -9,7 +9,6 @@ import com.bidnova.models.User;
 import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 public class JwtUtil {
@@ -29,7 +28,7 @@ public class JwtUtil {
                 .claim("role", user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(KEY, SignatureAlgorithm.HS256)
+                .signWith(KEY)
                 .compact();
     }
 

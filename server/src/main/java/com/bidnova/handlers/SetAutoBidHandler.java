@@ -7,12 +7,17 @@ import com.bidnova.network.Response;
 import com.bidnova.dao.AutoBidDAO;
 import com.bidnova.dao.AuctionDAO;
 import com.bidnova.models.Auction;
+import com.bidnova.utils.LocalDateTimeAdapter;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.time.LocalDateTime;
 
 public class SetAutoBidHandler implements ActionHandler {
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+            .create();
     private final AutoBidDAO autoBidDAO = new AutoBidDAO();
     private final AuctionDAO auctionDAO = new AuctionDAO();
 
@@ -39,7 +44,7 @@ public class SetAutoBidHandler implements ActionHandler {
             }
 
             // Check if user already has an auto-bid for this auction
-            AutoBid existingAutoBid = autoBidDAO.findByUserAndAuction(authUser.getUsername(), auctionId);
+            AutoBid existingAutoBid = autoBidDAO.findByUserAndAuction(authUser.getUserId(), auctionId);
             if (existingAutoBid != null) {
                 return new Response("ERROR", "Bạn đã bật tính năng Auto-bid cho phiên đấu giá này", null);
             }
@@ -47,7 +52,7 @@ public class SetAutoBidHandler implements ActionHandler {
             // Create new auto-bid
             AutoBid autoBid = new AutoBid();
             autoBid.setAuctionId(auctionId);
-            autoBid.setUsername(authUser.getUsername());
+            autoBid.setUserId(authUser.getUserId());
             autoBid.setMaxBid(maxBid);
             autoBid.setIncrement(increment);
 

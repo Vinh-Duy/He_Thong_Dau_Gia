@@ -37,6 +37,21 @@ public class CloudinaryUploader {
             System.err.println("LỖI: Chưa load được file .env hoặc chưa cấu hình CLOUDINARY_UPLOAD_PRESET!");
         }
         try {
+            // Kiểm tra cấu hình trước khi upload
+            if (CLOUD_NAME == null || CLOUD_NAME.isEmpty()) {
+                String workingDir = System.getProperty("user.dir");
+                System.err.println("LỖI: Không tìm thấy cấu hình CLOUD_NAME.");
+                System.err.println("Đang chạy tại: " + workingDir);
+                System.err.println("Hãy đảm bảo file .env tồn tại trong thư mục trên.");
+                return null;
+            }
+            if (CLOUDINARY_UPLOAD_PRESET == null || CLOUDINARY_UPLOAD_PRESET.isEmpty()) {
+                System.err.println("LỖI: CLOUDINARY_UPLOAD_PRESET chưa được cấu hình. Hãy kiểm tra file .env");
+                return null;
+            }
+
+            System.out.println("Đang upload lên Cloudinary (Cloud: " + CLOUD_NAME + ")...");
+
             // Đọc file thành bytes
             byte[] fileBytes = Files.readAllBytes(file.toPath());
             String fileName = file.getName();

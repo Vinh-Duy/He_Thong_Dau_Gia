@@ -1,5 +1,9 @@
 package com.bidnova.controllers.components;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 import com.bidnova.models.BidHistory;
 import com.bidnova.network.NetworkClient;
 import com.bidnova.network.Request;
@@ -8,6 +12,7 @@ import com.bidnova.utils.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,10 +21,6 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class BidHistoryController {
     @FXML private TableView<BidHistory> historyTable;
@@ -88,7 +89,7 @@ public class BidHistoryController {
                             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                             .create();
 
-                    List<BidHistory> history = gson.fromJson(response.getData().toString(),
+                    List<BidHistory> history = gson.fromJson((String) response.getData(),
                             new TypeToken<List<BidHistory>>() {}.getType());
 
                     Platform.runLater(() -> setHistoryData(history));

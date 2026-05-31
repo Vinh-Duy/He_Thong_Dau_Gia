@@ -15,6 +15,13 @@ import com.bidnova.models.Auction;
 
 public class AuctionDAO {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    
+    // For testing: allow custom connection provider
+    private java.util.function.Supplier<Connection> connectionSupplier = DatabaseConnection::getConnection;
+    
+    public void setConnectionSupplier(java.util.function.Supplier<Connection> supplier) {
+        this.connectionSupplier = supplier;
+    }
 
     private LocalDateTime parseDateTime(String str) {
         if (str == null || str.isBlank())
@@ -29,8 +36,12 @@ public class AuctionDAO {
         List<Auction> list = new ArrayList<>();
         String sql = "SELECT * FROM auctions";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
+        Connection conn = connectionSupplier.get();
+        if (conn == null) {
+            return list;
+        }
+
+        try (PreparedStatement ps = conn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Auction auction = new Auction();
@@ -64,8 +75,11 @@ public class AuctionDAO {
 
     public void updateHighestBid(String auctionId, double newPrice) {
         String sql = "UPDATE auctions SET current_highest_bid = ? WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = connectionSupplier.get();
+        if (conn == null) {
+            return;
+        }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDouble(1, newPrice);
             pstmt.setString(2, auctionId);
             pstmt.executeUpdate();
@@ -82,8 +96,11 @@ public class AuctionDAO {
      */
     public void updateEndTime(String auctionId, LocalDateTime newEndTime) {
         String sql = "UPDATE auctions SET end_time = ? WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = connectionSupplier.get();
+        if (conn == null) {
+            return;
+        }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setTimestamp(1, newEndTime != null ? Timestamp.valueOf(newEndTime) : null);
             pstmt.setString(2, auctionId);
             pstmt.executeUpdate();
@@ -95,8 +112,11 @@ public class AuctionDAO {
     public boolean addAuction(String id, String name, String desc, double startPrice, LocalDateTime startTime,
             LocalDateTime endTime, String status, String category, int sellerId, String imageUrl) {
         String sql = "INSERT INTO auctions (id, name, description, start_price, start_time, end_time, status, category, seller_id, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = connectionSupplier.get();
+        if (conn == null) {
+            return false;
+        }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, id);
             pstmt.setString(2, name);
             pstmt.setString(3, desc);
@@ -116,8 +136,11 @@ public class AuctionDAO {
 
     public boolean updateAuction(Auction auc) {
         String sql = "UPDATE auctions SET name = ?, description = ?, start_price = ?, start_time = ?, end_time = ?, status = ?, category = ?, seller_id = ?, image_url = ? WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = connectionSupplier.get();
+        if (conn == null) {
+            return false;
+        }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, auc.getProductName());
             pstmt.setString(2, auc.getDescription());
             pstmt.setDouble(3, auc.getStartPrice());
@@ -137,8 +160,11 @@ public class AuctionDAO {
 
     public boolean deleteAuction(String id) {
         String sql = "DELETE FROM auctions WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = connectionSupplier.get();
+        if (conn == null) {
+            return false;
+        }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, id);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -151,11 +177,13 @@ public class AuctionDAO {
         List<Auction> list = new ArrayList<>();
         String sql = "SELECT * FROM auctions WHERE seller_id = ? ORDER BY id DESC";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection conn = connectionSupplier.get();
+        if (conn == null) {
+            return list;
+        }
 
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, sellerId);
-
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Auction a = new Auction();
@@ -190,9 +218,11 @@ public class AuctionDAO {
     public Auction findById(String id) {
         String sql = "SELECT * FROM auctions WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
-
+        Connection conn = connectionSupplier.get();
+        if (conn == null) {
+            return null;
+        }
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -232,8 +262,11 @@ public class AuctionDAO {
      */
     public Double getPriceCeiling(String auctionId) {
         String sql = "SELECT price_ceiling FROM auctions WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = connectionSupplier.get();
+        if (conn == null) {
+            return null;
+        }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, auctionId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -250,8 +283,11 @@ public class AuctionDAO {
      */
     public void updatePriceCeiling(String auctionId, Double priceCeiling) {
         String sql = "UPDATE auctions SET price_ceiling = ? WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = connectionSupplier.get();
+        if (conn == null) {
+            return;
+        }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             if (priceCeiling == null) {
                 pstmt.setNull(1, java.sql.Types.DOUBLE);
             } else {
@@ -269,8 +305,11 @@ public class AuctionDAO {
      */
     public double getMinBidIncrement(String auctionId) {
         String sql = "SELECT min_bid_increment FROM auctions WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = connectionSupplier.get();
+        if (conn == null) {
+            return 1000;
+        }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, auctionId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -288,8 +327,11 @@ public class AuctionDAO {
      */
     public void updateMinBidIncrement(String auctionId, double minBidIncrement) {
         String sql = "UPDATE auctions SET min_bid_increment = ? WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = connectionSupplier.get();
+        if (conn == null) {
+            return;
+        }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDouble(1, minBidIncrement);
             pstmt.setString(2, auctionId);
             pstmt.executeUpdate();
@@ -303,8 +345,11 @@ public class AuctionDAO {
      */
     public void updateStatus(String auctionId, String status) {
         String sql = "UPDATE auctions SET status = ? WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        Connection conn = connectionSupplier.get();
+        if (conn == null) {
+            return;
+        }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, status);
             pstmt.setString(2, auctionId);
             pstmt.executeUpdate();

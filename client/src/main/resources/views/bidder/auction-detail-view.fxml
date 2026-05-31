@@ -72,6 +72,31 @@
                                     </HBox>
                                 </children>
                             </VBox>
+
+                            <VBox spacing="10.0" styleClass="auction-constraints">
+                                <children>
+                                    <Label styleClass="item-info-title" text="Điều kiện đấu giá" />
+                                    <Separator prefWidth="200.0" />
+                                    
+                                    <HBox spacing="15.0">
+                                        <children>
+                                            <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                                <children>
+                                                    <Label styleClass="subtitle" text="Bước giá tối thiểu (VNĐ):" />
+                                                    <Label fx:id="lblMinBidIncrement" styleClass="constraint-value" text="1,000,000" />
+                                                </children>
+                                            </VBox>
+                                            <Region prefWidth="1.0" styleClass="separator-vertical" />
+                                            <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                                                <children>
+                                                    <Label styleClass="subtitle" text="Giá trần (VNĐ):" />
+                                                    <Label fx:id="lblPriceCeiling" styleClass="constraint-value" text="Vô giới hạn" />
+                                                </children>
+                                            </VBox>
+                                        </children>
+                                    </HBox>
+                                </children>
+                            </VBox>
                             
                             <VBox spacing="12.0" styleClass="auto-bid" VBox.vgrow="ALWAYS">
                                 <children>

@@ -139,7 +139,7 @@ public class SignupController {
         String role = rbBidderButton != null && rbBidderButton.isSelected() ? "BIDDER" : "SELLER";
         String fullName = fullNameField != null ? fullNameField.getText().trim() : "";
         String username = usernameField != null ? usernameField.getText().trim() : "";
-        String password = passwordField != null ? passwordField.getText().trim() : "null";
+        String password = passwordField != null && passwordField.isVisible() ? passwordField.getText().trim() : passwordTextField.getText().trim();
         String confirmPassword = confirmPasswordField != null ? confirmPasswordField.getText().trim() : "";
         String email = emailField != null ? emailField.getText().trim() : "";
         String phone = phoneField != null ? phoneField.getText().trim() : "";

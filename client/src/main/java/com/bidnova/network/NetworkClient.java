@@ -95,6 +95,7 @@ public class NetworkClient {
             }
 
             String jsonRequest = gson.toJson(request);
+            responseQueue.clear(); // Xóa sạch các phản hồi cũ/bị timeout trước khi gửi request mới
             out.println(jsonRequest);
 
             String jsonResponse = responseQueue.poll(NetworkConfig.getTimeoutSeconds(), TimeUnit.SECONDS);

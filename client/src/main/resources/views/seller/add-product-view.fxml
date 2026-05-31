@@ -75,34 +75,54 @@
                             <Label styleClass="currency-label" text="VNĐ" />
                         </HBox>
 
-                        <!-- Thời gian bắt đầu -->
+                        <!-- Giá trần (tối đa) -->
                         <HBox alignment="CENTER_LEFT" spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                            <FontAwesomeIconView glyphName="ARROW_UP" size="14" styleClass="field-icon" />
+                            <Label styleClass="field-label" text="Giá trần (tối đa)" />
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                            <TextField fx:id="txtPriceCeiling" promptText="Để trống = vô giới hạn (VD: 50000000)" HBox.hgrow="ALWAYS" />
+                            <Label styleClass="currency-label" text="VNĐ" />
+                        </HBox>
+
+                        <!-- Bước giá tối thiểu -->
+                        <HBox alignment="CENTER_LEFT" spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="5">
+                            <FontAwesomeIconView glyphName="PLUS" size="14" styleClass="field-icon" />
+                            <Label styleClass="field-label" text="Bước giá tối thiểu" />
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                            <TextField fx:id="txtMinBidIncrement" promptText="Mặc định: 1000000 (1 triệu)" HBox.hgrow="ALWAYS" />
+                            <Label styleClass="currency-label" text="VNĐ" />
+                        </HBox>
+
+                        <!-- Thời gian bắt đầu -->
+                        <HBox alignment="CENTER_LEFT" spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="6">
                             <FontAwesomeIconView glyphName="CALENDAR" size="14" styleClass="field-icon" />
                             <Label styleClass="field-label" text="Thời gian bắt đầu" />
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <HBox alignment="CENTER_LEFT" spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="6">
                             <DatePicker fx:id="dateStart" promptText="Chọn ngày" HBox.hgrow="ALWAYS" />
                             <Label styleClass="time-sep" text="●" />
                             <TextField fx:id="txtTimeStart" prefWidth="100" promptText="HH:mm" />
                         </HBox>
 
                         <!-- Thời gian kết thúc -->
-                        <HBox alignment="CENTER_LEFT" spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="5">
+                        <HBox alignment="CENTER_LEFT" spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="7">
                             <FontAwesomeIconView glyphName="HOURGLASS" size="14" styleClass="field-icon" />
                             <Label styleClass="field-label" text="Thời gian kết thúc" />
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <HBox alignment="CENTER_LEFT" spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="7">
                             <DatePicker fx:id="dateEnd" promptText="Chọn ngày" HBox.hgrow="ALWAYS" />
                             <Label styleClass="time-sep" text="●" />
                             <TextField fx:id="txtTimeEnd" prefWidth="100" promptText="HH:mm" />
                         </HBox>
 
                         <!-- Ảnh sản phẩm -->
-                        <HBox alignment="CENTER_LEFT" spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="6">
+                        <HBox alignment="CENTER_LEFT" spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="8">
                             <FontAwesomeIconView glyphName="IMAGE" size="14" styleClass="field-icon" />
                             <Label styleClass="field-label" text="Ảnh sản phẩm" />
                         </HBox>
-                        <VBox alignment="CENTER" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                        <VBox alignment="CENTER" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="8">
                             <StackPane styleClass="image-preview">
                                 <ImageView fx:id="imgPreview" fitHeight="220.0" fitWidth="540.0" preserveRatio="true" />
                             </StackPane>

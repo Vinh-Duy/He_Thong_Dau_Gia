@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="mainRoot" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #F0F0F0;" stylesheets="@../../css/HomeView.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.daugia.controllers.common.HomeViewController">
+    
+    <top>
+        <fx:include source="../components/Header.fxml" />
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <content>
+                <VBox alignment="TOP_CENTER" style="-fx-background-color: #F0F0F0;">
+                    
+                    <HBox alignment="CENTER" minHeight="400.0" spacing="50.0" style="-fx-background-color: white;" styleClass="heroSection">
+                        <VBox alignment="CENTER_LEFT" maxWidth="650.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                            <Label style="-fx-text-fill: #4A4A4A; -fx-font-family: Arial; -fx-font-size: 30px;" text="Chào mừng bạn đến với" wrapText="true" />
+                            <HBox spacing="10.0">
+                                <children>
+                                    <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="-Infinity" prefHeight="0.0" prefWidth="477.0" styleClass="red-line-main" HBox.hgrow="ALWAYS" />
+                                    <Region styleClass="red-line-dot" />
+                                </children>
+                            </HBox>
+                            <Label style="-fx-text-fill: #900000; -fx-font-family: Times New Roman; -fx-font-weight: bold; -fx-font-size: 50px;" text="HỆ THỐNG ĐẤU GIÁ TRỰC TUYẾN" wrapText="true" />
+                            <Label style="-fx-text-fill: #4A4A4A; -fx-font-family: Arial; -fx-font-size: 26px;" text="Chào mừng đến với HỆ THỐNG ĐẤU GIÁ TRỰC TUYẾN – Nền tảng đấu giá trực tuyến minh bạch, an toàn và tiện lợi. Nơi kết nối đam mê, tối ưu giá trị. Khám phá ngay các phiên đấu giá đang diễn ra và trải nghiệm cảm giác chiến thắng để sở hữu những sản phẩm chất lượng với mức giá tốt nhất" textAlignment="JUSTIFY" wrapText="true">
+                        <font>
+                           <Font size="14.0" />
+                        </font></Label>
+                        </VBox>
+                         <VBox prefHeight="500.0" prefWidth="450.0" style="-fx-background-color: #900000; -fx-background-radius: 10px;">
+                             <Label style="-fx-text-fill: white; -fx-opacity: 0.5;" text="ẢNH MINH HỌA" />
+                             <alignment>CENTER</alignment>
+                         </VBox>
+                    </HBox>
+
+                    <VBox spacing="30.0" style="-fx-background-color: #f4f6f8;">
+                        <padding>
+                            <Insets bottom="50" left="40" right="40" top="40" />
+                        </padding>
+                        <VBox alignment="CENTER">
+                            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #900000; -fx-padding: 0 0 20 0;" text="PHIÊN ĐẤU GIÁ NỔI BẬT" />
+                            <HBox fx:id="bannerContainer" alignment="CENTER" spacing="20.0" />
+                        </VBox>
+                        <VBox spacing="15.0">
+                            <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #9c27b0;" text="ĐANG DIỄN RA" />
+                            <FlowPane fx:id="dangDienRaContainer" hgap="25.0" vgap="25.0" />
+                        </VBox>
+                    </VBox>
+               <padding>
+                  <Insets top="50.0" />
+               </padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

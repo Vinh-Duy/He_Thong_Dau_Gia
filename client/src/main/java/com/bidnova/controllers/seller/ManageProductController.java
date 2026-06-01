@@ -10,6 +10,7 @@ import com.bidnova.network.NetworkClient;
 import com.bidnova.network.Request;
 import com.bidnova.network.Response;
 import com.bidnova.utils.LocalDateTimeAdapter;
+import com.bidnova.utils.NotificationUtil;
 import com.bidnova.utils.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -77,9 +78,17 @@ public class ManageProductController {
         NetworkClient.getInstance().onMessageReceived(message -> {
             try {
                 JsonObject data = JsonParser.parseString(message).getAsJsonObject();
-                if (data.has("action") && "AUCTION_LIST_UPDATE".equals(data.get("action").getAsString())) {
-                    // Reload dữ liệu khi có product update
+                String action = data.has("action") ? data.get("action").getAsString() : null;
+                if ("AUCTION_LIST_UPDATE".equals(action)) {
                     Platform.runLater(this::loadMyProducts);
+                } else if ("AUCTION_FINISHED".equals(action)) {
+                    JsonObject payload = JsonParser.parseString(data.get("payload").getAsString()).getAsJsonObject();
+                    String winner = payload.has("highestBidder") ? payload.get("highestBidder").getAsString() : "Không có người thắng";
+                    String finalPrice = payload.has("finalBid") ? payload.get("finalBid").getAsString() : "0";
+                    Platform.runLater(() -> {
+                        NotificationUtil.showTopBanner("Đấu giá kết thúc", "Người thắng: " + winner + " - Giá: " + finalPrice);
+                        loadMyProducts();
+                    });
                 }
             } catch (Exception e) {
                 System.err.println("Lỗi xử lý broadcast message: " + e.getMessage());

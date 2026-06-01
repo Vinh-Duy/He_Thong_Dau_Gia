@@ -1,10 +1,12 @@
 package com.bidnova.services;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.bidnova.models.Auction;
 import com.bidnova.dao.AuctionDAO;
+import com.bidnova.models.Auction;
 
 public class AuctionManager {
     private static AuctionManager instance;
@@ -82,5 +84,24 @@ public class AuctionManager {
                 dao.updateAuction(auction);
             }
         }
+    }
+
+    public List<Auction> scanExpiredAuctions() {
+        List<Auction> expiredAuctions = new ArrayList<>();
+        AuctionDAO dao = new AuctionDAO();
+
+        for (Auction auction : activeAuctions.values()) {
+            if (auction == null || auction.getEndTime() == null) continue;
+
+            boolean isExpired = LocalDateTime.now().isAfter(auction.getEndTime());
+            if (isExpired && !"FINISHED".equalsIgnoreCase(auction.getStatus()) && !"CLOSED".equalsIgnoreCase(auction.getStatus())) {
+                auction.setStatus("FINISHED");
+                dao.updateStatus(auction.getId(), "FINISHED");
+                expiredAuctions.add(auction);
+                removeAuction(auction.getId());
+            }
+        }
+
+        return expiredAuctions;
     }
 }

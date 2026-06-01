@@ -12,6 +12,7 @@ import com.bidnova.network.NetworkClient;
 import com.bidnova.network.Request;
 import com.bidnova.network.Response;
 import com.bidnova.utils.LocalDateTimeAdapter;
+import com.bidnova.utils.NotificationUtil;
 import com.bidnova.utils.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -270,8 +271,10 @@ public class AuctionDetailController implements Initializable {
                         }
                         
                         // Show notification
+                        String highestBidder = payload.has("highestBidder") ? payload.get("highestBidder").getAsString() : "Không có người thắng";
+                        String finalPrice = payload.has("newHighestBid") ? formatVietnameseCurrency(payload.get("newHighestBid").getAsDouble()) : "0 ₫";
                         showNotificationAlert("🎯 Phiên kết thúc", 
-                            "Phiên đấu giá đã kết thúc vì đạt giới hạn giá trần!");
+                            "Phiên đấu giá đã kết thúc. Người thắng: " + highestBidder + "\nGiá cuối cùng: " + finalPrice);
                         
                         // Update UI
                         currentAuction.setStatus("FINISHED");
@@ -544,11 +547,7 @@ public class AuctionDetailController implements Initializable {
     }
 
     private void showNotificationAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.show(); // Non-blocking!
+        NotificationUtil.showTopBanner(title, content);
     }
 
     private void startCountdown() {

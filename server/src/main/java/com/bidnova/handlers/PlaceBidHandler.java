@@ -253,6 +253,7 @@ public class PlaceBidHandler implements ActionHandler {
                 JsonObject successData = new JsonObject();
                 successData.addProperty("auctionId", auctionId);
                 successData.addProperty("newHighestBid", finalHighestBid);
+                successData.addProperty("highestBidder", currentAuction.getHighestBidder());
                 successData.addProperty("ceilingReached", ceilingReached); // ⭐️ NEW
                 if (currentAuction.getEndTime() != null) {
                     successData.addProperty("newEndTime", currentAuction.getEndTime().toString());

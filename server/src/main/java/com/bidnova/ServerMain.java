@@ -3,8 +3,16 @@ package com.bidnova;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
+import com.bidnova.models.Auction;
 import com.bidnova.services.DatabaseInitializer;
+import com.bidnova.services.AuctionManager;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 /**
  * 🚀 ServerMain - Điểm khởi động của hệ thống Auction Server
@@ -57,6 +65,32 @@ public class ServerMain {
     public static void main(String[] args) {
         DatabaseInitializer.initializeActiveAuctions();
 
+        // Background thread kiểm tra auction hết hạn và broadcast event khi cần
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(() -> {
+            try {
+                List<Auction> expiredAuctions = AuctionManager.getInstance().scanExpiredAuctions();
+                Gson gson = new Gson();
+
+                for (Auction auction : expiredAuctions) {
+                    JsonObject payload = new JsonObject();
+                    payload.addProperty("auctionId", auction.getId());
+                    payload.addProperty("highestBidder", auction.getHighestBidder() != null ? auction.getHighestBidder() : "Không có người thắng");
+                    payload.addProperty("finalBid", auction.getCurrentHighestBid() > 0 ? auction.getCurrentHighestBid() : auction.getStartPrice());
+                    payload.addProperty("message", "Phiên đấu giá đã kết thúc theo thời gian. Người thắng: " +
+                            (auction.getHighestBidder() != null ? auction.getHighestBidder() : "Không có người thắng") +
+                            ", Giá: " + (auction.getCurrentHighestBid() > 0 ? auction.getCurrentHighestBid() : auction.getStartPrice()));
+
+                    JsonObject event = new JsonObject();
+                    event.addProperty("action", "AUCTION_FINISHED");
+                    event.addProperty("payload", gson.toJson(payload));
+                    ClientHandler.broadcastAll(gson.toJson(event));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, 20, 20, TimeUnit.SECONDS);
+
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             System.out.println("Server đang chạy tại port " + PORT + "...");
 
@@ -68,6 +102,8 @@ public class ServerMain {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            scheduler.shutdown();
         }
     }
 }

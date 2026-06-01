@@ -49,9 +49,6 @@ public class BidChartController {
     private static final int MIN_WINDOW = 5;
     private static final int MAX_WINDOW = 100;
 
-    /** Vị trí hiện tại của cửa sổ (index cuối cùng hiển thị) */
-    private int windowEnd = 0;
-
     /** Biến cho drag-to-pan */
     private double dragStartX = 0;
     private double dragStartLower = 0;
@@ -146,7 +143,7 @@ public class BidChartController {
                                 }
                             }
                         }
-                        windowEnd = timeLabels.size();
+                        timeLabels.size();
                         updateDataInfo();
                         scrollToEnd();
                     });

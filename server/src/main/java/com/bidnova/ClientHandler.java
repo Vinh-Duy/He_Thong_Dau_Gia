@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * 🔌 ClientHandler - Xử lý kết nối của mỗi client độc lập
@@ -134,7 +135,22 @@ public class ClientHandler implements Runnable {
 
             while ((inputLine = in.readLine()) != null) {
                 try {
-                    Request request = gson.fromJson(inputLine, Request.class);
+                    // Bỏ qua dòng trống hoặc chỉ whitespace
+                    if (inputLine.trim().isEmpty()) {
+                        continue;
+                    }
+
+                    Request request = null;
+                    try {
+                        request = gson.fromJson(inputLine, Request.class);
+                    } catch (JsonSyntaxException e) {
+                        // Log input để debug
+                        System.err.println("❌ JSON Parse Error - Received: " + inputLine);
+                        System.err.println("❌ Error: " + e.getMessage());
+                        out.println(gson.toJson(new Response("ERROR", "Dữ liệu gửi lên không phải JSON hợp lệ", null)));
+                        continue;
+                    }
+
                     if (request == null || request.getAction() == null || request.getAction().isBlank()) {
                         out.println(gson.toJson(new Response("ERROR", "Thiếu action trong request", null)));
                         continue;

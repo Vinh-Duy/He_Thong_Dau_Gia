@@ -70,26 +70,6 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ============================================================
--- TABLE: auctions
--- ============================================================
-CREATE TABLE `auctions` (
-    `id` VARCHAR(50) NOT NULL,
-    `name` VARCHAR(255) NULL DEFAULT NULL,
-    `description` TEXT NULL DEFAULT NULL,
-    `image_url` VARCHAR(500) NULL DEFAULT NULL,
-    `start_price` DECIMAL(20, 2) NULL DEFAULT NULL,
-    `current_highest_bid` DECIMAL(20, 2) NULL DEFAULT NULL,
-    `start_time` DATETIME NULL DEFAULT NULL,
-    `end_time` DATETIME NULL DEFAULT NULL,
-    `status` VARCHAR(50) NULL DEFAULT NULL,
-    `category` VARCHAR(255) NULL DEFAULT NULL,
-    `seller_id` INT NULL DEFAULT NULL,
-    PRIMARY KEY (`id`) USING BTREE,
-    INDEX `seller_id` (`seller_id`) USING BTREE,
-    CONSTRAINT `auctions_ibfk_1` FOREIGN KEY (`seller_id`) REFERENCES `users` (`id`) ON UPDATE NO ACTION ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- ============================================================
 -- TABLE: auto_bids
 -- ============================================================
 CREATE TABLE `auto_bids` (

@@ -1,4 +1,4 @@
-FROM maven:3.9-eclipse-temurin-25 as builder
+FROM maven:3.9-eclipse-temurin-25 AS builder
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ FROM eclipse-temurin:25-jre-jammy
 
 WORKDIR /app
 
-COPY --from=builder /app/server/target/server-1.0-SNAPSHOT.jar app.jar
+COPY --from=builder /app/server/target/bidnova-server.jar app.jar
 
 EXPOSE 8080
 

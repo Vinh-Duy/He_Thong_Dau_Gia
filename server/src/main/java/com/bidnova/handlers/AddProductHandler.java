@@ -57,7 +57,9 @@ public class AddProductHandler implements ActionHandler {
                 newAuction.getStatus(),
                 newAuction.getCategory(),
                 newAuction.getSellerId(),
-                newAuction.getImageUrl()
+                newAuction.getImageUrl(),
+                newAuction.getPriceCeiling(),
+                newAuction.getMinBidIncrement()
             );
 
             if (!success) {

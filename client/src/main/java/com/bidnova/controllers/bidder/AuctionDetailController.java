@@ -35,12 +35,15 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/* TODO: khi đặt giá trần thì cập nhật bidhistory + chảt + finished auction */
 public class AuctionDetailController implements Initializable {
     @FXML private Button btnBack;
     @FXML private ImageView imgItem;
     @FXML private Label lblItemName;
     @FXML private Label lblCurrentBid;
     @FXML private Label lblTimeLeft;
+    @FXML private Label lblMinBidIncrement;
+    @FXML private Label lblPriceCeiling;
     @FXML private TextArea txtDescription;
     @FXML private TextField txtBidInput;
     @FXML private Button btnPlaceBid;
@@ -143,6 +146,17 @@ public class AuctionDetailController implements Initializable {
             lblCurrentBid.setText(formatVietnameseCurrency(currentPriceValue));
             txtDescription.setText(currentAuction.getDescription() != null ? currentAuction.getDescription() : "Không có mô tả.");
             
+            // Display min bid increment
+            double minIncrement = currentAuction.getMinBidIncrement();
+            lblMinBidIncrement.setText(formatVietnameseCurrency(minIncrement));
+            
+            // Display price ceiling (if set)
+            if (currentAuction.getPriceCeiling() != null && currentAuction.getPriceCeiling() > 0) {
+                lblPriceCeiling.setText(formatVietnameseCurrency(currentAuction.getPriceCeiling()));
+            } else {
+                lblPriceCeiling.setText("Vô giới hạn");
+            }
+            
             loadImage(currentAuction.getImageUrl());
         }
     }
@@ -209,7 +223,7 @@ public class AuctionDetailController implements Initializable {
                         
                         // Cập nhật biểu đồ
                         if (bidChartController != null) {
-                            bidChartController.appendBidPoint(newBid);
+                            bidChartController.loadChartData(currentAuction.getId());
                         }
                     });
                 }
@@ -302,8 +316,8 @@ public class AuctionDetailController implements Initializable {
                             
                             // Cập nhật giá hiển thị tạm thời với giá vừa đặt (Optimistic UI)
                             // Giá chuẩn cuối cùng sẽ được cập nhật qua handleRealTimeUpdate (Socket)
-                            currentPriceValue = bidAmount;
-                            lblCurrentBid.setText(formatVietnameseCurrency(bidAmount));
+                            // currentPriceValue = bidAmount;
+                            // lblCurrentBid.setText(formatVietnameseCurrency(bidAmount));
 
                             // Không thêm điểm chart ở đây, để handleRealTimeUpdate xử lý
                             // tránh bị trùng 2 điểm

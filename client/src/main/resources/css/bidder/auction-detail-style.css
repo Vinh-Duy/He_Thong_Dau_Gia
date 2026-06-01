@@ -97,6 +97,37 @@
     -fx-font-weight: bold;
 }
 
+.auction-constraints {
+    background-color: white;
+    -fx-background-color: white;
+
+    -fx-background-radius: 15;
+
+    padding: 25px;
+    -fx-padding: 25;
+
+    border-radius: 15px;
+    -fx-border-radius: 15;
+
+    border-color: #e5e5e5;
+    -fx-border-color: #e5e5e5;
+}
+
+.constraint-value {
+    font-size: 18px;
+    -fx-font-size: 18;
+
+    font-weight: bold;
+    -fx-font-weight: bold;
+
+    -fx-text-fill: #d32f2f;
+}
+
+.separator-vertical {
+    background-color: #e5e5e5;
+    -fx-background-color: #e5e5e5;
+}
+
 .item-info-description {
     background-color: transparent;
     -fx-background-color: transparent;

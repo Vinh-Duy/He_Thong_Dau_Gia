@@ -110,8 +110,9 @@ public class AuctionDAO {
     }
 
     public boolean addAuction(String id, String name, String desc, double startPrice, LocalDateTime startTime,
-            LocalDateTime endTime, String status, String category, int sellerId, String imageUrl) {
-        String sql = "INSERT INTO auctions (id, name, description, start_price, start_time, end_time, status, category, seller_id, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            LocalDateTime endTime, String status, String category, int sellerId, String imageUrl, 
+            Double priceCeiling, double minBidIncrement) {
+        String sql = "INSERT INTO auctions (id, name, description, start_price, start_time, end_time, status, category, seller_id, image_url, price_ceiling, min_bid_increment) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         Connection conn = connectionSupplier.get();
         if (conn == null) {
             return false;
@@ -127,6 +128,12 @@ public class AuctionDAO {
             pstmt.setString(8, category);
             pstmt.setInt(9, sellerId);
             pstmt.setString(10, imageUrl);
+            if (priceCeiling != null) {
+                pstmt.setDouble(11, priceCeiling);
+            } else {
+                pstmt.setNull(11, java.sql.Types.DOUBLE);
+            }
+            pstmt.setDouble(12, minBidIncrement);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error adding auction: " + e.getMessage());

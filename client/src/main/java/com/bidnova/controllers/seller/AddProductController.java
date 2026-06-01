@@ -37,6 +37,8 @@ public class AddProductController {
     @FXML private TextField txtName;
     @FXML private TextArea txtDescription;
     @FXML private TextField txtStartingPrice;
+    @FXML private TextField txtPriceCeiling;
+    @FXML private TextField txtMinBidIncrement;
     @FXML private ComboBox<String> cmbCategory;
     @FXML private DatePicker dateStart;
     @FXML private TextField txtTimeStart;
@@ -132,6 +134,28 @@ public class AddProductController {
             auction.setCategory(cmbCategory.getValue());
             auction.setDescription(txtDescription.getText());
             auction.setStartPrice(Double.parseDouble(txtStartingPrice.getText()));
+
+            // Set priceCeiling (để trống = null = vô giới hạn)
+            String ceilingStr = txtPriceCeiling.getText().trim();
+            if (!ceilingStr.isEmpty()) {
+                try {
+                    auction.setPriceCeiling(Double.parseDouble(ceilingStr));
+                } catch (NumberFormatException ignored) {}
+            } else {
+                auction.setPriceCeiling(null);
+            }
+
+            // Set minBidIncrement (mặc định 1000 nếu để trống)
+            String minIncStr = txtMinBidIncrement.getText().trim();
+            if (!minIncStr.isEmpty()) {
+                try {
+                    auction.setMinBidIncrement(Double.parseDouble(minIncStr));
+                } catch (NumberFormatException ignored) {
+                    auction.setMinBidIncrement(1000); // Fallback
+                }
+            } else {
+                auction.setMinBidIncrement(1000); // Default
+            }
 
             // Set startTime
             if (dateStart.getValue() != null) {

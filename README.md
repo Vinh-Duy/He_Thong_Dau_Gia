@@ -529,4 +529,10 @@ Nếu gặp vấn đề, vui lòng:
 
 ---
 
+## Bài báo cáo và đường link video demo
+
+Link báo cáo PDF: [Report_BidNova.pdf](Report_BidNova.pdf)
+
+Video demo:[]()
+
 **Happy Bidding! 🎉**

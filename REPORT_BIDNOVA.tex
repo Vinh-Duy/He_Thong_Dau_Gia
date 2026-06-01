@@ -1,5 +1,5 @@
-\documentclass[12pt, a4paper]{report}
-\usepackage[utf-8]{inputenc}
+﻿\documentclass[12pt, a4paper]{report}
+\usepackage[utf8]{inputenc}
 \usepackage[vietnamese]{babel}
 \usepackage{geometry}
 \usepackage{graphicx}
@@ -7,650 +7,191 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{fancyhdr}
-\usepackage{setspace}
 \usepackage{array}
 \usepackage{booktabs}
-\usepackage{multirow}
 
-% Setup geometry
-\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
-
-% Setup code listing
-\lstset{
-    language=Java,
-    basicstyle=\ttfamily\small,
-    keywordstyle=\color{blue},
-    commentstyle=\color{gray},
-    stringstyle=\color{red},
-    breaklines=true,
-    showstringspaces=false,
-    tabsize=2,
-    captionpos=b
-}
-
-% Setup headers
+\geometry{top=2cm, bottom=2cm, left=2cm, right=2cm}
 \pagestyle{fancy}
 \fancyhf{}
-\rhead{BidNova Auction System}
-\lhead{Đại học Kinh tế - Kỹ thuật}
+\rhead{BidNova}
+\lhead{Du An OOP}
 \cfoot{\thepage}
 
-% Title setup
-\title{
-    \textbf{HỆTHỐNG ĐẤU GIÁ TRỰC TUYẾN BIDNOVA}\\
-    \vspace{0.5cm}
-    \large Báo Cáo Dự Án Lập Trình Hướng Đối Tượng
-}
-\author{Nguyễn Vĩnh Duy}
-\date{Năm học 2025-2026}
+\lstset{language=Java, basicstyle=\ttfamily\small, keywordstyle=\color{blue}, breaklines=true, tabsize=2}
+
+\title{\textbf{HE THONG DAU GIA TRUC TUYEN BIDNOVA}\\Bao Cao Du An Lap Trinh Huong Doi Tuong}
+\author{Bui Vinh Duy}
+\date{Nam hoc 2025-2026}
 
 \begin{document}
 
-% Title page
 \maketitle
-
 \newpage
 \tableofcontents
 \newpage
 
-% Chapter 1
-\chapter{Giới Thiệu Dự Án}
+\chapter{Gioi Thieu \& Muc Tieu}
 
-\section{Tóm tắt}
-BidNova là một hệ thống đấu giá trực tuyến hiện đại được xây dựng bằng Java, sử dụng kiến trúc Client-Server. Hệ thống cho phép người dùng tạo, quản lý, và tham gia các phiên đấu giá với các tính năng nâng cao như tự động đặt giá (AutoBid), giá trần (Price Ceiling), và bước giá tối thiểu (Minimum Bid Increment).
+\section{Tom Tat Du An}
+BidNova la he thong dau gia truc tuyen hien dai xay dung bang Java voi kien truc Client-Server. He thong cho phep nguoi dung tao, quan ly va tham gia cac phien dau gia voi tinh nang nang cao nhu AutoBid, Price Ceiling, va Minimum Bid Increment.
 
-\section{Mục Tiêu Dự Án}
+\section{Muc Tieu}
 \begin{itemize}
-    \item Xây dựng một nền tảng đấu giá trực tuyến an toàn và hiệu quả
-    \item Áp dụng các design pattern: Factory, Observer, Singleton, DAO, MVC
-    \item Cung cấp tính năng real-time broadcasting cho tất cả users
-    \item Đảm bảo tính toàn vẹn dữ liệu và concurrency control
-    \item Hỗ trợ nhiều loại sản phẩm: Phương tiện, Bất động sản, Đồ nghệ thuật, Tài sản nhà nước
+    \item Xay dung nen tang dau gia truc tuyen an toan, hieu qua
+    \item Ap dung 5+ design patterns: Factory, Observer, Singleton, DAO, Command
+    \item Cung cap real-time broadcasting toi tat ca clients
+    \item Dam bao tinh toan ven du lieu voi concurrent control
+    \item Ho tro 4 loai san pham: Phuong tien, Bat dong san, Do nghe thuat, Tai san nha nuoc
 \end{itemize}
 
-\section{Phạm Vi Dự Án}
-\subsection{Những gì được phát triển:}
-\begin{itemize}
-    \item ✅ Server Java với Multi-threading
-    \item ✅ Client JavaFX GUI
-    \item ✅ MySQL Database
-    \item ✅ Socket-based Network Communication
-    \item ✅ Autobidding System
-    \item ✅ Real-time Updates
-    \item ✅ 10+ Unit Tests
-\end{itemize}
+\section{Cong Nghe \& Stack}
+\textbf{Backend:} Java 25, Maven, MySQL, Gson, BCrypt, JUnit 5 \\
+\textbf{Frontend:} JavaFX, FXML, CSS \\
+\textbf{Networking:} Socket (TCP Port 8888), JSON
 
 \newpage
 
-\chapter{Kiến Trúc Hệ Thống}
+\chapter{Kien Truc He Thong}
 
-\section{Sơ Đồ Kiến Trúc}
-\subsection{Client-Server Architecture}
-\begin{verbatim}
-┌─────────────────────────────────────────────────────┐
-│                    CLIENT LAYER                     │
-├─────────────────────────────────────────────────────┤
-│  JavaFX GUI                                         │
-│  ├─ LoginController                                │
-│  ├─ AuctionListController                          │
-│  ├─ AuctionDetailController                        │
-│  └─ BiddingController                              │
-├─────────────────────────────────────────────────────┤
-│         Socket Connection (Port 8888)              │
-├─────────────────────────────────────────────────────┤
-│  ServerSocket → Accept Connection                  │
-│  ↓                                                  │
-│  ClientHandler Thread (Multi-threaded)             │
-│  ├─ Parse JSON Request                             │
-│  ├─ Route to ActionHandler                         │
-│  ├─ Process Business Logic                         │
-│  ├─ Broadcast Updates                              │
-│  └─ Send JSON Response                             │
-├─────────────────────────────────────────────────────┤
-│                  SERVICE LAYER                      │
-├─────────────────────────────────────────────────────┤
-│  PlaceBidHandler    AutoBidService                 │
-│  LoginHandler       AuctionManager                 │
-│  RegisterHandler    AuthService                    │
-│  ... (16+ handlers)                                │
-├─────────────────────────────────────────────────────┤
-│                  DATABASE LAYER                     │
-├─────────────────────────────────────────────────────┤
-│  AuctionDAO    BidHistoryDAO                       │
-│  UserDAO       AutoBidDAO                          │
-│  ↓                                                  │
-│  MySQL Database                                    │
-│  ├─ users                                          │
-│  ├─ auctions                                       │
-│  ├─ bid_history                                    │
-│  └─ auto_bids                                      │
-└─────────────────────────────────────────────────────┘
-\end{verbatim}
-
-\section{Technology Stack}
-\subsection{Backend}
-\begin{tabular}{|l|l|l|}
-\hline
-\textbf{Công Nghệ} & \textbf{Phiên Bản} & \textbf{Mục Đích} \\
-\hline
-Java & 25 & Ngôn ngữ chính \\
-Maven & 4.0.0 & Build tool \\
-MySQL & 8.0+ & Database \\
-Gson & 2.10.1 & JSON serialization \\
-BCrypt & 0.4 & Password hashing \\
-JUnit 5 & 5.10.1 & Testing \\
-\hline
-\end{tabular}
-
-\subsection{Frontend}
-\begin{tabular}{|l|l|l|}
-\hline
-\textbf{Công Nghệ} & \textbf{Phiên Bản} & \textbf{Mục Đích} \\
-\hline
-JavaFX & 25 & GUI Framework \\
-FXML & 25 & Layout XML \\
-CSS & 3 & Styling \\
-FontAwesomeFX & 4.7.0 & Icons \\
-\hline
-\end{tabular}
-
-\newpage
-
-\chapter{Design Patterns}
-
-\section{Factory Pattern}
-\subsection{Mục Đích}
-Tạo các loại Item khác nhau một cách linh hoạt mà không cần client biết chi tiết.
-
-\subsection{Cấu Trúc}
-\begin{verbatim}
-Item (Abstract)
-├─ Vehicle (Phương tiện)
-├─ RealEstate (Bất động sản)
-├─ ArtCollectible (Đồ nghệ thuật)
-└─ StateProperty (Tài sản nhà nước)
-
-ItemCreator (Interface)
-├─ VehicleCreator
-├─ RealEstateCreator
-├─ ArtCollectibleCreator
-└─ StatePropertyCreator
-
-ItemFactoryRegistry (Singleton)
-└─ createItem(category, ...) → Item
-\end{verbatim}
-
-\subsection{Lợi Ích}
+\section{Tong Quan}
+BidNova su dung kien truc Multi-layer voi Client-Server pattern:
 \begin{itemize}
-    \item ✅ Dễ thêm loại sản phẩm mới
-    \item ✅ Tách biệt logic tạo object
-    \item ✅ Reusable và extensible
+    \item \textbf{Client Layer:} JavaFX GUI voi nhieu controller cho auth, bidder, seller, admin
+    \item \textbf{Network Layer:} Socket communication, JSON serialization (Gson)
+    \item \textbf{Service Layer:} 16+ handlers, AutoBidService, AuctionManager
+    \item \textbf{Data Access Layer:} DAO pattern cho User, Auction, AutoBid, BidHistory
+    \item \textbf{Database Layer:} MySQL voi 4 bang chinh
 \end{itemize}
 
-\section{Observer Pattern}
-\subsection{Mục Đích}
-Broadcast real-time updates tới tất cả clients khi có thay đổi trong phiên đấu giá.
-
-\subsection{Cấu Trúc}
-\begin{verbatim}
-AuctionObserver (Interface)
-├─ onBidPlaced()
-├─ onAuctionStatusChanged()
-└─ onAutoBidTriggered()
-
-AuctionSubject
-├─ attach(observer)
-├─ detach(observer)
-├─ notifyBidPlaced()
-├─ notifyStatusChanged()
-└─ notifyAutoBidTriggered()
-
-Implementations:
-├─ ClientObserver
-├─ LoggingObserver
-└─ ...
-\end{verbatim}
-
-\subsection{Luồng Hoạt Động}
+\section{Luong Xu Ly}
 \begin{enumerate}
-    \item User A đặt giá 105M
-    \item PlaceBidHandler xử lý → Cập nhật DB
-    \item Gọi subject.notifyBidPlaced(105M, "UserA")
-    \item AuctionSubject gọi observer.onBidPlaced() cho tất cả observers
-    \item Mỗi client nhận update → Cập nhật UI
+    \item Client gui JSON request den Server (Port 8888)
+    \item ServerSocket accept connection spawn ClientHandler thread
+    \item ClientHandler parse JSON route toi ActionHandler tuong ung
+    \item Handler xu ly logic, cap nhat DB, trigger broadcast
+    \item ClientHandler gui response + broadcast toi tat ca clients
+    \item Client UI update qua Platform.runLater()
 \end{enumerate}
 
-\section{Singleton Pattern}
-\subsection{Áp Dụng}
-\begin{itemize}
-    \item \textbf{DatabaseConnection}: Quản lý connection pool
-    \item \textbf{AuctionManager}: Quản lý auction cache trong memory
-    \item \textbf{ItemFactoryRegistry}: Registry cho item creators
-\end{itemize}
-
-\section{DAO Pattern}
-\subsection{Các DAO Classes}
-\begin{itemize}
-    \item AuctionDAO: CRUD auctions
-    \item UserDAO: CRUD users
-    \item BidHistoryDAO: Record bids
-    \item AutoBidDAO: Manage auto-bid rules
-\end{itemize}
-
 \newpage
 
-\chapter{Tính Năng Chính}
+\chapter{Chuc Nang Chinh}
 
-\section{1. Authentication \& Authorization}
-\subsection{Quy Trình}
-\begin{enumerate}
-    \item User đăng nhập (username, password)
-    \item LoginHandler:
-    \begin{itemize}
-        \item Tìm user trong DB
-        \item Verify password (BCrypt)
-        \item Generate JWT token
-    \end{itemize}
-    \item Return token cho client
-    \item Mỗi request gửi token → ClientHandler validate
-\end{enumerate}
-
-\subsection{Bảo Mật}
+\section{1. Authentication \& User Management}
 \begin{itemize}
-    \item 🔐 BCrypt password hashing (salt rounds: 10)
-    \item 🔐 JWT token validation
-    \item 🔐 Token expiration
-    \item 🔐 Role-based access control (USER, SELLER, ADMIN)
+    \item \textbf{Login:} Username/password, BCrypt verify, JWT token generation
+    \item \textbf{Register:} Validate email, hash password, save DB
+    \item \textbf{Delete User:} Role-based access control (ADMIN only)
 \end{itemize}
 
 \section{2. Bidding System}
-\subsection{Validation Flow (8 kiểm tra)}
-\begin{verbatim}
-PLACE_BID Request
-    ↓
-✓ User authenticated?
-    ↓
-✓ Auction exists?
-    ↓
-✓ Status = OPEN?
-    ↓
-✓ Not expired?
-    ↓
-✓ Bid > currentHighestBid?
-    ↓
-✓ Increment >= minBidIncrement? ← NEW
-    ↓
-✓ Bid < priceCeiling? ← NEW
-    ↓
-✓ Update DB + Record history
-    ↓
-Trigger AutoBid → Broadcast Update
-\end{verbatim}
+\textbf{8-step validation:} User authenticated $\to$ Auction exists $\to$ Status OPEN $\to$ Not expired $\to$ Bid $>$ highest $\to$ Increment $\geq$ min $\to$ Bid $<$ ceiling $\to$ Record history
 
-\subsection{Price Ceiling Feature}
-\subsubsection{Định Nghĩa}
-Giá trần là mức giá tối đa mà người bán sẽ chấp nhận. Khi có bid đạt/vượt giá trần, phiên đấu giá tự động kết thúc.
+\textbf{Price Ceiling:} Tu dong ket thuc phien khi bid dat/vuot gia tran.
 
-\subsubsection{Ví Dụ}
-\begin{verbatim}
-startPrice: 100 triệu
-priceCeiling: 150 triệu
-minIncrement: 1 triệu
-
-Timeline:
-- 10:00 → User A bids 105M ✓
-- 10:05 → AutoBid 110M ✓
-- 10:10 → User C bids 140M ✓
-- 10:15 → AutoBid triggers 145M ✓
-- 10:20 → User A bids 150M ✓ → CEILING REACHED
-           Status: FINISHED
-           Winner: User A (150M)
-\end{verbatim}
-
-\subsection{Minimum Bid Increment Feature}
-\subsubsection{Định Nghĩa}
-Bước giá tối thiểu là khoảng cách nhỏ nhất giữa hai bid liên tiếp.
-
-\subsubsection{Validation}
-\begin{verbatim}
-if (newBid - currentHighestBid) < minBidIncrement:
-    REJECT with error: "Bước giá tối thiểu là X VNĐ"
-\end{verbatim}
-
-\subsubsection{Ví Dụ}
-\begin{verbatim}
-currentBid: 100M
-minIncrement: 2M
-legalBids: [102M, 103M, 104M, ...]
-illegalBids: [100.5M, 101M, 101.5M]
-\end{verbatim}
+\textbf{Min Bid Increment:} Kiem tra buoc gia toi thieu giua 2 bid.
 
 \section{3. AutoBid System}
-\subsection{Tính Năng}
 \begin{itemize}
-    \item ✅ User đặt maxBid và increment
-    \item ✅ Tự động đặt giá khi có bid mới
-    \item ✅ FIFO priority (người đăng ký sớm được ưu tiên)
-    \item ✅ Smart increment adjustment
-    \item ✅ Respect price ceiling
+    \item User dat: maxBid, increment, gia tran
+    \item Tu dong dat gia khi co bid moi (FIFO priority)
+    \item Thong minh dieu chinh increment, ton trong gia tran
+    \item Tu dong ket thuc phien khi dat ceiling
 \end{itemize}
 
-\subsection{Execution Flow}
-\begin{verbatim}
-Setup:
-  User B's AutoBid: maxBid = 180M, increment = 5M, ceiling = 150M
-
-1. User A bids 100M
-   → AutoBidService: nextBid = 100 + 5 = 105M
-   → 105M <= 180M ✓ → Place 105M
-
-2. User A bids 140M
-   → AutoBidService: nextBid = 140 + 5 = 145M
-   → 145M <= 180M ✓ → Place 145M
-
-3. User A bids 148M
-   → AutoBidService: nextBid = 148 + 5 = 153M
-   → 153M > ceiling (150M)
-   → Place 150M (ceiling value) + CLOSE AUCTION
-   → Status: FINISHED
-\end{verbatim}
-
 \section{4. Real-time Broadcasting}
-\subsection{Mechanism}
-\begin{verbatim}
-ClientHandler:
-  static Set<PrintWriter> clientWriters (ConcurrentHashMap)
-  
-broadcastAll(message):
-  for (PrintWriter writer : clientWriters) {
-      writer.println(message)
-  }
-  
-Triggered by:
-  - PlaceBidHandler (PLACE_BID)
-  - AddProductHandler (ADD_PRODUCT)
-  - UpdateProductHandler (UPDATE_PRODUCT)
-  - DeleteProductHandler (DELETE_PRODUCT)
-  - AutoBidService (AUTO_BID_TRIGGER)
-\end{verbatim}
-
-\subsection{Update Format}
-\begin{verbatim}
-{
-  "action": "BID_UPDATE",
-  "auctionId": "auction_123",
-  "newBid": 150000000,
-  "bidder": "UserA",
-  "timestamp": "2025-05-31T19:30:45"
-}
-\end{verbatim}
+\begin{itemize}
+    \item Observer pattern: AuctionSubject notify tat ca AuctionObservers
+    \item Event: BID\_UPDATE, AUCTION\_FINISHED, PRODUCT\_ADDED
+    \item ConcurrentHashMap luu PrintWriter clients
+    \item Platform.runLater() cap nhat UI tren JavaFX thread
+\end{itemize}
 
 \newpage
 
-\chapter{Database Schema}
+\chapter{Design Patterns \& Ky Thuat}
 
-\section{Tables}
-
-\subsection{users}
-\begin{verbatim}
-CREATE TABLE users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    email VARCHAR(100),
-    full_name VARCHAR(100),
-    phone VARCHAR(20),
-    gender VARCHAR(10),
-    role VARCHAR(20) DEFAULT 'user'
-);
-\end{verbatim}
-
-\subsection{auctions}
-\begin{verbatim}
-CREATE TABLE auctions (
-    id VARCHAR(50) PRIMARY KEY,
-    product_name VARCHAR(255) NOT NULL,
-    start_price DECIMAL(15,0),
-    current_highest_bid DECIMAL(15,0),
-    highest_bidder_id INT,
-    status VARCHAR(20),
-    category VARCHAR(50),
-    description TEXT,
-    start_time DATETIME,
-    end_time DATETIME,
-    seller_id INT NOT NULL,
-    image_url VARCHAR(255),
-    price_ceiling DECIMAL(15,0),
-    min_bid_increment DECIMAL(10,0) DEFAULT 1000,
-    FOREIGN KEY (seller_id) REFERENCES users(id),
-    FOREIGN KEY (highest_bidder_id) REFERENCES users(id)
-);
-\end{verbatim}
-
-\subsection{auto\_bids}
-\begin{verbatim}
-CREATE TABLE auto_bids (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    auction_id VARCHAR(50) NOT NULL,
-    user_id INT NOT NULL,
-    max_bid DECIMAL(15,0),
-    increment DECIMAL(10,0),
-    is_active BOOLEAN DEFAULT true,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (auction_id) REFERENCES auctions(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-\end{verbatim}
-
-\subsection{bid\_history}
-\begin{verbatim}
-CREATE TABLE bid_history (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    auction_id VARCHAR(50) NOT NULL,
-    user_id INT NOT NULL,
-    username VARCHAR(50),
-    bid_amount DECIMAL(15,0),
-    bid_time DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (auction_id) REFERENCES auctions(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
-);
-\end{verbatim}
-
-\newpage
-
-\chapter{Testing}
-
-\section{Unit Tests}
+\section{Design Patterns}
 \begin{tabular}{|l|l|l|}
 \hline
-\textbf{Test Class} & \textbf{Test Cases} & \textbf{Status} \\
+\textbf{Pattern} & \textbf{Trien Khai} & \textbf{Muc Dich} \\
 \hline
-UserTest & 5 & ✅ Pass \\
-AuctionTest & 6 & ✅ Pass \\
-AutoBidTest & 4 & ✅ Pass \\
-BidHistoryTest & 3 & ✅ Pass \\
-AuctionDAOTest & 5 & ✅ Pass \\
-AutoBidServiceTest & 4 & ✅ Pass \\
-AuctionSubjectTest & 3 & ✅ Pass \\
-ItemFactoryRegistryTest & 4 & ✅ Pass \\
-RequestTest & 3 & ✅ Pass \\
-ResponseTest & 3 & ✅ Pass \\
-\hline
-\textbf{Total} & \textbf{40} & ✅ \textbf{Pass} \\
+Factory & ItemFactoryRegistry, ItemCreator & Tao Item theo category \\
+Observer & AuctionSubject, AuctionObserver & Real-time broadcast \\
+Singleton & AuctionManager, DatabaseConnection & Duy nhat trong ung dung \\
+Command & ActionHandler, 16+ handlers & Route request xu ly \\
+Registry & HandlerRegistry & Quan ly tap hop handler \\
+DAO & UserDAO, AuctionDAO, AutoBidDAO & Tach biet DB logic \\
+MVC & Model, View (FXML), Controller & Phan tach trach nhiem \\
 \hline
 \end{tabular}
 
-\section{Test Scenarios}
+\section{Concurrency \& Threading}
+\begin{itemize}
+    \item \textbf{Multi-threading:} ServerSocket accept tao ClientHandler thread cho moi client
+    \item \textbf{synchronized placeBid():} Prevent race condition tren bid update
+    \item \textbf{ConcurrentHashMap:} Thread-safe luu auctions, clients, handlers
+    \item \textbf{CopyOnWriteArrayList:} Thread-safe luu observers, bid history
+    \item \textbf{Lost update prevention:} Synchronized blocks tren critical sections
+\end{itemize}
 
-\subsection{Scenario 1: Normal Bidding}
-\begin{enumerate}
-    \item User A tạo phiên đấu giá (100M-150M)
-    \item User B đặt giá 105M → ✅ Accept
-    \item User C đặt giá 120M → ✅ Accept
-    \item User B's AutoBid trigger 125M → ✅ Accept
-    \item Hết thời gian → Status = FINISHED
-    \item Winner: User B (125M)
-\end{enumerate}
-
-\subsection{Scenario 2: Price Ceiling Reached}
-\begin{enumerate}
-    \item Ceiling = 150M
-    \item User A bids 148M → ✅ Accept
-    \item User B's AutoBid calculates 153M > 150M
-    \item System places bid at ceiling (150M)
-    \item Status = FINISHED (auto-close)
-    \item Winner: User B (150M)
-\end{enumerate}
-
-\subsection{Scenario 3: Invalid Bid Increment}
-\begin{enumerate}
-    \item Current bid: 100M
-    \item Min increment: 2M
-    \item User tries to bid 101M (increment = 1M)
-    \item ❌ Rejected: "Bước giá tối thiểu là 2,000,000 VNĐ"
-\end{enumerate}
-
-\subsection{Scenario 4: Anti-Snipping}
-\begin{enumerate}
-    \item Auction ends in 2 minutes
-    \item User A bids with 1 minute left
-    \item System extends auction by 5 minutes
-    \item New end time = original + 5 min
-\end{enumerate}
+\section{Testing}
+40 unit tests: User, Auction, AutoBid, BidHistory, DAO, Service, Pattern. JUnit 5 + Maven.
 
 \newpage
 
-\chapter{Hướng Dẫn Sử Dụng}
+\chapter{Huong Dan Su Dung \& Demo}
 
-\section{Cài Đặt}
-
-\subsection{Yêu Cầu}
-\begin{itemize}
-    \item Java 25+
-    \item Maven 4.0.0+
-    \item MySQL 8.0+
-    \item Git
-\end{itemize}
-
-\subsection{Build \& Run}
+\section{Build \& Run}
 \begin{lstlisting}
-# Clone project
-git clone <repository-url>
-cd HeThongDauGia
-
-# Build
 mvn clean install
-
-# Run Server
 cd server
 mvn exec:java -Dexec.mainClass="com.bidnova.ServerMain"
-
-# Run Client
 cd ../client
 mvn javafx:run
-
-# Run Tests
-mvn test
 \end{lstlisting}
 
 \section{Demo Features}
+\textbf{1. Registration \& Login:} Dang ky user verify password hashing login voi JWT.
 
-\subsection{Demo 1: User Registration \& Login}
-\begin{enumerate}
-    \item Mở Client
-    \item Nhấn "Register"
-    \item Điền thông tin (username, password, email)
-    \item Verify password hashing
-    \item Login với account vừa tạo
-\end{enumerate}
+\textbf{2. Create Auction (Seller):} Chon loai san pham (Factory pattern) dien gia, ceiling, min increment.
 
-\subsection{Demo 2: Create Auction}
-\begin{enumerate}
-    \item Login as Seller
-    \item Click "Create Auction"
-    \item Chọn loại sản phẩm (Vehicle/RealEstate/etc.)
-    \item Điền thông tin (name, price, ceiling, minIncrement)
-    \item Verify Factory Pattern được sử dụng
-\end{enumerate}
+\textbf{3. Bidding (Realtime):} User A bids 105M broadcast toi User B, C UI update ngay.
 
-\subsection{Demo 3: Bidding with Price Ceiling}
-\begin{enumerate}
-    \item Open auction với ceiling = 150M
-    \item User 1 bids 100M
-    \item User 2 bids 145M
-    \item User 1 tries 150M
-    \item Verify: Auction auto-closes at ceiling
-\end{enumerate}
+\textbf{4. AutoBid:} User B set AutoBid (180M, increment 5M) tu dong bid khi co bid moi.
 
-\subsection{Demo 4: AutoBid Execution}
-\begin{enumerate}
-    \item User 1 sets AutoBid (maxBid=180M, increment=5M)
-    \item User 2 bids 110M
-    \item Verify: AutoBid triggers 115M automatically
-    \item User 2 bids 140M
-    \item Verify: AutoBid triggers 145M automatically
-\end{enumerate}
+\textbf{5. Price Ceiling:} Bid dat gia tran (150M) phien tu dong ket thuc, winner duoc thong bao.
 
-\section{Monitoring}
-\begin{verbatim}
-Server console shows:
-[2025-05-31 19:30:45] [INFO] Server started on port 8888
-[2025-05-31 19:30:50] [INFO] Client connected: UserA
-[2025-05-31 19:31:00] [INFO] PLACE_BID: UserA → 105M for auction_123
-[2025-05-31 19:31:05] [INFO] AUTO_BID triggered: UserB → 110M
-[2025-05-31 19:31:10] [INFO] Broadcast to 3 clients
-\end{verbatim}
+\section{Luu Y}
+De chay Server can:
+\begin{itemize}
+    \item MySQL 8.0+ running, database bidnova\_db tao qua db\_setup.sql
+    \item .env file voi DB credentials
+    \item Java 25, Maven 4.0.0+
+\end{itemize}
 
 \newpage
 
-\chapter{Kết Luận}
+\chapter{Ket Luan}
 
-\section{Những Điểm Mạnh}
+\section{Nhung Diem Manh}
 \begin{itemize}
-    \item ✅ Design Patterns được áp dụng đúng (Factory, Observer, Singleton)
-    \item ✅ Multi-threaded server với concurrency control
-    \item ✅ Real-time broadcasting to multiple clients
-    \item ✅ Price ceiling \& min increment validation
-    \item ✅ AutoBid smart execution
-    \item ✅ Complete unit test coverage
-    \item ✅ Comprehensive documentation \& Javadoc
+    \item 5 design patterns ap dung dung chuan, tich hop tot
+    \item Multi-threaded server xu ly concurrent bids an toan
+    \item Real-time system voi Observer pattern + Socket broadcast
+    \item Validation logic toan dien (8 step bidding check)
+    \item AutoBid thong minh ton trong gia tran, increment
+    \item 40 unit tests bao phu core logic
+    \item Javadoc, code documentation day du
 \end{itemize}
 
-\section{Có Thể Cải Thiện}
-\begin{itemize}
-    \item 📝 Thêm WebSocket cho real-time updates hiệu quả hơn
-    \item 📝 Implement database connection pooling
-    \item 📝 Add more authentication layers (2FA)
-    \item 📝 Performance optimization với caching layer
-    \item 📝 Implement audit logging
-\end{itemize}
+\section{Mo Rong Tuong Lai}
+WebSocket cho efficiency; Database connection pooling; 2FA authentication; Performance caching; Audit logging.
 
-\section{Kiến Thức Đạt Được}
+\section{Resources}
 \begin{itemize}
-    \item ✅ Design Patterns in practice
-    \item ✅ Multi-threaded programming
-    \item ✅ Network programming (Socket)
-    \item ✅ Database design \& optimization
-    \item ✅ Unit testing best practices
-    \item ✅ Real-time system design
-\end{itemize}
-
-\appendix
-
-\chapter{Source Code Links}
-\begin{itemize}
-    \item ServerMain.java: server/src/main/java/com/bidnova/ServerMain.java
-    \item ClientHandler.java: server/src/main/java/com/bidnova/handlers/ClientHandler.java
-    \item PlaceBidHandler.java: server/src/main/java/com/bidnova/handlers/PlaceBidHandler.java
-    \item Auction.java: server/src/main/java/com/bidnova/models/Auction.java
-    \item AutoBidService.java: server/src/main/java/com/bidnova/services/AutoBidService.java
-\end{itemize}
-
-\chapter{References}
-\begin{itemize}
-    \item Design Patterns: Elements of Reusable Object-Oriented Software (Gang of Four)
-    \item Java Concurrency in Practice (Brian Goetz)
-    \item Effective Java (Joshua Bloch)
+    \item GitHub: \url{https://github.com/your-repo}
+    \item Video Demo: (4 phut demo chay server, client, bidding realtime, autobid, ceiling)
 \end{itemize}
 
 \end{document}

@@ -23,3 +23,11 @@ Thumbs.db
 
 # === Environment variables ===
 .env
+
+# === LaTeX ===
+*.toc
+*.synctex.gz
+*.out
+*.fls
+*.aux
+*.fdb_latexmk

@@ -32,6 +32,20 @@ public class AuctionManager {
     public Auction getAuction(String id) {
         return activeAuctions.get(id);
     }
+
+    // Remove auction khỏi active auctions (khi kết thúc)
+    public void removeAuction(String id) {
+        activeAuctions.remove(id);
+    }
+
+    // Update auction status trong memory
+    public void updateAuctionStatus(String id, String status) {
+        Auction auction = activeAuctions.get(id);
+        if (auction != null) {
+            auction.setStatus(status);
+        }
+    }
+
     // Thêm hàm này vào để lấy toàn bộ danh sách món hàng đang có trong bộ nhớ
     public java.util.Collection<Auction> getAllAuctions() {
         // Kiểm tra và cập nhật trạng thái hết hạn cho tất cả

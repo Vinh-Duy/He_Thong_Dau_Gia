@@ -243,6 +243,8 @@ public class PlaceBidHandler implements ActionHandler {
                 if (currentAuction.isBidAtCeiling(finalHighestBid)) {
                     currentAuction.setStatus("FINISHED");
                     auctionDAO.updateStatus(auctionId, "FINISHED");
+                    // Remove auction khỏi AuctionManager để ngăn người khác tiếp tục đặt giá
+                    AuctionManager.getInstance().removeAuction(auctionId);
                     ceilingReached = true;
                     System.out.println("🎯 Auction " + auctionId + " FINISHED - Price ceiling reached!");
                 }

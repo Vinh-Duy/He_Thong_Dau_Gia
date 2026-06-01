@@ -4,12 +4,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import java.time.LocalDateTime;
 
 import com.bidnova.handlers.ActionHandler;
 import com.bidnova.handlers.HandlerRegistry;
@@ -137,6 +136,22 @@ public class ClientHandler implements Runnable {
                 try {
                     // Bỏ qua dòng trống hoặc chỉ whitespace
                     if (inputLine.trim().isEmpty()) {
+                        continue;
+                    }
+
+                    // Phát hiện HTTP request (health check từ Render) và skip
+                    if (isHttpRequest(inputLine)) {
+                        System.out.println("⚠️  HTTP request detected (health check), skipping: " + inputLine.substring(0, Math.min(50, inputLine.length())));
+                        // Read HTTP headers until blank line, then ignore
+                        String headerLine;
+                        while ((headerLine = in.readLine()) != null && !headerLine.trim().isEmpty()) {
+                            // Skip HTTP headers
+                        }
+                        // Send minimal HTTP response to satisfy health check
+                        out.println("HTTP/1.1 200 OK");
+                        out.println("Content-Length: 0");
+                        out.println();
+                        out.flush();
                         continue;
                     }
 
@@ -275,5 +290,19 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Phát hiện xem dòng input có phải HTTP request không
+     * (GET, POST, HEAD, PUT, DELETE, etc.)
+     */
+    private boolean isHttpRequest(String line) {
+        String[] httpMethods = {"GET", "POST", "HEAD", "PUT", "DELETE", "PATCH", "OPTIONS"};
+        for (String method : httpMethods) {
+            if (line.startsWith(method + " ")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

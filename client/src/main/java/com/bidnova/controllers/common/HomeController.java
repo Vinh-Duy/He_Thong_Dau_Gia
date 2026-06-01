@@ -8,6 +8,8 @@ import com.bidnova.network.Response;
 import com.bidnova.utils.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import javafx.application.Platform;
@@ -37,6 +39,19 @@ public class HomeController {
     @FXML
     public void initialize() {
         loadData();
+
+        // 🔴 Lắng nghe real-time updates từ server
+        NetworkClient.getInstance().onMessageReceived(message -> {
+            try {
+                JsonObject data = JsonParser.parseString(message).getAsJsonObject();
+                if (data.has("action") && "AUCTION_LIST_UPDATE".equals(data.get("action").getAsString())) {
+                    // Reload dữ liệu khi có product update
+                    Platform.runLater(this::loadData);
+                }
+            } catch (Exception e) {
+                System.err.println("Lỗi xử lý broadcast message: " + e.getMessage());
+            }
+        });
     }
 
     /* Lấy dữ liệu từ database */

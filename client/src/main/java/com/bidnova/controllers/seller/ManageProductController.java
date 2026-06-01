@@ -72,6 +72,19 @@ public class ManageProductController {
         productTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
         loadMyProducts(); // Lấy data từ server khi vừa mở màn hình
+
+        // 🔴 Lắng nghe real-time updates từ server
+        NetworkClient.getInstance().onMessageReceived(message -> {
+            try {
+                JsonObject data = JsonParser.parseString(message).getAsJsonObject();
+                if (data.has("action") && "AUCTION_LIST_UPDATE".equals(data.get("action").getAsString())) {
+                    // Reload dữ liệu khi có product update
+                    Platform.runLater(this::loadMyProducts);
+                }
+            } catch (Exception e) {
+                System.err.println("Lỗi xử lý broadcast message: " + e.getMessage());
+            }
+        });
     }
 
     private void loadMyProducts() {

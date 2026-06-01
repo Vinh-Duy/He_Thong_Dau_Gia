@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefWidth="1200" prefHeight="700" 
+            xmlns="http://javafx.com/javafx/25" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.daugia.controllers.common.GioiThieuController">
+
+    <center>
+        <VBox alignment="CENTER" spacing="30" style="-fx-padding: 80 40;">
+            <Label fx:id="titleLabel" 
+                   style="-fx-font-size: 42px; -fx-font-weight: bold; -fx-text-fill: #c8102e;"/>
+            
+            <Label text="Nền tảng Đấu Giá trực tuyến uy tín tại Việt Nam" 
+                   style="-fx-font-size: 20px; -fx-text-fill: #555;"/>
+            
+            <Label text="Với sứ mệnh mang đến sự minh bạch và công bằng trong mọi phiên đấu giá." 
+                   style="-fx-font-size: 16px; -fx-text-alignment: CENTER; -fx-max-width: 800; -fx-wrap-text: true;"/>
+        </VBox>
+    </center>
+</BorderPane>

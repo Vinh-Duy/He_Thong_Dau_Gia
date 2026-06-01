@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="10" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.daugia.controllers.admin.AdminUserController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    
+    <Label text="QUẢN LÝ NGƯỜI DÙNG" textFill="#2c3e50">
+        <font>
+            <Font name="System Bold" size="24.0" />
+        </font>
+    </Label>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="Làm mới danh sách" onAction="#handleRefresh" style="-fx-background-color: #3498db; -fx-text-fill: white;" />
+        <Button text="Xóa người dùng" onAction="#handleDelete" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+        
+        <Button text="Đăng xuất" onAction="#handleLogout" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;" />
+    </HBox>
+
+    <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
+            <TableColumn fx:id="colUsername" prefWidth="150.0" text="Tên đăng nhập" />
+            <TableColumn fx:id="colFullName" prefWidth="200.0" text="Họ và tên" />
+            <TableColumn fx:id="colEmail" prefWidth="200.0" text="Email" />
+            <TableColumn fx:id="colRole" prefWidth="100.0" text="Quyền" />
+        </columns>
+    </TableView>
+</VBox>

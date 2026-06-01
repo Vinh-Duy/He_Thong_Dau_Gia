@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefWidth="1200" prefHeight="700" 
+            xmlns="http://javafx.com/javafx/25" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.daugia.controllers.common.LienHeController">
+
+    <center>
+        <VBox alignment="CENTER" spacing="30" style="-fx-padding: 80 40;">
+            <Label fx:id="titleLabel" 
+                   style="-fx-font-size: 42px; -fx-font-weight: bold; -fx-text-fill: #c8102e;"/>
+            
+            <Label text="Hotline: 1900 xxxx" style="-fx-font-size: 18px;"/>
+            <Label text="Email: info@daugia.vn" style="-fx-font-size: 18px;"/>
+            <Label text="Địa chỉ: Hà Nội, Việt Nam" style="-fx-font-size: 18px;"/>
+            
+            <Label text="Chúng tôi luôn sẵn sàng hỗ trợ bạn 24/7!" 
+                   style="-fx-font-size: 16px; -fx-text-fill: #666;"/>
+        </VBox>
+    </center>
+</BorderPane>

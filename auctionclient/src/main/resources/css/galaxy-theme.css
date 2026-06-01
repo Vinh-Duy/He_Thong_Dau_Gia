@@ -1,0 +1,73 @@
+
+.root {
+    -fx-galaxy-purple: #9c27b0;
+    -fx-galaxy-light-purple: #e1bee7;
+    -fx-galaxy-dark-purple: #4a148c; 
+    -fx-glass-dark: rgba(10, 0, 20, 0.85); 
+}
+
+.btn-galaxy-transparent {
+    -fx-background-color: transparent;
+    -fx-border-color: -fx-galaxy-purple; 
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-text-fill: -#9c27b0;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+    -fx-border-width: 2px;
+}
+
+.btn-galaxy-transparent:hover {
+    -fx-background-color: rgba(156, 39, 176, 0.15);
+    -fx-text-fill: -fx-galaxy-light-purple;
+    -fx-border-color: -fx-galaxy-light-purple;
+}
+
+.btn-galaxy-filled {
+    -fx-background-color: rgba(156, 39, 176, 0.3);
+    -fx-border-color: transparent;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(156, 39, 176, 0.4), 10, 0, 0, 2);
+}
+
+.btn-galaxy-filled:hover {
+    -fx-background-color: -fx-galaxy-purple;
+}
+
+
+.context-menu {
+    -fx-background-color: -fx-glass-dark;
+    -fx-background-radius: 10px;
+    -fx-border-color: rgba(156, 39, 176, 0.3); 
+    -fx-border-radius: 10px;
+    -fx-padding: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 15, 0, 0, 8);
+}
+
+.context-menu .menu-item {
+    -fx-background-color: transparent;
+    -fx-padding: 8 15;
+}
+
+.context-menu .menu-item .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.context-menu .menu-item:focused,
+.context-menu .menu-item:hover {
+    -fx-background-color: rgba(156, 39, 176, 0.4);
+    -fx-background-radius: 5px;
+}
+
+.context-menu .menu-item:focused .label,
+.context-menu .menu-item:hover .label {
+    -fx-text-fill: -fx-galaxy-light-purple;
+}

@@ -1,0 +1,1 @@
+web: mvn clean package -q && java -cp "server/target/classes:server/target/dependency/*" com.bidnova.ServerMain

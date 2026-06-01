@@ -9,8 +9,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import com.bidnova.models.Auction;
-import com.bidnova.services.DatabaseInitializer;
 import com.bidnova.services.AuctionManager;
+import com.bidnova.services.DatabaseInitializer;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -47,7 +47,22 @@ import com.google.gson.JsonObject;
  * @since 2026-05
  */
 public class ServerMain {
-    private static final int PORT = 8888;
+    /**
+     * Lấy PORT từ environment variable hoặc sử dụng default 8888
+     */
+    private static int getPort() {
+        String portEnv = System.getenv("PORT");
+        if (portEnv != null && !portEnv.isEmpty()) {
+            try {
+                return Integer.parseInt(portEnv);
+            } catch (NumberFormatException e) {
+                System.err.println("⚠️  Invalid PORT env variable: " + portEnv + ", using default 8888");
+            }
+        }
+        return 8888;
+    }
+    
+    private static final int PORT = getPort();
 
     /**
      * Main method - Điểm khởi động của server

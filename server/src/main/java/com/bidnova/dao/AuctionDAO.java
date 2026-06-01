@@ -142,7 +142,7 @@ public class AuctionDAO {
     }
 
     public boolean updateAuction(Auction auc) {
-        String sql = "UPDATE auctions SET name = ?, description = ?, start_price = ?, start_time = ?, end_time = ?, status = ?, category = ?, seller_id = ?, image_url = ? WHERE id = ?";
+        String sql = "UPDATE auctions SET name = ?, description = ?, start_price = ?, start_time = ?, end_time = ?, status = ?, category = ?, seller_id = ?, image_url = ?, price_ceiling = ?, min_bid_increment = ? WHERE id = ?";
         Connection conn = connectionSupplier.get();
         if (conn == null) {
             return false;
@@ -157,7 +157,14 @@ public class AuctionDAO {
             pstmt.setString(7, auc.getCategory());
             pstmt.setInt(8, auc.getSellerId());
             pstmt.setString(9, auc.getImageUrl());
-            pstmt.setString(10, auc.getId());
+            // ⭐️ NEW: Save price ceiling and min bid increment
+            if (auc.getPriceCeiling() != null) {
+                pstmt.setDouble(10, auc.getPriceCeiling());
+            } else {
+                pstmt.setNull(10, java.sql.Types.DOUBLE);
+            }
+            pstmt.setDouble(11, auc.getMinBidIncrement());
+            pstmt.setString(12, auc.getId());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             System.err.println("Error updating auction: " + e.getMessage());

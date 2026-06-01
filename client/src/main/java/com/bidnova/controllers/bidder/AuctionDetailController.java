@@ -157,8 +157,26 @@ public class AuctionDetailController implements Initializable {
                 lblPriceCeiling.setText("Vô giới hạn");
             }
             
+            // ⭐️ NEW: Disable bidding if auction is already finished
+            if ("FINISHED".equalsIgnoreCase(currentAuction.getStatus()) || "CLOSED".equalsIgnoreCase(currentAuction.getStatus())) {
+                disableAllBidding();
+                lblTimeLeft.setText("Đã kết thúc");
+                lblTimeLeft.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
+                if (countdownTimeline != null) {
+                    countdownTimeline.stop();
+                }
+            }
+            
             loadImage(currentAuction.getImageUrl());
         }
+    }
+
+    private void disableAllBidding() {
+        btnPlaceBid.setDisable(true);
+        txtBidInput.setDisable(true);
+        txtMaxBid.setDisable(true);
+        txtIncrement.setDisable(true);
+        btnToggleAutoBid.setDisable(true);
     }
 
     private void loadImage(String imageUrl) {
@@ -186,7 +204,9 @@ public class AuctionDetailController implements Initializable {
     private void handleRealTimeUpdate(String message) {
         try {
             JsonObject json = JsonParser.parseString(message).getAsJsonObject();
-            if (json.has("action") && "BID_UPDATE".equals(json.get("action").getAsString())) {
+            String action = json.has("action") ? json.get("action").getAsString() : null;
+            
+            if ("BID_UPDATE".equals(action)) {
                 // Server gửi payload là một chuỗi JSON string bên trong
                 JsonObject payload = JsonParser.parseString(json.get("payload").getAsString()).getAsJsonObject();
                 String auctionId = payload.get("auctionId").getAsString();
@@ -227,9 +247,51 @@ public class AuctionDetailController implements Initializable {
                         }
                     });
                 }
+            } else if ("AUCTION_FINISHED".equals(action)) {
+                // ⭐️ NEW: Handle AUCTION_FINISHED event (ceiling reached)
+                JsonObject payload = JsonParser.parseString(json.get("payload").getAsString()).getAsJsonObject();
+                String auctionId = payload.get("auctionId").getAsString();
+                
+                if (currentAuction != null && auctionId.equals(currentAuction.getId())) {
+                    Platform.runLater(() -> {
+                        // Update the final bid
+                        if (payload.has("newHighestBid")) {
+                            double finalBid = payload.get("newHighestBid").getAsDouble();
+                            currentPriceValue = finalBid;
+                            lblCurrentBid.setText(formatVietnameseCurrency(finalBid));
+                        }
+                        
+                        // Disable all bidding
+                        disableAllBidding();
+                        
+                        // Stop countdown
+                        if (countdownTimeline != null) {
+                            countdownTimeline.stop();
+                        }
+                        
+                        // Show notification
+                        showNotificationAlert("🎯 Phiên kết thúc", 
+                            "Phiên đấu giá đã kết thúc vì đạt giới hạn giá trần!");
+                        
+                        // Update UI
+                        currentAuction.setStatus("FINISHED");
+                        lblTimeLeft.setText("Đã kết thúc");
+                        lblTimeLeft.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
+                        
+                        // Reload history
+                        if (bidHistoryTableController != null) {
+                            bidHistoryTableController.loadHistory(currentAuction.getId());
+                        }
+                        
+                        // Reload chart
+                        if (bidChartController != null) {
+                            bidChartController.loadChartData(currentAuction.getId());
+                        }
+                    });
+                }
             }
         } catch (Exception e) {
-            // Bỏ qua nếu tin nhắn không đúng định dạng JSON cho BID_UPDATE
+            // Bỏ qua nếu tin nhắn không đúng định dạng JSON
         }
     }
 

@@ -2,6 +2,7 @@ package com.bidnova.handlers;
 
 import java.time.LocalDateTime;
 
+import com.bidnova.ClientHandler;
 import com.bidnova.dao.AuctionDAO;
 import com.bidnova.dao.BidHistoryDAO;
 import com.bidnova.models.Auction;
@@ -265,6 +266,9 @@ public class PlaceBidHandler implements ActionHandler {
                 JsonObject result = new JsonObject();
                 result.add("bidResult", successData);
                 result.add("event", event);
+                
+                // ⭐️ BROADCAST event to all clients
+                ClientHandler.broadcastAll(gson.toJson(event));
 
                 return new Response("SUCCESS", "Đặt giá thành công", gson.toJson(result));
             }

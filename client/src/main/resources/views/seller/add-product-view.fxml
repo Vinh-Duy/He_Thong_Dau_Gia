@@ -81,7 +81,7 @@
                             <Label styleClass="field-label" text="Giá trần (tối đa)" />
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                            <TextField fx:id="txtPriceCeiling" promptText="Để trống = vô giới hạn (VD: 50000000)" HBox.hgrow="ALWAYS" />
+                            <TextField fx:id="txtPriceCeiling" promptText="Mặc định: Không giới hạn" HBox.hgrow="ALWAYS" />
                             <Label styleClass="currency-label" text="VNĐ" />
                         </HBox>
 

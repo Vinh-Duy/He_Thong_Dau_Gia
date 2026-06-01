@@ -145,16 +145,16 @@ public class AddProductController {
                 auction.setPriceCeiling(null);
             }
 
-            // Set minBidIncrement (mặc định 1000 nếu để trống)
+            // Set minBidIncrement (mặc định 1000000 nếu để trống)
             String minIncStr = txtMinBidIncrement.getText().trim();
             if (!minIncStr.isEmpty()) {
                 try {
                     auction.setMinBidIncrement(Double.parseDouble(minIncStr));
                 } catch (NumberFormatException ignored) {
-                    auction.setMinBidIncrement(1000); // Fallback
+                    auction.setMinBidIncrement(1000000); // Fallback
                 }
             } else {
-                auction.setMinBidIncrement(1000); // Default
+                auction.setMinBidIncrement(1000000); // Default
             }
 
             // Set startTime
@@ -291,6 +291,8 @@ public class AddProductController {
             cmbCategory.setValue(auction.getCategory());
         }
         txtStartingPrice.setText(String.valueOf(auction.getStartPrice()));
+        txtPriceCeiling.setText(String.valueOf(auction.getPriceCeiling()));
+        txtMinBidIncrement.setText(String.valueOf(auction.getMinBidIncrement()));
 
         // Đổ ngày giờ bắt đầu
         if (auction.getStartTime() != null) {

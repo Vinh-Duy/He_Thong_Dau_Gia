@@ -156,6 +156,8 @@
 #txtName,
 #txtDescription,
 #txtStartingPrice,
+#txtPriceCeiling,
+#txtMinBidIncrement,
 #cmbCategory,
 #txtTimeStart,
 #txtTimeEnd {

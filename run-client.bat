@@ -7,24 +7,29 @@ REM Usage: run-client.bat
 setlocal enabledelayedexpansion
 
 echo.
-echo 🚀 Starting BidNova Client Build...
+echo 🚀 Starting BidNova Client...
 echo.
 
 REM Get project root
 cd /d "%~dp0"
 set PROJECT_ROOT=%cd%
 
-echo 📦 Building client package...
-call mvn clean package -f client/pom.xml -DskipTests -q
-
-if %ERRORLEVEL% neq 0 (
-    echo.
-    echo ❌ Build failed! Check errors above.
-    pause
-    exit /b 1
+REM Check if JAR already exists
+if exist "%PROJECT_ROOT%\client\target\BidNova-Client.jar" (
+    echo ✅ Using cached build...
+) else (
+    echo 📦 Building client package...
+    call mvn clean package -f client/pom.xml -DskipTests -q
+    
+    if !ERRORLEVEL! neq 0 (
+        echo.
+        echo ❌ Build failed! Check errors above.
+        pause
+        exit /b 1
+    )
+    echo ✅ Build complete!
 )
 
-echo ✅ Build complete!
 echo.
 echo 🔌 Starting client - connecting to Render server...
 echo ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -36,10 +41,14 @@ REM Set environment variables
 set AUCTION_SERVER_HOST=bidnova-server.onrender.com
 set AUCTION_SERVER_PORT=8888
 
-REM Run the client
-java -jar "%PROJECT_ROOT%\client\target\BidNova-Client.jar"
+REM Run using Maven exec (handles JavaFX properly)
+echo ⚙️  Starting application via Maven...
+echo.
 
-if %ERRORLEVEL% neq 0 (
+call mvn -q clean javafx:run -f client/pom.xml ^
+    -Djavafx.maven.plugin.mainClass=com.bidnova.Main
+
+if !ERRORLEVEL! neq 0 (
     echo.
     echo ❌ Client failed to start!
     pause
@@ -47,3 +56,4 @@ if %ERRORLEVEL% neq 0 (
 )
 
 pause
+

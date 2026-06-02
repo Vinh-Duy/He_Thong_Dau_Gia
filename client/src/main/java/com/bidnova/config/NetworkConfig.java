@@ -1,7 +1,7 @@
 package com.bidnova.config;
 
 public class NetworkConfig {
-    private static final String DEFAULT_HOST = "127.0.0.1";
+    private static final String DEFAULT_HOST = "127.0.0.1";  // Local development
     private static final int DEFAULT_PORT = 8888;
     private static final int DEFAULT_TIMEOUT_SECONDS = 5;
     
@@ -9,14 +9,17 @@ public class NetworkConfig {
         // Ưu tiên: System Property → Environment Variable → Default
         String fromProperty = System.getProperty("auction.server.host");
         if (fromProperty != null && !fromProperty.isEmpty()) {
+            System.out.println("📍 Using host from property: " + fromProperty);
             return fromProperty;
         }
         
         String fromEnv = System.getenv("AUCTION_SERVER_HOST");
         if (fromEnv != null && !fromEnv.isEmpty()) {
+            System.out.println("📍 Using host from env var: " + fromEnv);
             return fromEnv;
         }
         
+        System.out.println("📍 Using default host: " + DEFAULT_HOST);
         return DEFAULT_HOST;
     }
     
@@ -25,7 +28,9 @@ public class NetworkConfig {
         String fromProperty = System.getProperty("auction.server.port");
         if (fromProperty != null && !fromProperty.isEmpty()) {
             try {
-                return Integer.parseInt(fromProperty);
+                int port = Integer.parseInt(fromProperty);
+                System.out.println("📍 Using port from property: " + port);
+                return port;
             } catch (NumberFormatException e) {
                 System.err.println("Invalid port in property, using default: " + DEFAULT_PORT);
             }
@@ -34,12 +39,15 @@ public class NetworkConfig {
         String fromEnv = System.getenv("AUCTION_SERVER_PORT");
         if (fromEnv != null && !fromEnv.isEmpty()) {
             try {
-                return Integer.parseInt(fromEnv);
+                int port = Integer.parseInt(fromEnv);
+                System.out.println("📍 Using port from env var: " + port);
+                return port;
             } catch (NumberFormatException e) {
                 System.err.println("Invalid port in env variable, using default: " + DEFAULT_PORT);
             }
         }
         
+        System.out.println("📍 Using default port: " + DEFAULT_PORT);
         return DEFAULT_PORT;
     }
     

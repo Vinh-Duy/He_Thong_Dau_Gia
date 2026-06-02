@@ -42,8 +42,7 @@ echo 🔌 Starting Server in new window...
 echo.
 
 REM Start server in new window
-start "BidNova Server" /min java -cp "server/target/classes;server/target/dependency/*" ^
-    com.bidnova.ServerMain
+start "BidNova Server" /min java -jar server/target/bidnova-server.jar
 
 timeout /t 3 /nobreak
 

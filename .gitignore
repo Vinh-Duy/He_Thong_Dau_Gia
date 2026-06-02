@@ -24,6 +24,12 @@ Thumbs.db
 # === Environment variables ===
 .env
 
+# === Archive & Scripts (cleanup) ===
+docs_archive/
+scripts/
+docs/
+output/
+
 # === LaTeX ===
 *.toc
 *.synctex.gz

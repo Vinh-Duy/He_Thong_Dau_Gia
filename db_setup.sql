@@ -31,7 +31,6 @@ CREATE TABLE `users` (
 -- ============================================================
 -- TABLE: auto_bids
 -- ============================================================
-<<<<<<< HEAD
 CREATE TABLE `auto_bids` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `auction_id` VARCHAR(50) NOT NULL,
@@ -73,62 +72,3 @@ TRUNCATE TABLE auto_bids;
 TRUNCATE TABLE auctions;
 TRUNCATE TABLE users;
 SET FOREIGN_KEY_CHECKS = 1;
-=======
-CREATE TABLE IF NOT EXISTS auto_bids (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  auction_id VARCHAR(50) NOT NULL,
-  username VARCHAR(100) NOT NULL,
-  max_bid DECIMAL(20, 2) NOT NULL,
-  increment DECIMAL(20, 2) NOT NULL,
-  is_active BOOLEAN DEFAULT true,
-  created_at BIGINT NOT NULL,
-  FOREIGN KEY (auction_id) REFERENCES auctions(id)
-);
-
--- ============================================================
--- TABLE: users
--- ============================================================
-CREATE TABLE IF NOT EXISTS users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(100) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  role VARCHAR(50) DEFAULT 'BIDDER',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- ============================================================
--- CLEAR OLD DATA
--- ============================================================
-TRUNCATE TABLE auto_bids;
-TRUNCATE TABLE auctions;
-TRUNCATE TABLE users;
-
--- ============================================================
--- INSERT TEST DATA - AUCTIONS
--- ============================================================
-INSERT INTO auctions (id, name, start_price, current_highest_bid, status, category, description, end_time, seller_id) VALUES
-('A001', 'Lamborghini Aventador', 5000000000.00, 5000000000.00, 'OPEN', 'Phương tiện', 'Siêu xe hạng A', DATE_ADD(NOW(), INTERVAL 5 MINUTE), 1),
-('A002', 'Biệt thự biển Đà Nẵng', 25000000000.00, 25000000000.00, 'OPEN', 'Bất động sản', 'Biệt thự view biển', DATE_ADD(NOW(), INTERVAL 10 MINUTE), 2),
-('A003', 'Tranh sơn dầu cổ', 1000000000.00, 1000000000.00, 'OPEN', 'Sưu tầm - nghệ thuật', 'Tranh thế kỷ 19', DATE_ADD(NOW(), INTERVAL 3 MINUTE), 3);
-
--- ============================================================
--- INSERT TEST DATA - USERS
--- ============================================================
-INSERT INTO users (username, password, role) VALUES
-('userA', 'pass123', 'BIDDER'),
-('userB', 'pass123', 'BIDDER'),
-('userC', 'pass123', 'BIDDER'),
-('admin', 'admin123', 'ADMIN');
-
--- ============================================================
--- VERIFY DATA
--- ============================================================
-SELECT '✓ Auctions loaded:' as status;
-SELECT id, name, current_highest_bid FROM auctions;
-
-SELECT '✓ Users loaded:' as status;
-SELECT id, username, role FROM users;
-
-SELECT '✓ Auto-bids table ready:' as status;
-SELECT COUNT(*) as auto_bid_count FROM auto_bids;
->>>>>>> origin/main

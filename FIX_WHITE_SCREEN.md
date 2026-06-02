@@ -1,149 +1,136 @@
 # 🔴 Fix Màn Hình Trắng - Hướng Dẫn Khắc Phục
 
 **Ngày:** 2 Tháng 6, 2026  
-**Vấn đề:** Deploy Server thành công nhưng Client (Frontend) không được deploy
+**Vấn đề:** Deploy Server thành công nhưng Client không kết nối được
 
 ---
 
 ## 🎯 Vấn Đề Chính
 
-Bạn deploy **Server** lên Render thành công, nhưng **Client không được deploy**:
+Bạn deploy **Server** lên Render thành công, nhưng **Client không thể kết nối**:
 
 ```
-❌ Frontend (Client) = Trắng tinh → Vì nó là JavaFX Desktop App
+❌ Frontend (Client) = Màn hình trắng / Không kết nối
 ✅ Backend (Server) = Chạy tốt trên Render
 ```
 
 **Lý do:**
-- Client là ứng dụng Desktop (JavaFX) - cần GUI → không thể chạy trên cloud
-- Server là Java Socket Server - chạy headless tốt → hoạt động bình thường
+- Client cố connect tới `bidnova-server.onrender.com:8888` (raw TCP socket)
+- Render dùng HTTPS reverse proxy (port 443)
+- Raw socket connections (port 8888) **không đi được qua HTTP/HTTPS proxy**
 
 ---
 
-## ✅ Giải Pháp Nhanh: Chạy Client Locally
+## ✅ Giải Pháp: Chạy Local Development
 
-### **Bước 1: Build Client** 
+### **Cách 1: Chạy Tất Cả Local (Đơn Giản Nhất)** 🎯
 
+**macOS/Linux:**
 ```bash
-# Vào thư mục project
-cd /Users/vinhduy/Desktop/HeThongDauGia
-
-# Build client JAR
-mvn clean package -f client/pom.xml -DskipTests
+bash /Users/vinhduy/Desktop/HeThongDauGia/run-dev.sh
 ```
 
-### **Bước 2: Chạy Client Kết Nối Tới Render Server**
-
-**Trên macOS/Linux:**
-```bash
-AUCTION_SERVER_HOST="bidnova-server.onrender.com" \
-AUCTION_SERVER_PORT="8888" \
-java -jar client/target/client-1.0-SNAPSHOT-jar-with-dependencies.jar
-```
-
-**Trên Windows (Command Prompt):**
+**Windows (Command Prompt):**
 ```cmd
-set AUCTION_SERVER_HOST=bidnova-server.onrender.com
-set AUCTION_SERVER_PORT=8888
-java -jar client\target\client-1.0-SNAPSHOT-jar-with-dependencies.jar
+run-dev.bat
 ```
 
-**Trên Windows (PowerShell):**
+**Windows (PowerShell):**
 ```powershell
-$env:AUCTION_SERVER_HOST = "bidnova-server.onrender.com"
-$env:AUCTION_SERVER_PORT = "8888"
-java -jar client/target/client-1.0-SNAPSHOT-jar-with-dependencies.jar
+.\run-dev.ps1
 ```
 
-### **Bước 3: Kiểm Tra Kết Nối** ✅
-
-Nếu thấy dòng này = **Thành công!**
-```
-✅ Đã kết nối tới Server thành công!
-```
+**Cách hoạt động:**
+1. Build Server & Client
+2. Khởi động Server local (port 8888)
+3. Khởi động Client (connect tới localhost:8888)
+4. Khi đóng Client → Server cũng dừng
 
 ---
 
-## 🚀 Giải Pháp Dài Hạn: Tạo Web Frontend
+### **Cách 2: Chạy Server & Client Riêng (Để Debug)**
 
-Để deploy frontend trên cloud, bạn cần:
+**Terminal 1 - Chạy Server:**
+```bash
+cd /Users/vinhduy/Desktop/HeThongDauGia
+mvn clean package -f server/pom.xml -DskipTests
+java -cp "server/target/classes:server/target/dependency/*" com.bidnova.ServerMain
+```
 
-### **Option 1: Dùng WebSocket + HTML/CSS/JS**
+Chờ đến thấy:
+```
+Server đang chạy tại port 8888...
+```
+
+**Terminal 2 - Chạy Client:**
+```bash
+cd /Users/vinhduy/Desktop/HeThongDauGia
+bash run-client.sh
+```
+
+(Mặc định sẽ connect tới localhost:8888)
+
+---
+
+## 🌐 Kết Nối Render Server (Production)
+
+### **Vấn đề Công Nghệ:**
+
+Raw TCP socket không đi qua HTTP reverse proxy. Cần giải pháp:
+
+#### **Option 1: WebSocket Adapter** (Recommended)
 ```
 ┌─────────────┐         ┌──────────────────────┐
-│   Browser   │ ←→ WS → │  Backend (Render)    │
-│  (HTML/JS)  │         │  bidnova-server      │
+│   Client    │ ←→ WS → │  Backend (Render)    │
+│ (Socket)    │ HTTPS   │                      │
 └─────────────┘         └──────────────────────┘
 ```
 
-### **Option 2: Spring Boot Web App**
-```
-┌────────────────────────┐
-│  Render Web Service    │
-│  ├─ Frontend (JSP)     │
-│  └─ Backend APIs       │
-└────────────────────────┘
-```
+#### **Option 2: Custom HTTP Tunneling**
+Modify Client to send commands via HTTP/REST instead of socket
+
+#### **Option 3: Direct VPS**
+Host server trên VPS riêng (không dùng Render proxy)
 
 ---
 
-## 🔧 Các Thay Đổi Đã Làm
+## 📝 Summary Các Files
 
-### 1. **NetworkConfig.java** - Hỗ trợ Environment Variables
-```java
-✅ Trước: Hardcode localhost:8888 → Chỉ chạy local
-✅ Sau:   Read từ env vars → Linh hoạt cho production
-```
+### Chạy Local Development
 
-**Có thể config bằng:**
-```bash
-# Environment variables
-AUCTION_SERVER_HOST=...
-AUCTION_SERVER_PORT=...
+| OS | Command |
+|----|---------| 
+| **macOS/Linux** | `bash run-dev.sh` |
+| **Windows (CMD)** | `run-dev.bat` |
+| **Windows (PowerShell)** | `.\run-dev.ps1` |
 
-# Hoặc Java system properties
--Dauction.server.host=...
--Dauction.server.port=...
-```
+### Chạy Client Riêng (kết nối localhost)
+
+| OS | Command |
+|----|---------| 
+| **macOS/Linux** | `bash run-client.sh` |
+| **Windows (CMD)** | `run-client.bat` |
+| **Windows (PowerShell)** | `.\run-client.ps1` |
 
 ---
 
 ## ❓ Thường Gặp
 
-### **Q: Màn hình vẫn trắng?**
-**A:** Kiểm tra logs trong terminal - nếu thấy lỗi kết nối:
-```
-❌ Không thể kết nối tới Server.
-```
+### **Q: Tại sao không kết nối được Render server?**
+**A:** Raw TCP socket không đi qua HTTPS proxy. Render chỉ cho phép:
+- ✅ HTTP/HTTPS traffic (port 443)
+- ❌ Raw TCP (port 8888)
 
-→ Điều đó có thể là vì:
-1. ❌ Render server chưa khởi động
-2. ❌ Host/port sai
-3. ❌ Network bị chặn
+Giải pháp → Chạy local dev hoặc convert tới WebSocket
 
-**Fix:** 
-```bash
-# Kiểm tra backend chạy không
-curl https://bidnova-server.onrender.com/health
-# Nếu lỗi → Backend chưa khởi động, check Render logs
-```
+### **Q: Làm sao để dùng Render backend?**
+**A:** Cần upgrade client code:
+1. Replace raw Socket → WebSocket
+2. Server broadcast via WebSocket
+3. Client connect via `wss://bidnova-server.onrender.com`
 
-### **Q: Làm sao deploy client lên cloud?**
-**A:** 
-- JavaFX app không thể chạy trên headless server
-- Cần convert thành web app (HTML/CSS/JS + WebSocket)
-- Hoặc chạy locally, dùng script run-client-render.sh
+**Estimated effort:** 2-3 hours
 
 ---
 
-## 📝 Summary
-
-| Thành phần | Tình trạng | Giải pháp |
-|-----------|-----------|---------|
-| Server | ✅ Chạy trên Render | Sẵn sàng |
-| Client (Desktop) | ❌ Không thể chạy trên cloud | Chạy locally |
-| Frontend Web | ❌ Chưa có | Cần tạo (long-term) |
-
----
-
-**Cần giúp gì thêm? Xin hãy báo!** 🚀
+**Nếu cần giúp, báo lỗi cho mình!** 🚀

@@ -6,18 +6,40 @@ public class NetworkConfig {
     private static final int DEFAULT_TIMEOUT_SECONDS = 5;
     
     public static String getHost() {
-        return System.getProperty("auction.server.host", DEFAULT_HOST);
+        // Ưu tiên: System Property → Environment Variable → Default
+        String fromProperty = System.getProperty("auction.server.host");
+        if (fromProperty != null && !fromProperty.isEmpty()) {
+            return fromProperty;
+        }
+        
+        String fromEnv = System.getenv("AUCTION_SERVER_HOST");
+        if (fromEnv != null && !fromEnv.isEmpty()) {
+            return fromEnv;
+        }
+        
+        return DEFAULT_HOST;
     }
     
     public static int getPort() {
-        String portStr = System.getProperty("auction.server.port");
-        if (portStr != null) {
+        // Ưu tiên: System Property → Environment Variable → Default
+        String fromProperty = System.getProperty("auction.server.port");
+        if (fromProperty != null && !fromProperty.isEmpty()) {
             try {
-                return Integer.parseInt(portStr);
+                return Integer.parseInt(fromProperty);
             } catch (NumberFormatException e) {
-                System.err.println("Invalid port in config, using default: " + DEFAULT_PORT);
+                System.err.println("Invalid port in property, using default: " + DEFAULT_PORT);
             }
         }
+        
+        String fromEnv = System.getenv("AUCTION_SERVER_PORT");
+        if (fromEnv != null && !fromEnv.isEmpty()) {
+            try {
+                return Integer.parseInt(fromEnv);
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid port in env variable, using default: " + DEFAULT_PORT);
+            }
+        }
+        
         return DEFAULT_PORT;
     }
     

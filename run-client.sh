@@ -3,7 +3,7 @@
 # ================================================================
 # QUICK START: Build & Run Client Connecting to Render Server
 # ================================================================
-# Usage: source run-client.sh
+# Usage: bash run-client.sh
 
 set -e
 
@@ -30,7 +30,7 @@ if [ $? -eq 0 ]; then
     # Run with environment variables
     AUCTION_SERVER_HOST="bidnova-server.onrender.com" \
     AUCTION_SERVER_PORT="8888" \
-    java -jar client/target/client-1.0-SNAPSHOT-jar-with-dependencies.jar
+    java -jar client/target/BidNova-Client.jar
 else
     echo "❌ Build failed! Check errors above."
     exit 1

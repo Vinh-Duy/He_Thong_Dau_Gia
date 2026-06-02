@@ -117,8 +117,9 @@ public class ServerMain {
             }
         }, 20, 20, TimeUnit.SECONDS);
 
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+        try (ServerSocket serverSocket = new ServerSocket(PORT, 50, java.net.InetAddress.getByName("0.0.0.0"))) {
             System.out.println("Server đang chạy tại port " + PORT + "...");
+            System.out.println("✅ Lắng nghe trên tất cả interfaces (0.0.0.0:" + PORT + ")");
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();

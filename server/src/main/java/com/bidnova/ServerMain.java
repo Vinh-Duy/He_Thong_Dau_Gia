@@ -79,6 +79,17 @@ public class ServerMain {
      */
     public static void main(String[] args) {
         DatabaseInitializer.initializeActiveAuctions();
+        
+        // In ra IP address của server để client có thể kết nối
+        try {
+            String serverIP = java.net.InetAddress.getLocalHost().getHostAddress();
+            System.out.println("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            System.out.println("📍 SERVER IP: " + serverIP);
+            System.out.println("🔌 PORT: " + PORT);
+            System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+        } catch (Exception e) {
+            System.out.println("⚠️  Unable to get server IP");
+        }
 
         // Background thread kiểm tra auction hết hạn và broadcast event khi cần
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();

@@ -44,8 +44,7 @@ Write-Host ""
 $ServerJob = Start-Job -ScriptBlock {
     param($Root)
     Set-Location $Root
-    & java -cp "server/target/classes;server/target/dependency/*" `
-        com.bidnova.ServerMain
+    & java -jar server/target/bidnova-server.jar
 } -ArgumentList $ProjectRoot
 
 Write-Host "✅ Server started (Job ID: $($ServerJob.Id))" -ForegroundColor Green

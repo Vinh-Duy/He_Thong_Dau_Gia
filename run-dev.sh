@@ -43,8 +43,7 @@ echo "🔌 Starting Server in background..."
 echo ""
 
 # Start server in background
-java -cp "server/target/classes:server/target/dependency/*" \
-    com.bidnova.ServerMain &
+java -jar server/target/bidnova-server.jar &
 SERVER_PID=$!
 
 echo "✅ Server started with PID: $SERVER_PID"

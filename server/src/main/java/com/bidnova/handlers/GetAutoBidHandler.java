@@ -1,16 +1,17 @@
 package com.bidnova.handlers;
 
-import com.bidnova.models.AutoBid;
+import java.time.LocalDateTime;
+
+import com.bidnova.dao.AutoBidDAO;
 import com.bidnova.models.AuthUserContext;
+import com.bidnova.models.AutoBid;
 import com.bidnova.network.Request;
 import com.bidnova.network.Response;
-import com.bidnova.dao.AutoBidDAO;
 import com.bidnova.utils.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.time.LocalDateTime;
 
 public class GetAutoBidHandler implements ActionHandler {
     private final Gson gson = new GsonBuilder()
@@ -26,6 +27,12 @@ public class GetAutoBidHandler implements ActionHandler {
             }
 
             JsonObject data = JsonParser.parseString(request.getPayload()).getAsJsonObject();
+            
+            // Fix: Add null check for required JSON field
+            if (!data.has("auctionId")) {
+                return new Response("ERROR", "Missing required field: auctionId", null);
+            }
+            
             String auctionId = data.get("auctionId").getAsString();
             AutoBid autoBid = autoBidDAO.findByUserAndAuction(authUser.getUserId(), auctionId);
             if (autoBid != null) {

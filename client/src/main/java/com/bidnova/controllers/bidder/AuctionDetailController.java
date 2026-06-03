@@ -373,6 +373,7 @@ public class AuctionDetailController implements Initializable {
                 Response response = NetworkClient.getInstance().sendRequest(request);
                 
                 Platform.runLater(() -> {
+                    // Issue 5 Fix: Add comprehensive error logging and handling
                     if (response != null) {
                         if ("SUCCESS".equals(response.getStatus())) {
                             showAlert("Thành công", "Đặt giá thành công!");
@@ -387,11 +388,15 @@ public class AuctionDetailController implements Initializable {
                             // Không thêm điểm chart ở đây, để handleRealTimeUpdate xử lý
                             // tránh bị trùng 2 điểm
                         } else {
-                            lblBidError.setText(response.getMessage());
+                            String errorMsg = response.getMessage();
+                            // Log full error for debugging
+                            System.err.println("PlaceBid Error - Status: " + response.getStatus() + ", Message: " + errorMsg);
+                            lblBidError.setText(errorMsg != null ? errorMsg : "Đặt giá thất bại. Vui lòng thử lại.");
                             lblBidError.setVisible(true);
                         }
                     } else {
-                        showAlert("Lỗi", "Không nhận được phản hồi từ server!");
+                        System.err.println("PlaceBid: No response from server");
+                        showAlert("Lỗi", "Không nhận được phản hồi từ server! Vui lòng kiểm tra kết nối.");
                     }
                 });
             }).start();

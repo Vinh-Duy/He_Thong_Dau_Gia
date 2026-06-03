@@ -18,6 +18,12 @@ public class DeactivateAutoBidHandler implements ActionHandler {
             }
 
             JsonObject data = JsonParser.parseString(request.getPayload()).getAsJsonObject();
+            
+            // Fix: Add null check for required JSON field
+            if (!data.has("auctionId")) {
+                return new Response("ERROR", "Missing required field: auctionId", null);
+            }
+            
             String auctionId = data.get("auctionId").getAsString();
 
             boolean success = autoBidService.deactivateAutoBid(authUser.getUserId(), auctionId);

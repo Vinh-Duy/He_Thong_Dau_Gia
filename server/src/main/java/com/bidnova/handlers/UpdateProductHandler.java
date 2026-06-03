@@ -26,7 +26,15 @@ public class UpdateProductHandler implements ActionHandler {
                 return new Response("ERROR", "Unauthorized", null);
             }
 
+            // Fix: Validate payload exists before parsing
+            if (request.getPayload() == null || request.getPayload().isEmpty()) {
+                return new Response("ERROR", "Payload không được để trống", null);
+            }
+            
             Auction updated = gson.fromJson(request.getPayload(), Auction.class);
+            if (updated == null || updated.getId() == null || updated.getId().isEmpty()) {
+                return new Response("ERROR", "Thông tin sản phẩm không hợp lệ", null);
+            }
 
             boolean ok = auctionService.updateProduct(
                 updated,

@@ -4,12 +4,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import java.time.LocalDateTime;
 
 import com.bidnova.handlers.ActionHandler;
 import com.bidnova.handlers.HandlerRegistry;
@@ -252,11 +251,26 @@ public class ClientHandler implements Runnable {
      * @see #isProductModification(String)
      */
     public static void broadcastAll(String message) {
+        // Issue 4 Fix: Add null checks and remove disconnected writers
+        if (message == null || message.isEmpty()) {
+            return;
+        }
+        
         for (PrintWriter writer : clientWriters) {
+            if (writer == null) {
+                continue;
+            }
             try {
-                writer.println(message);
+                if (!writer.checkError()) {
+                    writer.println(message);
+                    writer.flush();
+                } else {
+                    // Writer has error, queue it for removal
+                    clientWriters.remove(writer);
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+                System.err.println("Error broadcasting to client: " + e.getMessage());
+                clientWriters.remove(writer);
             }
         }
     }

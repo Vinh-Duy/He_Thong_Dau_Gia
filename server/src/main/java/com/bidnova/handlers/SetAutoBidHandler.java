@@ -1,18 +1,19 @@
 package com.bidnova.handlers;
 
-import com.bidnova.models.AutoBid;
+import java.time.LocalDateTime;
+
+import com.bidnova.dao.AuctionDAO;
+import com.bidnova.dao.AutoBidDAO;
+import com.bidnova.models.Auction;
 import com.bidnova.models.AuthUserContext;
+import com.bidnova.models.AutoBid;
 import com.bidnova.network.Request;
 import com.bidnova.network.Response;
-import com.bidnova.dao.AutoBidDAO;
-import com.bidnova.dao.AuctionDAO;
-import com.bidnova.models.Auction;
 import com.bidnova.utils.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.time.LocalDateTime;
 
 public class SetAutoBidHandler implements ActionHandler {
     private final Gson gson = new GsonBuilder()
@@ -29,6 +30,12 @@ public class SetAutoBidHandler implements ActionHandler {
             }
 
             JsonObject bidData = JsonParser.parseString(request.getPayload()).getAsJsonObject();
+            
+            // Issue 2 Fix: Add null checks for required JSON fields
+            if (!bidData.has("auctionId") || !bidData.has("maxBid") || !bidData.has("increment")) {
+                return new Response("ERROR", "Missing required fields: auctionId, maxBid, or increment", null);
+            }
+            
             String auctionId = bidData.get("auctionId").getAsString();
             double maxBid = bidData.get("maxBid").getAsDouble();
             double increment = bidData.get("increment").getAsDouble();

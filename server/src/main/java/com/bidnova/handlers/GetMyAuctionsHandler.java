@@ -33,6 +33,9 @@ public class GetMyAuctionsHandler implements ActionHandler {
 
             if ("ADMIN".equalsIgnoreCase(role)) {
                 // ADMIN được chỉ định sellerId từ payload
+                if (request.getPayload() == null || request.getPayload().isEmpty()) {
+                    return new Response("ERROR", "Payload không được để trống cho ADMIN", null);
+                }
                 JsonObject body = JsonParser.parseString(request.getPayload()).getAsJsonObject();
                 if (!body.has("sellerId")) {
                     return new Response("ERROR", "Thiếu sellerId trong payload", null);

@@ -164,12 +164,25 @@ public class PlaceBidHandler implements ActionHandler {
             }
 
             JsonObject bidData = JsonParser.parseString(request.getPayload()).getAsJsonObject();
+            
+            // Issue 1 Fix: Add null checks for required JSON fields
+            if (!bidData.has("auctionId") || !bidData.has("amount")) {
+                return new Response("ERROR", "Missing required fields: auctionId or amount", null);
+            }
+            
             String auctionId = bidData.get("auctionId").getAsString();
             double bidAmount = bidData.get("amount").getAsDouble();
 
             Auction currentAuction = AuctionManager.getInstance().getAuction(auctionId);
             if (currentAuction == null) {
-                return new Response("ERROR", "Phiên đấu giá không tồn tại!", null);
+                // Issue 3 Fix: Check if auction exists in database (might have been removed from memory)
+                Auction dbAuction = auctionDAO.findById(auctionId);
+                if (dbAuction == null) {
+                    return new Response("ERROR", "Phiên đấu giá không tồn tại!", null);
+                }
+                // Reload from database if it was removed from memory
+                currentAuction = dbAuction;
+                AuctionManager.getInstance().addAuction(currentAuction);
             }
 
             synchronized (currentAuction) {
@@ -268,13 +281,19 @@ public class PlaceBidHandler implements ActionHandler {
                 result.add("bidResult", successData);
                 result.add("event", event);
                 
-                // ⭐️ BROADCAST event to all clients
-                ClientHandler.broadcastAll(gson.toJson(event));
+                // Issue 3 Fix: Wrap broadcast in try-catch to handle disconnected clients
+                try {
+                    ClientHandler.broadcastAll(gson.toJson(event));
+                } catch (Exception broadcastEx) {
+                    System.err.println("Broadcast failed: " + broadcastEx.getMessage());
+                }
 
                 return new Response("SUCCESS", "Đặt giá thành công", gson.toJson(result));
             }
 
         } catch (Exception e) {
+            System.err.println("PlaceBidHandler error details: " + e.getMessage());
+            e.printStackTrace();
             return new Response("ERROR", "PLACE_BID lỗi: " + e.getMessage(), null);
         }
     }

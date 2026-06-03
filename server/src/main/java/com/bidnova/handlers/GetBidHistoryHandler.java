@@ -1,5 +1,8 @@
 package com.bidnova.handlers;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.bidnova.dao.BidHistoryDAO;
 import com.bidnova.models.AuthUserContext;
 import com.bidnova.models.BidHistory;
@@ -8,9 +11,6 @@ import com.bidnova.network.Response;
 import com.bidnova.utils.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class GetBidHistoryHandler implements ActionHandler {
     private final BidHistoryDAO bidHistoryDAO = new BidHistoryDAO();
@@ -21,6 +21,11 @@ public class GetBidHistoryHandler implements ActionHandler {
     @Override
     public Response handle(Request request, AuthUserContext authUser) {
         try {
+            // Fix: Check if user is authenticated (since GET_BID_HISTORY is not a public action)
+            if (authUser == null) {
+                return new Response("ERROR", "Unauthorized: Vui lòng đăng nhập", null);
+            }
+            
             String auctionId = request.getPayload();
             if (auctionId == null || auctionId.isBlank()) {
                 return new Response("ERROR", "Thiếu mã phiên đấu giá", null);

@@ -143,13 +143,15 @@ public class BidChartController {
                                 }
                             }
                         }
-                        timeLabels.size();
                         updateDataInfo();
                         scrollToEnd();
                     });
+                } else if (response != null && !"SUCCESS".equals(response.getStatus())) {
+                    System.err.println("LoadChartData failed: " + response.getMessage());
                 }
             } catch (Exception e) {
-                System.err.println("Lỗi load chart history: " + e.getMessage());
+                System.err.println("Lỗi load biểu đồ giá: " + e.getMessage());
+                e.printStackTrace();
             }
         }).start();
     }

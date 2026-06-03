@@ -9,8 +9,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import com.bidnova.models.Auction;
-import com.bidnova.services.DatabaseInitializer;
 import com.bidnova.services.AuctionManager;
+import com.bidnova.services.DatabaseInitializer;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 

@@ -93,9 +93,13 @@ public class BidHistoryController {
                             new TypeToken<List<BidHistory>>() {}.getType());
 
                     Platform.runLater(() -> setHistoryData(history));
+                } else if (response != null && !"SUCCESS".equals(response.getStatus())) {
+                    // Log error but don't crash
+                    System.err.println("GetBidHistory failed: " + response.getMessage());
                 }
             } catch (Exception e) {
                 System.err.println("Lỗi load lịch sử đấu giá: " + e.getMessage());
+                e.printStackTrace();
             }
         }).start();
     }

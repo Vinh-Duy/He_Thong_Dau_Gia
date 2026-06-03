@@ -5,8 +5,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Arrays;
-import java.util.List;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -91,7 +91,12 @@ public class NetworkClient {
         try {
             if (request != null && request.getAction() != null
                     && !PUBLIC_ACTIONS.contains(request.getAction())) {
-                request.setToken(SessionManager.getToken());
+                String token = SessionManager.getToken();
+                if (token == null || token.isEmpty()) {
+                    System.err.println("Warning: Token is null/empty for action: " + request.getAction());
+                    return new Response("ERROR", "Unauthorized: Token hết hạn hoặc không hợp lệ. Vui lòng đăng nhập lại.", null);
+                }
+                request.setToken(token);
             }
 
             String jsonRequest = gson.toJson(request);

@@ -193,6 +193,7 @@ public class PlaceBidHandler implements ActionHandler {
 
                 if (isExpired(currentAuction.getEndTime())) {
                     currentAuction.setStatus("FINISHED");
+                    auctionDAO.updateStatus(auctionId, "FINISHED");
                     return new Response("ERROR", "Phiên đấu giá đã hết thời gian", null);
                 }
 
@@ -252,19 +253,18 @@ public class PlaceBidHandler implements ActionHandler {
                 // Lấy giá MỚI NHẤT sau khi auto-bids trigger (có thể đã tăng)
                 double finalHighestBid = currentAuction.getCurrentHighestBid();
 
-                // ⭐️ NEW: Check if price ceiling reached
+                // ⭐️ Cập nhật: Cứ giá hiện tại >= giá trần thì set FINISHED
                 boolean ceilingReached = false;
-                if (currentAuction.isBidAtCeiling(finalHighestBid)) {
+                if (currentAuction.getPriceCeiling() != null && finalHighestBid >= currentAuction.getPriceCeiling()) {
                     currentAuction.setStatus("FINISHED");
                     auctionDAO.updateStatus(auctionId, "FINISHED");
-                    // Remove auction khỏi AuctionManager để ngăn người khác tiếp tục đặt giá
-                    AuctionManager.getInstance().removeAuction(auctionId);
                     ceilingReached = true;
                     System.out.println("🎯 Auction " + auctionId + " FINISHED - Price ceiling reached!");
                 }
 
                 JsonObject successData = new JsonObject();
                 successData.addProperty("auctionId", auctionId);
+                successData.addProperty("status", currentAuction.getStatus());
                 successData.addProperty("newHighestBid", finalHighestBid);
                 successData.addProperty("highestBidder", currentAuction.getHighestBidder());
                 successData.addProperty("ceilingReached", ceilingReached); // ⭐️ NEW

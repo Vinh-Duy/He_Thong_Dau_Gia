@@ -76,13 +76,6 @@ public class AuctionManager {
                 AuctionDAO dao = new AuctionDAO();
                 dao.updateAuction(auction);
             }
-        } else {
-            // Chưa hết hạn nhưng đang FINISHED/CLOSED → reopen về OPEN
-            if ("FINISHED".equals(currentStatus) || "CLOSED".equals(currentStatus)) {
-                auction.setStatus("OPEN");
-                AuctionDAO dao = new AuctionDAO();
-                dao.updateAuction(auction);
-            }
         }
     }
 

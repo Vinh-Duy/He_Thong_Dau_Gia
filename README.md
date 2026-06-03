@@ -172,7 +172,7 @@ String HOST = "zephyr.proxy.rlwy.net";
 int PORT = 32243;
 String DATABASE = "auction_db";
 String USER = "root";
-String PASSWORD = "<mang tính bảo mật>";  // Đổi password của bạn nếu khác
+String PASSWORD = "<mang tính bảo mật>";
 ```
 
 ### 2️⃣ Build Dự Án
@@ -475,7 +475,7 @@ sudo systemctl start mysql
 **Giải pháp:** Thay đổi port trong [ServerMain.java](server/src/main/java/com/bidnova/ServerMain.java):
 
 ```java
-final int PORT = 8888; // Đổi port khác
+final int PORT = 8888;
 ```
 
 ### Lỗi: "Cannot find main class com.bidnova.Main"
@@ -489,17 +489,6 @@ mvn clean package
 ### Lỗi: JavaFX module not found
 
 **Giải pháp:** Cài đặt JavaFX SDK từ [openjfx.io](https://gluonhq.com/products/javafx/)
-
----
-
-## 📚 Tài Liệu Bổ Sung
-
-- [IMPLEMENT_PLAN.md](IMPLEMENT_PLAN.md) - Chi tiết kế hoạch triển khai
-- [IMPLEMENTATION_DONE.md](IMPLEMENTATION_DONE.md) - Danh sách tính năng đã triển khai
-- [TESTING_GUIDE.md](TESTING_GUIDE.md) - Hướng dẫn test chi tiết
-- [EVALUATION_REPORT.md](EVALUATION_REPORT.md) - Báo cáo đánh giá dự án
-- [VISUAL_GUIDE_AND_FAQ.md](VISUAL_GUIDE_AND_FAQ.md) - Hướng dẫn hình ảnh & FAQ
-- [CODE_EXAMPLES.md](CODE_EXAMPLES.md) - Ví dụ code chính
 
 ---
 
@@ -531,7 +520,7 @@ Nếu gặp vấn đề, vui lòng:
 
 ## Bài báo cáo và đường link video demo
 
-Link báo cáo PDF: [Report_BidNova.pdf](Report_BidNova.pdf)
+Link báo cáo PDF: [Report_BidNova.pdf](REPORT_BIDNOVA.pdf)
 
 Video demo:[]()
 

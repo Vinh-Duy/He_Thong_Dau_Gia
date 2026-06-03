@@ -332,7 +332,7 @@ mvn -f server/pom.xml test -Dtest=AuctionDAOTest
 
 ### Test Các Tính Năng Chính
 
-Xem chi tiết hướng dẫn test manual trong [TESTING_GUIDE.md](TESTING_GUIDE.md)
+Xem chi tiết hướng dẫn test manual trong [TESTING_GUIDE.md](documents/TESTING_GUIDE.md)
 
 **Các scenario test chính:**
 
@@ -511,8 +511,8 @@ Dự án này được phát triển cho mục đích học tập. Vui lòng tha
 
 Nếu gặp vấn đề, vui lòng:
 
-1. Kiểm tra [TESTING_GUIDE.md](TESTING_GUIDE.md)
-2. Xem lại [VISUAL_GUIDE_AND_FAQ.md](VISUAL_GUIDE_AND_FAQ.md)
+1. Kiểm tra [TESTING_GUIDE.md](documents/TESTING_GUIDE.md)
+2. Xem lại [VISUAL_GUIDE_AND_FAQ.md](documents/VISUAL_GUIDE_AND_FAQ.md)
 3. Kiểm tra log server tại terminal
 4. Kiểm tra database bằng MySQL Workbench
 

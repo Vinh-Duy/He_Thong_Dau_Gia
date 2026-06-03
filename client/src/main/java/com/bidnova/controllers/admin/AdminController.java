@@ -11,6 +11,7 @@ import com.bidnova.network.Request;
 import com.bidnova.network.Response;
 import com.bidnova.utils.LocalDateTimeAdapter;
 import com.bidnova.utils.NotificationUtil;
+import com.bidnova.utils.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -213,7 +214,7 @@ public class AdminController {
     private void loadAuctions() {
         new Thread(() -> {
             try {
-                Request request = new Request("GET_ALL_AUCTIONS", "");
+                Request request = new Request("GET_ALL_AUCTIONS", "", SessionManager.getToken());
                 Response response = NetworkClient.getInstance().sendRequest(request);
 
                 if ("SUCCESS".equals(response.getStatus())) {

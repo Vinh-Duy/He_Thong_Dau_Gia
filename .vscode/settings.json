@@ -24,5 +24,6 @@
 
     // Cấu hình Java dùng UTF-8 khi chạy / debug
     "java.debug.settings.vmArgs": "-Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.err.encoding=UTF-8",
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.debug.settings.onBuildFailureProceed": true
 }

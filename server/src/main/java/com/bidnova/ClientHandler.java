@@ -81,7 +81,9 @@ public class ClientHandler implements Runnable {
 
     private static final Set<PrintWriter> clientWriters = ConcurrentHashMap.newKeySet();
     private static final Set<String> PUBLIC_ACTIONS =
-            new HashSet<>(Arrays.asList("LOGIN", "REGISTER"));
+            new HashSet<>(Arrays.asList("LOGIN", "REGISTER", "GET_ALL_AUCTIONS", 
+                                      "GET_AUCTIONS_BY_CATEGORY", "GET_AUCTION_BY_ID",
+                                      "GET_BID_HISTORY"));
 
     /**
      * Constructor - Khởi tạo handler cho một client mới

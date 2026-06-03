@@ -1,5 +1,9 @@
 package com.bidnova.controllers.common;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.bidnova.controllers.components.AuctionCardController;
 import com.bidnova.models.Auction;
 import com.bidnova.network.NetworkClient;
@@ -7,6 +11,7 @@ import com.bidnova.network.Request;
 import com.bidnova.network.Response;
 import com.bidnova.utils.LocalDateTimeAdapter;
 import com.bidnova.utils.NotificationUtil;
+import com.bidnova.utils.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -14,18 +19,14 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class HomeController {
     @FXML private ScrollPane mainScrollPane;
@@ -67,7 +68,7 @@ public class HomeController {
     private void loadData() {
         new Thread(() -> {
             try {
-                Request request = new Request("GET_ALL_AUCTIONS", "");
+                Request request = new Request("GET_ALL_AUCTIONS", "", SessionManager.getToken());
                 Response response = NetworkClient.getInstance().sendRequest(request);
 
                 if (response != null && "SUCCESS".equals(response.getStatus())) {

@@ -21,11 +21,6 @@ public class GetBidHistoryHandler implements ActionHandler {
     @Override
     public Response handle(Request request, AuthUserContext authUser) {
         try {
-            // Fix: Check if user is authenticated (since GET_BID_HISTORY is not a public action)
-            if (authUser == null) {
-                return new Response("ERROR", "Unauthorized: Vui lòng đăng nhập", null);
-            }
-            
             String auctionId = request.getPayload();
             if (auctionId == null || auctionId.isBlank()) {
                 return new Response("ERROR", "Thiếu mã phiên đấu giá", null);

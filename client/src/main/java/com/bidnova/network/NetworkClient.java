@@ -33,7 +33,9 @@ public class NetworkClient {
 
     // Danh sách các action không cần xác thực JWT
     private static final Set<String> PUBLIC_ACTIONS =
-            new HashSet<>(Arrays.asList("LOGIN", "REGISTER"));
+            new HashSet<>(Arrays.asList("LOGIN", "REGISTER", "GET_ALL_AUCTIONS", 
+                                      "GET_AUCTIONS_BY_CATEGORY", "GET_AUCTION_BY_ID",
+                                      "GET_BID_HISTORY"));
 
     private NetworkClient() {
         connect(NetworkConfig.getHost(), NetworkConfig.getPort());

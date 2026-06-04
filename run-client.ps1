@@ -4,7 +4,7 @@
 # Usage: .\run-client.ps1
 
 param(
-    [string]$Host = "bidnova-server.onrender.com",
+    [string]$Host = "10.11.80.227",
     [int]$Port = 8888
 )
 

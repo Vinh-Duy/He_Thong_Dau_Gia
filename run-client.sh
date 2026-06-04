@@ -40,7 +40,7 @@ echo "⚙️  Resolving JavaFX modules..."
 JAVAFX_MODULES=$(mvn dependency:build-classpath -q -Dmdep.outputFile=/dev/stdout -f client/pom.xml 2>/dev/null | grep -o "[^:]*javafx[^:]*" | head -1 || echo "")
 
 # Run using Maven exec (best for JavaFX)
-AUCTION_SERVER_HOST="bidnova-server.onrender.com" \
+AUCTION_SERVER_HOST="10.11.80.227" \
 AUCTION_SERVER_PORT="8888" \
 mvn -q clean javafx:run -f client/pom.xml \
     -Djavafx.maven.plugin.mainClass=com.bidnova.Main

@@ -13,6 +13,7 @@ import com.bidnova.network.NetworkClient;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
@@ -146,12 +147,12 @@ public class AuctionCardController {
         scaleIn = new ScaleTransition(javafx.util.Duration.millis(200), imgContainer);
         scaleIn.setToX(1.1);
         scaleIn.setToY(1.1);
-        scaleIn.setInterpolator(javafx.animation.Interpolator.EASE_BOTH);
+        scaleIn.setInterpolator(Interpolator.EASE_BOTH);
 
         scaleOut = new ScaleTransition(javafx.util.Duration.millis(200), imgContainer);
         scaleOut.setToX(1.0);
         scaleOut.setToY(1.0);
-        scaleOut.setInterpolator(javafx.animation.Interpolator.EASE_BOTH);
+        scaleOut.setInterpolator(Interpolator.EASE_BOTH);
     }
 
     private void setupZoomListeners() {

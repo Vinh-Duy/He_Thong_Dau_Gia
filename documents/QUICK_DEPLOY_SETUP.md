@@ -167,23 +167,23 @@ docker-compose down -v
 
 ## 🔧 TROUBLESHOOTING
 
-### ❌ Build fails: "Cannot find main class"
+### Build fails: "Cannot find main class"
 
 **Fix:** Verify `maven-shade-plugin` in `server/pom.xml`
 
-### ❌ JAR not created
+### JAR not created
 
 **Fix:** Run `mvn clean package -DskipTests` without `-DskipTests` first to see full error
 
-### ❌ Port already in use
+### Port already in use
 
 **Fix:** Render will assign random port, check `PORT` env var is set to `10000`
 
-### ❌ Cannot connect to database
+### Cannot connect to database
 
 **Fix:** Verify `DB_URL`, `DB_USER`, `DB_PASSWORD` match exactly
 
-### ❌ Timeout during build
+### Timeout during build
 
 **Fix:** Upgrade to Standard plan on Render
 

@@ -199,7 +199,7 @@ Database connected successfully
 
 ---
 
-## ❌ TROUBLESHOOTING
+## TROUBLESHOOTING
 
 ### Error: "Port already in use"
 

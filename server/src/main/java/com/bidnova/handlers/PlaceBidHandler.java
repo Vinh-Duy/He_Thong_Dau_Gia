@@ -2,7 +2,6 @@ package com.bidnova.handlers;
 
 import java.time.LocalDateTime;
 
-import com.bidnova.ClientHandler;
 import com.bidnova.dao.AuctionDAO;
 import com.bidnova.dao.BidHistoryDAO;
 import com.bidnova.models.Auction;
@@ -17,7 +16,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 /**
- * 💰 PlaceBidHandler - Xử lý yêu cầu đặt giá từ client
+ * PlaceBidHandler - Xử lý yêu cầu đặt giá từ client
  * 
  * <h2>Chức Năng:</h2>
  * <p>Nhận request "PLACE_BID" từ client, thực hiện các kiểm tra an toàn,
@@ -75,8 +74,8 @@ import com.google.gson.JsonParser;
  *   <tr><td>Status != OPEN</td><td>"Phiên đấu giá đã đóng"</td></tr>
  *   <tr><td>Hết thời gian</td><td>"Phiên đấu giá đã hết thời gian"</td></tr>
  *   <tr><td>Giá <= hiện tại</td><td>"Giá đặt phải cao hơn giá hiện tại (X)"</td></tr>
- *   <tr><td>❌ Bước giá < minimum</td><td>"Bước giá tối thiểu là X. Giá tối thiểu yêu cầu: Y"</td></tr>
- *   <tr><td>❌ Vượt giá trần</td><td>Tự động kết thúc phiên (status = FINISHED)</td></tr>
+ *   <tr><td>Bước giá < minimum</td><td>"Bước giá tối thiểu là X. Giá tối thiểu yêu cầu: Y"</td></tr>
+ *   <tr><td>Vượt giá trần</td><td>Tự động kết thúc phiên (status = FINISHED)</td></tr>
  * </table>
  * 
  * <h2>Tính Năng Nâng Cao:</h2>
@@ -112,7 +111,7 @@ import com.google.gson.JsonParser;
  * 
  * Validation:
  *   ✓ 101M > 100M
- *   ❌ (101M - 100M = 1M) < 2M (TOO SMALL!)
+ *   (101M - 100M = 1M) < 2M (TOO SMALL!)
  * 
  * Result: BID REJECTED
  *   Error: "Bước giá tối thiểu là 2,000,000. Giá tối thiểu yêu cầu: 102,000,000"

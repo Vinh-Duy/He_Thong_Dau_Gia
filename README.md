@@ -314,9 +314,9 @@ Ví dụ:
 **Lưu ý:**
 
 - Nếu kết nối thất bại, kiểm tra:
-  - HOST/PORT đã nhập đúng
-  - Server có đang lắng nghe đúng cổng không
-  - Cấu hình trong [NetworkConfig.java](client/src/main/java/com/bidnova/config/NetworkConfig.java)
+    - HOST/PORT đã nhập đúng
+    - Server có đang lắng nghe đúng cổng không
+    - Cấu hình trong [NetworkConfig.java](client/src/main/java/com/bidnova/config/NetworkConfig.java)
 
 ### 5️⃣ Sử Dụng Ứng Dụng
 
@@ -576,6 +576,6 @@ Nếu gặp vấn đề, vui lòng:
 
 Link báo cáo PDF: [Report_BidNova.pdf](REPORT_BIDNOVA.pdf)
 
-Video demo:[]()
+Video demo:[Video Link](https://drive.google.com/file/d/1CI8GKFFfgU4-uAdYKIhyYtPnsOKEvNWc/view)
 
 **Happy Bidding!**

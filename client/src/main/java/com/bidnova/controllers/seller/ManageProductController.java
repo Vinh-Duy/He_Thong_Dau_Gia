@@ -1,9 +1,8 @@
 package com.bidnova.controllers.seller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
-import java.time.LocalDateTime;
 
 import com.bidnova.models.Auction;
 import com.bidnova.network.NetworkClient;

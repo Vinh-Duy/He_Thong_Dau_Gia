@@ -191,12 +191,12 @@ After running tests, verify:
 
 | Criterion                             | Status |
 | ------------------------------------- | ------ |
-| Bids in last 5 min trigger extension  | or ❌  |
-| End time extends by exactly 5 minutes | or ❌  |
-| All clients notified of extension     | or ❌  |
-| Database persists new end_time        | or ❌  |
-| Multiple bids keep extending          | or ❌  |
-| No extension >5 min remaining         | or ❌  |
+| Bids in last 5 min trigger extension  | or     |
+| End time extends by exactly 5 minutes | or     |
+| All clients notified of extension     | or     |
+| Database persists new end_time        | or     |
+| Multiple bids keep extending          | or     |
+| No extension >5 min remaining         | or     |
 
 ---
 

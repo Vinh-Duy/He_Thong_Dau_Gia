@@ -1,6 +1,7 @@
 package com.bidnova.controllers.components;
 
 import com.bidnova.utils.SessionManager;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;

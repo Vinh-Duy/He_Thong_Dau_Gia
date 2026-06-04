@@ -118,7 +118,7 @@ SERVER IP: 192.168.1.100
 ### **2. Network**
 
 - Máy A & B phải **cùng WiFi network**
-- ❌ Không thể qua Internet router (khi đó dùng Render backend)
+- Không thể qua Internet router (khi đó dùng Render backend)
 
 ### **3. Lỗi "Connection refused"**
 

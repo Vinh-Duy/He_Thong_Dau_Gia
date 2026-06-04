@@ -108,7 +108,7 @@ lblPriceCeiling.setText(formatCurrency(auction.getPriceCeiling()));
 - **Định nghĩa**: Giá cuối cùng phải cao hơn giá hiện tại ít nhất `minBidIncrement` đó.
 - **Mục đích**: Tránh autobid đặt giá chỉ +1 đồng (gây lãng phí).
 - **Ví dụ**: minBidIncrement=1tr, currentBid=100tr
-    - User đặt 101tr ❌ (chỉ +1tr, không hợp lệ)
+    - User đặt 101tr (chỉ +1tr, không hợp lệ)
     - User đặt 101tr? ❌
     - User đặt 101tr ✓ (chính xác bước giá)
 
@@ -221,7 +221,7 @@ PlaceBidHandler kiểm tra:
   ├─ Hết hạn? ✓
   ├─ bidAmount (105) > currentHighestBid (100)? ✓
   ├─ (105 - 100 = 5) >= minBidIncrement (2)? ✓
-  ├─ bidAmount (105) >= priceCeiling (150)? ❌ → Cho phép
+  ├─ bidAmount (105) >= priceCeiling (150)? → Cho phép
   └─ Cập nhật DB, gọi AutoBidService
     ↓
 AutoBidService:

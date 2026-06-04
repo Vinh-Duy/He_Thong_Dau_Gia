@@ -45,11 +45,11 @@ mvn -f client/pom.xml javafx:run
 
 **Test Cases:**
 
-| Action          | Expected                                 | Result |
-| --------------- | ---------------------------------------- | ------ |
-| Bid 101,000,000 | ❌ ERROR: "Bước giá tối thiểu 2,000,000" |        |
-| Bid 102,000,000 | SUCCESS                                  |        |
-| Bid 104,000,000 | SUCCESS (4M increment)                   |        |
+| Action          | Expected                              | Result |
+| --------------- | ------------------------------------- | ------ |
+| Bid 101,000,000 | ERROR: "Bước giá tối thiểu 2,000,000" |        |
+| Bid 102,000,000 | SUCCESS                               |        |
+| Bid 104,000,000 | SUCCESS (4M increment)                |        |
 
 **How to Test:**
 

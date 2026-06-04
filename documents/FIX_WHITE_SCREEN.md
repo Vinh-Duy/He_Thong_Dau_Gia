@@ -10,7 +10,7 @@
 Bạn deploy **Server** lên Render thành công, nhưng **Client không thể kết nối**:
 
 ```
-❌ Frontend (Client) = Màn hình trắng / Không kết nối
+Frontend (Client) = Màn hình trắng / Không kết nối
  Backend (Server) = Chạy tốt trên Render
 ```
 
@@ -132,7 +132,7 @@ Host server trên VPS riêng (không dùng Render proxy)
 **A:** Raw TCP socket không đi qua HTTPS proxy. Render chỉ cho phép:
 
 - HTTP/HTTPS traffic (port 443)
-- ❌ Raw TCP (port 8888)
+- Raw TCP (port 8888)
 
 Giải pháp → Chạy local dev hoặc convert tới WebSocket
 

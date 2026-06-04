@@ -82,7 +82,7 @@ Result: 🟢 BID ACCEPTED
   Proceed to AutoBid check
 ```
 
-### ❌ Scenario 2: Bid Too Low (Below Min Increment)
+### Scenario 2: Bid Too Low (Below Min Increment)
 
 ```
 Current Price:     100,000,000 đ
@@ -92,7 +92,7 @@ User Input: 100,500,000 đ
 
 Validation:
   ✓ 100.5M > 100M?  YES
-  ❌ (100.5M - 100M = 0.5M) ≥ 1M?  NO!
+  (100.5M - 100M = 0.5M) ≥ 1M?  NO!
 
 Result: BID REJECTED
   Error: "Bước giá tối thiểu là 1,000,000 đ.
@@ -196,7 +196,7 @@ Next round (imagine next user bid):
               ┌──────────┴──────────┐
               ✓ YES                 ✗ NO
               │                      │
-              ↓                  ❌ REJECT
+              ↓                  REJECT
         (Continue)                 │
               │
               ↓
@@ -208,7 +208,7 @@ Next round (imagine next user bid):
     ┌─────────┴──────────┐
     ✓ YES               ✗ NO
     │                    │
-    ↓                ❌ REJECT
+    ↓                REJECT
 (Continue)              │
     │
     ↓
@@ -221,7 +221,7 @@ Next round (imagine next user bid):
 ┌─────────┴──────────┐
 ✓ YES               ✗ NO
 │                    │
-↓                ❌ REJECT
+↓                REJECT
 (Continue)          │
 │
 ↓
@@ -234,7 +234,7 @@ Next round (imagine next user bid):
 ┌─────────┴──────────┐
 ✓ YES               ✗ NO
 │                    │
-↓                ❌ REJECT with error:
+↓                REJECT with error:
 (Continue)       "Bước giá tối thiểu..."
 │
 ↓

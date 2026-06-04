@@ -34,8 +34,8 @@ run-dev.bat
 
 ### Vấn Đề:
 
-- ❌ Client không kết nối được Render backend (raw TCP socket blocked)
-- ❌ Render dùng HTTPS proxy - chỉ cho phép HTTP/HTTPS traffic
+- Client không kết nối được Render backend (raw TCP socket blocked)
+- Render dùng HTTPS proxy - chỉ cho phép HTTP/HTTPS traffic
 
 ### Giải Pháp Tạm Thời:
 

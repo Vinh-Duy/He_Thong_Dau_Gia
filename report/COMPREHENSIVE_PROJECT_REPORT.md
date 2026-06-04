@@ -561,7 +561,7 @@ if (currentAuction.isBidAtCeiling(finalHighestBid)) {
 |-----|---------|----------|
 | 140M | 100M (ceiling=150M) | Accepted |
 | 150M | 145M (ceiling=150M) | Accepted, FINISHED |
-| 160M | 145M (ceiling=150M) | ❌ Error (invalid) |
+| 160M | 145M (ceiling=150M) | Error (invalid) |
 
 ---
 
@@ -606,7 +606,7 @@ if ((nextBidAmount - currentHighestBid) < minimumRequiredIncrement) {
 **Test Cases:**
 | Action | Current | Min Inc | Expected |
 |--------|---------|---------|----------|
-| Bid 101M | 100M | 2M | ❌ Error |
+| Bid 101M | 100M | 2M | Error |
 | Bid 102M | 100M | 2M | Accepted |
 | AutoBid (inc=1M) | 100M | 2M | Adjusted to 102M |
 
@@ -660,7 +660,7 @@ if (newEndTime != null) {
 |-------------|----------|------|----------|
 | 14:56 | 15:00 | YES | ⏱️ Extended to 15:05 |
 | 14:57 | 15:00 | YES | ⏱️ Extended to 15:05 |
-| 14:00 | 15:00 | YES | ❌ No extension |
+| 14:00 | 15:00 | YES | No extension |
 
 ---
 
@@ -1865,7 +1865,7 @@ Setup:
 - Current bid: 100M
 
 Test:
-1. Bid 101M → ❌ Error: "Bước giá tối thiểu 2M"
+1. Bid 101M → Error: "Bước giá tối thiểu 2M"
 2. Bid 102M →  Success
 3. Auto-bid (inc=1M) triggers →  Adjusted to 102M
 ```
@@ -1880,7 +1880,7 @@ Setup:
 Test:
 1. Bid 140M →  Accepted
 2. Bid 150M →  Accepted, Auction FINISHED
-3. Bid 160M → ❌ Invalid (price too high)
+3. Bid 160M → Invalid (price too high)
 ```
 
 **Scenario C: Anti-Sniping**

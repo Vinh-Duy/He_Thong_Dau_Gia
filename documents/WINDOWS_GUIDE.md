@@ -103,7 +103,7 @@ java -jar client/target/BidNova-Client.jar
 
 ## 🔧 Troubleshooting Windows
 
-### **❌ "mvn is not recognized"**
+### **"mvn is not recognized"**
 
 **Giải pháp:**
 
@@ -117,7 +117,7 @@ java -jar client/target/BidNova-Client.jar
 mvn -v
 ```
 
-### **❌ "java is not recognized"**
+### **"java is not recognized"**
 
 **Giải pháp:**
 
@@ -131,7 +131,7 @@ mvn -v
 java -version
 ```
 
-### **❌ "no main manifest attribute"**
+### **"no main manifest attribute"**
 
 **Giải pháp:** Đã sửa rồi! Chạy lại:
 
@@ -139,7 +139,7 @@ java -version
 mvn clean package -f client/pom.xml -DskipTests
 ```
 
-### **❌ Build fail - "Cannot find dependency"**
+### **Build fail - "Cannot find dependency"**
 
 **Giải pháp:**
 
@@ -148,7 +148,7 @@ mvn clean install -DskipTests
 mvn clean package -f client/pom.xml -DskipTests
 ```
 
-### **❌ Không kết nối được tới server**
+### **Không kết nối được tới server**
 
 **Kiểm tra:**
 
@@ -159,7 +159,7 @@ mvn clean package -f client/pom.xml -DskipTests
 2. Nếu ping lỗi → Server chưa khởi động trên Render
 3. Nếu ping OK → Xem logs client:
     ```
-    ❌ Không thể kết nối tới Server.
+    Không thể kết nối tới Server.
     ```
     → Vấn đề với socket connection (xem hướng dẫn chính)
 

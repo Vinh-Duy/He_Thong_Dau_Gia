@@ -162,8 +162,8 @@ public class ClientHandler implements Runnable {
                         request = gson.fromJson(inputLine, Request.class);
                     } catch (JsonSyntaxException e) {
                         // Log input để debug
-                        System.err.println("❌ JSON Parse Error - Received: " + inputLine);
-                        System.err.println("❌ Error: " + e.getMessage());
+                        System.err.println("JSON Parse Error - Received: " + inputLine);
+                        System.err.println("Error: " + e.getMessage());
                         out.println(gson.toJson(new Response("ERROR", "Dữ liệu gửi lên không phải JSON hợp lệ", null)));
                         continue;
                     }

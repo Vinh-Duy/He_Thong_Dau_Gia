@@ -3,7 +3,7 @@ package com.bidnova.patterns.observer;
 import com.bidnova.models.Auction;
 
 /**
- * 👁️ AuctionObserver - Observer Pattern Interface
+ * AuctionObserver - Observer Pattern Interface
  * 
  * <h2>Chức Năng:</h2>
  * <p>Định nghĩa hợp đồng cho tất cả observers muốn theo dõi sự thay đổi của một phiên đấu giá.</p>
@@ -12,8 +12,8 @@ import com.bidnova.models.Auction;
  * 
  * <h2>Observer Pattern Benefit:</h2>
  * <ul>
- *   <li>🔄 <b>Real-time Updates:</b> Các observers được thông báo ngay lập tức khi có thay đổi</li>
- *   <li>📢 <b>Broadcast Events:</b> Một sự kiện có thể thông báo cho nhiều observers</li>
+ *   <li><b>Real-time Updates:</b> Các observers được thông báo ngay lập tức khi có thay đổi</li>
+ *   <li><b>Broadcast Events:</b> Một sự kiện có thể thông báo cho nhiều observers</li>
  *   <li><b>Decoupling:</b> AuctionSubject không cần biết chi tiết observers là gì</li>
  *   <li> <b>Easy to Extend:</b> Dễ thêm observer mới mà không sửa code AuctionSubject</li>
  * </ul>

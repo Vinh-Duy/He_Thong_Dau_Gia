@@ -172,7 +172,7 @@ Thêm 2 columns vào bảng `auctions`:
 
 ---
 
-## 🔄 VALIDATION FLOW (After Implementation)
+## VALIDATION FLOW (After Implementation)
 
 ```
 User Places Bid

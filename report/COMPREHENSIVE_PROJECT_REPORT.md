@@ -1179,7 +1179,7 @@ Controller: LoginController, AuctionDetailController, ...
 
 ---
 
-## 🔄 CÁC THÀNH PHẦN CHÍNH
+## CÁC THÀNH PHẦN CHÍNH
 
 ### Server Components
 
@@ -1587,7 +1587,7 @@ private void displayAuction(Auction auction) {
 
 ---
 
-## 🔄 LUỒNG XỬ LÝ CHÍNH
+## LUỒNG XỬ LÝ CHÍNH
 
 ### Luồng 1: Đăng Nhập
 

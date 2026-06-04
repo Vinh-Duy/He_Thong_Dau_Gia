@@ -56,7 +56,7 @@
         └──────────────────────────────────────┘
                             ↓
          Response SUCCESS to Client
-        📢 Broadcast BID_UPDATE to all users
+        Broadcast BID_UPDATE to all users
 ```
 
 ---
@@ -260,7 +260,7 @@ Auction     ↓
             │
             ↓
          SUCCESS
-        📢 Broadcast
+        Broadcast
 ```
 
 ---

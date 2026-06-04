@@ -24,6 +24,34 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 1), 10, 0, 0, 5);
 }
 
+.card:hover {
+    border-color: -fx-forth-color;
+    -fx-border-color: -fx-forth-color;
+
+    border-width: 2px;
+    -fx-border-width: 2;
+
+    -fx-border-insets: -2;
+}
+
+.card:hover .image-container {
+    border-color: -fx-forth-color -fx-forth-color transparent -fx-forth-color;
+    -fx-border-color: -fx-forth-color -fx-forth-color
+        transparent -fx-forth-color;
+
+    border-width: 2px;
+    -fx-border-width: 2;
+
+    -fx-border-insets: -2;
+
+    /* Hiệu ứng phóng ảnh to ra (zoom in) */
+    background-size: 120%;
+    -fx-background-size: 120%;
+
+    transition: all 0.3s ease-in-out;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
 .image-container {
     min-width: 250px;
     -fx-min-width: 250;
@@ -47,6 +75,9 @@
     -fx-background-size: cover;
 
     -fx-background-radius: 5;
+
+    /* Thiết lập gốc cho hiệu ứng zoom (để dễ dàng kết hợp với Java Animation) */
+    -fx-transition-origin: center;
 }
 
 .product-info {

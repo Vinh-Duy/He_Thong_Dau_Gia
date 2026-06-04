@@ -6,7 +6,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.bidnova.models.Auction;
 
 /**
- * 📣 AuctionSubject - Subject trong Observer Pattern
+ * AuctionSubject - Subject trong Observer Pattern
  * 
  * <h2>Chức Năng:</h2>
  * <p>Quản lý danh sách observers và thực hiện notify tất cả observers khi có sự kiện

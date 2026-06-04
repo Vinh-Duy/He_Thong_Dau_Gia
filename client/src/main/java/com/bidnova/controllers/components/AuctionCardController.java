@@ -1,11 +1,20 @@
 package com.bidnova.controllers.components;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
+
 import com.bidnova.controllers.bidder.AuctionDetailController;
 import com.bidnova.models.Auction;
 import com.bidnova.network.NetworkClient;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
 import javafx.animation.KeyFrame;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -15,18 +24,15 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
 
 public class AuctionCardController {
     @FXML private StackPane imgContainer;
+    @FXML private StackPane imgWrapper;
     @FXML private Label lblName;
     @FXML private Label lblPrice;
     @FXML private Label startTime;
@@ -40,6 +46,9 @@ public class AuctionCardController {
     private Consumer<String> realTimeListener;
 
     private static final Map<String, Image> imageCache = new ConcurrentHashMap<>();
+
+    private ScaleTransition scaleIn;
+    private ScaleTransition scaleOut;
 
     public void setData(Auction auction) {
         detachRealTimeListener();
@@ -60,6 +69,8 @@ public class AuctionCardController {
 
         refreshUI();
         registerRealTimeListener();
+
+        setupZoomEffect();
 
         String imagePath = auction.getImageUrl() != null ? auction.getImageUrl() : "/images/default_item.png";
         handleImageLoading(imagePath);
@@ -123,6 +134,50 @@ public class AuctionCardController {
         }
     }
 
+    private void setupZoomEffect() {
+        // Clip trên wrapper để giới hạn ảnh không tràn ra ngoài
+        Rectangle clip = new Rectangle();
+        clip.widthProperty().bind(imgWrapper.widthProperty());
+        clip.heightProperty().bind(imgWrapper.heightProperty());
+        clip.setStyle("-fx-border-radius: 5 5 0 0;");
+        imgWrapper.setClip(clip);
+
+        // Scale bên trong imgContainer (wrapper có clip không bị scale)
+        scaleIn = new ScaleTransition(javafx.util.Duration.millis(200), imgContainer);
+        scaleIn.setToX(1.1);
+        scaleIn.setToY(1.1);
+        scaleIn.setInterpolator(javafx.animation.Interpolator.EASE_BOTH);
+
+        scaleOut = new ScaleTransition(javafx.util.Duration.millis(200), imgContainer);
+        scaleOut.setToX(1.0);
+        scaleOut.setToY(1.0);
+        scaleOut.setInterpolator(javafx.animation.Interpolator.EASE_BOTH);
+    }
+
+    private void setupZoomListeners() {
+        // Tìm VBox card từ imgWrapper
+        Parent parent = imgWrapper;
+        while (parent != null && !(parent instanceof VBox)) {
+            parent = parent.getParent();
+        }
+        VBox card = (VBox) parent;
+
+        if (card != null) {
+            card.addEventHandler(MouseEvent.MOUSE_ENTERED, e -> {
+                if (scaleIn != null) {
+                    scaleOut.stop();
+                    scaleIn.playFromStart();
+                }
+            });
+            card.addEventHandler(MouseEvent.MOUSE_EXITED, e -> {
+                if (scaleOut != null) {
+                    scaleIn.stop();
+                    scaleOut.playFromStart();
+                }
+            });
+        }
+    }
+
     private void setPaneBackground(Image image) {
         if (image == null) return;
         String url = image.getUrl().replace(" ", "%20");
@@ -130,7 +185,10 @@ public class AuctionCardController {
                 "-fx-background-size: cover; " +
                 "-fx-background-position: center; " +
                 "-fx-background-repeat: no-repeat; " +
-                "-fx-background-radius: 10 10 0 0;");
+                "-fx-background-radius: 10 10 0 0; " +
+                "-fx-transition-origin: center;");
+        // Gắn listener sau khi ảnh đã load xong
+        setupZoomListeners();
     }
 
     private void registerRealTimeListener() {

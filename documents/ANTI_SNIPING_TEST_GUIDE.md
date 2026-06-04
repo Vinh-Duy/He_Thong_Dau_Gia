@@ -25,7 +25,7 @@
     Expected output:
 
     ```
-    🔄 Seeding test data with endTime for anti-sniping tests...
+    Seeding test data with endTime for anti-sniping tests...
     ✓ A003 end time: 2026-05-12 12:XX:XX (3 min - Will trigger anti-sniping)
     ```
 
@@ -155,7 +155,7 @@ Auction keeps extending as long as bids keep coming in last 5 minutes!
 ### Server Logs to Watch For
 
 ```
-🔄 Seeding test data...              ← DB init
+Seeding test data...              ← DB init
 ✓ Anti-Sniping triggered: Extended   ← Extension happened
 Updated end_time for auction         ← DB updated
 ```

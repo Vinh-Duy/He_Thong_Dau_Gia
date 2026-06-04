@@ -8,7 +8,9 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox fx:id="auctionCard" alignment="TOP_CENTER" styleClass="card" stylesheets="@../../css/components/auction-card-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.components.AuctionCardController">
-    <StackPane fx:id="imgContainer" styleClass="image-container" />
+    <StackPane fx:id="imgWrapper" styleClass="image-container">
+        <StackPane fx:id="imgContainer" />
+    </StackPane>
 
     <VBox styleClass="product-info">
         <children>

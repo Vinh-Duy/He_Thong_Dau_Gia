@@ -1,62 +1,68 @@
-# ================================================================
-# QUICK START: Build & Run Client on Windows (PowerShell)
-# ================================================================
-# Usage: .\run-client.ps1
+<#
+.SYNOPSIS
+    Quick Start: Build & Run BidNova Client on Windows (PowerShell).
+.DESCRIPTION
+    This script builds the BidNova client and runs it, allowing you to specify
+    the server IP and port as command-line arguments. If no arguments are
+    provided, it defaults to the Render server.
+.PARAMETER ServerHost
+    The IP address or hostname of the auction server. Defaults to 'bidnova-server.onrender.com'.
+.PARAMETER ServerPort
+    The port number of the auction server. Defaults to '8888'.
+.EXAMPLE
+    .\run-client.ps1
+    Runs the client connecting to the default Render server.
+.EXAMPLE
+    .\run-client.ps1 192.168.1.100 8888
+    Runs the client connecting to a local server at 192.168.1.100 on port 8888.
+#>
 
-param(
-    [string]$Host = "bidnova-server.onrender.com",
-    [int]$Port = 8888
-)
+Set-StrictMode -Version Latest
+$ErrorActionPreference = "Stop"
 
-Write-Host ""
-Write-Host "🚀 Starting BidNova Client..." -ForegroundColor Cyan
-Write-Host ""
+Write-Host "`n🚀 Starting BidNova Client..." -ForegroundColor Green
 
 # Get project root
-$ProjectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-Set-Location $ProjectRoot
+$PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
+Push-Location $PSScriptRoot
 
-# Check if JAR already exists
-$JarPath = Join-Path $ProjectRoot "client\target\BidNova-Client.jar"
-if (Test-Path $JarPath) {
-    Write-Host "✅ Using cached build..." -ForegroundColor Green
+# Check if JAR already built
+if (Test-Path "client/target/BidNova-Client.jar") {
+    Write-Host "`n Using cached build..." -ForegroundColor Green
 } else {
-    Write-Host "📦 Building client package..." -ForegroundColor Yellow
-    
-    # Build
-    & mvn clean package -f client/pom.xml -DskipTests -q
-    
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host ""
-        Write-Host "❌ Build failed! Check errors above." -ForegroundColor Red
-        Read-Host "Press Enter to exit"
+    Write-Host "`n Building client package..." -ForegroundColor Cyan
+    try {
+        mvn clean package -f client/pom.xml -DskipTests -q
+        Write-Host " Build complete!" -ForegroundColor Green
+    } catch {
+        Write-Host " Build failed! Check errors above." -ForegroundColor Red
+        Read-Host "Press Enter to exit..."
         exit 1
     }
-    
-    Write-Host "✅ Build complete!" -ForegroundColor Green
 }
 
-Write-Host ""
-Write-Host "🔌 Starting client - connecting to Render server..." -ForegroundColor Cyan
-Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-Write-Host "📍 Server: $Host`:$Port" -ForegroundColor Yellow
-Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-Write-Host ""
+Write-Host "`n🔌 Starting client..." -ForegroundColor Green
+Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
 
-# Set environment variables
-$env:AUCTION_SERVER_HOST = $Host
-$env:AUCTION_SERVER_PORT = $Port
+# Set default environment variables
+$DefaultAuctionServerHost = "bidnova-server.onrender.com"
+$DefaultAuctionServerPort = "8888"
 
-# Run using Maven exec (handles JavaFX properly)
-Write-Host "⚙️  Starting application via Maven..." -ForegroundColor Yellow
-Write-Host ""
+# Check for command-line arguments (Usage: .\run-client.ps1 [IP] [PORT])
+$AuctionServerHost = if ($args.Count -ge 1) { $args[0] } else { $DefaultAuctionServerHost }
+$AuctionServerPort = if ($args.Count -ge 2) { $args[1] } else { $DefaultAuctionServerPort }
 
-& mvn -q clean javafx:run -f client/pom.xml `
-    -Djavafx.maven.plugin.mainClass=com.bidnova.Main
+Write-Host "📍 Server: $($AuctionServerHost):$($AuctionServerPort)" -ForegroundColor Yellow
+Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
+Write-Host "`n  Starting application via Maven..." -ForegroundColor Cyan
 
-if ($LASTEXITCODE -ne 0) {
-    Write-Host ""
-    Write-Host "❌ Client failed to start!" -ForegroundColor Red
-    Read-Host "Press Enter to exit"
+try {
+    mvn -q clean javafx:run -f client/pom.xml -Djavafx.maven.plugin.mainClass=com.bidnova.Main -DAUCTION_SERVER_HOST="$AuctionServerHost" -DAUCTION_SERVER_PORT="$AuctionServerPort"
+} catch {
+    Write-Host "`n Client failed to start!" -ForegroundColor Red
+    Read-Host "Press Enter to exit..."
     exit 1
 }
+
+Pop-Location
+Read-Host "Press Enter to exit..."

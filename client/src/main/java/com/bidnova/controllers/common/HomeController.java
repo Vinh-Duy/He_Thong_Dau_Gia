@@ -3,6 +3,7 @@ package com.bidnova.controllers.common;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import com.bidnova.controllers.components.AuctionCardController;
 import com.bidnova.models.Auction;
@@ -36,23 +37,25 @@ public class HomeController {
     private Gson gson = new GsonBuilder()
         .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
         .create();
+    private Consumer<String> broadcastListener;
 
     @FXML
     public void initialize() {
         loadData();
 
         // 🔴 Lắng nghe real-time updates từ server
-        NetworkClient.getInstance().onMessageReceived(message -> {
+        broadcastListener = message -> {
             try {
                 JsonObject data = JsonParser.parseString(message).getAsJsonObject();
                 String action = data.has("action") ? data.get("action").getAsString() : null;
-                if ("AUCTION_LIST_UPDATE".equals(action)) {
+                if ("AUCTION_LIST_UPDATE".equals(action) || "AUCTION_FINISHED".equals(action)) {
                     Platform.runLater(this::loadData);
                 }
             } catch (Exception e) {
                 System.err.println("Lỗi xử lý broadcast message: " + e.getMessage());
             }
-        });
+        };
+        NetworkClient.getInstance().onMessageReceived(broadcastListener);
     }
 
     /* Lấy dữ liệu từ database */

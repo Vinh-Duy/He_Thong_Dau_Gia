@@ -1,25 +1,29 @@
 package com.bidnova.controllers.components;
 
-import com.bidnova.models.Auction;
 import com.bidnova.controllers.bidder.AuctionDetailController;
+import com.bidnova.models.Auction;
+import com.bidnova.network.NetworkClient;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.Duration;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
-import javafx.application.Platform;
-import javafx.scene.Cursor;
-import javafx.scene.Parent;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 public class AuctionCardController {
     @FXML private StackPane imgContainer;
@@ -33,14 +37,14 @@ public class AuctionCardController {
 
     private Auction auction;
     private Timeline countdownTimeline;
+    private Consumer<String> realTimeListener;
 
-    // Cache để lưu lại ảnh đã tải, tránh tải lại nhiều lần gây chậm
     private static final Map<String, Image> imageCache = new ConcurrentHashMap<>();
 
     public void setData(Auction auction) {
+        detachRealTimeListener();
         this.auction = auction;
 
-        // 1. Set các thông tin cơ bản
         lblName.setText(auction.getProductName());
         double displayPrice = auction.getCurrentHighestBid() > 0 ? auction.getCurrentHighestBid() : auction.getStartPrice();
         lblPrice.setText(String.format("%,.0f VNĐ", displayPrice));
@@ -49,15 +53,14 @@ public class AuctionCardController {
         startTime.setText(auction.getStartTime() != null ? auction.getStartTime().format(formatter) : "N/A");
         endTime.setText(auction.getEndTime() != null ? auction.getEndTime().format(formatter) : "N/A");
 
-        // 2. Khởi tạo bộ đếm ngược Real-time
         if (countdownTimeline != null) countdownTimeline.stop();
         countdownTimeline = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), e -> refreshUI()));
         countdownTimeline.setCycleCount(Timeline.INDEFINITE);
         countdownTimeline.play();
 
-        refreshUI(); // Cập nhật lần đầu
+        refreshUI();
+        registerRealTimeListener();
 
-        // 3. Xử lý ảnh (Giữ nguyên logic cũ nhưng gọn hơn)
         String imagePath = auction.getImageUrl() != null ? auction.getImageUrl() : "/images/default_item.png";
         handleImageLoading(imagePath);
     }
@@ -71,33 +74,30 @@ public class AuctionCardController {
         lblStatus.setText(status);
         lblTime.setText(timeLeft);
 
-        if (status.equals("Sắp diễn ra")) {
+        if ("Sắp diễn ra".equals(status)) {
             lblStatus.setStyle("-fx-background-color: #CFBA1D");
             btn.setDisable(false);
             btn.setCursor(Cursor.HAND);
-        } else if (status.equals("Đang diễn ra")) {
+        } else if ("Đang diễn ra".equals(status)) {
             lblStatus.setStyle("-fx-background-color: #0E8716");
             btn.setDisable(false);
             btn.setCursor(Cursor.HAND);
-        } else { // Đã kết thúc
+        } else {
             lblStatus.setStyle("-fx-background-color: #b41712");
-            btn.setDisable(true); // Tự động làm mờ và chặn click
-            btn.setCursor(Cursor.DEFAULT); // Đưa cursor về mặc định
+            btn.setDisable(true);
+            btn.setCursor(Cursor.DEFAULT);
             if (countdownTimeline != null) countdownTimeline.stop();
         }
     }
 
     private void handleImageLoading(String imagePath) {
-        // Thiết lập placeholder trước để UI không bị trống
         imgContainer.setStyle("-fx-background-color: #e0e0e0; -fx-background-radius: 5 5 0 0;");
 
         try {
             if (imagePath != null) {
                 Image image = imageCache.get(imagePath);
-                
+
                 if (image == null) {
-                    // Load ảnh với kích thước cố định (300x200) để JavaFX xử lý nhanh hơn rất nhiều
-                    // tham số: url, requestedWidth, requestedHeight, preserveRatio, smooth, backgroundLoading
                     if (imagePath.startsWith("http")) {
                         image = new Image(imagePath, 300, 200, true, true, true);
                     } else {
@@ -107,11 +107,12 @@ public class AuctionCardController {
                     imageCache.put(imagePath, image);
                 }
 
-                // Khi ảnh load xong (hoặc lấy từ cache), set làm background cho Pane
                 final Image finalImg = image;
                 if (finalImg.isBackgroundLoading() && finalImg.getProgress() < 1.0) {
                     finalImg.progressProperty().addListener((obs, old, progress) -> {
-                        if (progress.doubleValue() >= 1.0) Platform.runLater(() -> setPaneBackground(finalImg));
+                        if (progress.doubleValue() >= 1.0) {
+                            Platform.runLater(() -> setPaneBackground(finalImg));
+                        }
                     });
                 } else {
                     setPaneBackground(finalImg);
@@ -124,17 +125,70 @@ public class AuctionCardController {
 
     private void setPaneBackground(Image image) {
         if (image == null) return;
-        // Đã sửa: Encode URL và giữ lại bo góc để ảnh không bị tràn
-        String url = image.getUrl().replace(" ", "%20"); 
+        String url = image.getUrl().replace(" ", "%20");
         imgContainer.setStyle("-fx-background-image: url('" + url + "'); " +
-                             "-fx-background-size: cover; " +
-                             "-fx-background-position: center; " +
-                             "-fx-background-repeat: no-repeat; " +
-                             "-fx-background-radius: 10 10 0 0;"); // Khớp với bo góc của card
+                "-fx-background-size: cover; " +
+                "-fx-background-position: center; " +
+                "-fx-background-repeat: no-repeat; " +
+                "-fx-background-radius: 10 10 0 0;");
+    }
+
+    private void registerRealTimeListener() {
+        realTimeListener = message -> {
+            if (auction == null) return;
+
+            try {
+                JsonObject data = JsonParser.parseString(message).getAsJsonObject();
+                String action = data.has("action") ? data.get("action").getAsString() : null;
+                if (action == null || !data.has("payload")) return;
+
+                JsonObject payload = JsonParser.parseString(data.get("payload").getAsString()).getAsJsonObject();
+                String auctionId = payload.has("auctionId") ? payload.get("auctionId").getAsString() : null;
+                if (auctionId == null || !auctionId.equals(auction.getId())) return;
+
+                Platform.runLater(() -> {
+                    if (payload.has("newHighestBid")) {
+                        double newHighestBid = payload.get("newHighestBid").getAsDouble();
+                        auction.setCurrentHighestBid(newHighestBid);
+                        lblPrice.setText(String.format("%,.0f VNĐ", newHighestBid));
+                    }
+
+                    if (payload.has("highestBidder")) {
+                        auction.setHighestBidder(payload.get("highestBidder").getAsString());
+                    }
+
+                    if (payload.has("newEndTime")) {
+                        try {
+                            auction.setEndTime(LocalDateTime.parse(payload.get("newEndTime").getAsString()));
+                        } catch (Exception ignored) {
+                        }
+                    }
+
+                    if ("AUCTION_FINISHED".equals(action)) {
+                        auction.setStatus("FINISHED");
+                        refreshUI();
+                        detachRealTimeListener();
+                    } else if ("BID_UPDATE".equals(action)) {
+                        refreshUI();
+                    }
+                });
+            } catch (Exception ignored) {
+            }
+        };
+
+        NetworkClient.getInstance().onMessageReceived(realTimeListener);
+    }
+
+    private void detachRealTimeListener() {
+        if (realTimeListener != null) {
+            NetworkClient.getInstance().getMessageListeners().remove(realTimeListener);
+            realTimeListener = null;
+        }
     }
 
     private String determineStatus(Auction auction) {
         LocalDateTime now = LocalDateTime.now();
+        if (isAuctionFinished(auction)) return "Đã kết thúc";
         if (auction.getStartTime() == null || auction.getStartTime().isAfter(now)) return "Sắp diễn ra";
         if (auction.getEndTime() != null && auction.getEndTime().isAfter(now)) return "Đang diễn ra";
         return "Đã kết thúc";
@@ -145,11 +199,11 @@ public class AuctionCardController {
         LocalDateTime start = auction.getStartTime();
         LocalDateTime end = auction.getEndTime();
 
+        if (isAuctionFinished(auction)) return "Đã kết thúc";
         if (start == null || end == null) return "N/A";
         if (now.isAfter(end)) return "Đã kết thúc";
 
         boolean isUpcoming = now.isBefore(start);
-        // Sử dụng java.time.Duration
         Duration duration = Duration.between(now, isUpcoming ? start : end);
         String prefix = isUpcoming ? "Bắt đầu sau " : "";
 
@@ -164,9 +218,27 @@ public class AuctionCardController {
         return String.format("%s%d giây", prefix, seconds);
     }
 
+    private boolean isAuctionFinished(Auction auction) {
+        if (auction == null) return false;
+
+        String status = auction.getStatus();
+        if (status != null) {
+            String normalizedStatus = status.trim().toUpperCase();
+            if (!"OPEN".equals(normalizedStatus)) {
+                return true;
+            }
+        }
+
+        Double priceCeiling = auction.getPriceCeiling();
+        return priceCeiling != null
+                && priceCeiling > 0
+                && auction.getCurrentHighestBid() >= priceCeiling;
+    }
+
     @FXML
     private void goTo(String fxmlPath) {
         try {
+            detachRealTimeListener();
             Stage stage = (Stage) imgContainer.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
@@ -180,14 +252,14 @@ public class AuctionCardController {
     @FXML
     private void handleBidClick() {
         try {
+            detachRealTimeListener();
             Stage stage = (Stage) imgContainer.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/bidder/auction-detail-view.fxml"));
             Parent root = loader.load();
-            
-            // Lấy controller của màn hình chi tiết và truyền dữ liệu
+
             AuctionDetailController controller = loader.getController();
             controller.setAuction(this.auction);
-            
+
             stage.getScene().setRoot(root);
         } catch (Exception e) {
             System.err.println("Lỗi khi chuyển sang màn hình chi tiết: " + e.getMessage());

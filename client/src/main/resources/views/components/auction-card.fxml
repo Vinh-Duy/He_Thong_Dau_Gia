@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox fx:id="auctionCard" alignment="TOP_CENTER" styleClass="card" stylesheets="@../../css/components/auction-card-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bidnova.controllers.components.AuctionCardController">
-    <StackPane fx:id="imgContainer" prefHeight="200.0" prefWidth="300.0" styleClass="image-container" />
+    <StackPane fx:id="imgContainer" styleClass="image-container" />
 
     <VBox styleClass="product-info">
         <children>
@@ -17,7 +17,7 @@
 
             <HBox>
                 <children>    
-                    <Label styleClass="starting-price-field" text="Giá khởi điểm:" />
+                    <Label styleClass="starting-price-field" text="Giá hiện tại:" />
                     <Region HBox.hgrow="ALWAYS" />
                     <Label fx:id="lblPrice" styleClass="value, starting-price" text="0 VNĐ" />
                 </children>

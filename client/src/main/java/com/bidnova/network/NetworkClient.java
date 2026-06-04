@@ -85,6 +85,11 @@ public class NetworkClient {
         messageListeners.add(listener);
     }
 
+    /** Trả về danh sách listeners để có thể remove khi rời màn hình */
+    public List<Consumer<String>> getMessageListeners() {
+        return messageListeners;
+    }
+
     public synchronized Response sendRequest(Request request) {
         if (socket == null || socket.isClosed()) {
             return new Response("ERROR", "Mất kết nối với Server", null);

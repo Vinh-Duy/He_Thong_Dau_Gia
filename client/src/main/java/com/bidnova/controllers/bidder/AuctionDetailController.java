@@ -12,7 +12,6 @@ import com.bidnova.network.NetworkClient;
 import com.bidnova.network.Request;
 import com.bidnova.network.Response;
 import com.bidnova.utils.LocalDateTimeAdapter;
-import com.bidnova.utils.NotificationUtil;
 import com.bidnova.utils.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,7 +35,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-/* TODO: khi đặt giá trần thì cập nhật bidhistory + chảt + finished auction */
 public class AuctionDetailController implements Initializable {
     @FXML private Button btnBack;
     @FXML private ImageView imgItem;
@@ -230,7 +228,7 @@ public class AuctionDetailController implements Initializable {
 
                                 // Hiển thị thông báo gia hạn nếu có flag isExtended
                                 if (payload.has("isExtended") && payload.get("isExtended").getAsBoolean()) {
-                                    showNotificationAlert("Gia hạn đấu giá", 
+                                    showAlert("Gia hạn đấu giá", 
                                         "Có lượt đặt giá mới trong 5 phút cuối!\nPhiên đấu giá được gia hạn thêm 5 phút.");
                                 }
                             } catch (Exception ex) {
@@ -273,7 +271,7 @@ public class AuctionDetailController implements Initializable {
                         // Show notification
                         String highestBidder = payload.has("highestBidder") ? payload.get("highestBidder").getAsString() : "Không có người thắng";
                         String finalPrice = payload.has("newHighestBid") ? formatVietnameseCurrency(payload.get("newHighestBid").getAsDouble()) : "0 ₫";
-                        showNotificationAlert("🎯 Phiên kết thúc", 
+                        showAlert("🎯 Phiên kết thúc", 
                             "Phiên đấu giá đã kết thúc. Người thắng: " + highestBidder + "\nGiá cuối cùng: " + finalPrice);
                         
                         // Update UI
@@ -551,9 +549,6 @@ public class AuctionDetailController implements Initializable {
         alert.showAndWait();
     }
 
-    private void showNotificationAlert(String title, String content) {
-        NotificationUtil.showTopBanner(title, content);
-    }
 
     private void startCountdown() {
         if (countdownTimeline != null) {

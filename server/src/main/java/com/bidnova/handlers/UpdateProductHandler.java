@@ -2,6 +2,7 @@ package com.bidnova.handlers;
 
 import java.time.LocalDateTime;
 
+import com.bidnova.dao.AuctionDAO;
 import com.bidnova.models.Auction;
 import com.bidnova.models.AuthUserContext;
 import com.bidnova.network.Request;
@@ -12,12 +13,14 @@ import com.bidnova.services.impl.AuctionServiceImpl;
 import com.bidnova.utils.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 public class UpdateProductHandler implements ActionHandler {
     private final Gson gson = new GsonBuilder()
         .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
         .create();
     private final AuctionService auctionService = new AuctionServiceImpl();
+    private final AuctionDAO auctionDAO = new AuctionDAO();
 
     @Override
     public Response handle(Request request, AuthUserContext authUser) {
@@ -46,10 +49,23 @@ public class UpdateProductHandler implements ActionHandler {
                 return new Response("ERROR", "Không có quyền hoặc cập nhật thất bại", null);
             }
 
-            // Nếu sản phẩm đang có trong AuctionManager, kiểm tra và cập nhật trạng thái sau khi sửa
-            AuctionManager.getInstance().checkAndUpdateExpiredStatus(updated);
+            // Lấy lại dữ liệu đầy đủ từ DB để đồng bộ RAM (tránh mất các field không có trong payload update)
+            Auction fullUpdated = auctionDAO.findById(updated.getId());
+            if (fullUpdated != null) {
+                AuctionManager.getInstance().addAuction(fullUpdated);
+                AuctionManager.getInstance().checkAndUpdateExpiredStatus(fullUpdated);
+                updated = fullUpdated; // Dùng bản full để tạo event trả về cho client
+            }
 
-            return new Response("SUCCESS", "Cập nhật thành công", null);
+            // Chuẩn bị payload event để ClientHandler thực hiện broadcast real-time cho các Bidder
+            JsonObject event = new JsonObject();
+            event.addProperty("action", "PRODUCT_UPDATED");
+            event.addProperty("payload", gson.toJson(updated));
+
+            JsonObject responsePayload = new JsonObject();
+            responsePayload.add("event", event);
+
+            return new Response("SUCCESS", "Cập nhật thành công", responsePayload);
         } catch (Exception e) {
             return new Response("ERROR", "UPDATE_PRODUCT lỗi: " + e.getMessage(), null);
         }

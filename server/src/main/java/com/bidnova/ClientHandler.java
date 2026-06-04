@@ -188,8 +188,8 @@ public class ClientHandler implements Runnable {
                         Response handled = handler.handle(request, authUser);
                         out.println(gson.toJson(handled));
 
-                        // Broadcast cho PLACE_BID nếu handler trả event
-                        if ("PLACE_BID".equals(request.getAction())
+                        // Tự động broadcast event chi tiết nếu có (cho cả PLACE_BID và UPDATE_PRODUCT)
+                        if (isProductModification(request.getAction())
                                 && handled != null
                                 && "SUCCESS".equals(handled.getStatus())
                                 && handled.getPayload() != null) {
@@ -252,7 +252,8 @@ public class ClientHandler implements Runnable {
      */
     private boolean isProductModification(String action) {
         return "ADD_PRODUCT".equals(action) || "UPDATE_PRODUCT".equals(action) || 
-               "DELETE_PRODUCT".equals(action) || "PLACE_BID".equals(action);
+               "DELETE_PRODUCT".equals(action) || "PLACE_BID".equals(action) ||
+               "UPDATE_AUCTION".equals(action) || "EDIT_PRODUCT".equals(action);
     }
 
     /**

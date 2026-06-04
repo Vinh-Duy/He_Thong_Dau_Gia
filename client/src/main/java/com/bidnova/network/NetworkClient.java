@@ -59,14 +59,15 @@ public class NetworkClient {
                 try {
                     String line;
                     while ((line = in.readLine()) != null) {
-                        // Kiểm tra nếu là tin nhắn Broadcast (có chứa trường action)
-                        if (line.contains("\"action\":\"")) {
+                        // Ưu tiên kiểm tra Response (phải có status ở cấp cao nhất)
+                        if (line.contains("\"status\":\"")) {
+                            responseQueue.offer(line);
+                        } else if (line.contains("\"action\":\"")) {
+                            // Tin nhắn Broadcast (chỉ có action, không có status)
                             // Gửi tin nhắn cho tất cả các Controller đang đăng ký lắng nghe
                             for (Consumer<String> listener : messageListeners) {
                                 listener.accept(line);
                             }
-                        } else {
-                            responseQueue.offer(line);
                         }
                     }
                 } catch (Exception e) {

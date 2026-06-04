@@ -281,13 +281,6 @@ public class PlaceBidHandler implements ActionHandler {
                 result.add("bidResult", successData);
                 result.add("event", event);
                 
-                // Issue 3 Fix: Wrap broadcast in try-catch to handle disconnected clients
-                try {
-                    ClientHandler.broadcastAll(gson.toJson(event));
-                } catch (Exception broadcastEx) {
-                    System.err.println("Broadcast failed: " + broadcastEx.getMessage());
-                }
-
                 return new Response("SUCCESS", "Đặt giá thành công", gson.toJson(result));
             }
 

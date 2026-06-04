@@ -47,7 +47,22 @@ import com.google.gson.JsonObject;
  * @since 2026-05
  */
 public class ServerMain {
-    private static final int PORT = 8888;
+    /**
+     * Lấy PORT từ environment variable hoặc sử dụng default 8888
+     */
+    private static int getPort() {
+        String portEnv = System.getenv("PORT");
+        if (portEnv != null && !portEnv.isEmpty()) {
+            try {
+                return Integer.parseInt(portEnv);
+            } catch (NumberFormatException e) {
+                System.err.println("⚠️  Invalid PORT env variable: " + portEnv + ", using default 8888");
+            }
+        }
+        return 8888;
+    }
+    
+    private static final int PORT = getPort();
 
     /**
      * Main method - Điểm khởi động của server
@@ -64,6 +79,17 @@ public class ServerMain {
      */
     public static void main(String[] args) {
         DatabaseInitializer.initializeActiveAuctions();
+        
+        // In ra IP address của server để client có thể kết nối
+        try {
+            String serverIP = java.net.InetAddress.getLocalHost().getHostAddress();
+            System.out.println("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            System.out.println("📍 SERVER IP: " + serverIP);
+            System.out.println("🔌 PORT: " + PORT);
+            System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+        } catch (Exception e) {
+            System.out.println("⚠️  Unable to get server IP");
+        }
 
         // Background thread kiểm tra auction hết hạn và broadcast event khi cần
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -91,8 +117,9 @@ public class ServerMain {
             }
         }, 20, 20, TimeUnit.SECONDS);
 
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+        try (ServerSocket serverSocket = new ServerSocket(PORT, 50, java.net.InetAddress.getByName("0.0.0.0"))) {
             System.out.println("Server đang chạy tại port " + PORT + "...");
+            System.out.println("✅ Lắng nghe trên tất cả interfaces (0.0.0.0:" + PORT + ")");
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();

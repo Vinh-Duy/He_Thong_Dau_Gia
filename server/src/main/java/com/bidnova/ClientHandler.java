@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 /**
  * 🔌 ClientHandler - Xử lý kết nối của mỗi client độc lập
@@ -135,7 +136,38 @@ public class ClientHandler implements Runnable {
 
             while ((inputLine = in.readLine()) != null) {
                 try {
-                    Request request = gson.fromJson(inputLine, Request.class);
+                    // Bỏ qua dòng trống hoặc chỉ whitespace
+                    if (inputLine.trim().isEmpty()) {
+                        continue;
+                    }
+
+                    // Phát hiện HTTP request (health check từ Render) và skip
+                    if (isHttpRequest(inputLine)) {
+                        System.out.println("⚠️  HTTP request detected (health check), skipping: " + inputLine.substring(0, Math.min(50, inputLine.length())));
+                        // Read HTTP headers until blank line, then ignore
+                        String headerLine;
+                        while ((headerLine = in.readLine()) != null && !headerLine.trim().isEmpty()) {
+                            // Skip HTTP headers
+                        }
+                        // Send minimal HTTP response to satisfy health check
+                        out.println("HTTP/1.1 200 OK");
+                        out.println("Content-Length: 0");
+                        out.println();
+                        out.flush();
+                        continue;
+                    }
+
+                    Request request = null;
+                    try {
+                        request = gson.fromJson(inputLine, Request.class);
+                    } catch (JsonSyntaxException e) {
+                        // Log input để debug
+                        System.err.println("❌ JSON Parse Error - Received: " + inputLine);
+                        System.err.println("❌ Error: " + e.getMessage());
+                        out.println(gson.toJson(new Response("ERROR", "Dữ liệu gửi lên không phải JSON hợp lệ", null)));
+                        continue;
+                    }
+
                     if (request == null || request.getAction() == null || request.getAction().isBlank()) {
                         out.println(gson.toJson(new Response("ERROR", "Thiếu action trong request", null)));
                         continue;
@@ -275,5 +307,19 @@ public class ClientHandler implements Runnable {
                 clientWriters.remove(writer);
             }
         }
+    }
+
+    /**
+     * Phát hiện xem dòng input có phải HTTP request không
+     * (GET, POST, HEAD, PUT, DELETE, etc.)
+     */
+    private boolean isHttpRequest(String line) {
+        String[] httpMethods = {"GET", "POST", "HEAD", "PUT", "DELETE", "PATCH", "OPTIONS"};
+        for (String method : httpMethods) {
+            if (line.startsWith(method + " ")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

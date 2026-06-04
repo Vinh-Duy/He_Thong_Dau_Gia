@@ -1,6 +1,6 @@
 # 🔨 BIDNOVA - Hệ Thống Đấu Giá Trực Tuyến
 
-## 📋 Mô Tả Dự Án
+## Mô Tả Dự Án
 
 **BidNova** là một hệ thống đấu giá (auction system) hiện đại, xây dựng bằng Java với kiến trúc **Client-Server** và giao diện desktop. Hệ thống cho phép các người dùng:
 
@@ -11,22 +11,22 @@
     - Xem cập nhật giá trong thời gian thực (Real-time)
 - **Quản trị viên (Admin):** Quản lý người dùng, phiên đấu giá và các giao dịch
 
-### 🎯 Tính Năng Chính
+### Tính Năng Chính
 
-- ✅ **Hệ thống xác thực:** Đăng ký, đăng nhập, phân quyền (User/Seller/Admin)
-- ✅ **Quản lý phiên đấu giá:** Tạo, xem, cập nhật trạng thái đấu giá
-- ✅ **Đặt giá thủ công:** Validation kiểm tra bước giá tối thiểu
-- ✅ **Đặt giá tự động (AutoBid):** Tự động tăng giá đến mức tối đa của người dùng
-- ✅ **Giá trần (Price Ceiling):** Tự động kết thúc phiên khi đạt giới hạn giá
-- ✅ **Bước giá tối thiểu (Min Bid Increment):** Đảm bảo tính hợp lý của các giá đặt
-- ✅ **Cập nhật thời gian thực:** Observer pattern cho phép tất cả người dùng thấy cập nhật giá ngay lập tức
-- ✅ **Lịch sử đấu giá (Bid History):** Theo dõi tất cả các giá được đặt
-- ✅ **Phân loại sản phẩm:** Hỗ trợ nhiều loại sản phẩm (Vehicle, RealEstate, ArtCollectible, StateProperty)
-- ✅ **Unit Tests:** Kiểm thử toàn diện các module chính
+- **Hệ thống xác thực:** Đăng ký, đăng nhập, phân quyền (User/Seller/Admin)
+- **Quản lý phiên đấu giá:** Tạo, xem, cập nhật trạng thái đấu giá
+- **Đặt giá thủ công:** Validation kiểm tra bước giá tối thiểu
+- **Đặt giá tự động (AutoBid):** Tự động tăng giá đến mức tối đa của người dùng
+- **Giá trần (Price Ceiling):** Tự động kết thúc phiên khi đạt giới hạn giá
+- **Bước giá tối thiểu (Min Bid Increment):** Đảm bảo tính hợp lý của các giá đặt
+- **Cập nhật thời gian thực:** Observer pattern cho phép tất cả người dùng thấy cập nhật giá ngay lập tức
+- **Lịch sử đấu giá (Bid History):** Theo dõi tất cả các giá được đặt
+- **Phân loại sản phẩm:** Hỗ trợ nhiều loại sản phẩm (Vehicle, RealEstate, ArtCollectible, StateProperty)
+- **Unit Tests:** Kiểm thử toàn diện các module chính
 
 ---
 
-## 🛠️ Công Nghệ Sử Dụng
+## Công Nghệ Sử Dụng
 
 | Thành Phần             | Công Nghệ                    | Phiên Bản |
 | ---------------------- | ---------------------------- | --------- |
@@ -44,7 +44,7 @@
 
 ---
 
-## 📦 Yêu Cầu Hệ Thống
+## Yêu Cầu Hệ Thống
 
 ### Yêu Cầu Bắt Buộc
 
@@ -54,13 +54,13 @@
 
 ### Hệ Điều Hành Hỗ Trợ
 
-- ✅ **macOS** (Intel & Apple Silicon)
-- ✅ **Linux** (Ubuntu, CentOS, Fedora)
-- ✅ **Windows** (Windows 10, Windows 11)
+- **macOS** (Intel & Apple Silicon)
+- **Linux** (Ubuntu, CentOS, Fedora)
+- **Windows** (Windows 10, Windows 11)
 
 ---
 
-## 📂 Cấu Trúc Dự Án
+## Cấu Trúc Dự Án
 
 ```
 HeThongDauGia/
@@ -141,7 +141,7 @@ HeThongDauGia/
 
 ---
 
-## 🚀 Hướng Dẫn Cài Đặt & Chạy
+## Hướng Dẫn Cài Đặt & Chạy
 
 ### 1️⃣ Chuẩn Bị Cơ Sở Dữ Liệu
 
@@ -302,7 +302,7 @@ Password: vididi
 
 ---
 
-## 🧪 Hướng Dẫn Test
+## Hướng Dẫn Test
 
 ### Chạy Unit Tests
 
@@ -343,68 +343,68 @@ Xem chi tiết hướng dẫn test manual trong [TESTING_GUIDE.md](documents/TES
 
 ---
 
-## ✅ Danh Sách Chức Năng Đã Hoàn Thành
+## Danh Sách Chức Năng Đã Hoàn Thành
 
-### 🔐 Quản Lý Người Dùng
+### Quản Lý Người Dùng
 
-- ✅ Đăng ký tài khoản
-- ✅ Đăng nhập/Đăng xuất
-- ✅ Xác thực mật khẩu (BCrypt hashing)
-- ✅ Phân quyền người dùng (Bidder/Seller)
-- ✅ Quản lý hồ sơ người dùng
+- Đăng ký tài khoản
+- Đăng nhập/Đăng xuất
+- Xác thực mật khẩu (BCrypt hashing)
+- Phân quyền người dùng (Bidder/Seller)
+- Quản lý hồ sơ người dùng
 
-### 🏪 Quản Lý Phiên Đấu Giá
+### Quản Lý Phiên Đấu Giá
 
-- ✅ Tạo phiên đấu giá
-- ✅ Xem danh sách phiên đấu giá (Active, Finished, All)
-- ✅ Cập nhật chi tiết phiên
-- ✅ Tự động kết thúc phiên khi hết thời gian
-- ✅ Hỗ trợ nhiều loại sản phẩm
+- Tạo phiên đấu giá
+- Xem danh sách phiên đấu giá (Active, Finished, All)
+- Cập nhật chi tiết phiên
+- Tự động kết thúc phiên khi hết thời gian
+- Hỗ trợ nhiều loại sản phẩm
 
-### 💰 Quản Lý Đấu Giá
+### Quản Lý Đấu Giá
 
-- ✅ Đặt giá thủ công (Place Bid)
-- ✅ Validation bước giá tối thiểu (Min Bid Increment)
-- ✅ Validation giá trần (Price Ceiling) - Tự động kết thúc khi đạt
-- ✅ Lịch sử đấu giá (Bid History)
-- ✅ Xem người dùng đang dẫn đầu (Highest Bidder)
+- Đặt giá thủ công (Place Bid)
+- Validation bước giá tối thiểu (Min Bid Increment)
+- Validation giá trần (Price Ceiling) - Tự động kết thúc khi đạt
+- Lịch sử đấu giá (Bid History)
+- Xem người dùng đang dẫn đầu (Highest Bidder)
 
-### 🤖 Đấu Giá Tự Động (AutoBid)
+### Đấu Giá Tự Động (AutoBid)
 
-- ✅ Tạo AutoBid với bước giá tùy chỉnh
-- ✅ Tự động tăng giá đến mức tối đa
-- ✅ Điều chỉnh tự động nếu bước giá < min increment
-- ✅ Dừng AutoBid khi đạt giá trần hoặc maxBid
-- ✅ Quản lý (xem, hủy) AutoBid đã tạo
+- Tạo AutoBid với bước giá tùy chỉnh
+- Tự động tăng giá đến mức tối đa
+- Điều chỉnh tự động nếu bước giá < min increment
+- Dừng AutoBid khi đạt giá trần hoặc maxBid
+- Quản lý (xem, hủy) AutoBid đã tạo
 
-### 🔄 Cập Nhật Thời Gian Thực
+### Cập Nhật Thời Gian Thực
 
-- ✅ Observer Pattern cho phép broadcast updates
-- ✅ Tất cả client thấy cập nhật giá ngay lập tức
-- ✅ Cập nhật trạng thái phiên (OPEN, FINISHED, CLOSED)
-- ✅ Thông báo khi phiên kết thúc
+- Observer Pattern cho phép broadcast updates
+- Tất cả client thấy cập nhật giá ngay lập tức
+- Cập nhật trạng thái phiên (OPEN, FINISHED, CLOSED)
+- Thông báo khi phiên kết thúc
 
-### 🏗️ Kiến Trúc & Design Patterns
+### Kiến Trúc & Design Patterns
 
-- ✅ **MVC Pattern:** Tách biệt Controller, View, Model (JavaFX)
-- ✅ **DAO Pattern:** Tách biệt database access logic
-- ✅ **Factory Pattern:** Tạo các loại Item khác nhau
-- ✅ **Observer Pattern:** Broadcast bid updates
-- ✅ **Singleton Pattern:** Database connection
+- **MVC Pattern:** Tách biệt Controller, View, Model (JavaFX)
+- **DAO Pattern:** Tách biệt database access logic
+- **Factory Pattern:** Tạo các loại Item khác nhau
+- **Observer Pattern:** Broadcast bid updates
+- **Singleton Pattern:** Database connection
 
-### 🧬 Kỹ Thuật Nâng Cao
+### Kỹ Thuật Nâng Cao
 
-- ✅ **Multi-threading:** Server xử lý multiple clients
-- ✅ **Socket Programming:** Client-Server communication
-- ✅ **Concurrency Control:** Thread-safe operations
-- ✅ **Connection Pooling:** Efficient database access
-- ✅ **JSON Serialization:** Data exchange (Gson)
+- **Multi-threading:** Server xử lý multiple clients
+- **Socket Programming:** Client-Server communication
+- **Concurrency Control:** Thread-safe operations
+- **Connection Pooling:** Efficient database access
+- **JSON Serialization:** Data exchange (Gson)
 
-### 🛠️ Build & Testing
+### Build & Testing
 
-- ✅ **Maven Build Tool:** POM.xml configuration
-- ✅ **Unit Tests:** JUnit 5 với 53 test cases
-- ✅ **Test Coverage:**
+- **Maven Build Tool:** POM.xml configuration
+- **Unit Tests:** JUnit 5 với 53 test cases
+- **Test Coverage:**
     - User models & authentication
     - Auction models & business logic
     - AutoBid service
@@ -412,25 +412,25 @@ Xem chi tiết hướng dẫn test manual trong [TESTING_GUIDE.md](documents/TES
     - Factory pattern item creation
     - Request/Response network communication
 
-### 🎨 Giao Diện & UX
+### Giao Diện & UX
 
-- ✅ JavaFX UI với FXML layouts
-- ✅ CSS styling (base-style.css)
-- ✅ Font Awesome icons
-- ✅ Responsive design
-- ✅ Separate views cho Admin/Seller/Bidder
+- JavaFX UI với FXML layouts
+- CSS styling (base-style.css)
+- Font Awesome icons
+- Responsive design
+- Separate views cho Admin/Seller/Bidder
 
-### 🆕 Tính Năng Nâng Cao (Bonus)
+### Tính Năng Nâng Cao (Bonus)
 
-- ✅ **Price Ceiling (Giá Trần):** Tự động kết thúc phiên khi đạt
-- ✅ **Min Bid Increment (Bước Giá Tối Thiểu):** Đảm bảo tính hợp lý
-- ✅ **AutoBid Smart Adjustment:** Tự động điều chỉnh bước giá
-- ✅ **Multiple Item Categories:** Factory pattern for item creation
-- ✅ **Advanced Bid Validation:** Multi-layer validation (Client + Server)
+- **Price Ceiling (Giá Trần):** Tự động kết thúc phiên khi đạt
+- **Min Bid Increment (Bước Giá Tối Thiểu):** Đảm bảo tính hợp lý
+- **AutoBid Smart Adjustment:** Tự động điều chỉnh bước giá
+- **Multiple Item Categories:** Factory pattern for item creation
+- **Advanced Bid Validation:** Multi-layer validation (Client + Server)
 
 ---
 
-## 📊 Thống Kê Dự Án
+## Thống Kê Dự Án
 
 | Metrics                 | Giá Trị                      |
 | ----------------------- | ---------------------------- |
@@ -443,7 +443,7 @@ Xem chi tiết hướng dẫn test manual trong [TESTING_GUIDE.md](documents/TES
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Lỗi: "Connection refused" khi server khởi động
 
@@ -492,7 +492,7 @@ mvn clean package
 
 ---
 
-## 👥 Tác Giả
+## Tác Giả
 
 - **Tên:** Nhóm 1
 - **Trường:** UET - VNU
@@ -501,13 +501,7 @@ mvn clean package
 
 ---
 
-## 📄 License
-
-Dự án này được phát triển cho mục đích học tập. Vui lòng tham khảo hướng dẫn sử dụng từ hướng dẫn viên.
-
----
-
-## ❓ Hỗ Trợ & Liên Hệ
+## Hỗ Trợ & Liên Hệ
 
 Nếu gặp vấn đề, vui lòng:
 
@@ -524,4 +518,4 @@ Link báo cáo PDF: [Report_BidNova.pdf](REPORT_BIDNOVA.pdf)
 
 Video demo:[]()
 
-**Happy Bidding! 🎉**
+**Happy Bidding!**

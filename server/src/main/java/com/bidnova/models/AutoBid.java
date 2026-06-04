@@ -3,7 +3,7 @@ package com.bidnova.models;
 import java.time.LocalDateTime;
 
 /**
- * 🤖 AutoBid - Mô hình dữ liệu tự động đặt giá
+ * AutoBid - Mô hình dữ liệu tự động đặt giá
  * 
  * <h2>Chức Năng:</h2>
  * <p>Cho phép người dùng thiết lập một quy tắc tự động đặt giá.</p>
@@ -59,9 +59,9 @@ import java.time.LocalDateTime;
  * 
  * <h2>Tính Năng Nâng Cao:</h2>
  * <ul>
- *   <li>✅ Tự động điều chỉnh increment nếu < minBidIncrement</li>
- *   <li>✅ Kiểm tra price ceiling - tự động kết thúc phiên nếu đạt</li>
- *   <li>✅ Thread-safe: Sử dụng synchronized trên Auction object</li>
+ *   <li> Tự động điều chỉnh increment nếu < minBidIncrement</li>
+ *   <li> Kiểm tra price ceiling - tự động kết thúc phiên nếu đạt</li>
+ *   <li> Thread-safe: Sử dụng synchronized trên Auction object</li>
  * </ul>
  * 
  * @author BidNova Team

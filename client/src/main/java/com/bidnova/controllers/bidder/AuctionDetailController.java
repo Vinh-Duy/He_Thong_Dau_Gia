@@ -156,7 +156,7 @@ public class AuctionDetailController implements Initializable {
                 lblPriceCeiling.setText("Vô giới hạn");
             }
             
-            // ⭐️ NEW: Disable bidding if auction is already finished
+            // NEW: Disable bidding if auction is already finished
             if ("FINISHED".equalsIgnoreCase(currentAuction.getStatus()) || "CLOSED".equalsIgnoreCase(currentAuction.getStatus())) {
                 disableAllBidding();
                 lblTimeLeft.setText("Đã kết thúc");
@@ -247,7 +247,7 @@ public class AuctionDetailController implements Initializable {
                     });
                 }
             } else if ("AUCTION_FINISHED".equals(action)) {
-                // ⭐️ NEW: Handle AUCTION_FINISHED event (ceiling reached)
+                // NEW: Handle AUCTION_FINISHED event (ceiling reached)
                 JsonObject payload = JsonParser.parseString(json.get("payload").getAsString()).getAsJsonObject();
                 String auctionId = payload.get("auctionId").getAsString();
                 
@@ -271,7 +271,7 @@ public class AuctionDetailController implements Initializable {
                         // Show notification
                         String highestBidder = payload.has("highestBidder") ? payload.get("highestBidder").getAsString() : "Không có người thắng";
                         String finalPrice = payload.has("newHighestBid") ? formatVietnameseCurrency(payload.get("newHighestBid").getAsDouble()) : "0 ₫";
-                        showAlert("🎯 Phiên kết thúc", 
+                        showAlert("Phiên kết thúc", 
                             "Phiên đấu giá đã kết thúc. Người thắng: " + highestBidder + "\nGiá cuối cùng: " + finalPrice);
                         
                         // Update UI
@@ -337,7 +337,7 @@ public class AuctionDetailController implements Initializable {
                 return;
             }
 
-            // ⭐️ NEW: Check minimum bid increment
+            // NEW: Check minimum bid increment
             double bidIncrement = bidAmount - currentPriceValue;
             double minBidIncrement = currentAuction.getMinBidIncrement();
             
@@ -351,7 +351,7 @@ public class AuctionDetailController implements Initializable {
                 return;
             }
 
-            // ⭐️ NEW: Warn if approaching price ceiling
+            // NEW: Warn if approaching price ceiling
             if (currentAuction.getPriceCeiling() != null) {
                 if (bidAmount >= currentAuction.getPriceCeiling()) {
                     showAlert("Thông báo", "Giá của bạn đạt giới hạn trần - đấu giá sẽ kết thúc!");

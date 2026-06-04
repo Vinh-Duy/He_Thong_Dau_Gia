@@ -74,7 +74,7 @@ public class ManageProductController {
 
         loadMyProducts(); // Lấy data từ server khi vừa mở màn hình
 
-        // 🔴 Lắng nghe real-time updates từ server
+        // Lắng nghe real-time updates từ server
         // Lưu listener để có thể remove khi rời màn hình
         broadcastListener = message -> {
             try {

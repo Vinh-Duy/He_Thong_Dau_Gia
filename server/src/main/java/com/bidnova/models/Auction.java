@@ -3,7 +3,7 @@ package com.bidnova.models;
 import java.time.LocalDateTime;
 
 /**
- * 🏪 Auction - Mô hình dữ liệu phiên đấu giá
+ * Auction - Mô hình dữ liệu phiên đấu giá
  * 
  * <h2>Chức Năng:</h2>
  * <p>Đại diện cho một phiên đấu giá sản phẩm trong hệ thống.</p>
@@ -37,8 +37,8 @@ import java.time.LocalDateTime;
  *   status VARCHAR(50) DEFAULT 'OPEN',
  *   category VARCHAR(255),
  *   seller_id INT,
- *   price_ceiling DECIMAL(20,2),                    -- ⭐ Giá trần (mới)
- *   min_bid_increment DECIMAL(20,2) DEFAULT 1000,  -- ⭐ Bước giá tối thiểu (mới)
+ *   price_ceiling DECIMAL(20,2),                    -- Giá trần (mới)
+ *   min_bid_increment DECIMAL(20,2) DEFAULT 1000,  -- Bước giá tối thiểu (mới)
  *   FOREIGN KEY (seller_id) REFERENCES users(id)
  * );
  * </pre>
@@ -85,7 +85,7 @@ public class Auction {
     private int sellerId;
     private String imageUrl;
     
-    // ⭐️ TÍNH NĂNG NÂNG CAO
+    // TÍNH NĂNG NÂNG CAO
     /**
      * Giá trần - khi đạt giá này, phiên tự động kết thúc.
      * Null = vô giới hạn (không có giá trần)
@@ -182,7 +182,7 @@ public class Auction {
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
-    // ⭐️ NEW GETTERS & SETTERS - Price Ceiling & Min Increment
+    // NEW GETTERS & SETTERS - Price Ceiling & Min Increment
     
     /**
      * @return Giá trần (null = vô giới hạn)
@@ -269,7 +269,7 @@ public class Auction {
     /**
      * placeBid() - Đặt giá (thread-safe)
      * 
-     * <p>⚠️ DEPRECATED: Sử dụng PlaceBidHandler.handle() thay vì method này.</p>
+     * <p>DEPRECATED: Sử dụng PlaceBidHandler.handle() thay vì method này.</p>
      * 
      * @param username Tên người dùng đặt giá
      * @param bidAmount Giá được đặt

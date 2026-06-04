@@ -20,7 +20,7 @@
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-Write-Host "`n🚀 Starting BidNova Client..." -ForegroundColor Green
+Write-Host "`n Starting BidNova Client..." -ForegroundColor Green
 
 # Get project root
 $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Definition
@@ -41,7 +41,7 @@ if (Test-Path "client/target/BidNova-Client.jar") {
     }
 }
 
-Write-Host "`n🔌 Starting client..." -ForegroundColor Green
+Write-Host "`nStarting client..." -ForegroundColor Green
 Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
 
 # Set default environment variables
@@ -52,7 +52,7 @@ $DefaultAuctionServerPort = "8888"
 $AuctionServerHost = if ($args.Count -ge 1) { $args[0] } else { $DefaultAuctionServerHost }
 $AuctionServerPort = if ($args.Count -ge 2) { $args[1] } else { $DefaultAuctionServerPort }
 
-Write-Host "📍 Server: $($AuctionServerHost):$($AuctionServerPort)" -ForegroundColor Yellow
+Write-Host "Server: $($AuctionServerHost):$($AuctionServerPort)" -ForegroundColor Yellow
 Write-Host "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor DarkGray
 Write-Host "`n  Starting application via Maven..." -ForegroundColor Cyan
 

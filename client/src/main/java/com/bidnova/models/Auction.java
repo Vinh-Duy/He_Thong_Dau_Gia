@@ -16,7 +16,7 @@ public class Auction {
     private int sellerId;
     private String imageUrl;
     
-    // ⭐️ NEW FIELDS
+    // NEW FIELDS
     private Double priceCeiling;          // Giá trần - null = vô giới hạn
     private double minBidIncrement = 1000; // Bước giá tối thiếu
 
@@ -64,7 +64,7 @@ public class Auction {
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
-    // ⭐️ NEW GETTERS & SETTERS
+    // NEW GETTERS & SETTERS
     public Double getPriceCeiling() { 
         return priceCeiling; 
     }

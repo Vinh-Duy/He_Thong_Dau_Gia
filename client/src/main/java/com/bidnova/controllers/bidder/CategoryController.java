@@ -40,7 +40,7 @@ public class CategoryController {
         // Gọi server để lấy dữ liệu
         loadProductsFromServer();
 
-        // 🔴 Lắng nghe real-time updates từ server
+        // Lắng nghe real-time updates từ server
         if (broadcastListener != null) {
             NetworkClient.getInstance().getMessageListeners().remove(broadcastListener);
         }

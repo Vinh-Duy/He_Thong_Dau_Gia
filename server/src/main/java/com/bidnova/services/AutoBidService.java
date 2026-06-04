@@ -13,7 +13,7 @@ import com.bidnova.models.BidHistory;
 import com.bidnova.models.User;
 
 /**
- * 🤖 AutoBidService - Xử lý logic tự động đặt giá
+ * AutoBidService - Xử lý logic tự động đặt giá
  * 
  * <h2>Chức Năng:</h2>
  * <p>Quản lý các quy tắc tự động đặt giá (AutoBid):</p>
@@ -42,11 +42,11 @@ import com.bidnova.models.User;
  *             │
  *             ├─ Tính: nextBid = 105M + increment
  *             │
- *             ├─ ⭐ Điều chỉnh nếu < minIncrement
+ *             ├─ Điều chỉnh nếu < minIncrement
  *             │
  *             ├─ Kiểm tra nextBid <= maxBid?
  *             │
- *             ├─ ⭐ Kiểm tra nextBid >= priceCeiling?
+ *             ├─ Kiểm tra nextBid >= priceCeiling?
  *             │
  *             ├─ Nếu >= ceiling:
  *             │   ├─ Đặt giá = ceiling
@@ -99,7 +99,7 @@ import com.bidnova.models.User;
  * 4️⃣ User A bids 148M
  *    → executeAutoBids("auction123", 148)
  *    → nextBid = 148 + 5 = 153M
- *    → ⚠️ 153M >= 150M ceiling!
+ *    → 153M >= 150M ceiling!
  *    → Set nextBid = 150M (ceiling)
  *    → Place bid 150M for User B
  *    → Mark auction as FINISHED
@@ -109,12 +109,12 @@ import com.bidnova.models.User;
  * 
  * <h2>Tính Năng Nâng Cao:</h2>
  * <ul>
- *   <li>✅ <b>FIFO Priority:</b> Sắp xếp AutoBid theo thời gian tạo (FIFO)</li>
- *   <li>✅ <b>Min Increment Adjustment:</b> Tự động điều chỉnh nếu < minIncrement</li>
- *   <li>✅ <b>Price Ceiling Handling:</b> Tự động kết thúc phiên khi đạt trần</li>
- *   <li>✅ <b>User Validation:</b> Kiểm tra người dùng còn tồn tại không</li>
- *   <li>✅ <b>Bid History Recording:</b> Ghi lại mọi AutoBid placement</li>
- *   <li>✅ <b>Multiple AutoBids:</b> Hỗ trợ nhiều AutoBid trên cùng phiên</li>
+ *   <li> <b>FIFO Priority:</b> Sắp xếp AutoBid theo thời gian tạo (FIFO)</li>
+ *   <li> <b>Min Increment Adjustment:</b> Tự động điều chỉnh nếu < minIncrement</li>
+ *   <li> <b>Price Ceiling Handling:</b> Tự động kết thúc phiên khi đạt trần</li>
+ *   <li> <b>User Validation:</b> Kiểm tra người dùng còn tồn tại không</li>
+ *   <li> <b>Bid History Recording:</b> Ghi lại mọi AutoBid placement</li>
+ *   <li> <b>Multiple AutoBids:</b> Hỗ trợ nhiều AutoBid trên cùng phiên</li>
  * </ul>
  * 
  * @author BidNova Team
@@ -172,7 +172,7 @@ public class AutoBidService {
      *       <li>Kiểm tra người dùng còn tồn tại</li>
      *       <li>Kiểm tra tính hợp lệ (người khác + isActive)</li>
      *       <li>Tính nextBidAmount = currentHighestBid + increment</li>
-     *       <li>⭐ Điều chỉnh nếu < minBidIncrement</li>
+     *       <li>Điều chỉnh nếu < minBidIncrement</li>
      *       <li>Kiểm tra nextBidAmount <= maxBid?
      *         <ul>
      *           <li>Nếu < ceiling: đặt giá bình thường</li>
@@ -214,7 +214,7 @@ public class AutoBidService {
                 // Calculate next bid amount
                 double nextBidAmount = currentHighestBid + autoBid.getIncrement();
 
-                // ⭐️ NEW: Validate minimum bid increment
+                // NEW: Validate minimum bid increment
                 double minimumRequiredIncrement = auction.getMinBidIncrement();
                 if ((nextBidAmount - currentHighestBid) < minimumRequiredIncrement) {
                     // Adjust to minimum increment
@@ -227,7 +227,7 @@ public class AutoBidService {
                 // Check if next bid is within max limit
                 if (nextBidAmount <= autoBid.getMaxBid()) {
                     
-                    // ⭐️ NEW: Check if bid reaches price ceiling
+                    // NEW: Check if bid reaches price ceiling
                     if (auction.getPriceCeiling() != null && nextBidAmount >= auction.getPriceCeiling()) {
                         // Bid reaches ceiling - place bid and close auction
                         nextBidAmount = auction.getPriceCeiling();
@@ -238,7 +238,7 @@ public class AutoBidService {
                         auctionDAO.updateStatus(auctionId, "FINISHED");
                         autoBidDAO.deactivateAutoBid(autoBid.getId());
                         
-                        System.out.println("🎯 Auto-bid at ceiling: " + username + 
+                        System.out.println("Auto-bid at ceiling: " + username + 
                             " bid " + nextBidAmount + " - Auction finished!");
                     } else {
                         // Normal auto-bid

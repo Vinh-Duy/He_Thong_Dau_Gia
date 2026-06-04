@@ -227,37 +227,96 @@ java -jar server-1.0-SNAPSHOT-jar-with-dependencies.jar
 **Output mong đợi:**
 
 ```
-Server is running on port 5000...
+Server đang chạy tại port 8888...
 Waiting for client connections...
 ```
 
 **Lưu ý:**
 
-- Server khởi động trên port `5000`
+- Server khởi động trên port `8888`
 - Đảm bảo MySQL đã chạy trước khi khởi động server
 - Để dừng server, nhấn `Ctrl+C` (hoặc `Cmd+C` trên macOS)
 
 ### 4️⃣ Chạy Client
 
-#### Cách 1: Sử dụng Maven (Khuyến nghị)
+Client lấy cấu hình kết nối theo thứ tự ưu tiên:
 
-```bash
-cd client
-mvn javafx:run
+1. System property: `auction.server.host` / `auction.server.port`
+2. Biến môi trường: `AUCTION_SERVER_HOST` / `AUCTION_SERVER_PORT`
+3. Giá trị mặc định trong [NetworkConfig.java](client/src/main/java/com/bidnova/config/NetworkConfig.java): `127.0.0.1:8888`
+
+#### Windows
+
+Chạy bằng file `run-client.bat`:
+
+```bat
+run-client.bat <HOST> <PORT>
 ```
 
-#### Cách 2: Sử dụng IDE
+Ví dụ:
+
+```bat
+run-client.bat 127.0.0.1 8888
+```
+
+- `HOST`: địa chỉ server cần kết nối
+- `PORT`: cổng server cần kết nối
+- Nếu không truyền tham số, script sẽ dùng mặc định `bidnova-server.onrender.com:8888`
+
+#### Linux
+
+Chạy bằng file `run-client.sh`:
+
+```bash
+chmod +x run-client.sh
+./run-client.sh <HOST> <PORT>
+```
+
+Ví dụ:
+
+```bash
+./run-client.sh 127.0.0.1 8888
+```
+
+Nếu máy có cài PowerShell 7 (`pwsh`), bạn cũng có thể chạy file `run-client.ps1`:
+
+```bash
+pwsh ./run-client.ps1 <HOST> <PORT>
+```
+
+Ví dụ:
+
+```bash
+pwsh ./run-client.ps1 127.0.0.1 8888
+```
+
+#### macOS
+
+Chạy bằng file `run-client.sh`:
+
+```bash
+chmod +x run-client.sh
+./run-client.sh <HOST> <PORT>
+```
+
+Ví dụ:
+
+```bash
+./run-client.sh 127.0.0.1 8888
+```
+
+#### Chạy bằng IDE
 
 1. Mở project
 2. Tìm file [Main.java](client/src/main/java/com/bidnova/Main.java)
-3. Click chuột phải → Run 'Main'
+3. Chạy `Main`
 
 **Lưu ý:**
 
-- Client sẽ tự động kết nối tới server trên `localhost:5000`
 - Nếu kết nối thất bại, kiểm tra:
-    - Server đã chạy trên port 5000?
-    - Network config trong [NetworkClient.java](client/src/main/java/com/bidnova/network/NetworkClient.java)
+  - HOST/PORT đã nhập đúng
+  - Server có đang lắng nghe đúng cổng không
+  - Cấu hình trong [NetworkConfig.java](client/src/main/java/com/bidnova/config/NetworkConfig.java)
 
 ### 5️⃣ Sử Dụng Ứng Dụng
 
@@ -470,12 +529,13 @@ brew services start mysql
 sudo systemctl start mysql
 ```
 
-### Lỗi: "Port 5000 already in use"
+### Lỗi: "Port 8888 already in use"
 
-**Giải pháp:** Thay đổi port trong [ServerMain.java](server/src/main/java/com/bidnova/ServerMain.java):
+**Giải pháp:** Đổi giá trị biến môi trường `PORT` khi chạy server, hoặc cập nhật logic trong [ServerMain.java](server/src/main/java/com/bidnova/ServerMain.java):
 
 ```java
-final int PORT = 8888;
+// Mặc định: 8888
+// Có thể set qua biến môi trường PORT
 ```
 
 ### Lỗi: "Cannot find main class com.bidnova.Main"

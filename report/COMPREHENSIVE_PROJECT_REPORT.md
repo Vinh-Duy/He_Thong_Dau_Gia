@@ -4,7 +4,7 @@
 **Dự án:** BidNova - Hệ Thống Đấu Giá Trực Tuyến  
 **Nhóm phát triển:** Vinh Duy  
 **Công nghệ chính:** Java 25, JavaFX, MySQL, Maven, Design Patterns, Socket Programming  
-**Trạng thái:** HOÀN THÀNH ✅
+**Trạng thái:** HOÀN THÀNH
 
 ---
 
@@ -29,20 +29,20 @@
 
 ---
 
-## 🎯 TỔNG QUAN DỰ ÁN
+## TỔNG QUAN DỰ ÁN
 
 ### Định Nghĩa & Mục Đích
 
 **BidNova** là một hệ thống đấu giá (Auction System) được xây dựng hoàn toàn bằng **Java**, với kiến trúc **Client-Server**, sử dụng **Socket Programming** để giao tiếp realtime giữa máy khách và máy chủ. Hệ thống cho phép người dùng tham gia vào các phiên đấu giá sản phẩm với các tính năng tiên tiến như:
 
-- ✅ Đặt giá thủ công (Manual Bidding)
-- ✅ Đặt giá tự động (Auto-Bidding) với bước giá tùy chỉnh
-- ✅ Cập nhật giá thời gian thực (Real-time Price Updates)
-- ✅ Giá trần (Price Ceiling) - Kết thúc tự động khi đạt giới hạn
-- ✅ Bước giá tối thiểu (Minimum Bid Increment) - Đảm bảo tính hợp lý
-- ✅ Chống snipe cuối phút (Anti-Sniping) - Tự động gia hạn thời gian
-- ✅ Lịch sử đấu giá (Bid History)
-- ✅ Hỗ trợ multiple loại sản phẩm (Vehicle, RealEstate, ArtCollectible, StateProperty)
+- Đặt giá thủ công (Manual Bidding)
+- Đặt giá tự động (Auto-Bidding) với bước giá tùy chỉnh
+- Cập nhật giá thời gian thực (Real-time Price Updates)
+- Giá trần (Price Ceiling) - Kết thúc tự động khi đạt giới hạn
+- Bước giá tối thiểu (Minimum Bid Increment) - Đảm bảo tính hợp lý
+- Chống snipe cuối phút (Anti-Sniping) - Tự động gia hạn thời gian
+- Lịch sử đấu giá (Bid History)
+- Hỗ trợ multiple loại sản phẩm (Vehicle, RealEstate, ArtCollectible, StateProperty)
 
 ### Mục Tiêu Chính
 
@@ -58,11 +58,11 @@
 
 ### 🎭 Các Vai Trò Người Dùng (User Roles)
 
-| Vai Trò | Mô Tả | Quyền Hạn |
-|---------|-------|----------|
-| **Bidder (Người Mua)** | Người dùng thông thường tham gia đấu giá | - Xem danh sách sản phẩm<br/>- Đặt giá<br/>- Xem lịch sử bid<br/>- Quản lý auto-bid của mình |
-| **Seller (Người Bán)** | Người bán hàng tạo phiên đấu giá | - Tạo sản phẩm mới<br/>- Tạo phiên đấu giá<br/>- Xem danh sách phiên của mình<br/>- Quản lý sản phẩm |
-| **Admin (Quản Trị Viên)** | Quản lý toàn bộ hệ thống | - Quản lý tất cả người dùng<br/>- Xem tất cả phiên đấu giá<br/>- Xóa/chỉnh sửa phiên<br/>- Xem thống kê<br/>- Quản lý giao dịch |
+| Vai Trò                   | Mô Tả                                    | Quyền Hạn                                                                                                                       |
+| ------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Bidder (Người Mua)**    | Người dùng thông thường tham gia đấu giá | - Xem danh sách sản phẩm<br/>- Đặt giá<br/>- Xem lịch sử bid<br/>- Quản lý auto-bid của mình                                    |
+| **Seller (Người Bán)**    | Người bán hàng tạo phiên đấu giá         | - Tạo sản phẩm mới<br/>- Tạo phiên đấu giá<br/>- Xem danh sách phiên của mình<br/>- Quản lý sản phẩm                            |
+| **Admin (Quản Trị Viên)** | Quản lý toàn bộ hệ thống                 | - Quản lý tất cả người dùng<br/>- Xem tất cả phiên đấu giá<br/>- Xóa/chỉnh sửa phiên<br/>- Xem thống kê<br/>- Quản lý giao dịch |
 
 ### 🌟 Quy Trình Sử Dụng (User Flow)
 
@@ -153,7 +153,7 @@ User bấm nút → Controller gọi handler
                   ↓
             NetworkClient gửi qua Socket
                   ↓
-            
+
 SERVER PROCESSING FLOW:
 ServerMain nhận request
                   ↓
@@ -169,7 +169,7 @@ ServerMain nhận request
                   ↓
             ClientHandler gửi lại qua Socket
                   ↓
-            
+
 CLIENT RESPONSE HANDLING:
 NetworkClient nhận Response
                   ↓
@@ -184,33 +184,33 @@ NetworkClient nhận Response
 
 ### Backend Technologies
 
-| Công Nghệ | Phiên Bản | Mục Đích |
-|-----------|-----------|---------|
-| **Java** | 25 LTS | Ngôn ngữ lập trình chính |
-| **Maven** | 4.0.0 | Build tool, dependency management |
-| **MySQL** | 8.0+ | Relational database |
+| Công Nghệ      | Phiên Bản     | Mục Đích                              |
+| -------------- | ------------- | ------------------------------------- |
+| **Java**       | 25 LTS        | Ngôn ngữ lập trình chính              |
+| **Maven**      | 4.0.0         | Build tool, dependency management     |
+| **MySQL**      | 8.0+          | Relational database                   |
 | **Socket API** | Java built-in | Real-time bidirectional communication |
-| **Threading** | Java built-in | Multi-client handling |
-| **Gson** | 2.10.1 | JSON serialization/deserialization |
+| **Threading**  | Java built-in | Multi-client handling                 |
+| **Gson**       | 2.10.1        | JSON serialization/deserialization    |
 
 ### Frontend Technologies
 
-| Công Nghệ | Phiên Bản | Mục Đích |
-|-----------|-----------|---------|
-| **JavaFX** | 25 | GUI framework |
-| **FXML** | 25 | XML-based UI markup |
-| **CSS** | 3.0 | Styling & theming |
-| **FontAwesomeFX** | 4.7.0 | Icons & visual enhancements |
+| Công Nghệ         | Phiên Bản | Mục Đích                    |
+| ----------------- | --------- | --------------------------- |
+| **JavaFX**        | 25        | GUI framework               |
+| **FXML**          | 25        | XML-based UI markup         |
+| **CSS**           | 3.0       | Styling & theming           |
+| **FontAwesomeFX** | 4.7.0     | Icons & visual enhancements |
 
 ### Development & Testing
 
-| Công Nghệ | Phiên Bản | Mục Đích |
-|-----------|-----------|---------|
-| **JUnit** | 5.10.1 | Unit testing framework |
-| **Mockito** | 5.2.0 | Mocking framework |
-| **BCrypt/jbcrypt** | 0.4 | Password hashing |
-| **IDE** | IntelliJ IDEA / VS Code | Development environment |
-| **GitHub Actions** | Latest | CI/CD pipeline |
+| Công Nghệ          | Phiên Bản               | Mục Đích                |
+| ------------------ | ----------------------- | ----------------------- |
+| **JUnit**          | 5.10.1                  | Unit testing framework  |
+| **Mockito**        | 5.2.0                   | Mocking framework       |
+| **BCrypt/jbcrypt** | 0.4                     | Password hashing        |
+| **IDE**            | IntelliJ IDEA / VS Code | Development environment |
+| **GitHub Actions** | Latest                  | CI/CD pipeline          |
 
 ---
 
@@ -219,17 +219,20 @@ NetworkClient nhận Response
 ### 1️⃣ Hệ Thống Xác Thực (Authentication & Authorization)
 
 **Mô Tả:**
+
 - Đăng ký tài khoản mới với username & password
 - Đăng nhập an toàn với mật khẩu được hash bằng BCrypt
 - Phân quyền dựa trên vai trò: Bidder, Seller, Admin
 - Session management với JWT/Token
 
 **Công Nghệ:**
+
 - `BCrypt (jbcrypt 0.4)` - Mã hóa mật khẩu
 - `Socket communication` - Gửi credentials an toàn
 - `Gson` - JSON serialization
 
 **Luồng Xử Lý:**
+
 ```java
 User nhập username/password
     ↓
@@ -248,29 +251,33 @@ Chuyển đến Home Screen
 ```
 
 **Kiểm thử:**
-- ✅ Test đăng ký user mới
-- ✅ Test đăng nhập với credential đúng
-- ✅ Test đăng nhập với password sai
-- ✅ Test phân quyền (admin vs bidder vs seller)
+
+- Test đăng ký user mới
+- Test đăng nhập với credential đúng
+- Test đăng nhập với password sai
+- Test phân quyền (admin vs bidder vs seller)
 
 ---
 
 ### 2️⃣ Quản Lý Sản Phẩm (Product Management)
 
 **Mô Tả:**
+
 - Seller có thể tạo sản phẩm thuộc 4 loại:
-  - **Vehicle (Xe cộ):** Loại, năm sản xuất, biển số
-  - **RealEstate (Bất động sản):** Diện tích, địa chỉ, loại BĐS
-  - **ArtCollectible (Đồ cổ):** Tác giả, niên đại, chất liệu
-  - **StateProperty (Tài sản công):** Mã tài sản, bộ quản lý
+    - **Vehicle (Xe cộ):** Loại, năm sản xuất, biển số
+    - **RealEstate (Bất động sản):** Diện tích, địa chỉ, loại BĐS
+    - **ArtCollectible (Đồ cổ):** Tác giả, niên đại, chất liệu
+    - **StateProperty (Tài sản công):** Mã tài sản, bộ quản lý
 
 **Công Nghệ:**
+
 - `Factory Pattern` - Tạo items dựa trên loại
 - `Item abstract class` - Lớp cơ sở cho tất cả loại
 - `ItemCreator interface` - Interface để tạo items
 - `ItemFactoryRegistry` - Registry quản lý tất cả factories
 
 **Code Structure:**
+
 ```
 patterns/factory/
 ├── ItemCreator.java (interface)
@@ -289,6 +296,7 @@ models/
 ```
 
 **Ưu Điểm:**
+
 - Dễ mở rộng: thêm loại sản phẩm mới chỉ cần thêm Creator mới
 - Đóng gói: chi tiết tạo item được ẩn
 - Tính nhất quán: tất cả items đều qua factory
@@ -298,12 +306,14 @@ models/
 ### 3️⃣ Quản Lý Phiên Đấu Giá (Auction Management)
 
 **Mô Tả:**
+
 - Tạo phiên đấu giá cho sản phẩm
 - Thiết lập thông tin: giá khởi đầu, thời gian, giá trần, bước giá tối thiểu
 - Xem danh sách phiên (active, finished)
 - Cập nhật trạng thái phiên
 
 **Trạng Thái Phiên:**
+
 ```
 OPEN (Đang diễn ra)
     ↓
@@ -316,6 +326,7 @@ OPEN (Đang diễn ra)
 ```
 
 **Database Fields:**
+
 ```sql
 auctions {
   id VARCHAR
@@ -339,18 +350,20 @@ auctions {
 ### 4️⃣ Đặt Giá Thủ Công (Manual Bidding)
 
 **Mô Tả:**
+
 - Người mua nhập số tiền muốn đặt
 - Hệ thống kiểm tra:
-  - Giá > giá hiện tại
-  - Bước tăng giá ≥ bước giá tối thiểu
-  - Giá < giá trần (nếu có)
+    - Giá > giá hiện tại
+    - Bước tăng giá ≥ bước giá tối thiểu
+    - Giá < giá trần (nếu có)
 - Cập nhật giá cao nhất & người thắng tạm thời
 
 **Validation Logic:**
+
 ```
 User nhập bidAmount
     ↓
-Kiểm tra: bidAmount > currentPrice? 
+Kiểm tra: bidAmount > currentPrice?
     ├─ NO → Error
     └─ YES ↓
 Kiểm tra: (bidAmount - currentPrice) >= minIncrement?
@@ -368,14 +381,16 @@ Broadcast: BID_UPDATE đến all clients
 ### 5️⃣ Đặt Giá Tự Động (Auto-Bidding)
 
 **Mô Tả:**
+
 - User set: maxBid (giá tối đa) & increment (bước tăng)
 - Khi ai đó bid, hệ thống tự động tăng giá cho user này
 - Cứ tăng theo increment cho đến khi:
-  - Đạt maxBid → dừng
-  - Đạt giá trần → dừng
-  - Ai đó bid cao hơn maxBid → cancel auto-bid
+    - Đạt maxBid → dừng
+    - Đạt giá trần → dừng
+    - Ai đó bid cao hơn maxBid → cancel auto-bid
 
 **Ví Dụ:**
+
 ```
 Phiên đấu giá:
 - Current bid: 100 triệu
@@ -415,6 +430,7 @@ AutoBidService tính toán:
 ```
 
 **Database:**
+
 ```sql
 auto_bids {
   id INT
@@ -431,16 +447,19 @@ auto_bids {
 ### 6️⃣ Cập Nhật Giá Thời Gian Thực (Real-Time Updates)
 
 **Mô Tả:**
+
 - Khi User A bid, tất cả client khác thấy cập nhật ngay lập tức
 - Sử dụng **Observer Pattern** để notify clients
 - Gửi qua Socket connection
 
 **Công Nghệ:**
+
 - `Observer Pattern`: AuctionSubject, BidUpdateObserver
 - `Broadcast mechanism`: Gửi message đến tất cả clients
 - `Socket listener threads`
 
 **Luồng Xử Lý:**
+
 ```
 User A đặt giá
     ↓
@@ -456,14 +475,15 @@ Tất cả client nhận & cập nhật UI realtime
 ```
 
 **Message Format:**
+
 ```json
 {
-  "action": "BID_UPDATE",
-  "auctionId": "AUCTION-001",
-  "currentHighestBid": 105000000,
-  "highestBidder": "user_b",
-  "timeRemaining": "02:45:30",
-  "bidCount": 15
+    "action": "BID_UPDATE",
+    "auctionId": "AUCTION-001",
+    "currentHighestBid": 105000000,
+    "highestBidder": "user_b",
+    "timeRemaining": "02:45:30",
+    "bidCount": 15
 }
 ```
 
@@ -472,11 +492,13 @@ Tất cả client nhận & cập nhật UI realtime
 ### 7️⃣ Lịch Sử Đấu Giá (Bid History)
 
 **Mô Tả:**
+
 - Ghi lại tất cả các lần bid của mỗi phiên
 - Người dùng có thể xem ai bid bao nhiêu & khi nào
 - Hiển thị dạng bảng hoặc chart
 
 **Database:**
+
 ```sql
 bid_history {
   id INT
@@ -489,6 +511,7 @@ bid_history {
 ```
 
 **Tính Năng Hiển Thị:**
+
 - Danh sách bid theo thứ tự thời gian
 - Visualize bằng line chart (giá theo thời gian)
 - Filter theo bidder
@@ -496,18 +519,20 @@ bid_history {
 
 ---
 
-## 🚀 CÁC TÍNH NĂNG NÂNG CAO
+## CÁC TÍNH NĂNG NÂNG CAO
 
-### 🎯 Feature 1: GIÁ TRẦN (Price Ceiling)
+### Feature 1: GIÁ TRẦN (Price Ceiling)
 
 **Định Nghĩa:**
 Giá tối đa của cuộc đấu giá. Khi ai đó đặt giá ≥ giá trần, **đấu giá kết thúc ngay lập tức**, người đặt giá đó trở thành người thắng cuối cùng.
 
 **Mục Đích:**
+
 - Seller có thể giới hạn giá bán cao nhất
 - Ví dụ: "Tôi muốn bán chiếc xe này, nhưng tối đa là 150 triệu. Nếu ai bid 150 triệu, phiên này xong"
 
 **Implement:**
+
 ```java
 // Auction.java
 private Double priceCeiling;  // null = vô giới hạn
@@ -522,8 +547,8 @@ public boolean isBidAtCeiling(double bidAmount) {
 if (currentAuction.isBidAtCeiling(finalHighestBid)) {
     currentAuction.setStatus("FINISHED");
     auctionDAO.updateStatus(auctionId, "FINISHED");
-    
-    return new Response("SUCCESS", 
+
+    return new Response("SUCCESS",
         "Đặt giá thành công! Đấu giá đã kết thúc do đạt giá trần",
         "ceilingReached", true,
         "action", "AUCTION_FINISHED"
@@ -534,23 +559,25 @@ if (currentAuction.isBidAtCeiling(finalHighestBid)) {
 **Test Cases:**
 | Bid | Current | Expected |
 |-----|---------|----------|
-| 140M | 100M (ceiling=150M) | ✅ Accepted |
-| 150M | 145M (ceiling=150M) | ✅ Accepted, FINISHED |
+| 140M | 100M (ceiling=150M) | Accepted |
+| 150M | 145M (ceiling=150M) | Accepted, FINISHED |
 | 160M | 145M (ceiling=150M) | ❌ Error (invalid) |
 
 ---
 
-### 🎯 Feature 2: BƯỚC GIÁ TỐI THIỂU (Minimum Bid Increment)
+### Feature 2: BƯỚC GIÁ TỐI THIỂU (Minimum Bid Increment)
 
 **Định Nghĩa:**
 Giá cuối cùng phải cao hơn giá hiện tại ít nhất `minBidIncrement` đó. Tránh việc auto-bid chỉ tăng +1 đồng.
 
 **Mục Đích:**
+
 - Đảm bảo tính hợp lý của các bid
 - Tránh spam bid nhỏ
 - Ví dụ: Min increment = 2 triệu, current = 100M → next bid tối thiểu phải là 102M
 
 **Implement:**
+
 ```java
 // Auction.java
 private double minBidIncrement = 1000;  // default 1 triệu
@@ -561,7 +588,7 @@ public void setMinBidIncrement(double minBidIncrement) { this.minBidIncrement = 
 // PlaceBidHandler.java
 double bidIncrement = bidAmount - currentAuction.getCurrentHighestBid();
 if (bidIncrement < currentAuction.getMinBidIncrement()) {
-    return new Response("ERROR", 
+    return new Response("ERROR",
         "Bước giá tối thiểu là " + formatCurrency(minIncrement) +
         ". Giá tối thiểu yêu cầu: " + formatCurrency(requiredPrice)
     );
@@ -580,41 +607,43 @@ if ((nextBidAmount - currentHighestBid) < minimumRequiredIncrement) {
 | Action | Current | Min Inc | Expected |
 |--------|---------|---------|----------|
 | Bid 101M | 100M | 2M | ❌ Error |
-| Bid 102M | 100M | 2M | ✅ Accepted |
-| AutoBid (inc=1M) | 100M | 2M | ✅ Adjusted to 102M |
+| Bid 102M | 100M | 2M | Accepted |
+| AutoBid (inc=1M) | 100M | 2M | Adjusted to 102M |
 
 ---
 
-### 🎯 Feature 3: CHỐNG SNIPE CUỐI PHÚT (Anti-Sniping)
+### Feature 3: CHỐNG SNIPE CUỐI PHÚT (Anti-Sniping)
 
 **Định Nghĩa:**
 Khi người dùng đặt bid trong **5 phút cuối** của phiên, thời gian kết thúc được tự động gia hạn thêm **5 phút nữa**.
 
 **Mục Đích:**
+
 - Tránh tình huống "snipe": người dùng chờ đến phút cuối rồi bid vội vàng
 - Đảm bảo công bằng cho tất cả bidders
 - Ví dụ: Phiên kết thúc 15:00, ai bid lúc 14:57 → phiên kéo dài đến 15:05
 
 **Implement:**
+
 ```java
 // AntiSnipingService.java
 public String checkAndExtendIfNeeded(String auctionId, Auction auction) {
     LocalDateTime now = LocalDateTime.now();
     LocalDateTime endTime = LocalDateTime.parse(auction.getEndTime());
-    
+
     Duration duration = Duration.between(now, endTime);
     long minutesUntilEnd = duration.toMinutes();
-    
+
     if (minutesUntilEnd <= 5 && minutesUntilEnd >= 0) {
         LocalDateTime newEndTime = endTime.plusMinutes(5);
         String newEndTimeStr = newEndTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        
+
         auction.setEndTime(newEndTimeStr);
         auctionDAO.updateEndTime(auctionId, newEndTimeStr);
-        
+
         return newEndTimeStr;  // Extension happened
     }
-    
+
     return null;  // No extension needed
 }
 
@@ -635,14 +664,16 @@ if (newEndTime != null) {
 
 ---
 
-### 🎯 Feature 4: VISUALIZATION BID HISTORY
+### Feature 4: VISUALIZATION BID HISTORY
 
 **Mô Tả:**
+
 - Biểu đồ line chart hiển thị giá theo thời gian
 - Dữ liệu realtime update khi có bid mới
 - Có thể xem thông tin chi tiết từ chart
 
 **Công Nghệ:**
+
 - `JavaFX Chart API` (LineChart, XYChart)
 - `TimeSeries` hoặc `NumberAxis` + `CategoryAxis`
 
@@ -930,6 +961,7 @@ CREATE TABLE items (
 **Nơi Dùng:** Tạo các loại Item khác nhau (Vehicle, RealEstate, ...)
 
 **Cấu Trúc:**
+
 ```
 ItemCreator (Interface)
     ├── VehicleCreator
@@ -939,15 +971,17 @@ ItemCreator (Interface)
 ```
 
 **Ưu Điểm:**
+
 - Tách biệt logic tạo object
 - Dễ mở rộng thêm loại mới
 - Đóng gói chi tiết tạo object
 
 **Code:**
+
 ```java
 // ItemCreator.java
 public interface ItemCreator {
-    Item createItem(int id, String name, String description, 
+    Item createItem(int id, String name, String description,
                     double startingPrice, Object... extraParams);
     boolean supportsCategory(String category);
 }
@@ -956,15 +990,15 @@ public interface ItemCreator {
 public class ItemFactoryRegistry {
     private static ItemFactoryRegistry instance;
     private Map<String, ItemCreator> factories;
-    
+
     public static ItemFactoryRegistry getInstance() {
         if (instance == null) {
             instance = new ItemFactoryRegistry();
         }
         return instance;
     }
-    
-    public Item createItem(String type, int id, String name, 
+
+    public Item createItem(String type, int id, String name,
                           String desc, double price, Object... params) {
         ItemCreator creator = factories.get(type);
         if (creator != null) {
@@ -987,6 +1021,7 @@ Item vehicle = ItemFactoryRegistry.getInstance()
 **Nơi Dùng:** Real-time cập nhật bid cho tất cả clients
 
 **Cấu Trúc:**
+
 ```
 AuctionSubject (Observable)
     └── notifyObservers()
@@ -998,11 +1033,13 @@ AuctionSubject (Observable)
 ```
 
 **Ưu Điểm:**
+
 - Loose coupling: Subject không biết chi tiết Observer
 - Broadcast dễ dàng
 - Observer có thể được add/remove động
 
 **Code:**
+
 ```java
 // BidUpdateObserver.java
 public interface BidUpdateObserver {
@@ -1012,15 +1049,15 @@ public interface BidUpdateObserver {
 // AuctionSubject.java
 public class AuctionSubject {
     private List<BidUpdateObserver> observers = new ArrayList<>();
-    
+
     public void attach(BidUpdateObserver observer) {
         observers.add(observer);
     }
-    
+
     public void detach(BidUpdateObserver observer) {
         observers.remove(observer);
     }
-    
+
     public void notifyObservers(String auctionId, double bid, String bidder) {
         for (BidUpdateObserver observer : observers) {
             observer.update(auctionId, bid, bidder);
@@ -1031,18 +1068,18 @@ public class AuctionSubject {
 // ClientBidObserver.java
 public class ClientBidObserver implements BidUpdateObserver {
     private ClientHandler clientHandler;
-    
+
     public ClientBidObserver(ClientHandler handler) {
         this.clientHandler = handler;
     }
-    
+
     @Override
     public void update(String auctionId, double newBid, String bidder) {
         Response response = new Response("BID_UPDATE");
         response.put("auctionId", auctionId);
         response.put("currentHighestBid", newBid);
         response.put("highestBidder", bidder);
-        
+
         clientHandler.sendResponse(response);
     }
 }
@@ -1053,36 +1090,39 @@ public class ClientBidObserver implements BidUpdateObserver {
 ### 3. Singleton Pattern
 
 **Nơi Dùng:**
+
 - `AuctionManager` - Quản lý tất cả auctions (in-memory)
 - `NetworkClient` (Client side) - Một connection duy nhất
 - `DatabaseConnection` - Connection pool duy nhất
 - `ItemFactoryRegistry` - Một registry duy nhất
 
 **Ưu Điểm:**
+
 - Đảm bảo chỉ có 1 instance
 - Global access point
 - Thread-safe (trong implementation)
 
 **Code:**
+
 ```java
 // AuctionManager.java
 public class AuctionManager {
     private static AuctionManager instance;
     private Map<String, Auction> auctions = new ConcurrentHashMap<>();
-    
+
     private AuctionManager() {}  // Private constructor
-    
+
     public static synchronized AuctionManager getInstance() {
         if (instance == null) {
             instance = new AuctionManager();
         }
         return instance;
     }
-    
+
     public void addAuction(Auction auction) {
         auctions.put(auction.getId(), auction);
     }
-    
+
     public Auction getAuction(String id) {
         return auctions.get(id);
     }
@@ -1100,6 +1140,7 @@ manager.addAuction(newAuction);
 **Nơi Dùng:** Các handler khác nhau xử lý các request khác nhau
 
 **Cấu Trúc:**
+
 ```
 Handler (Interface-like)
     ├── LoginHandler
@@ -1113,6 +1154,7 @@ HandlerRegistry (Context)
 ```
 
 **Ưu Điểm:**
+
 - Tách logic xử lý
 - Dễ thêm handler mới
 - Dispatch linh hoạt
@@ -1122,6 +1164,7 @@ HandlerRegistry (Context)
 ### 5. MVC Architecture (Client)
 
 **Cấu Trúc:**
+
 ```
 Model: User, Auction, AutoBid, ...
 View: FXML files (login.fxml, home.fxml, ...)
@@ -1129,6 +1172,7 @@ Controller: LoginController, AuctionDetailController, ...
 ```
 
 **Ưu Điểm:**
+
 - Tách biệt UI logic từ business logic
 - Dễ test & maintain
 - Tái sử dụng models
@@ -1140,16 +1184,17 @@ Controller: LoginController, AuctionDetailController, ...
 ### Server Components
 
 #### 1. ServerMain.java
+
 ```java
 public class ServerMain {
     private static final int PORT = 8888;
     private ServerSocket serverSocket;
-    
+
     public void start() {
         try {
             serverSocket = new ServerSocket(PORT);
             System.out.println("Server listening on port " + PORT);
-            
+
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 ClientHandler handler = new ClientHandler(clientSocket);
@@ -1163,6 +1208,7 @@ public class ServerMain {
 ```
 
 **Trách nhiệm:**
+
 - Khởi động server trên port 8888
 - Accept client connections
 - Tạo ClientHandler thread cho mỗi client
@@ -1170,19 +1216,20 @@ public class ServerMain {
 ---
 
 #### 2. ClientHandler.java
+
 ```java
 public class ClientHandler implements Runnable {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
     private String clientUsername;
-    
+
     @Override
     public void run() {
         try {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
-            
+
             String line;
             while ((line = in.readLine()) != null) {
                 Request request = Request.fromJSON(line);
@@ -1192,17 +1239,17 @@ public class ClientHandler implements Runnable {
             System.out.println("Client disconnected");
         }
     }
-    
+
     private void handleRequest(Request request) {
         String type = request.getType();
         Handler handler = HandlerRegistry.getHandler(type);
-        
+
         if (handler != null) {
             Response response = handler.handle(request);
             sendResponse(response);
         }
     }
-    
+
     public void sendResponse(Response response) {
         out.println(response.toJSON());
     }
@@ -1210,6 +1257,7 @@ public class ClientHandler implements Runnable {
 ```
 
 **Trách nhiệm:**
+
 - Quản lý 1 connection client
 - Parse incoming JSON requests
 - Dispatch đến đúng handler
@@ -1218,10 +1266,11 @@ public class ClientHandler implements Runnable {
 ---
 
 #### 3. HandlerRegistry.java
+
 ```java
 public class HandlerRegistry {
     private static Map<String, Handler> handlers = new HashMap<>();
-    
+
     static {
         handlers.put("LOGIN", new LoginHandler());
         handlers.put("REGISTER", new RegisterHandler());
@@ -1229,7 +1278,7 @@ public class HandlerRegistry {
         handlers.put("CREATE_AUCTION", new AuctionHandler());
         // ... more handlers
     }
-    
+
     public static Handler getHandler(String type) {
         return handlers.get(type);
     }
@@ -1237,6 +1286,7 @@ public class HandlerRegistry {
 ```
 
 **Trách nhiệm:**
+
 - Central registry cho tất cả handlers
 - Map request type → handler
 - Dispatch logic
@@ -1244,6 +1294,7 @@ public class HandlerRegistry {
 ---
 
 #### 4. PlaceBidHandler.java (Key Handler)
+
 ```java
 public class PlaceBidHandler implements Handler {
     @Override
@@ -1251,46 +1302,46 @@ public class PlaceBidHandler implements Handler {
         String auctionId = request.getString("auctionId");
         String bidderName = request.getString("bidderName");
         double bidAmount = request.getDouble("bidAmount");
-        
+
         // 1. Validation
         Auction auction = auctionDAO.findById(auctionId);
         if (!"OPEN".equals(auction.getStatus())) {
             return new Response("ERROR", "Phiên đã kết thúc");
         }
-        
+
         if (bidAmount <= auction.getCurrentHighestBid()) {
             return new Response("ERROR", "Giá phải cao hơn hiện tại");
         }
-        
+
         // 2. Check min increment
         double increment = bidAmount - auction.getCurrentHighestBid();
         if (increment < auction.getMinBidIncrement()) {
-            return new Response("ERROR", 
+            return new Response("ERROR",
                 "Bước giá tối thiểu: " + auction.getMinBidIncrement());
         }
-        
+
         // 3. Place bid
         auctionDAO.updateHighestBid(auctionId, bidAmount);
         auctionDAO.updateHighestBidder(auctionId, bidderName);
         bidHistoryDAO.insertBid(auctionId, bidderName, bidAmount);
-        
+
         // 4. Check price ceiling
-        if (auction.getPriceCeiling() != null && 
+        if (auction.getPriceCeiling() != null &&
             bidAmount >= auction.getPriceCeiling()) {
             auctionDAO.updateStatus(auctionId, "FINISHED");
             return new Response("SUCCESS", "Đấu giá kết thúc - Đạt giá trần!")
                 .put("ceilingReached", true);
         }
-        
+
         // 5. Execute auto-bids
         AutoBidService.executeAutoBids(auctionId);
-        
+
         // 6. Check anti-sniping
         String newEndTime = antiSnipingService.checkAndExtendIfNeeded(auctionId, auction);
-        
+
         // 7. Broadcast BID_UPDATE
         AuctionManager.getInstance().notifyObservers(auctionId, bidAmount, bidderName);
-        
+
         return new Response("SUCCESS", "Bid placed successfully")
             .put("action", "BID_UPDATE")
             .put("newEndTime", newEndTime);
@@ -1299,6 +1350,7 @@ public class PlaceBidHandler implements Handler {
 ```
 
 **Trách nhiệm:**
+
 - Validate bid amount
 - Check constraints (min increment, price ceiling)
 - Update database
@@ -1309,39 +1361,40 @@ public class PlaceBidHandler implements Handler {
 ---
 
 #### 5. AutoBidService.java
+
 ```java
 public class AutoBidService {
     public static void executeAutoBids(String auctionId) {
         Auction auction = AuctionManager.getInstance().getAuction(auctionId);
         List<AutoBid> autoBids = autoBidDAO.findActiveByAuctionId(auctionId);
-        
+
         double currentBid = auction.getCurrentHighestBid();
         double minIncrement = auction.getMinBidIncrement();
-        
+
         for (AutoBid autoBid : autoBids) {
             if (autoBid.getUsername().equals(auction.getHighestBidder())) {
                 continue;  // Skip self
             }
-            
+
             double nextBid = currentBid + autoBid.getIncrement();
-            
+
             // Adjust if less than min increment
             if ((nextBid - currentBid) < minIncrement) {
                 nextBid = currentBid + minIncrement;
             }
-            
+
             // Check price ceiling
-            if (auction.getPriceCeiling() != null && 
+            if (auction.getPriceCeiling() != null &&
                 nextBid >= auction.getPriceCeiling()) {
                 nextBid = auction.getPriceCeiling();
-                
+
                 // Place and finish
                 placeAutoBidOnAuction(auctionId, autoBid.getUsername(), nextBid);
                 auctionDAO.updateStatus(auctionId, "FINISHED");
                 autoBidDAO.deactivateAutoBid(autoBid.getId());
                 return;
             }
-            
+
             // Check against maxBid
             if (nextBid <= autoBid.getMaxBid()) {
                 placeAutoBidOnAuction(auctionId, autoBid.getUsername(), nextBid);
@@ -1356,6 +1409,7 @@ public class AutoBidService {
 ```
 
 **Trách nhiệm:**
+
 - Tự động đặt giá cho users
 - Adjust increment dựa trên min requirement
 - Handle price ceiling
@@ -1366,34 +1420,35 @@ public class AutoBidService {
 ### Client Components
 
 #### 1. NetworkClient.java (Singleton)
+
 ```java
 public class NetworkClient {
     private static NetworkClient instance;
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
-    
+
     public static NetworkClient getInstance() {
         if (instance == null) {
             instance = new NetworkClient();
         }
         return instance;
     }
-    
+
     public void connect(String host, int port) throws IOException {
         socket = new Socket(host, port);
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(), true);
-        
+
         startListeningThread();  // Listen for server updates
     }
-    
+
     public Response sendRequest(Request request) {
         out.println(request.toJSON());
         String response = in.readLine();
         return Response.fromJSON(response);
     }
-    
+
     private void startListeningThread() {
         new Thread(() -> {
             String line;
@@ -1403,7 +1458,7 @@ public class NetworkClient {
             }
         }).start();
     }
-    
+
     private void updateUI(Response response) {
         // Update UI based on response
     }
@@ -1411,6 +1466,7 @@ public class NetworkClient {
 ```
 
 **Trách nhiệm:**
+
 - Maintain single socket connection
 - Send requests to server
 - Listen for server updates
@@ -1419,41 +1475,43 @@ public class NetworkClient {
 ---
 
 #### 2. SessionManager.java
+
 ```java
 public class SessionManager {
     private static SessionManager instance;
     private String token;
     private String username;
     private String userRole;
-    
+
     public static SessionManager getInstance() {
         if (instance == null) {
             instance = new SessionManager();
         }
         return instance;
     }
-    
+
     public void login(String token, String username, String role) {
         this.token = token;
         this.username = username;
         this.userRole = role;
     }
-    
+
     public void logout() {
         this.token = null;
         this.username = null;
         this.userRole = null;
     }
-    
+
     public boolean isLoggedIn() {
         return token != null;
     }
-    
+
     // Getters
 }
 ```
 
 **Trách nhiệm:**
+
 - Lưu trữ session info (token, username, role)
 - Check login status
 - Provide user context
@@ -1461,6 +1519,7 @@ public class SessionManager {
 ---
 
 #### 3. AuctionDetailController.java (FXML Controller)
+
 ```java
 @FXML
 private Label lblCurrentPrice, lblTimeRemaining, lblMinIncrement, lblPriceCeiling;
@@ -1476,15 +1535,15 @@ private Auction currentAuction;
 @FXML
 public void handlePlaceBid() {
     double bidAmount = Double.parseDouble(txtBidAmount.getText());
-    
+
     // Validate min increment
     double increment = bidAmount - currentAuction.getCurrentHighestBid();
     if (increment < currentAuction.getMinBidIncrement()) {
-        showError("Bước giá tối thiểu: " + 
+        showError("Bước giá tối thiểu: " +
             formatCurrency(currentAuction.getMinBidIncrement()));
         return;
     }
-    
+
     // Warn about ceiling
     if (currentAuction.getPriceCeiling() != null) {
         double ceiling = currentAuction.getPriceCeiling();
@@ -1492,13 +1551,13 @@ public void handlePlaceBid() {
             showWarning("Gần đạt giá trần!");
         }
     }
-    
+
     // Send request
     Request request = new Request("PLACE_BID");
     request.put("auctionId", currentAuction.getId());
     request.put("bidderName", SessionManager.getInstance().getUsername());
     request.put("bidAmount", bidAmount);
-    
+
     NetworkClient.getInstance().sendRequest(request);
 }
 
@@ -1506,20 +1565,21 @@ private void displayAuction(Auction auction) {
     currentAuction = auction;
     lblCurrentPrice.setText(formatCurrency(auction.getCurrentHighestBid()));
     lblTimeRemaining.setText(formatTime(auction.getEndTime()));
-    
+
     if (auction.getMinBidIncrement() > 0) {
-        lblMinIncrement.setText("Tối thiểu: " + 
+        lblMinIncrement.setText("Tối thiểu: " +
             formatCurrency(auction.getMinBidIncrement()));
     }
-    
+
     if (auction.getPriceCeiling() != null) {
-        lblPriceCeiling.setText("Trần: " + 
+        lblPriceCeiling.setText("Trần: " +
             formatCurrency(auction.getPriceCeiling()));
     }
 }
 ```
 
 **Trách nhiệm:**
+
 - Hiển thị chi tiết phiên đấu giá
 - Validate bid từ user
 - Gửi PLACE_BID request
@@ -1773,13 +1833,15 @@ server/src/test/java/com/bidnova/
 ```
 
 **Test Coverage:**
-- ✅ Models: 90%+ coverage
-- ✅ DAO: 80%+ coverage
-- ✅ Patterns: 85%+ coverage
-- ✅ Services: 80%+ coverage
-- ✅ Network: 75%+ coverage
+
+- Models: 90%+ coverage
+- DAO: 80%+ coverage
+- Patterns: 85%+ coverage
+- Services: 80%+ coverage
+- Network: 75%+ coverage
 
 **Chạy Tests:**
+
 ```bash
 # All tests
 mvn -f server/pom.xml test
@@ -1804,8 +1866,8 @@ Setup:
 
 Test:
 1. Bid 101M → ❌ Error: "Bước giá tối thiểu 2M"
-2. Bid 102M → ✅ Success
-3. Auto-bid (inc=1M) triggers → ✅ Adjusted to 102M
+2. Bid 102M →  Success
+3. Auto-bid (inc=1M) triggers →  Adjusted to 102M
 ```
 
 **Scenario B: Price Ceiling**
@@ -1816,8 +1878,8 @@ Setup:
 - Current: 100M
 
 Test:
-1. Bid 140M → ✅ Accepted
-2. Bid 150M → ✅ Accepted, Auction FINISHED
+1. Bid 140M →  Accepted
+2. Bid 150M →  Accepted, Auction FINISHED
 3. Bid 160M → ❌ Invalid (price too high)
 ```
 
@@ -1856,29 +1918,30 @@ Test:
 
 ### Bảng Tổng Quát Điểm
 
-| # | Tiêu Chí | Điểm | Max | % | Trạng Thái |
-|----|----------|------|-----|-----|-----------|
-| 1 | Thiết kế lớp & cấu kiến | 0.5 | 0.5 | 100% | ✅ |
-| 2 | OOP (Encapsulation, Inheritance, ...) | 1 | 1 | 100% | ✅ |
-| 3 | Design Patterns | 1 | 1 | 100% | ✅ |
-| 4 | Chức năng chính (Quản lý user, bid, ...) | 1 | 1 | 100% | ✅ |
-| 5 | Kỹ thuật quan trọng & Concurrency | 1 | 1 | 100% | ✅ |
-| 6 | Real-time Updates (Observer/Socket) | 0.5 | 0.5 | 100% | ✅ |
-| 7 | MVC & DAO | 0.5 | 0.5 | 100% | ✅ |
-| 8 | Build Tools (Maven/Gradle) | 0.5 | 0.5 | 100% | ✅ |
-| 9 | Unit Testing (JUnit) | 0.5 | 0.5 | 100% | ✅ |
-| 10 | CI/CD Pipeline (GitHub Actions) | 0.5 | 0.5 | 100% | ✅ |
-| 11 | Advanced Features | 0.5 | 1 | 50% | ⚠️ |
-| | **TỔNG** | **9** | **10** | **90%** | |
-| | **BONUS** | **+0.5** | | | **Advanced+1** |
+| #   | Tiêu Chí                                 | Điểm     | Max    | %       | Trạng Thái     |
+| --- | ---------------------------------------- | -------- | ------ | ------- | -------------- |
+| 1   | Thiết kế lớp & cấu kiến                  | 0.5      | 0.5    | 100%    |                |
+| 2   | OOP (Encapsulation, Inheritance, ...)    | 1        | 1      | 100%    |                |
+| 3   | Design Patterns                          | 1        | 1      | 100%    |                |
+| 4   | Chức năng chính (Quản lý user, bid, ...) | 1        | 1      | 100%    |                |
+| 5   | Kỹ thuật quan trọng & Concurrency        | 1        | 1      | 100%    |                |
+| 6   | Real-time Updates (Observer/Socket)      | 0.5      | 0.5    | 100%    |                |
+| 7   | MVC & DAO                                | 0.5      | 0.5    | 100%    |                |
+| 8   | Build Tools (Maven/Gradle)               | 0.5      | 0.5    | 100%    |                |
+| 9   | Unit Testing (JUnit)                     | 0.5      | 0.5    | 100%    |                |
+| 10  | CI/CD Pipeline (GitHub Actions)          | 0.5      | 0.5    | 100%    |                |
+| 11  | Advanced Features                        | 0.5      | 1      | 50%     |                |
+|     | **TỔNG**                                 | **9**    | **10** | **90%** |                |
+|     | **BONUS**                                | **+0.5** |        |         | **Advanced+1** |
 
 ---
 
 ### Phân Tích Chi Tiết
 
-#### ✅ Điểm 1: Thiết Kế Lớp & Cấu Kiến (0.5/0.5)
+#### Điểm 1: Thiết Kế Lớp & Cấu Kiến (0.5/0.5)
 
 **Các lớp thiết kế:**
+
 - ✓ User, Bidder, Seller, Admin
 - ✓ Item (abstract), Vehicle, RealEstate, ArtCollectible, StateProperty
 - ✓ Auction, AutoBid, BidHistory
@@ -1889,9 +1952,10 @@ Test:
 
 ---
 
-#### ✅ Điểm 2: OOP Principles (1/1)
+#### Điểm 2: OOP Principles (1/1)
 
 **Encapsulation ✓**
+
 ```java
 private int id;
 private String username;
@@ -1900,6 +1964,7 @@ public void setId(int id) { this.id = id; }
 ```
 
 **Inheritance ✓**
+
 ```java
 public abstract class Item { ... }
 public class Vehicle extends Item { ... }
@@ -1907,6 +1972,7 @@ public class RealEstate extends Item { ... }
 ```
 
 **Polymorphism ✓**
+
 ```java
 public interface ItemCreator { Item createItem(...); }
 public class VehicleCreator implements ItemCreator { ... }
@@ -1914,6 +1980,7 @@ public class RealEstateCreator implements ItemCreator { ... }
 ```
 
 **Abstraction ✓**
+
 ```java
 public abstract class Item {
     public abstract String getDetailedInfo();
@@ -1922,7 +1989,7 @@ public abstract class Item {
 
 ---
 
-#### ✅ Điểm 3: Design Patterns (1/1)
+#### Điểm 3: Design Patterns (1/1)
 
 - **Factory Pattern** ✓ (ItemFactoryRegistry)
 - **Observer Pattern** ✓ (BidUpdateObserver, AuctionSubject)
@@ -1932,7 +1999,7 @@ public abstract class Item {
 
 ---
 
-#### ✅ Điểm 4: Core Features (1/1)
+#### Điểm 4: Core Features (1/1)
 
 - ✓ User Management (Register, Login, Roles)
 - ✓ Auction Management (Create, View, Update)
@@ -1943,7 +2010,7 @@ public abstract class Item {
 
 ---
 
-#### ✅ Điểm 5: Concurrency & Advanced Techniques (1/1)
+#### Điểm 5: Concurrency & Advanced Techniques (1/1)
 
 - ✓ Multi-threaded Server (1 thread per client)
 - ✓ Thread-safe collections (ConcurrentHashMap, Collections.synchronizedList)
@@ -1953,7 +2020,7 @@ public abstract class Item {
 
 ---
 
-#### ✅ Điểm 6: Real-time Updates (0.5/0.5)
+#### Điểm 6: Real-time Updates (0.5/0.5)
 
 - ✓ Observer Pattern for bid updates
 - ✓ Socket broadcast mechanism
@@ -1962,7 +2029,7 @@ public abstract class Item {
 
 ---
 
-#### ✅ Điểm 7: MVC & DAO (0.5/0.5)
+#### Điểm 7: MVC & DAO (0.5/0.5)
 
 - ✓ Model: User, Auction, AutoBid classes
 - ✓ View: FXML files, CSS styling
@@ -1972,7 +2039,7 @@ public abstract class Item {
 
 ---
 
-#### ✅ Điểm 8: Build Tools (0.5/0.5)
+#### Điểm 8: Build Tools (0.5/0.5)
 
 - ✓ Maven 4.0.0 (parent + 2 modules)
 - ✓ Proper dependency management
@@ -1981,7 +2048,7 @@ public abstract class Item {
 
 ---
 
-#### ✅ Điểm 9: Unit Testing (0.5/0.5)
+#### Điểm 9: Unit Testing (0.5/0.5)
 
 - ✓ JUnit 5 tests for models
 - ✓ DAO tests with database interaction
@@ -1991,7 +2058,7 @@ public abstract class Item {
 
 ---
 
-#### ✅ Điểm 10: CI/CD Pipeline (0.5/0.5)
+#### Điểm 10: CI/CD Pipeline (0.5/0.5)
 
 - ✓ GitHub Actions workflow (.github/workflows/maven.yml)
 - ✓ Automatic build on push
@@ -2001,21 +2068,23 @@ public abstract class Item {
 
 ---
 
-#### ⚠️ Điểm 11: Advanced Features (0.5/1)
+#### Điểm 11: Advanced Features (0.5/1)
 
 **Implemented (0.5 điểm):**
-- ✅ Auto-Bidding with adjustment
-- ✅ Price Ceiling (instant close)
-- ✅ Min Bid Increment (prevents spam)
-- ✅ Anti-Sniping (time extension)
-- ✅ Bid History visualization
+
+- Auto-Bidding with adjustment
+- Price Ceiling (instant close)
+- Min Bid Increment (prevents spam)
+- Anti-Sniping (time extension)
+- Bid History visualization
 
 **Có thể thêm (+0.5 bonus):**
-- ⭐ Bid notification system
-- ⭐ User reputation/rating
-- ⭐ Auction categories/search
-- ⭐ Payment integration
-- ⭐ Admin dashboard with stats
+
+- Bid notification system
+- User reputation/rating
+- Auction categories/search
+- Payment integration
+- Admin dashboard with stats
 
 **BONUS awarded:** +0.5 điểm cho Advanced Feature implementation
 
@@ -2023,34 +2092,37 @@ public abstract class Item {
 
 ## 📈 PHÂN TÍCH CHI TIẾT THEO TIÊU CHÍ ĐÁNH GIÁ
 
-### 🎯 Tiêu Chí 1: Thiết Kế Lớp & Cấu Kiến (Class Design & Architecture)
+### Tiêu Chí 1: Thiết Kế Lớp & Cấu Kiến (Class Design & Architecture)
 
 **Yêu cầu:** Xác định & triển khai các lớp chính của hệ thống
 
 **Đánh giá:**
-- ✅ **User Hierarchy:** User → Bidder, Seller, Admin (3 vai trò rõ ràng)
-- ✅ **Item Hierarchy:** Item (abstract) → Vehicle, RealEstate, ArtCollectible, StateProperty (4 loại)
-- ✅ **Business Models:** Auction, AutoBid, BidHistory, Transaction
-- ✅ **Network Models:** Request, Response (Dto objects)
-- ✅ **Data Access:** DAO interfaces/implementations
+
+- **User Hierarchy:** User → Bidder, Seller, Admin (3 vai trò rõ ràng)
+- **Item Hierarchy:** Item (abstract) → Vehicle, RealEstate, ArtCollectible, StateProperty (4 loại)
+- **Business Models:** Auction, AutoBid, BidHistory, Transaction
+- **Network Models:** Request, Response (Dto objects)
+- **Data Access:** DAO interfaces/implementations
 
 **Điểm Mạnh:**
+
 - Phân cấp di inheritance rõ ràng
 - Mỗi lớp có trách nhiệm cụ thể
 - Đóng gói dữ liệu tốt (private + getters/setters)
 - Tách client models từ server models
 
-**Kết Luận:** ✅ **ĐẠT YÊUẦU CẦU 100%**
+**Kết Luận:** **ĐẠT YÊUẦU CẦU 100%**
 
 ---
 
-### 🎯 Tiêu Chí 2: OOP Principles
+### Tiêu Chí 2: OOP Principles
 
 **Yêu cầu:** Áp dụng Encapsulation, Inheritance, Polymorphism, Abstraction
 
 **Đánh giá:**
 
 **1. Encapsulation ✓**
+
 ```java
 // Ví dụ: User.java
 private int id;
@@ -2063,9 +2135,11 @@ public void setId(int id) { this.id = id; }
 public String getUsername() { return username; }
 // ...
 ```
+
 ✓ Private fields + public accessors
 
 **2. Inheritance ✓**
+
 ```java
 // Item.java (abstract base class)
 public abstract class Item {
@@ -2079,7 +2153,7 @@ public abstract class Item {
 public class Vehicle extends Item {
     private String vehicleType;
     private int year;
-    
+
     @Override
     public String getDetailedInfo() {
         return "Vehicle: " + name + " (" + vehicleType + ", " + year + ")";
@@ -2090,20 +2164,22 @@ public class Vehicle extends Item {
 public class RealEstate extends Item {
     private double area;
     private String address;
-    
+
     @Override
     public String getDetailedInfo() {
         return "RealEstate: " + name + " (" + area + "m², " + address + ")";
     }
 }
 ```
+
 ✓ Abstract class + concrete implementations
 
 **3. Polymorphism ✓**
+
 ```java
 // ItemCreator.java (interface)
 public interface ItemCreator {
-    Item createItem(int id, String name, String description, 
+    Item createItem(int id, String name, String description,
                     double startingPrice, Object... extraParams);
 }
 
@@ -2116,28 +2192,32 @@ public class ArtCollectibleCreator implements ItemCreator { ... }
 ItemCreator creator = creators.get(type);  // Get the right creator
 Item item = creator.createItem(...);  // Call via interface
 ```
+
 ✓ Interface + multiple implementations
 
 **4. Abstraction ✓**
+
 ```java
 public abstract class Item {
     // Abstract method - subclasses must implement
     public abstract String getDetailedInfo();
 }
 ```
+
 ✓ Abstract classes & methods
 
 **Điểm Mạnh:**
+
 - Encapsulation được áp dụng đầy đủ
 - Inheritance tạo hierarchy rõ ràng
 - Polymorphism qua interface & abstract classes
 - Abstraction giấu complexity
 
-**Kết Luận:** ✅ **ĐẠT YÊUCẦU 100%**
+**Kết Luận:** **ĐẠT YÊUCẦU 100%**
 
 ---
 
-### 🎯 Tiêu Chí 3: Design Patterns
+### Tiêu Chí 3: Design Patterns
 
 **Yêu cầu:** Sử dụng ít nhất 2-3 design patterns một cách phù hợp
 
@@ -2145,18 +2225,21 @@ public abstract class Item {
 
 **1. Factory Pattern ✓**
 **Mục đích:** Tạo Items khác nhau (Vehicle, RealEstate, ...)
+
 ```java
 ItemCreator creator = ItemFactoryRegistry.getInstance()
     .getCreator("VEHICLE");
-Item item = creator.createItem(1, "Toyota", "desc", 500M, 
+Item item = creator.createItem(1, "Toyota", "desc", 500M,
                                 "sedan", 2020, "ABC-123");
 ```
+
 ✓ Tách logic tạo object
 ✓ Dễ thêm loại mới
 ✓ Encapsulation
 
 **2. Observer Pattern ✓**
 **Mục đích:** Real-time bid updates đến tất cả clients
+
 ```java
 AuctionSubject subject = new AuctionSubject();
 subject.attach(observer1);
@@ -2164,12 +2247,14 @@ subject.attach(observer2);
 subject.notifyObservers(auctionId, newBid, bidder);
 // → Tất cả observers nhận notification
 ```
+
 ✓ Loose coupling
 ✓ Broadcast dễ dàng
 ✓ Dynamic subscription
 
 **3. Singleton Pattern ✓**
 **Mục đích:** Một instance duy nhất cho global resources
+
 ```java
 // Server
 AuctionManager.getInstance().addAuction(...);
@@ -2179,21 +2264,25 @@ DatabaseConnection.getInstance().getConnection();
 NetworkClient.getInstance().sendRequest(...);
 SessionManager.getInstance().login(...);
 ```
+
 ✓ Đảm bảo single instance
 ✓ Global access point
 ✓ Thread-safe
 
 **4. Strategy Pattern (Implicit) ✓**
 **Mục đích:** Xử lý requests khác nhau
+
 ```java
 Handler handler = HandlerRegistry.getHandler("LOGIN");
 Response response = handler.handle(request);
 // →Different handlers for different request types
 ```
+
 ✓ Dispatch strategy
 ✓ Extensible
 
 **5. MVC Architecture ✓**
+
 ```
 Model: User, Auction, AutoBid
 View: FXML files
@@ -2201,16 +2290,17 @@ Controller: LoginController, AuctionDetailController
 ```
 
 **Điểm Mạnh:**
+
 - 3+ patterns được sử dụng hợp lý
 - Mỗi pattern giải quyết 1 vấn đề cụ thể
 - Không abuse patterns (KISS principle)
 - Patterns giúp code maintainable & scalable
 
-**Kết Luận:** ✅ **ĐẠT YÊUCẦU 100%**
+**Kết Luận:** **ĐẠT YÊUCẦU 100%**
 
 ---
 
-### 🎯 Tiêu Chí 4: Core Functionality
+### Tiêu Chí 4: Core Functionality
 
 **Yêu cầu:** Triển khai tất cả tính năng chính của hệ thống
 
@@ -2219,42 +2309,44 @@ Controller: LoginController, AuctionDetailController
 **Core Features Status:**
 | Feature | Trạng Thái | Chi Tiết |
 |---------|-----------|---------|
-| User Registration | ✅ | Validate username, email, hash password |
-| User Login | ✅ | Check credentials, return token |
-| User Roles | ✅ | BIDDER, SELLER, ADMIN roles |
-| Create Auction | ✅ | Seller creates with product info |
-| List Auctions | ✅ | View active/finished auctions |
-| Place Bid | ✅ | Manual bidding with validation |
-| Auto-Bid | ✅ | Auto place bids up to maxBid |
-| Bid History | ✅ | Track all bids for auction |
-| Real-time Updates | ✅ | Broadcast BID_UPDATE messages |
-| Product Types | ✅ | 4 types: Vehicle, RealEstate, etc. |
+| User Registration | | Validate username, email, hash password |
+| User Login | | Check credentials, return token |
+| User Roles | | BIDDER, SELLER, ADMIN roles |
+| Create Auction | | Seller creates with product info |
+| List Auctions | | View active/finished auctions |
+| Place Bid | | Manual bidding with validation |
+| Auto-Bid | | Auto place bids up to maxBid |
+| Bid History | | Track all bids for auction |
+| Real-time Updates | | Broadcast BID_UPDATE messages |
+| Product Types | | 4 types: Vehicle, RealEstate, etc. |
 
 **Advanced Features Status:**
 | Feature | Trạng Thái | Chi Tiết |
 |---------|-----------|---------|
-| Min Bid Increment | ✅ | Validate & adjust auto-bids |
-| Price Ceiling | ✅ | Close auction when reached |
-| Anti-Sniping | ✅ | Extend time if bid in last 5 min |
-| Bid Visualization | ✅ | Line chart of bid history |
+| Min Bid Increment | | Validate & adjust auto-bids |
+| Price Ceiling | | Close auction when reached |
+| Anti-Sniping | | Extend time if bid in last 5 min |
+| Bid Visualization | | Line chart of bid history |
 
 **Điểm Mạnh:**
+
 - Tất cả core features được implement
 - Advanced features vượt yêu cầu
 - Features hoạt động integrated
 - Error handling & validation toàn diện
 
-**Kết Luận:** ✅ **ĐẠT YÊUCẦU 100%**
+**Kết Luận:** **ĐẠT YÊUCẦU 100%**
 
 ---
 
-### 🎯 Tiêu Chí 5: Kỹ Thuật Quan Trọng & Concurrency
+### Tiêu Chí 5: Kỹ Thuật Quan Trọng & Concurrency
 
 **Yêu cầu:** Xử lý concurrency, thread safety, các vấn đề thực tế
 
 **Đánh giá:**
 
 **1. Multi-threaded Server ✓**
+
 ```java
 // ServerMain.java
 while (true) {
@@ -2263,23 +2355,27 @@ while (true) {
     new Thread(handler).start();  // Each client → separate thread
 }
 ```
+
 ✓ 1 thread per client
 ✓ Non-blocking server
 
 **2. Thread-Safe Collections ✓**
+
 ```java
 // AuctionManager.java
 private Map<String, Auction> auctions = new ConcurrentHashMap<>();
 // Thread-safe for concurrent access
 
 // BidUpdateObserver.java
-private List<BidUpdateObserver> observers = 
+private List<BidUpdateObserver> observers =
     Collections.synchronizedList(new ArrayList<>());
 ```
+
 ✓ ConcurrentHashMap
 ✓ synchronized lists
 
 **3. Socket Communication ✓**
+
 ```java
 // ClientHandler.java
 BufferedReader in = new BufferedReader(...);
@@ -2291,28 +2387,34 @@ while ((line = in.readLine()) != null) {
     out.println(response.toJSON());
 }
 ```
+
 ✓ Bidirectional communication
 ✓ Proper stream handling
 
 **4. Password Security ✓**
+
 ```java
 // PasswordUtil.java
 String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 boolean matches = BCrypt.checkpw(password, hashedPassword);
 ```
+
 ✓ BCrypt hashing
 ✓ Salt generation
 
 **5. Connection Pool ✓**
+
 ```java
 // DatabaseConnection.java
 HikariDataSource datasource = new HikariDataSource(...);
 Connection conn = datasource.getConnection();
 ```
+
 ✓ Connection pooling
 ✓ Resource management
 
 **6. Transaction Handling ✓**
+
 ```java
 // PlaceBidHandler.java
 try {
@@ -2325,27 +2427,30 @@ try {
     connection.rollback();
 }
 ```
+
 ✓ Transaction management
 ✓ Rollback on error
 
 **Điểm Mạnh:**
+
 - Multi-threaded architecture
 - Thread-safe data structures
 - Proper resource management
 - Security best practices
 - Transaction integrity
 
-**Kết Luận:** ✅ **ĐẠT YÊUCẦU 100%**
+**Kết Luận:** **ĐẠT YÊUCẦU 100%**
 
 ---
 
-### 🎯 Tiêu Chí 6: Real-time Updates
+### Tiêu Chí 6: Real-time Updates
 
 **Yêu cầu:** Cập nhật dữ liệu realtime cho tất cả clients
 
 **Đánh giá:**
 
 **1. Observer Pattern Implementation ✓**
+
 ```java
 AuctionSubject subject = new AuctionSubject();
 subject.attach(observer1);
@@ -2354,6 +2459,7 @@ subject.notifyObservers(auctionId, newBid, bidder);
 ```
 
 **2. Socket Broadcasting ✓**
+
 ```java
 // ServerMain.java broadcasts to all connected clients
 for (ClientHandler client : connectedClients) {
@@ -2362,6 +2468,7 @@ for (ClientHandler client : connectedClients) {
 ```
 
 **3. Client Listener Threads ✓**
+
 ```java
 // NetworkClient.java
 new Thread(() -> {
@@ -2373,6 +2480,7 @@ new Thread(() -> {
 ```
 
 **4. UI Updates ✓**
+
 ```java
 // AuctionDetailController.java
 Platform.runLater(() -> {
@@ -2382,22 +2490,24 @@ Platform.runLater(() -> {
 ```
 
 **Điểm Mạnh:**
+
 - Real-time updates implement đúng
 - All clients see changes simultaneously
 - No polling/busy waiting
 - Efficient broadcast mechanism
 
-**Kết Luận:** ✅ **ĐẠT YÊUCẦU 100%**
+**Kết Luận:** **ĐẠT YÊUCẦU 100%**
 
 ---
 
-### 🎯 Tiêu Chí 7: MVC & DAO
+### Tiêu Chí 7: MVC & DAO
 
 **Yêu cầu:** Áp dụng MVC pattern và Data Access Object pattern
 
 **Đánh giá:**
 
 **1. MVC Architecture ✓**
+
 ```
 Model Layer:
   └─ com.bidnova.models: User, Auction, AutoBid, Item, etc.
@@ -2406,11 +2516,12 @@ View Layer:
   └─ resources/com/bidnova/views: login.fxml, home.fxml, auction-detail.fxml
 
 Controller Layer:
-  └─ com.bidnova.controllers: LoginController, HomeController, 
+  └─ com.bidnova.controllers: LoginController, HomeController,
      AuctionDetailController, AdminPanelController
 ```
 
 **2. DAO Pattern ✓**
+
 ```
 Interface:
   └─ No explicit interface, but following DAO principles
@@ -2426,6 +2537,7 @@ Database Layer:
 ```
 
 **3. Separation of Concerns ✓**
+
 ```
 // Good separation:
 UI (FXML) → Controller (business logic) → DAO → Database
@@ -2433,6 +2545,7 @@ UI (FXML) → Controller (business logic) → DAO → Database
 ```
 
 **4. Data Binding ✓**
+
 ```java
 // Controllers properly bind UI to models
 lblCurrentPrice.textProperty().bind(
@@ -2444,22 +2557,24 @@ lblCurrentPrice.textProperty().bind(
 ```
 
 **Điểm Mạnh:**
+
 - Clear MVC separation
 - DAO abstracts database access
 - Testable components
 - Maintainable structure
 
-**Kết Luận:** ✅ **ĐẠT YÊUCẦU 100%**
+**Kết Luận:** **ĐẠT YÊUCẦU 100%**
 
 ---
 
-### 🎯 Tiêu Chí 8: Build Tools
+### Tiêu Chí 8: Build Tools
 
 **Yêu cầu:** Sử dụng Maven hoặc Gradle
 
 **Đánh giá:**
 
 **1. Maven Setup ✓**
+
 ```xml
 <project>
   <modelVersion>4.0.0</modelVersion>
@@ -2467,7 +2582,7 @@ lblCurrentPrice.textProperty().bind(
   <artifactId>bidnova-parent</artifactId>
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
-  
+
   <modules>
     <module>client</module>
     <module>server</module>
@@ -2476,6 +2591,7 @@ lblCurrentPrice.textProperty().bind(
 ```
 
 **2. Dependencies Management ✓**
+
 ```xml
 <dependencies>
   <dependency>
@@ -2498,6 +2614,7 @@ lblCurrentPrice.textProperty().bind(
 ```
 
 **3. Build Profiles ✓**
+
 ```bash
 mvn clean package           # Build all modules
 mvn -f server/pom.xml clean install    # Build server only
@@ -2507,6 +2624,7 @@ mvn clean verify            # Full build + test
 ```
 
 **4. Multi-module Structure ✓**
+
 ```
 parent/pom.xml
   ├─ client/pom.xml (inherits from parent)
@@ -2514,22 +2632,24 @@ parent/pom.xml
 ```
 
 **Điểm Mạnh:**
+
 - Proper Maven setup
 - Dependency management
 - Multi-module organization
 - Easy to build & test
 
-**Kết Luận:** ✅ **ĐẠT YÊUCẦU 100%**
+**Kết Luận:** **ĐẠT YÊUCẦU 100%**
 
 ---
 
-### 🎯 Tiêu Chí 9: Unit Testing
+### Tiêu Chí 9: Unit Testing
 
 **Yêu cầu:** Có ít nhất 10 unit tests
 
 **Đánh giá:**
 
 **Test Summary:**
+
 ```
 Total Tests: 30+ (Far exceed 10 minimum)
 
@@ -2548,6 +2668,7 @@ Test Classes:
 ```
 
 **Test Examples:**
+
 ```java
 // AuctionTest.java
 @Test
@@ -2563,10 +2684,10 @@ void testExecuteAutoBidsWithMinIncrement() {
     // Setup
     Auction auction = createTestAuction();
     AutoBid autoBid = createTestAutoBid();
-    
+
     // Execute
     AutoBidService.executeAutoBids(auction.getId());
-    
+
     // Verify
     assertEquals(102_000_000, auction.getCurrentHighestBid());
 }
@@ -2575,7 +2696,7 @@ void testExecuteAutoBidsWithMinIncrement() {
 @Test
 void testVehicleCreation() {
     ItemFactoryRegistry registry = ItemFactoryRegistry.getInstance();
-    Item vehicle = registry.createItem("VEHICLE", 1, "Toyota", 
+    Item vehicle = registry.createItem("VEHICLE", 1, "Toyota",
                                        "desc", 500M, "sedan", 2020, "ABC");
     assertNotNull(vehicle);
     assertTrue(vehicle instanceof Vehicle);
@@ -2583,79 +2704,82 @@ void testVehicleCreation() {
 ```
 
 **Điểm Mạnh:**
+
 - 30+ tests (3x minimum requirement)
 - Coverage of all major components
 - Uses JUnit 5 & Mockito
 - Good test organization
 - Meaningful assertions
 
-**Kết Luận:** ✅ **ĐẠT YÊUCẦU 100%**
+**Kết Luận:** **ĐẠT YÊUCẦU 100%**
 
 ---
 
-### 🎯 Tiêu Chí 10: CI/CD Pipeline
+### Tiêu Chí 10: CI/CD Pipeline
 
 **Yêu cầu:** Thiết lập CI/CD automated testing & building
 
 **Đánh giá:**
 
 **GitHub Actions Workflow (.github/workflows/maven.yml):**
+
 ```yaml
 name: Java Maven Build
 
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main ]
+    push:
+        branches: [main, develop]
+    pull_request:
+        branches: [main]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Set up Java 25
-        uses: actions/setup-java@v3
-        with:
-          java-version: '25'
-          distribution: 'temurin'
-      
-      - name: Build with Maven
-        run: mvn clean package
-      
-      - name: Run Tests
-        run: mvn test
-      
-      - name: Generate Report
-        run: mvn jacoco:report
-      
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-artifacts
-          path: '**/target/*.jar'
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Set up Java 25
+              uses: actions/setup-java@v3
+              with:
+                  java-version: "25"
+                  distribution: "temurin"
+
+            - name: Build with Maven
+              run: mvn clean package
+
+            - name: Run Tests
+              run: mvn test
+
+            - name: Generate Report
+              run: mvn jacoco:report
+
+            - name: Upload Artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                  name: build-artifacts
+                  path: "**/target/*.jar"
 ```
 
 **Workflow Features:**
-✅ Automatic build on push
-✅ Run tests on every commit
-✅ Generate coverage reports
-✅ Upload artifacts
-✅ Multiple branches support
+Automatic build on push
+Run tests on every commit
+Generate coverage reports
+Upload artifacts
+Multiple branches support
 
 **Điểm Mạnh:**
+
 - Automated testing & building
 - Continuous integration setup
 - Artifact management
 - Report generation
 - Branch protection
 
-**Kết Luận:** ✅ **ĐẠT YÊUCẦU 100%**
+**Kết Luận:** **ĐẠT YÊUCẦU 100%**
 
 ---
 
-### 🎯 Tiêu Chí 11: Advanced Features
+### Tiêu Chí 11: Advanced Features
 
 **Yêu cầu:** Implement ít nhất 1 advanced feature (0.5 bonus)
 
@@ -2663,158 +2787,165 @@ jobs:
 
 **Advanced Features Implemented:**
 
-| Feature | Trạng Thái | Điểm |
-|---------|-----------|------|
-| Auto-Bidding | ✅ | 0.25 |
-| Min Bid Increment | ✅ | 0.25 |
-| Price Ceiling | ✅ | 0.25 |
-| Anti-Sniping | ✅ | 0.25 |
-| Bid History Visualization | ✅ | 0.25 |
-| Product Categories | ✅ | 0.25 |
-| **TOTAL** | **✅** | **+0.5 BONUS** |
+| Feature                   | Trạng Thái | Điểm           |
+| ------------------------- | ---------- | -------------- |
+| Auto-Bidding              |            | 0.25           |
+| Min Bid Increment         |            | 0.25           |
+| Price Ceiling             |            | 0.25           |
+| Anti-Sniping              |            | 0.25           |
+| Bid History Visualization |            | 0.25           |
+| Product Categories        |            | 0.25           |
+| **TOTAL**                 | \*\*\*\*   | **+0.5 BONUS** |
 
 **Detailed Implementation:**
 
 **1. Auto-Bidding with Adjustment (0.25)**
+
 - Users set max bid & increment
 - System auto places bids
 - Adjust increment if < min requirement
 - Stop when maxBid exceeded
 
 **2. Min Bid Increment (0.25)**
+
 - Prevent spam small bids
 - Validate on manual & auto bids
 - Adjust auto-bid increment automatically
 - Clear error messages
 
 **3. Price Ceiling (0.25)**
+
 - Seller sets max acceptable price
 - Auction ends immediately when reached
 - Winner determined at ceiling price
 - Different from normal ending
 
 **4. Anti-Sniping (0.25)**
+
 - Extend time if bid in last 5 minutes
 - Multiple extensions possible
 - Broadcast new end time
 - Fair for all bidders
 
 **5. Bid History Visualization (0.25)**
+
 - Line chart: price vs time
 - Real-time updates
 - User-friendly display
 - Sequence numbering
 
 **6. Product Categories (0.25)**
+
 - Vehicle: type, year, license plate
 - RealEstate: area, address, type
 - ArtCollectible: artist, era, material
 - StateProperty: code, managing agency
 
 **Điểm Mạnh:**
+
 - 5+ advanced features beyond requirements
 - Features well-integrated
 - Complete implementation with tests
 - Proper error handling
 - User-friendly UI
 
-**Kết Luận:** ✅ **ĐẠT YÊUCẦU + 0.5 BONUS**
+**Kết Luận:** **ĐẠT YÊUCẦU + 0.5 BONUS**
 
 ---
 
-## ⭐ NHỮNG ĐIỂM NỔI BẬT & ĐÓNG GÓP
+## NHỮNG ĐIỂM NỔI BẬT & ĐÓNG GÓP
 
 ### 🏆 Achievements
 
 1. **Comprehensive System Design**
-   - Clean architecture with clear separation of concerns
-   - Scalable design pattern applications
-   - Well-documented code structure
+    - Clean architecture with clear separation of concerns
+    - Scalable design pattern applications
+    - Well-documented code structure
 
 2. **Advanced Feature Set**
-   - Far exceeds basic requirements (5+ advanced features)
-   - Real-time bidding system
-   - Fair-play mechanisms (anti-sniping, min increment)
-   - Multiple product categories
+    - Far exceeds basic requirements (5+ advanced features)
+    - Real-time bidding system
+    - Fair-play mechanisms (anti-sniping, min increment)
+    - Multiple product categories
 
 3. **Production-Ready Quality**
-   - Extensive unit tests (30+)
-   - Thread-safe implementation
-   - Proper error handling
-   - Security best practices (BCrypt, input validation)
+    - Extensive unit tests (30+)
+    - Thread-safe implementation
+    - Proper error handling
+    - Security best practices (BCrypt, input validation)
 
 4. **Technology Stack**
-   - Modern Java 25 LTS
-   - Professional UI with JavaFX
-   - Reliable database design
-   - Automated CI/CD pipeline
+    - Modern Java 25 LTS
+    - Professional UI with JavaFX
+    - Reliable database design
+    - Automated CI/CD pipeline
 
 5. **Documentation**
-   - Implementation plan & completion report
-   - Test guide with scenarios
-   - Architecture documentation
-   - Code examples & explanation
+    - Implementation plan & completion report
+    - Test guide with scenarios
+    - Architecture documentation
+    - Code examples & explanation
 
 ### 📊 Metrics
 
-| Metric | Value | Assessment |
-|--------|-------|------------|
-| Total Classes | 40+ | Comprehensive |
-| Test Cases | 30+ | Excellent coverage |
-| LOC (estimated) | 8000+ | Substantial |
-| Design Patterns | 5+ | Professional |
-| Advanced Features | 5+ | Exceeds requirements |
-| Documentation | Complete | Professional |
+| Metric            | Value    | Assessment           |
+| ----------------- | -------- | -------------------- |
+| Total Classes     | 40+      | Comprehensive        |
+| Test Cases        | 30+      | Excellent coverage   |
+| LOC (estimated)   | 8000+    | Substantial          |
+| Design Patterns   | 5+       | Professional         |
+| Advanced Features | 5+       | Exceeds requirements |
+| Documentation     | Complete | Professional         |
 
 ---
 
-## 🚀 HƯỚNG PHÁT TRIỂN TƯƠNG LAI
+## HƯỚNG PHÁT TRIỂN TƯƠNG LAI
 
 ### Short-term Enhancements
 
 1. **User Experience**
-   - Bid notifications (email, SMS)
-   - Auction favorites/watchlist
-   - Search & filter auctions
-   - Advanced bid analytics
+    - Bid notifications (email, SMS)
+    - Auction favorites/watchlist
+    - Search & filter auctions
+    - Advanced bid analytics
 
 2. **Business Features**
-   - Payment gateway integration
-   - User reputation/rating system
-   - Admin dashboard with statistics
-   - Auction categories management
+    - Payment gateway integration
+    - User reputation/rating system
+    - Admin dashboard with statistics
+    - Auction categories management
 
 3. **Technical Improvements**
-   - Database query optimization
-   - Caching layer (Redis)
-   - Logging system
-   - Performance monitoring
+    - Database query optimization
+    - Caching layer (Redis)
+    - Logging system
+    - Performance monitoring
 
 ### Long-term Roadmap
 
 1. **Scalability**
-   - Microservices architecture
-   - Load balancing
-   - Database sharding
-   - Cloud deployment (AWS/Azure)
+    - Microservices architecture
+    - Load balancing
+    - Database sharding
+    - Cloud deployment (AWS/Azure)
 
 2. **Advanced Features**
-   - Mobile app (iOS/Android)
-   - Web interface (React/Vue)
-   - Auction scheduling
-   - Bulk auction management
+    - Mobile app (iOS/Android)
+    - Web interface (React/Vue)
+    - Auction scheduling
+    - Bulk auction management
 
 3. **Security**
-   - Two-factor authentication
-   - Encryption at rest
-   - SSL/TLS for communications
-   - Regular security audits
+    - Two-factor authentication
+    - Encryption at rest
+    - SSL/TLS for communications
+    - Regular security audits
 
 4. **Analytics**
-   - Bid trends analysis
-   - User behavior tracking
-   - Revenue reporting
-   - Fraud detection system
+    - Bid trends analysis
+    - User behavior tracking
+    - Revenue reporting
+    - Fraud detection system
 
 ---
 
@@ -2824,13 +2955,13 @@ jobs:
 
 **BidNova - Hệ Thống Đấu Giá Trực Tuyến** là một dự án được triển khai **HOÀN THÀNH & ĐẠT TIÊU CHUẨN CAO** với:
 
-- ✅ **9.0/10 điểm** từ các tiêu chí bắt buộc
-- ✅ **+0.5 bonus** cho advanced features
-- ✅ **Tổng cộng: 9.5/10** (95%)
-- ✅ **All core requirements met**
-- ✅ **Multiple advanced features implemented**
-- ✅ **Professional code quality**
-- ✅ **Comprehensive testing & documentation**
+- **9.0/10 điểm** từ các tiêu chí bắt buộc
+- **+0.5 bonus** cho advanced features
+- **Tổng cộng: 9.5/10** (95%)
+- **All core requirements met**
+- **Multiple advanced features implemented**
+- **Professional code quality**
+- **Comprehensive testing & documentation**
 
 ### Điểm Mạnh Chính
 
@@ -2852,5 +2983,4 @@ jobs:
 ---
 
 **Báo cáo kết thúc tại: 2026-06-01**  
-**Trạng thái: ✅ APPROVED & RECOMMENDED FOR PRODUCTION**
-
+**Trạng thái: APPROVED & RECOMMENDED FOR PRODUCTION**

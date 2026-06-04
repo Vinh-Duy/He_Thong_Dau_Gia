@@ -26,7 +26,7 @@ public class ServerMain {
         String port = System.getenv("PORT");
         return port != null ? Integer.parseInt(port) : 8888;
     }
-    
+
     public static void main(String[] args) {
         int port = getPort();
         System.out.println("Server starting on port: " + port);
@@ -68,6 +68,7 @@ Thêm vào `server/pom.xml`:
 ```
 
 Build:
+
 ```bash
 mvn -f server/pom.xml clean package -DskipTests
 # → Tạo file: server/target/bidnova-server.jar
@@ -83,7 +84,7 @@ git push origin main
 
 ---
 
-## 🚀 OPTION A: Deploy với Dockerfile (RECOMMENDED - Đơn Giản)
+## OPTION A: Deploy với Dockerfile (RECOMMENDED - Đơn Giản)
 
 ### Trên Render.com:
 
@@ -91,26 +92,27 @@ git push origin main
 2. **Click "New +" → "Web Service"**
 3. **Chọn GitHub Repo của bạn**
 4. **Cấu Hình:**
-   - Runtime: `Docker`
-   - Build Command: `docker build -t bidnova .`
-   - Start Command: (để trống, sẽ dùng CMD trong Dockerfile)
+    - Runtime: `Docker`
+    - Build Command: `docker build -t bidnova .`
+    - Start Command: (để trống, sẽ dùng CMD trong Dockerfile)
 
 5. **Environment Variables:**
-   ```
-   PORT=10000
-   DB_URL=jdbc:mysql://zephyr.proxy.rlwy.net:32243/auction_db
-   DB_USER=root
-   DB_PASSWORD=vGhcIvAXFhNwzGTOOWZTIGmJvyShpoST
-   JWT_SECRET=E4aKywl5o8u6LekAb9jKIr0Nqduhet6+n4QBDFzSLJU=
-   ```
+
+    ```
+    PORT=10000
+    DB_URL=jdbc:mysql://zephyr.proxy.rlwy.net:32243/auction_db
+    DB_USER=root
+    DB_PASSWORD=vGhcIvAXFhNwzGTOOWZTIGmJvyShpoST
+    JWT_SECRET=E4aKywl5o8u6LekAb9jKIr0Nqduhet6+n4QBDFzSLJU=
+    ```
 
 6. **Click "Create Web Service"**
 
-✅ **Xong!** Deploy tự động khi push code
+**Xong!** Deploy tự động khi push code
 
 ---
 
-## 🚀 OPTION B: Deploy với render.yaml (Nếu muốn)
+## OPTION B: Deploy với render.yaml (Nếu muốn)
 
 Tạo file `render.yaml`:
 
@@ -119,10 +121,10 @@ services:
     - type: web
       name: bidnova-server
       plan: starter
-      
+
       dockerfile: ./Dockerfile
       dockerContext: ./
-      
+
       envVars:
           - key: PORT
             value: 10000
@@ -138,7 +140,7 @@ Sau đó add secret variables trên Render dashboard.
 
 ---
 
-## 🚀 OPTION C: Deploy với Procfile (Simplest)
+## OPTION C: Deploy với Procfile (Simplest)
 
 Cái này nếu không dùng Docker, dùng Procfile:
 
@@ -150,7 +152,7 @@ Nhưng **yêu cầu** Maven phải build JAR thành công trước.
 
 ---
 
-## ✅ CHECKLIST DEPLOY
+## CHECKLIST DEPLOY
 
 - [ ] Cập nhật `ServerMain.java` để dùng PORT từ env
 - [ ] Thêm `maven-shade-plugin` vào `server/pom.xml`
@@ -179,6 +181,7 @@ java -jar server/target/bidnova-server.jar
 ```
 
 Nếu thấy:
+
 ```
 Server starting on port: 8888
 Database connected successfully
@@ -199,13 +202,17 @@ Database connected successfully
 ## ❌ TROUBLESHOOTING
 
 ### Error: "Port already in use"
+
 → Render assigns dynamic port, chỉnh `PORT` env var
 
 ### Error: "Cannot connect to database"
+
 → Kiểm tra `DB_URL`, `DB_USER`, `DB_PASSWORD` env vars
 
 ### Error: "JAR not found"
+
 → Confirm `maven-shade-plugin` config, run `mvn clean package` locally
 
 ### Error: "Java version not found"
+
 → Confirm Java 25 dependency, hoặc downgrade tới Java 21

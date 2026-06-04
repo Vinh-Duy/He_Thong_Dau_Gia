@@ -1,4 +1,4 @@
-# 📦 DEPLOYMENT DATA SHEETS - BIDNOVA
+# DEPLOYMENT DATA SHEETS - BIDNOVA
 
 ## 1️⃣ DATABASE CONNECTION INFO
 
@@ -470,4 +470,4 @@ Database (Railway):   zephyr.proxy.rlwy.net:32243
 ---
 
 **Deployment Data Generated:** 1 June 2026  
-**Status:** ✅ Ready for Cloud Deployment
+**Status:** Ready for Cloud Deployment

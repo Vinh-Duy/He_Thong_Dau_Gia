@@ -19,7 +19,7 @@
 | 8   | Build Tools (Maven/Gradle)                                  | 0.5      | 0.5    | ✓       | Bắt buộc   |
 | 9   | Unit Testing (JUnit)                                        | 0.5      | 0.5    | ✓       | Bắt buộc   |
 | 10  | CI/CD Pipeline                                              | 0.5      | 0.5    | ✓       | Bắt buộc   |
-| 11  | Advanced Features                                           | 0.5      | 1      | ⚠️      | Tùy chọn   |
+| 11  | Advanced Features                                           | 0.5      | 1      |         | Tùy chọn   |
 |     | **TỔNG**                                                    | **9**    | **10** | **90%** |            |
 |     | **BONUS**                                                   | **+0.5** | **+1** |         | Advanced+1 |
 
@@ -27,7 +27,7 @@
 
 ## 📝 CHI TIẾT ĐÁNH GIÁ
 
-### ✅ 1. THIẾT KẾ LỚP VÀ CẤU KIẾN THIẾT (0.5/0.5)
+### 1. THIẾT KẾ LỚP VÀ CẤU KIẾN THIẾT (0.5/0.5)
 
 **Trạng thái:** Đạt yêu cầu
 
@@ -49,7 +49,7 @@
 
 ---
 
-### ✅ 2. OOP - ENCAPSULATION, INHERITANCE, POLYMORPHISM, ABSTRACTION (1/1)
+### 2. OOP - ENCAPSULATION, INHERITANCE, POLYMORPHISM, ABSTRACTION (1/1)
 
 #### **Encapsulation ✓**
 
@@ -109,7 +109,7 @@ public interface ActionHandler {
 
 ---
 
-### ✅ 3. DESIGN PATTERNS (1/1)
+### 3. DESIGN PATTERNS (1/1)
 
 #### **Factory Pattern ✓**
 
@@ -182,7 +182,7 @@ public class HandlerRegistry {
 
 ---
 
-### ✅ 4. CHỨC NĂNG CHÍNH (1/1)
+### 4. CHỨC NĂNG CHÍNH (1/1)
 
 #### **Quản lý Người dùng ✓**
 
@@ -239,7 +239,7 @@ SetAutoBidHandler
 
 ---
 
-### ✅ 5. KỸ THUẬT QUAN TRỌNG & CONCURRENCY (1/1)
+### 5. KỸ THUẬT QUAN TRỌNG & CONCURRENCY (1/1)
 
 #### **Transaction Handling với Synchronized ✓**
 
@@ -292,7 +292,7 @@ private static final Set<PrintWriter> clientWriters =
 
 ---
 
-### ✅ 6. REALTIME UPDATE (OBSERVER/SOCKET) (0.5/0.5)
+### 6. REALTIME UPDATE (OBSERVER/SOCKET) (0.5/0.5)
 
 #### **Observer Pattern ✓**
 
@@ -346,7 +346,7 @@ private void handleRealTimeUpdate(String message) {
 
 ---
 
-### ✅ 7. MVC & DAO (0.5/0.5)
+### 7. MVC & DAO (0.5/0.5)
 
 #### **Model Layer ✓**
 
@@ -435,7 +435,7 @@ Controllers by Domain:
 
 ---
 
-### ✅ 8. BUILD TOOLS - MAVEN (0.5/0.5)
+### 8. BUILD TOOLS - MAVEN (0.5/0.5)
 
 #### **Multi-module Structure ✓**
 
@@ -479,7 +479,7 @@ pom.xml (parent)
 
 ---
 
-### ✅ 9. UNIT TESTING - JUNIT (0.5/0.5)
+### 9. UNIT TESTING - JUNIT (0.5/0.5)
 
 #### **Test Files ✓**
 
@@ -517,7 +517,7 @@ void testPlaceBid_Success() {
 
 ---
 
-### ✅ 10. CI/CD PIPELINE (0.5/0.5)
+### 10. CI/CD PIPELINE (0.5/0.5)
 
 #### **GitHub Actions - maven.yml ✓**
 
@@ -561,7 +561,7 @@ jobs:
 
 ---
 
-### ⚠️ 11. ADVANCED FEATURES (0.5/1)
+### 11. ADVANCED FEATURES (0.5/1)
 
 #### **Partial Implementation ⚠️**
 
@@ -594,7 +594,7 @@ public void executeAutoBids(String auctionId, double currentHighestBid) {
 
 ---
 
-## 🎯 ĐIỂM MẠNH ĐỀ CẢI THIỆN
+## ĐIỂM MẠNH ĐỀ CẢI THIỆN
 
 ### 💪 Điểm Mạnh (Strengths)
 
@@ -606,7 +606,7 @@ public void executeAutoBids(String auctionId, double currentHighestBid) {
 6. ✓ **Security**: Password hashing with bcrypt
 7. ✓ **Auto-bidding**: Functional system with proper logic
 
-### ⚠️ Điểm Yếu (Weaknesses)
+### Điểm Yếu (Weaknesses)
 
 1. **Missing Anti-sniping**: Không có time-extension mechanism
 2. **No Bid History Visualization**: Không có chart/graph hiển thị

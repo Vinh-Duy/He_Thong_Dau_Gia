@@ -9,17 +9,17 @@ public class NetworkConfig {
         // Ưu tiên: System Property → Environment Variable → Default
         String fromProperty = System.getProperty("auction.server.host");
         if (fromProperty != null && !fromProperty.isEmpty()) {
-            System.out.println("📍 Using host from property: " + fromProperty);
+            System.out.println("Using host from property: " + fromProperty);
             return fromProperty;
         }
         
         String fromEnv = System.getenv("AUCTION_SERVER_HOST");
         if (fromEnv != null && !fromEnv.isEmpty()) {
-            System.out.println("📍 Using host from env var: " + fromEnv);
+            System.out.println("Using host from env var: " + fromEnv);
             return fromEnv;
         }
         
-        System.out.println("📍 Using default host: " + DEFAULT_HOST);
+        System.out.println("Using default host: " + DEFAULT_HOST);
         return DEFAULT_HOST;
     }
     
@@ -29,7 +29,7 @@ public class NetworkConfig {
         if (fromProperty != null && !fromProperty.isEmpty()) {
             try {
                 int port = Integer.parseInt(fromProperty);
-                System.out.println("📍 Using port from property: " + port);
+                System.out.println("Using port from property: " + port);
                 return port;
             } catch (NumberFormatException e) {
                 System.err.println("Invalid port in property, using default: " + DEFAULT_PORT);
@@ -40,14 +40,14 @@ public class NetworkConfig {
         if (fromEnv != null && !fromEnv.isEmpty()) {
             try {
                 int port = Integer.parseInt(fromEnv);
-                System.out.println("📍 Using port from env var: " + port);
+                System.out.println("Using port from env var: " + port);
                 return port;
             } catch (NumberFormatException e) {
                 System.err.println("Invalid port in env variable, using default: " + DEFAULT_PORT);
             }
         }
         
-        System.out.println("📍 Using default port: " + DEFAULT_PORT);
+        System.out.println("Using default port: " + DEFAULT_PORT);
         return DEFAULT_PORT;
     }
     

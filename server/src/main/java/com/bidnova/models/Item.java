@@ -1,7 +1,7 @@
 package com.bidnova.models;
 
 /**
- * 📦 Item (Abstract) - Lớp cơ sở cho tất cả các loại sản phẩm
+ * Item (Abstract) - Lớp cơ sở cho tất cả các loại sản phẩm
  * 
  * <h2>Chức Năng:</h2>
  * <p>Định nghĩa cấu trúc chung cho mọi loại sản phẩm có thể đấu giá.</p>

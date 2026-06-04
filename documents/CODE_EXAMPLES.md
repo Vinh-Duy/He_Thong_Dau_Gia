@@ -3,6 +3,7 @@
 ## PART A: DATABASE CHANGES
 
 ### SQL Script to Add Columns
+
 ```sql
 -- Add price ceiling support
 ALTER TABLE auctions ADD COLUMN price_ceiling DOUBLE NULL DEFAULT NULL COMMENT 'Giá tối đa - khi đạt giá này đấu giá kết thúc';
@@ -11,7 +12,7 @@ ALTER TABLE auctions ADD COLUMN price_ceiling DOUBLE NULL DEFAULT NULL COMMENT '
 ALTER TABLE auctions ADD COLUMN min_bid_increment DOUBLE NOT NULL DEFAULT 1000 COMMENT 'Bước giá tối thiếu (VD: 1tr)';
 
 -- Update existing auctions with default values
-UPDATE auctions SET 
+UPDATE auctions SET
   price_ceiling = GREATEST(start_price * 1.5, current_highest_bid * 1.2),
   min_bid_increment = 1000
 WHERE price_ceiling IS NULL;
@@ -22,6 +23,7 @@ WHERE price_ceiling IS NULL;
 ## PART B: JAVA MODEL CHANGES
 
 ### 1. Auction.java (Server Model)
+
 ```java
 package com.bidnova.models;
 
@@ -40,8 +42,8 @@ public class Auction {
     private LocalDateTime endTime;
     private int sellerId;
     private String imageUrl;
-    
-    // ⭐️ NEW FIELDS
+
+    // NEW FIELDS
     private Double priceCeiling;          // Giá trần - null = vô giới hạn
     private double minBidIncrement = 1000; // Bước giá tối thiếu
 
@@ -52,21 +54,21 @@ public class Auction {
 
     // ... existing getters/setters ...
 
-    // ⭐️ NEW GETTERS & SETTERS
-    public Double getPriceCeiling() { 
-        return priceCeiling; 
-    }
-    
-    public void setPriceCeiling(Double priceCeiling) { 
-        this.priceCeiling = priceCeiling; 
+    // NEW GETTERS & SETTERS
+    public Double getPriceCeiling() {
+        return priceCeiling;
     }
 
-    public double getMinBidIncrement() { 
-        return minBidIncrement; 
+    public void setPriceCeiling(Double priceCeiling) {
+        this.priceCeiling = priceCeiling;
     }
-    
-    public void setMinBidIncrement(double minBidIncrement) { 
-        this.minBidIncrement = minBidIncrement; 
+
+    public double getMinBidIncrement() {
+        return minBidIncrement;
+    }
+
+    public void setMinBidIncrement(double minBidIncrement) {
+        this.minBidIncrement = minBidIncrement;
     }
 
     // Helper method: Check if bid reaches ceiling
@@ -82,9 +84,9 @@ public class Auction {
     }
 
     public synchronized boolean placeBid(String username, double bidAmount) {
-        if (!"OPEN".equals(status)) return false; 
-        
-        if (bidAmount > currentHighestBid) { 
+        if (!"OPEN".equals(status)) return false;
+
+        if (bidAmount > currentHighestBid) {
             currentHighestBid = bidAmount;
             highestBidder = username;
             return true;
@@ -99,6 +101,7 @@ public class Auction {
 ## PART C: DAO CHANGES
 
 ### 2. AuctionDAO.java (New Methods)
+
 ```java
 package com.bidnova.dao;
 
@@ -108,7 +111,7 @@ import com.bidnova.models.Auction;
 public class AuctionDAO {
     // ... existing methods ...
 
-    // ⭐️ NEW: Get price ceiling
+    // NEW: Get price ceiling
     public Double getPriceCeiling(String auctionId) {
         String sql = "SELECT price_ceiling FROM auctions WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -124,7 +127,7 @@ public class AuctionDAO {
         return null;
     }
 
-    // ⭐️ NEW: Update price ceiling
+    // NEW: Update price ceiling
     public void updatePriceCeiling(String auctionId, Double priceCeiling) {
         String sql = "UPDATE auctions SET price_ceiling = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -141,7 +144,7 @@ public class AuctionDAO {
         }
     }
 
-    // ⭐️ NEW: Get minimum bid increment
+    // NEW: Get minimum bid increment
     public double getMinBidIncrement(String auctionId) {
         String sql = "SELECT min_bid_increment FROM auctions WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -158,7 +161,7 @@ public class AuctionDAO {
         return 1000; // Default
     }
 
-    // ⭐️ NEW: Update minimum bid increment
+    // NEW: Update minimum bid increment
     public void updateMinBidIncrement(String auctionId, double minBidIncrement) {
         String sql = "UPDATE auctions SET min_bid_increment = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -171,7 +174,7 @@ public class AuctionDAO {
         }
     }
 
-    // ⭐️ NEW: Load full auction with new fields
+    // NEW: Load full auction with new fields
     public Auction getAuctionFull(String auctionId) {
         String sql = "SELECT * FROM auctions WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -190,14 +193,14 @@ public class AuctionDAO {
                 auction.setDescription(rs.getString("description"));
                 auction.setSellerId(rs.getInt("seller_id"));
                 auction.setImageUrl(rs.getString("image_url"));
-                
-                // ⭐️ NEW FIELDS
+
+                // NEW FIELDS
                 Object ceilingObj = rs.getObject("price_ceiling");
                 if (ceilingObj != null) {
                     auction.setPriceCeiling(rs.getDouble("price_ceiling"));
                 }
                 auction.setMinBidIncrement(rs.getDouble("min_bid_increment"));
-                
+
                 return auction;
             }
         } catch (SQLException e) {
@@ -213,6 +216,7 @@ public class AuctionDAO {
 ## PART D: BID HANDLER - CORE LOGIC
 
 ### 3. PlaceBidHandler.java (Updated)
+
 ```java
 package com.bidnova.handlers;
 
@@ -269,14 +273,14 @@ public class PlaceBidHandler implements ActionHandler {
                     );
                 }
 
-                // ⭐️ 4️⃣ NEW: Validate minimum bid increment
+                // 4️⃣ NEW: Validate minimum bid increment
                 double bidIncrement = bidAmount - currentAuction.getCurrentHighestBid();
                 if (bidIncrement < currentAuction.getMinBidIncrement()) {
                     double minRequiredBid = currentAuction.getCurrentHighestBid() + currentAuction.getMinBidIncrement();
                     return new Response(
                         "ERROR",
-                        String.format("Bước giá tối thiểu là %.0f. Giá tối thiểu yêu cầu: %.0f", 
-                            currentAuction.getMinBidIncrement(), 
+                        String.format("Bước giá tối thiểu là %.0f. Giá tối thiểu yêu cầu: %.0f",
+                            currentAuction.getMinBidIncrement(),
                             minRequiredBid),
                         null
                     );
@@ -289,10 +293,10 @@ public class PlaceBidHandler implements ActionHandler {
 
                 // Record bid history
                 BidHistory history = new BidHistory(
-                    auctionId, 
-                    authUser.getUserId(), 
-                    authUser.getUsername(), 
-                    bidAmount, 
+                    auctionId,
+                    authUser.getUserId(),
+                    authUser.getUsername(),
+                    bidAmount,
                     LocalDateTime.now()
                 );
                 bidHistoryDAO.addBid(history);
@@ -312,16 +316,16 @@ public class PlaceBidHandler implements ActionHandler {
                     }
                 }
 
-                // ⭐️ Execute auto-bids
+                // Execute auto-bids
                 autoBidService.executeAutoBids(auctionId, bidAmount);
 
-                // ⭐️ NEW: Check if price ceiling reached
+                // NEW: Check if price ceiling reached
                 boolean ceilingReached = false;
                 if (currentAuction.isBidAtCeiling(currentAuction.getCurrentHighestBid())) {
                     currentAuction.setStatus("FINISHED");
                     auctionDAO.updateStatus(auctionId, "FINISHED");
                     ceilingReached = true;
-                    System.out.println("🎯 Auction " + auctionId + " FINISHED - Price ceiling reached!");
+                    System.out.println("Auction " + auctionId + " FINISHED - Price ceiling reached!");
                 }
 
                 double finalHighestBid = currentAuction.getCurrentHighestBid();
@@ -330,7 +334,7 @@ public class PlaceBidHandler implements ActionHandler {
                 successData.addProperty("auctionId", auctionId);
                 successData.addProperty("newHighestBid", finalHighestBid);
                 successData.addProperty("isExtended", isExtended);
-                successData.addProperty("ceilingReached", ceilingReached); // ⭐️ NEW
+                successData.addProperty("ceilingReached", ceilingReached); // NEW
                 if (currentAuction.getEndTime() != null) {
                     successData.addProperty("newEndTime", currentAuction.getEndTime().toString());
                 }
@@ -359,6 +363,7 @@ public class PlaceBidHandler implements ActionHandler {
 ## PART E: AUTO-BID SERVICE - UPDATED
 
 ### 4. AutoBidService.java (Updated executeAutoBids)
+
 ```java
 package com.bidnova.services;
 
@@ -377,12 +382,12 @@ public class AutoBidService {
         try {
             List<AutoBid> autoBids = autoBidDAO.getActiveAutoBids(auctionId);
             Auction auction = auctionManager.getAuction(auctionId);
-            
+
             if (auction == null) return;
 
             for (AutoBid autoBid : autoBids) {
                 String currentLeader = auction.getHighestBidder();
-                
+
                 // Skip if not valid
                 if (!isAutoBidValid(autoBid, currentHighestBid, currentLeader)) {
                     continue;
@@ -391,38 +396,38 @@ public class AutoBidService {
                 // Calculate next bid amount
                 double nextBidAmount = currentHighestBid + autoBid.getIncrement();
 
-                // ⭐️ NEW: Validate minimum bid increment
+                // NEW: Validate minimum bid increment
                 double minimumRequiredIncrement = auction.getMinBidIncrement();
                 if ((nextBidAmount - currentHighestBid) < minimumRequiredIncrement) {
                     // Adjust to minimum increment
                     nextBidAmount = currentHighestBid + minimumRequiredIncrement;
-                    System.out.println("📊 Adjusted bid from " + 
-                        (currentHighestBid + autoBid.getIncrement()) + 
+                    System.out.println("📊 Adjusted bid from " +
+                        (currentHighestBid + autoBid.getIncrement()) +
                         " to " + nextBidAmount + " (min increment: " + minimumRequiredIncrement + ")");
                 }
 
                 // Check if next bid is within max limit
                 if (nextBidAmount <= autoBid.getMaxBid()) {
-                    
-                    // ⭐️ NEW: Check if bid reaches price ceiling
+
+                    // NEW: Check if bid reaches price ceiling
                     if (auction.getPriceCeiling() != null && nextBidAmount >= auction.getPriceCeiling()) {
                         // Bid reaches ceiling - place bid and close auction
                         nextBidAmount = auction.getPriceCeiling();
                         placeAutoBidOnAuction(auctionId, autoBid.getUsername(), nextBidAmount);
-                        
+
                         // Close auction
                         auction.setStatus("FINISHED");
                         auctionDAO.updateStatus(auctionId, "FINISHED");
                         autoBidDAO.deactivateAutoBid(autoBid.getId());
-                        
-                        System.out.println("🎯 Auto-bid at ceiling: " + autoBid.getUsername() + 
+
+                        System.out.println("Auto-bid at ceiling: " + autoBid.getUsername() +
                             " bid " + nextBidAmount + " - Auction finished!");
                     } else {
                         // Normal auto-bid
                         placeAutoBidOnAuction(auctionId, autoBid.getUsername(), nextBidAmount);
                         System.out.println("✓ Auto-bid placed: " + autoBid.getUsername() + " bid " + nextBidAmount);
                     }
-                    
+
                     // Update current highest bid for next auto-bid check
                     currentHighestBid = nextBidAmount;
                 } else {
@@ -456,7 +461,7 @@ public class AutoBidService {
                     auction.setCurrentHighestBid(bidAmount);
                     auction.setHighestBidder(username);
                     auctionDAO.updateHighestBid(auctionId, bidAmount);
-                    
+
                     // Record in bid history
                     // ... (existing code)
                 }
@@ -473,6 +478,7 @@ public class AutoBidService {
 ## PART F: CLIENT-SIDE VALIDATION
 
 ### 5. AuctionDetailController.java (Client - Partial)
+
 ```java
 @FXML
 private void handlePlaceBid() {
@@ -499,10 +505,10 @@ private void handlePlaceBid() {
             return;
         }
 
-        // ⭐️ 2. NEW: Check minimum bid increment
+        // 2. NEW: Check minimum bid increment
         double bidIncrement = bidAmount - currentPriceValue;
         double minBidIncrement = currentAuction.getMinBidIncrement();
-        
+
         if (bidIncrement < minBidIncrement) {
             double minRequiredBid = currentPriceValue + minBidIncrement;
             lblBidError.setText(
@@ -513,7 +519,7 @@ private void handlePlaceBid() {
             return;
         }
 
-        // ⭐️ 3. NEW: Warn if approaching price ceiling
+        // 3. NEW: Warn if approaching price ceiling
         if (currentAuction.getPriceCeiling() != null) {
             if (bidAmount >= currentAuction.getPriceCeiling()) {
                 showAlert("Thông báo", "Giá của bạn đạt giới hạn trần - đấu giá sẽ kết thúc!");
@@ -557,14 +563,14 @@ private void handlePlaceBid() {
 
 ## SUMMARY TABLE
 
-| Feature | Where | What |
-|---------|-------|------|
-| **Giá Trần** | DB `price_ceiling` | Khi bid ≥ ceiling → Finish auction |
-| **Bước Giá Tối Thiếu** | DB `min_bid_increment` | bid - current ≥ minIncrement |
-| **Validation** | PlaceBidHandler | Check both conditions |
-| **AutoBid Logic** | AutoBidService | Adjust bid + check ceiling |
-| **Client Validation** | AuctionDetailController | Show error before sending |
+| Feature                | Where                   | What                               |
+| ---------------------- | ----------------------- | ---------------------------------- |
+| **Giá Trần**           | DB `price_ceiling`      | Khi bid ≥ ceiling → Finish auction |
+| **Bước Giá Tối Thiếu** | DB `min_bid_increment`  | bid - current ≥ minIncrement       |
+| **Validation**         | PlaceBidHandler         | Check both conditions              |
+| **AutoBid Logic**      | AutoBidService          | Adjust bid + check ceiling         |
+| **Client Validation**  | AuctionDetailController | Show error before sending          |
 
 ---
 
-Ready to implement? Choose a file to start! 🚀
+Ready to implement? Choose a file to start!

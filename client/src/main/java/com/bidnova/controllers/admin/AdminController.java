@@ -89,7 +89,7 @@ public class AdminController {
         loadUsers();
         loadAuctions();
 
-        // 🔴 Lắng nghe real-time updates từ server
+        // Lắng nghe real-time updates từ server
         NetworkClient.getInstance().onMessageReceived(message -> {
             try {
                 JsonObject data = JsonParser.parseString(message).getAsJsonObject();

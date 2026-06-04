@@ -1,7 +1,7 @@
-# 🚀 Deploy BidNova to Render - QUICK SETUP
+# Deploy BidNova to Render - QUICK SETUP
 
 **Updated:** 1 Tháng 6, 2026  
-**Status:** ✅ Ready to Deploy
+**Status:** Ready to Deploy
 
 ---
 
@@ -9,14 +9,14 @@
 
 Vì database đã có trong `.env`, nên chúng ta chỉ cần:
 
-1. ✅ **Fix PORT** - Thay từ hardcoded 8888 → dynamic từ env
-2. ✅ **Build JAR** - Thêm maven-shade-plugin để tạo standalone JAR
-3. ✅ **Tạo Dockerfile** - Deploy dễ dàng
-4. ✅ **Tạo docker-compose** - Test local trước
+1.  **Fix PORT** - Thay từ hardcoded 8888 → dynamic từ env
+2.  **Build JAR** - Thêm maven-shade-plugin để tạo standalone JAR
+3.  **Tạo Dockerfile** - Deploy dễ dàng
+4.  **Tạo docker-compose** - Test local trước
 
 ---
 
-## 🎯 DEPLOY STEPS (3 bước đơn giản)
+## DEPLOY STEPS (3 bước đơn giản)
 
 ### STEP 1: Build & Test Local
 
@@ -29,6 +29,7 @@ ls server/target/bidnova-server.jar
 ```
 
 **Expected output:**
+
 ```
 -rw-r--r--  45MB bidnova-server.jar
 ```
@@ -49,6 +50,7 @@ docker-compose down
 ```
 
 Expected:
+
 ```
 Server starting on port: 8080
 Database connected successfully
@@ -78,10 +80,12 @@ git push origin main
 ### Trên Dashboard Render (Step by Step):
 
 **1. Create Web Service**
+
 - Click "New +" → "Web Service"
 - Select your GitHub repository
 
 **2. Configure Build Settings**
+
 ```
 Root Directory: (leave empty)
 Build Command: (leave empty - uses Dockerfile)
@@ -105,11 +109,11 @@ CLOUD_NAME          = deuqbo9ul
 
 **5. Click "Create Web Service"**
 
-✅ Deploy sẽ tự động chạy!
+Deploy sẽ tự động chạy!
 
 ---
 
-## ✅ VERIFY DEPLOYMENT
+## VERIFY DEPLOYMENT
 
 Sau khi deploy xong:
 
@@ -122,6 +126,7 @@ curl https://bidnova-server.onrender.com/health
 ```
 
 **Expected logs:**
+
 ```
 Server starting on port: 10000
 Database connected successfully
@@ -149,32 +154,37 @@ docker-compose down -v
 
 ## 📂 FILES CREATED/MODIFIED
 
-| File | Action | Purpose |
-|------|--------|---------|
-| `server/src/main/java/com/bidnova/ServerMain.java` | Modified | Read PORT from env |
-| `server/pom.xml` | Modified | Add maven-shade-plugin |
-| `Dockerfile` | Created | Multi-stage Docker build |
-| `docker-compose.yml` | Created | Local dev environment |
-| `RENDER_DEPLOY_SIMPLE.md` | Created | Detailed guide |
-| `QUICK_DEPLOY_SETUP.md` | Created | This file |
+| File                                               | Action   | Purpose                  |
+| -------------------------------------------------- | -------- | ------------------------ |
+| `server/src/main/java/com/bidnova/ServerMain.java` | Modified | Read PORT from env       |
+| `server/pom.xml`                                   | Modified | Add maven-shade-plugin   |
+| `Dockerfile`                                       | Created  | Multi-stage Docker build |
+| `docker-compose.yml`                               | Created  | Local dev environment    |
+| `RENDER_DEPLOY_SIMPLE.md`                          | Created  | Detailed guide           |
+| `QUICK_DEPLOY_SETUP.md`                            | Created  | This file                |
 
 ---
 
 ## 🔧 TROUBLESHOOTING
 
 ### ❌ Build fails: "Cannot find main class"
+
 **Fix:** Verify `maven-shade-plugin` in `server/pom.xml`
 
 ### ❌ JAR not created
+
 **Fix:** Run `mvn clean package -DskipTests` without `-DskipTests` first to see full error
 
 ### ❌ Port already in use
+
 **Fix:** Render will assign random port, check `PORT` env var is set to `10000`
 
 ### ❌ Cannot connect to database
+
 **Fix:** Verify `DB_URL`, `DB_USER`, `DB_PASSWORD` match exactly
 
 ### ❌ Timeout during build
+
 **Fix:** Upgrade to Standard plan on Render
 
 ---
@@ -182,17 +192,18 @@ docker-compose down -v
 ## 🎁 BONUS: GitHub Actions CI/CD
 
 File `.github/workflows/maven.yml` already exists and will:
-- ✅ Build on every push
-- ✅ Run tests
-- ✅ Generate artifacts
+
+- Build on every push
+- Run tests
+- Generate artifacts
 
 No action needed, it's already working!
 
 ---
 
-## 🎯 WHAT'S NEXT?
+## WHAT'S NEXT?
 
-1. **Done:** Basic server deployment ✅
+1. **Done:** Basic server deployment
 2. **Next:** Deploy client (JavaFX Desktop app) - separate topic
 3. **Optional:** Add API monitoring, alerting
 
@@ -209,8 +220,8 @@ No action needed, it's already working!
 ## 🎉 YOU'RE READY!
 
 Tất cả đã sẵn sàng. Chỉ cần:
-1. ✅ Build locally để confirm
-2. ✅ Push lên GitHub
-3. ✅ Deploy trên Render (3-5 phút)
-4. ✅ Done! 🚀
 
+1.  Build locally để confirm
+2.  Push lên GitHub
+3.  Deploy trên Render (3-5 phút)
+4.  Done!

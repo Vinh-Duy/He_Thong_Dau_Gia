@@ -157,7 +157,7 @@ public class AuctionDAO {
             pstmt.setString(7, auc.getCategory());
             pstmt.setInt(8, auc.getSellerId());
             pstmt.setString(9, auc.getImageUrl());
-            // ⭐️ NEW: Save price ceiling and min bid increment
+            // NEW: Save price ceiling and min bid increment
             if (auc.getPriceCeiling() != null) {
                 pstmt.setDouble(10, auc.getPriceCeiling());
             } else {
@@ -253,7 +253,7 @@ public class AuctionDAO {
                     a.setCategory(rs.getString("category"));
                     a.setImageUrl(rs.getString("image_url"));
                     
-                    // ⭐️ NEW FIELDS
+                    // NEW FIELDS
                     Object ceilingObj = rs.getObject("price_ceiling");
                     if (ceilingObj != null) {
                         a.setPriceCeiling(rs.getDouble("price_ceiling"));
@@ -269,7 +269,7 @@ public class AuctionDAO {
         return null;
     }
 
-    // ⭐️ NEW METHODS FOR PRICE CEILING & MIN BID INCREMENT
+    // NEW METHODS FOR PRICE CEILING & MIN BID INCREMENT
 
     /**
      * Get price ceiling for an auction

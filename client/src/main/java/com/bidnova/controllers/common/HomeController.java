@@ -43,7 +43,7 @@ public class HomeController {
     public void initialize() {
         loadData();
 
-        // 🔴 Lắng nghe real-time updates từ server
+        // Lắng nghe real-time updates từ server
         broadcastListener = message -> {
             try {
                 JsonObject data = JsonParser.parseString(message).getAsJsonObject();

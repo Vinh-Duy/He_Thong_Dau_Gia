@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 # ==================================================================
 # QUICK START: Build & Run Client Connecting to Render Server
@@ -29,7 +29,7 @@ else
 fi
 
 echo ""
-echo "🔌 Starting client..."
+echo "Starting client..."
 
 # Set default environment variables
 DEFAULT_AUCTION_SERVER_HOST="bidnova-server.onrender.com"

@@ -3,7 +3,7 @@ package com.bidnova.patterns.factory;
 import com.bidnova.models.Item;
 
 /**
- * 🏭 ItemCreator - Factory Pattern Interface
+ * ItemCreator - Factory Pattern Interface
  * 
  * <h2>Chức Năng:</h2>
  * <p>Định nghĩa hợp đồng cho tất cả item creators. Mỗi concrete creator (VehicleCreator,

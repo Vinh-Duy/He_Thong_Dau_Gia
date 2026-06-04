@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 /**
- * 🚀 ServerMain - Điểm khởi động của hệ thống Auction Server
+ *  ServerMain - Điểm khởi động của hệ thống Auction Server
  * 
  * <h2>Chức Năng:</h2>
  * <ul>
@@ -56,7 +56,7 @@ public class ServerMain {
             try {
                 return Integer.parseInt(portEnv);
             } catch (NumberFormatException e) {
-                System.err.println("⚠️  Invalid PORT env variable: " + portEnv + ", using default 8888");
+                System.err.println(" Invalid PORT env variable: " + portEnv + ", using default 8888");
             }
         }
         return 8888;
@@ -84,11 +84,11 @@ public class ServerMain {
         try {
             String serverIP = java.net.InetAddress.getLocalHost().getHostAddress();
             System.out.println("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-            System.out.println("📍 SERVER IP: " + serverIP);
-            System.out.println("🔌 PORT: " + PORT);
+            System.out.println("SERVER IP: " + serverIP);
+            System.out.println("PORT: " + PORT);
             System.out.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
         } catch (Exception e) {
-            System.out.println("⚠️  Unable to get server IP");
+            System.out.println(" Unable to get server IP");
         }
 
         // Background thread kiểm tra auction hết hạn và broadcast event khi cần
@@ -119,7 +119,7 @@ public class ServerMain {
 
         try (ServerSocket serverSocket = new ServerSocket(PORT, 50, java.net.InetAddress.getByName("0.0.0.0"))) {
             System.out.println("Server đang chạy tại port " + PORT + "...");
-            System.out.println("✅ Lắng nghe trên tất cả interfaces (0.0.0.0:" + PORT + ")");
+            System.out.println(" Lắng nghe trên tất cả interfaces (0.0.0.0:" + PORT + ")");
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();

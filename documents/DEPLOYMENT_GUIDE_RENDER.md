@@ -1,4 +1,4 @@
-# 🚀 DEPLOYMENT GUIDE - BIDNOVA TRÊN RENDER
+# DEPLOYMENT GUIDE - BIDNOVA TRÊN RENDER
 
 **Ngày:** 1 Tháng 6, 2026  
 **Project:** BidNova - Hệ Thống Đấu Giá Trực Tuyến  
@@ -21,16 +21,16 @@
 
 ### Accounts Cần Có
 
-- ✅ Tài khoản Render.com
-- ✅ Tài khoản GitHub (để push code)
-- ✅ MySQL Database (Railway.app hoặc Render database)
+- Tài khoản Render.com
+- Tài khoản GitHub (để push code)
+- MySQL Database (Railway.app hoặc Render database)
 
 ### Tools Cần Cài
 
-- ✅ Git
-- ✅ Java JDK 25
-- ✅ Maven 3.8.0+
-- ✅ MySQL Client (optional, để test connection)
+- Git
+- Java JDK 25
+- Maven 3.8.0+
+- MySQL Client (optional, để test connection)
 
 ---
 
@@ -258,7 +258,7 @@ PORT=10000  (Render sẽ assign port này)
 
 ## 🎨 DEPLOY CLIENT TRÊN RENDER
 
-### ⚠️ Lưu Ý Quan Trọng
+### Lưu Ý Quan Trọng
 
 - JavaFX Client cần Display/GUI → Không thể deploy trên Render server
 - **Solution:** Deploy Web version hoặc Hybrid (Electron/Tauri)
@@ -458,7 +458,7 @@ CREATE TABLE auto_bids (
 
 ---
 
-## ✅ DEPLOYMENT CHECKLIST
+## DEPLOYMENT CHECKLIST
 
 ### Pre-Deployment
 
@@ -594,7 +594,7 @@ java -cp "server/target/classes:server/target/dependency/*" com.bidnova.ServerMa
 
 ---
 
-## 🎯 QUICK START SUMMARY
+## QUICK START SUMMARY
 
 ### Step 1: Setup Railway MySQL
 
@@ -632,6 +632,6 @@ java -cp "server/target/classes:server/target/dependency/*" com.bidnova.ServerMa
 
 ---
 
-**Deployment Status:** ✅ Ready for Cloud Deployment
+**Deployment Status:** Ready for Cloud Deployment
 
 _Last Updated: 1 June 2026_

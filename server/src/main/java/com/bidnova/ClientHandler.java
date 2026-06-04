@@ -25,7 +25,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 /**
- * 🔌 ClientHandler - Xử lý kết nối của mỗi client độc lập
+ * ClientHandler - Xử lý kết nối của mỗi client độc lập
  * 
  * <h2>Chức Năng:</h2>
  * <ul>
@@ -143,7 +143,7 @@ public class ClientHandler implements Runnable {
 
                     // Phát hiện HTTP request (health check từ Render) và skip
                     if (isHttpRequest(inputLine)) {
-                        System.out.println("⚠️  HTTP request detected (health check), skipping: " + inputLine.substring(0, Math.min(50, inputLine.length())));
+                        System.out.println(" HTTP request detected (health check), skipping: " + inputLine.substring(0, Math.min(50, inputLine.length())));
                         // Read HTTP headers until blank line, then ignore
                         String headerLine;
                         while ((headerLine = in.readLine()) != null && !headerLine.trim().isEmpty()) {

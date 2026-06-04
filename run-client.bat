@@ -7,7 +7,7 @@ REM Usage: run-client.bat
 setlocal enabledelayedexpansion
 
 echo.
-echo 🚀 Starting BidNova Client...
+echo Starting BidNova Client...
 echo.
 
 REM Get project root
@@ -31,8 +31,7 @@ if exist "%PROJECT_ROOT%\client\target\BidNova-Client.jar" (
 )
 
 echo.
-echo 🔌 Starting client...
-echo ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+echo Starting client...
 
 REM Check for command-line arguments (Usage: run-client.bat [IP] [PORT])
 if "%1"=="" (
@@ -51,7 +50,7 @@ echo Server: !AUCTION_SERVER_HOST!:!AUCTION_SERVER_PORT!
 echo.
 
 REM Run using Maven exec (handles JavaFX properly)
-echo  Starting application via Maven...
+echo Starting application via Maven...
 echo.
 
 call mvn -q clean javafx:run -f client/pom.xml ^

@@ -14,8 +14,8 @@ import com.bidnova.models.Auction;
  * <ul>
  *   <li>🔄 <b>Real-time Updates:</b> Các observers được thông báo ngay lập tức khi có thay đổi</li>
  *   <li>📢 <b>Broadcast Events:</b> Một sự kiện có thể thông báo cho nhiều observers</li>
- *   <li>🔌 <b>Decoupling:</b> AuctionSubject không cần biết chi tiết observers là gì</li>
- *   <li>✅ <b>Easy to Extend:</b> Dễ thêm observer mới mà không sửa code AuctionSubject</li>
+ *   <li><b>Decoupling:</b> AuctionSubject không cần biết chi tiết observers là gì</li>
+ *   <li> <b>Easy to Extend:</b> Dễ thêm observer mới mà không sửa code AuctionSubject</li>
  * </ul>
  * 
  * <h2>Sử Dụng Trong Hệ Thống:</h2>

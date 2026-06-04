@@ -38,7 +38,7 @@ echo ━━━━━━━━━━━━━━━━━━━━━━━━━
 echo.
 
 REM Set environment variables
-set AUCTION_SERVER_HOST=10.11.80.227
+set AUCTION_SERVER_HOST=bidnova-server.onrender.com
 set AUCTION_SERVER_PORT=8888
 
 REM Run using Maven exec (handles JavaFX properly)

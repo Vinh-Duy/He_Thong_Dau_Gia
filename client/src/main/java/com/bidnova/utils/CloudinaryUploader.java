@@ -2,6 +2,7 @@ package com.bidnova.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -56,39 +57,7 @@ public class CloudinaryUploader {
             byte[] fileBytes = Files.readAllBytes(file.toPath());
             String fileName = file.getName();
             String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
-
-            // Tạo multipart body
             String boundary = "---" + System.currentTimeMillis();
-            String lineEnd = "\r\n";
-            String twoHyphens = "--";
-
-            StringBuilder sb = new StringBuilder();
-            sb.append(twoHyphens).append(boundary).append(lineEnd);
-            sb.append("Content-Disposition: form-data; name=\"file\"; filename=\"")
-              .append(fileName).append("\"").append(lineEnd);
-            sb.append("Content-Type: image/").append(ext).append(lineEnd);
-            sb.append(lineEnd);
-
-            byte[] headerBytes = sb.toString().getBytes(StandardCharsets.UTF_8);
-
-            // Footer
-            StringBuilder footerSb = new StringBuilder();
-            footerSb.append(lineEnd);
-            footerSb.append(twoHyphens).append(boundary).append(lineEnd);
-            footerSb.append("Content-Disposition: form-data; name=\"upload_preset\"").append(lineEnd);
-            footerSb.append(lineEnd);
-            footerSb.append(CLOUDINARY_UPLOAD_PRESET).append(lineEnd);
-
-            footerSb.append(twoHyphens).append(boundary).append(twoHyphens).append(lineEnd);
-
-            byte[] footerBytes = footerSb.toString().getBytes(StandardCharsets.UTF_8);
-
-            // Tổng size
-            int totalSize = headerBytes.length + fileBytes.length + footerBytes.length;
-            byte[] body = new byte[totalSize];
-            System.arraycopy(headerBytes, 0, body, 0, headerBytes.length);
-            System.arraycopy(fileBytes, 0, body, headerBytes.length, fileBytes.length);
-            System.arraycopy(footerBytes, 0, body, headerBytes.length + fileBytes.length, footerBytes.length);
 
             // Gửi request
             URL url = new URL("https://api.cloudinary.com/v1_1/" + CLOUD_NAME + "/image/upload");
@@ -96,8 +65,25 @@ public class CloudinaryUploader {
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
             conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
-            conn.setRequestProperty("Content-Length", String.valueOf(totalSize));
-            conn.getOutputStream().write(body);
+
+            try (OutputStream os = conn.getOutputStream()) {
+                // Write File Part
+                os.write(("--" + boundary + "\r\n").getBytes());
+                os.write(("Content-Disposition: form-data; name=\"file\"; filename=\"" + fileName + "\"\r\n").getBytes());
+                os.write(("Content-Type: image/" + ext + "\r\n\r\n").getBytes());
+                os.write(fileBytes);
+                os.write("\r\n".getBytes());
+
+                // Write Upload Preset Part
+                os.write(("--" + boundary + "\r\n").getBytes());
+                os.write("Content-Disposition: form-data; name=\"upload_preset\"\r\n\r\n".getBytes());
+                os.write(CLOUDINARY_UPLOAD_PRESET.getBytes());
+                os.write("\r\n".getBytes());
+
+                // End of multipart
+                os.write(("--" + boundary + "--\r\n").getBytes());
+                os.flush();
+            }
 
             // Đọc response
             int code = conn.getResponseCode();

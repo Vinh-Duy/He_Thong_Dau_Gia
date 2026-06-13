@@ -265,25 +265,4 @@ public class Auction {
         double increment = bidAmount - currentHighestBid;
         return increment >= minBidIncrement;
     }
-
-    /**
-     * placeBid() - Đặt giá (thread-safe)
-     * 
-     * <p>DEPRECATED: Sử dụng PlaceBidHandler.handle() thay vì method này.</p>
-     * 
-     * @param username Tên người dùng đặt giá
-     * @param bidAmount Giá được đặt
-     * @return true nếu đặt giá thành công, false nếu phiên không OPEN hoặc giá không hợp lệ
-     */
-    public synchronized boolean placeBid(String username, double bidAmount) {
-        if (!"OPEN".equals(status)) return false; 
-        
-        if (bidAmount > currentHighestBid) { 
-            currentHighestBid = bidAmount;
-            highestBidder = username;
-            return true;
-        }
-        return false;
-    }
-    
 }

@@ -1,8 +1,11 @@
 package com.bidnova.models;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit Tests for Auction Model
@@ -24,78 +27,52 @@ public class AuctionTest {
     }
     
     @Test
-    void testPlaceBid_Success() {
-        // Arrange
-        String bidder = "user1";
-        double bidAmount = 1500.0;
-        
-        // Act
-        boolean result = auction.placeBid(bidder, bidAmount);
-        
-        // Assert
-        assertTrue(result, "Bid should be placed successfully");
-        assertEquals(1500.0, auction.getCurrentHighestBid(), 0.001);
-        assertEquals("user1", auction.getHighestBidder());
+    void testAuctionInitialization() {
+        assertEquals("OPEN", auction.getStatus(), "Default status should be OPEN");
+        assertEquals(0.0, auction.getCurrentHighestBid(), 0.001);
+        assertEquals(1000.0, auction.getMinBidIncrement(), 0.001);
+        assertNull(auction.getHighestBidder());
     }
     
     @Test
-    void testPlaceBid_Fail_LowerThanCurrent() {
+    void testIsBidAtCeiling() {
+        // Arrange & Act
+        auction.setPriceCeiling(5000.0);
+
+        // Act & Assert
+        assertFalse(auction.isBidAtCeiling(4000.0), "Giá thấp hơn trần phải trả về false");
+        assertTrue(auction.isBidAtCeiling(5000.0), "Giá bằng trần phải trả về true");
+        assertTrue(auction.isBidAtCeiling(6000.0), "Giá vượt trần phải trả về true");
+
+        auction.setPriceCeiling(null);
+        assertFalse(auction.isBidAtCeiling(10000.0), "Không có giá trần thì luôn trả về false");
+    }
+
+    @Test
+    void testIsBidIncrementValid() {
         // Arrange
         auction.setCurrentHighestBid(2000.0);
-        
-        // Act
-        boolean result = auction.placeBid("user2", 1500.0);
-        
-        // Assert
-        assertFalse(result, "Bid should fail when lower than current");
-        assertEquals(2000.0, auction.getCurrentHighestBid(), 0.001);
+        auction.setMinBidIncrement(500.0);
+
+        // Act & Assert
+        assertTrue(auction.isBidIncrementValid(2500.0), "Đúng bước giá tối thiểu phải hợp lệ");
+        assertTrue(auction.isBidIncrementValid(3000.0), "Bước giá lớn hơn tối thiểu phải hợp lệ");
+        assertFalse(auction.isBidIncrementValid(2400.0), "Bước giá nhỏ hơn tối thiểu phải không hợp lệ");
+        assertFalse(auction.isBidIncrementValid(1500.0), "Giá đặt thấp hơn giá hiện tại phải không hợp lệ");
     }
-    
+
     @Test
-    void testPlaceBid_Fail_ClosedAuction() {
-        // Arrange
-        auction.setStatus("CLOSED");
-        
-        // Act
-        boolean result = auction.placeBid("user3", 3000.0);
-        
-        // Assert
-        assertFalse(result, "Bid should fail for closed auction");
-    }
-    
-    @Test
-    void testPlaceBid_Fail_EqualToCurrent() {
-        // Arrange
-        auction.setCurrentHighestBid(1500.0);
-        
-        // Act
-        boolean result = auction.placeBid("user4", 1500.0);
-        
-        // Assert
-        assertFalse(result, "Bid should fail when equal to current");
-    }
-    
-    @Test
-    void testAuctionInitialization() {
-        // Arrange
-        Auction newAuction = new Auction();
-        
-        // Assert
-        assertEquals("OPEN", newAuction.getStatus(), "Default status should be OPEN");
-        assertEquals(0.0, newAuction.getCurrentHighestBid(), 0.001);
-        assertNull(newAuction.getHighestBidder());
-    }
-    
-    @Test
-    void testMultipleBids() {
-        // Arrange & Act
-        auction.placeBid("user1", 1200.0);
-        auction.placeBid("user2", 1500.0);
-        boolean finalBid = auction.placeBid("user3", 1300.0); // Lower than current
-        
-        // Assert
-        assertEquals(1500.0, auction.getCurrentHighestBid(), 0.001);
-        assertEquals("user2", auction.getHighestBidder());
-        assertFalse(finalBid, "Lower bid should fail");
+    void testSettersAndGetters() {
+        auction.setCategory("Vehicle");
+        auction.setDescription("Xe hơi cực đẹp");
+        auction.setSellerId(123);
+        auction.setImageUrl("http://image.com/car.png");
+        auction.setHighestBidder("vinhduy");
+
+        assertEquals("Vehicle", auction.getCategory());
+        assertEquals("Xe hơi cực đẹp", auction.getDescription());
+        assertEquals(123, auction.getSellerId());
+        assertEquals("http://image.com/car.png", auction.getImageUrl());
+        assertEquals("vinhduy", auction.getHighestBidder());
     }
 }

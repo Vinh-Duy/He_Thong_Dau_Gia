@@ -86,6 +86,11 @@ public class ClientHandler implements Runnable {
                                       "GET_AUCTIONS_BY_CATEGORY", "GET_AUCTION_BY_ID",
                                       "GET_BID_HISTORY"));
 
+    private static final Set<String> MODIFICATION_ACTIONS = 
+            new HashSet<>(Arrays.asList("ADD_PRODUCT", "UPDATE_PRODUCT", 
+                                      "DELETE_PRODUCT", "PLACE_BID", 
+                                      "UPDATE_AUCTION", "EDIT_PRODUCT"));
+
     /**
      * Constructor - Khởi tạo handler cho một client mới
      * 
@@ -143,17 +148,7 @@ public class ClientHandler implements Runnable {
 
                     // Phát hiện HTTP request (health check từ Render) và skip
                     if (isHttpRequest(inputLine)) {
-                        System.out.println(" HTTP request detected (health check), skipping: " + inputLine.substring(0, Math.min(50, inputLine.length())));
-                        // Read HTTP headers until blank line, then ignore
-                        String headerLine;
-                        while ((headerLine = in.readLine()) != null && !headerLine.trim().isEmpty()) {
-                            // Skip HTTP headers
-                        }
-                        // Send minimal HTTP response to satisfy health check
-                        out.println("HTTP/1.1 200 OK");
-                        out.println("Content-Length: 0");
-                        out.println();
-                        out.flush();
+                        handleHealthCheck(in, out, inputLine);
                         continue;
                     }
 
@@ -237,23 +232,30 @@ public class ClientHandler implements Runnable {
     }
 
     /**
+     * Xử lý HTTP request (thường là health check từ Render)
+     */
+    private void handleHealthCheck(BufferedReader in, PrintWriter out, String firstLine) throws Exception {
+        System.out.println(" HTTP request detected (health check): " + firstLine.substring(0, Math.min(50, firstLine.length())));
+        // Đọc hết headers
+        String headerLine;
+        while ((headerLine = in.readLine()) != null && !headerLine.trim().isEmpty()) {
+            // Bỏ qua headers
+        }
+        // Phản hồi 200 OK cho Load Balancer
+        out.println("HTTP/1.1 200 OK");
+        out.println("Content-Length: 0");
+        out.println();
+        out.flush();
+    }
+
+    /**
      * isProductModification() - Kiểm tra xem action có làm thay đổi sản phẩm/đấu giá không
      * 
      * @param action Tên action (ví dụ: "ADD_PRODUCT", "PLACE_BID", etc.)
      * @return true nếu action gây thay đổi cần broadcast, false ngược lại
-     * 
-     * <h3>Actions Trigger Broadcast:</h3>
-     * <ul>
-     *   <li>ADD_PRODUCT - Tạo phiên đấu giá mới</li>
-     *   <li>UPDATE_PRODUCT - Cập nhật thông tin phiên</li>
-     *   <li>DELETE_PRODUCT - Xóa phiên đấu giá</li>
-     *   <li>PLACE_BID - Đặt giá (cập nhật giá hiện tại)</li>
-     * </ul>
      */
     private boolean isProductModification(String action) {
-        return "ADD_PRODUCT".equals(action) || "UPDATE_PRODUCT".equals(action) || 
-               "DELETE_PRODUCT".equals(action) || "PLACE_BID".equals(action) ||
-               "UPDATE_AUCTION".equals(action) || "EDIT_PRODUCT".equals(action);
+        return action != null && MODIFICATION_ACTIONS.contains(action);
     }
 
     /**

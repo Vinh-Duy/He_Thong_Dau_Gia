@@ -28,8 +28,7 @@ public class SessionManager {
     
     // SỬA LẠI CHỖ NÀY: Check xem đã đăng nhập chưa dựa vào username
     public static boolean isLoggedIn() {
-        // Nếu username có dữ liệu (không null và không rỗng) nghĩa là đã đăng nhập
-        return username != null && !username.trim().isEmpty() && userId > 0;
+        return currentToken != null && username != null && !username.isBlank() && userId > 0;
     }
 
     public static void login(User user, String token) {
